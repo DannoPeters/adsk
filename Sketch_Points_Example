@@ -1,0 +1,38 @@
+import adsk.core, adsk.fusion, traceback
+
+def run(context):
+    ui = None
+    try: 
+        app = adsk.core.Application.get()
+        ui = app.userInterface
+
+        doc = app.documents.add(adsk.core.DocumentTypes.FusionDesignDocumentType)
+        design = app.activeProduct
+
+        # Get the root component of the active design.
+        rootComp = design.rootComponent
+
+        # Create a new sketch on the xy plane.
+        sketches = rootComp.sketches;
+        xyPlane = rootComp.xYConstructionPlane
+        sketch = sketches.add(xyPlane)
+        
+        # Get sketch health state
+        health = sketch.healthState
+        if health == adsk.fusion.FeatureHealthStates.ErrorFeatureHealthState or health == adsk.fusion.FeatureHealthStates.WarningFeatureHealthState:        
+            msg = sketch.errorOrWarningMessage
+
+        # Get sketch points
+        sketchPoints = sketch.sketchPoints
+        
+        # Create sketch point
+        point = adsk.core.Point3D.create(1.0, 1.0, 0)
+        sketchPoint = sketchPoints.add(point)
+        
+        # Move sketch point
+        translation = adsk.core.Vector3D.create(1.0, 0, 0)
+        sketchPoint.move(translation)
+
+    except:
+        if ui:
+            ui.messageBox('Failed:\n{}'.format(traceback.format_exc()))
