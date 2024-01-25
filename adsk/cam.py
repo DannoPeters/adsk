@@ -2,35 +2,138 @@
 # It does not reflect the actual implementation.
 
 from __future__ import annotations
+from collections.abc import Iterator
 
 from . import core
 from . import fusion
 
-class InspectionPointState():
+class AdditiveTechnologies():
     """
-    Summarize state of measured inspection point.
-    Compares the deviation from the nominal position, or the projected position
-    (if using projection), to the contact position relative to the upper or lower tolerances.
-    Further information can be found in the online help
+    List of technologies a additive machine could have
     """
     def __init__(self):
         pass
-    WithinTolerance = 0
-    AboveTolerance = 1
-    BelowTolerance = 2
-    Unprojected = 3
+    FFFTechnology = 0
+    DEDTechnology = 1
+    MPBFTechnology = 2
+    MFJTechnology = 3
+    BinderJettingTechnology = 4
+    SLATechnology = 5
+    SLSTechnology = 6
+    NATechnology = 7
+    OtherTechnology = 8
 
-class LibraryLocation():
+class AutomaticGenerationModes():
+    """
+    Defines the automatic generation during the creation of an operation using OperationInput or createFromCAMTemplate2.
+    """
+    def __init__(self):
+        pass
+    ForceGeneration = 0
+    SkipGeneration = 1
+    UserPreference = 2
+
+class ExtensionMethods():
+    """
+    Enum for the types of extension methods for a chain selection. It defines how open curves are extended on their open end.
+    """
+    def __init__(self):
+        pass
+    TangentExtensionMethod = 0
+    ClosestBoundaryExtensionMethod = 1
+    ParallelExtensionMethod = 2
+
+class ExtensionTypes():
+    """
+    Enum for types of extension capping.
+    """
+    def __init__(self):
+        pass
+    BoundaryExtensionType = 0
+    DistanceExtensionType = 1
+
+class FloatParameterValueTypes():
+    """
+    Defines the type of a FloatParameterValue.
+    """
+    def __init__(self):
+        pass
+    UnspecifiedValueType = 0
+    LengthValueType = 1
+    AngleValueType = 2
+    LinearVelocityValueType = 3
+    RotationalVelocityValueType = 4
+    TimeValueType = 5
+    WeightValueType = 6
+    PowerValueType = 7
+    FlowRateValueType = 8
+    AreaValueType = 9
+    VolumeValueType = 10
+    TemperatureValueType = 11
+
+class GeneratedDataType():
+    """
+    Enum for the identifiers of generated results an OperationBase object can have
+    """
+    def __init__(self):
+        pass
+    OptimizedOrientationGeneratedDataType = 0
+
+class HoleSegmentType():
+    """
+    Represents the recognized geometric shape of a hole segment.
+    """
+    def __init__(self):
+        pass
+    HoleSegmentTypeCylinder = 0
+    HoleSegmentTypeCone = 1
+    HoleSegmentTypeFlat = 2
+    HoleSegmentTypeTorus = 3
+
+class LibraryLocations():
     """
     List of locations representing folders in the library dialogs.
     """
     def __init__(self):
         pass
-    Local = 0
-    Cloud = 1
-    Network = 2
-    OnlineSamples = 3
-    External = 4
+    LocalLibraryLocation = 0
+    CloudLibraryLocation = 1
+    NetworkLibraryLocation = 2
+    OnlineSamplesLibraryLocation = 3
+    ExternalLibraryLocation = 4
+    Fusion360LibraryLocation = 5
+
+class LoopTypes():
+    """
+    Enum to define the type of loop for a face contour selection.
+    """
+    def __init__(self):
+        pass
+    AllLoops = 0
+    OnlyOutsideLoops = 1
+    OnlyInsideLoops = 2
+
+class MachineAnglePreferences():
+    """
+    Preference for rotary axis starting angles.
+    """
+    def __init__(self):
+        pass
+    MachineAngleNoPreference = 0
+    MachineAnglePreferNegative = 1
+    MachineAnglePreferPositive = 2
+
+class MachineAxisCoordinates():
+    """
+    Options to control which coordinate is used for post processing, independent of the axis direction.
+    Instructs the post processor to treat the axis as X, Y, or Z for linear and A, B, or C for rotary.
+    """
+    def __init__(self):
+        pass
+    MachineCoordinate_None = 0
+    MachineCoordinate_X_A = 1
+    MachineCoordinate_Y_B = 2
+    MachineCoordinate_Z_C = 3
 
 class MachineAxisTypes():
     """
@@ -52,6 +155,17 @@ class MachinePartTypes():
     ToolAttachmentMachinePartType = 2
     FixtureAttachmentMachinePartType = 3
 
+class MachineResetOptions():
+    """
+    Axis reset preference options for MachineAxisConfiguration.whenToReset.
+    """
+    def __init__(self):
+        pass
+    MachineResetNever = 0
+    MachineResetBeforeEveryOperation = 1
+    MachineResetOnRewind = 2
+    MachineResetBeforeOpAndOnRewind = 3
+
 class MachineTemplate():
     """
     List of the machine templates to create a machine from.
@@ -65,9 +179,21 @@ class MachineTemplate():
     Generic5AxisHeadTable = 4
     Generic5AxisTableTable = 5
 
+class ModifyUtilityTypes():
+    """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
+    Types of provided ModifyUtility.
+    """
+    def __init__(self):
+        pass
+    AdditiveSetupModifyUtility = 0
+
 class OperationStates():
     """
-    The possible states of an operation
+    The possible states of an operation. Some operations do not generate toolpaths, their state ignores the potential toolpath states.
     """
     def __init__(self):
         pass
@@ -75,61 +201,6 @@ class OperationStates():
     IsInvalidOperationState = 1
     SuppressedOperationState = 2
     NoToolpathOperationState = 3
-
-class OperationStrategyTypes():
-    """
-    The valid options for the Strategy Type of an operation.
-    """
-    def __init__(self):
-        pass
-    AdaptiveClearing2D = 0
-    Pocket2D = 1
-    Face = 2
-    Contour2D = 3
-    Slot = 4
-    Trace = 5
-    Thread = 6
-    Bore = 7
-    Circular = 8
-    Engrave = 9
-    AdaptiveClearing = 10
-    PocketClearing = 11
-    Parallel = 12
-    Contour = 13
-    Ramp = 14
-    Horizontal = 15
-    Pencil = 16
-    Scallop = 17
-    Spiral = 18
-    Radial = 19
-    MorphedSpiral = 20
-    Projection = 21
-    Drilling = 22
-    Jet2D = 23
-    TurningChamfer = 24
-    TurningFace = 25
-    TurningGroove = 26
-    TurningPart = 27
-    TurningProfile = 28
-    TurningProfileGroove = 29
-    TurningStockTransfer = 30
-    TurningThread = 31
-    SteepAndShallow = 32
-    Flow = 33
-    RotaryFinishing = 34
-    Chamfer2D = 35
-    Morph = 36
-    MultiAxisContour = 37
-    MultiAxisMorph = 38
-    RestFinishing = 39
-    Swarf = 40
-    SurfaceInspection = 41
-    ManualInspection = 42
-    ProbeWCS = 43
-    ProbeGeometry = 44
-    PartAlignment = 45
-    PathMeasure = 46
-    ManualMeasure = 47
 
 class OperationTypes():
     """
@@ -142,6 +213,24 @@ class OperationTypes():
     JetOperation = 2
     AdditiveOperation = 3
 
+class PostCapabilities():
+    """
+    List of capabilities a post configuration can support.
+    These capabilities represent either a class of operations (milling, turning, etc.) or some additional functionality (e.g. machine simulation).
+    """
+    def __init__(self):
+        pass
+    Undefined = 0
+    Milling = 1
+    Turning = 2
+    SetupSheet = 4
+    Intermediate = 8
+    Jet = 16
+    Cascading = 32
+    Additive = 64
+    Inspection = 128
+    MachineSimulation = 256
+
 class PostOutputUnitOptions():
     """
     List of the valid options for the outputUnit property on a PostProcessInput object .
@@ -151,6 +240,41 @@ class PostOutputUnitOptions():
     DocumentUnitsOutput = 0
     InchesOutput = 1
     MillimetersOutput = 2
+
+class PostProcessExecutionBehaviors():
+    def __init__(self):
+        pass
+    PostProcessExecutionBehavior_OmitInvalidAndEmptyOperations = 0
+    PostProcessExecutionBehavior_Fail = 1
+    PostProcessExecutionBehavior_PostAll = 2
+
+class PrintSettingItemTypes():
+    """
+    Enum that represents the types of CAMParameters.
+    Represents the General and Exporter parameters type in PrintSetting.
+    """
+    def __init__(self):
+        pass
+    GENERAL = 0
+    EXPORTER = 1
+
+class RecognizedPocketBottomType():
+    """
+    Types of pocket bottoms that can exist. Flat represents a standard flat bottom with sharp
+    edges at the walls. (Flat may also have some portions that are through, but may not have any
+    portions that are chamfered or filleted.) Through represents a pocket with no bottom
+    anywhere along the boundary and sharp edges at the walls. Chamfer and fillet represent pockets
+    where that type of feature goes around all edges of the boundary and islands, between the bottom
+    and the walls.  Other represents any other cases, such as a mix of different bottom types for
+    different edges.
+    """
+    def __init__(self):
+        pass
+    RecognizedPocketBottomTypeFlat = 0
+    RecognizedPocketBottomTypeThrough = 1
+    RecognizedPocketBottomTypeChamfer = 2
+    RecognizedPocketBottomTypeFillet = 3
+    RecognizedPocketBottomTypeOther = 4
 
 class SetupChangeEventType():
     """
@@ -170,9 +294,195 @@ class SetupSheetFormats():
     HTMLFormat = 0
     ExcelFormat = 1
 
+class SetupStockModes():
+    """
+    List of setup stock modes.
+    """
+    def __init__(self):
+        pass
+    FixedBoxStock = 0
+    RelativeBoxStock = 1
+    FixedCylinderStock = 2
+    RelativeCylinderStock = 3
+    FixedTubeStock = 4
+    RelativeTubeStock = 5
+    SolidStock = 6
+    PreviousSetupStock = 7
+
+class SideTypes():
+    """
+    Enum for the order of loops.
+    """
+    def __init__(self):
+        pass
+    AlwaysOutsideSideType = 0
+    AlwaysInsideSideType = 1
+    StartOutsideSideType = 2
+    StartInsideSideType = 3
+
+class SplitSupportTypes():
+    """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
+    Split support behavior depending on the type of support.
+    """
+    def __init__(self):
+        pass
+    SolidOpenMergedSplitSupportType = 0
+    SolidOpenSeparateSplitSupportType = 1
+
+class CAM3MFExportMetadataOptions(core.Base):
+    """
+    Class providing read and write access to meta data of a 3MF file.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CAM3MFExportMetadataOptions:
+        return CAM3MFExportMetadataOptions()
+    @property
+    def enabled(self) -> bool:
+        """
+        Enable or disable the integration of Metadata in the 3mf.
+        This is true by default.
+        """
+        return bool()
+    @enabled.setter
+    def enabled(self, value: bool):
+        """
+        Enable or disable the integration of Metadata in the 3mf.
+        This is true by default.
+        """
+        pass
+    @property
+    def title(self) -> str:
+        """
+        Title of the 3MF File
+        """
+        return str()
+    @title.setter
+    def title(self, value: str):
+        """
+        Title of the 3MF File
+        """
+        pass
+    @property
+    def designer(self) -> str:
+        """
+        Designer of the 3MF File
+        """
+        return str()
+    @designer.setter
+    def designer(self, value: str):
+        """
+        Designer of the 3MF File
+        """
+        pass
+    @property
+    def description(self) -> str:
+        """
+        Description of the 3MF File
+        """
+        return str()
+    @description.setter
+    def description(self, value: str):
+        """
+        Description of the 3MF File
+        """
+        pass
+    @property
+    def copyright(self) -> str:
+        """
+        Copyright of the 3MF File
+        """
+        return str()
+    @copyright.setter
+    def copyright(self, value: str):
+        """
+        Copyright of the 3MF File
+        """
+        pass
+    @property
+    def licenseTerms(self) -> str:
+        """
+        License terms of the 3MF File
+        """
+        return str()
+    @licenseTerms.setter
+    def licenseTerms(self, value: str):
+        """
+        License terms of the 3MF File
+        """
+        pass
+    @property
+    def creationDate(self) -> str:
+        """
+        Creation date of the 3MF File
+        """
+        return str()
+    @creationDate.setter
+    def creationDate(self, value: str):
+        """
+        Creation date of the 3MF File
+        """
+        pass
+    @property
+    def modificationDate(self) -> str:
+        """
+        Modification date of the 3MF File
+        """
+        return str()
+    @modificationDate.setter
+    def modificationDate(self, value: str):
+        """
+        Modification date of the 3MF File
+        """
+        pass
+
+class CAMAdditiveBuildExportFilter(core.Base):
+    """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
+    Export filter used by CAMAdditiveMachineBuildFileExportOptions.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CAMAdditiveBuildExportFilter:
+        return CAMAdditiveBuildExportFilter()
+    @property
+    def isMultiFileExport(self) -> bool:
+        """
+        True if the export outputs multiple files.
+        If so, fullFilename should point to a directory, not a file.
+        """
+        return bool()
+    @property
+    def extension(self) -> str:
+        """
+        The extension of the file format, including a leading "."
+        """
+        return str()
+    @property
+    def name(self) -> str:
+        """
+        The name of the file format. Might indicate whether a file format is binary or not.
+        """
+        return str()
+    @property
+    def id(self) -> str:
+        """
+        The id of the file format.
+        """
+        return str()
+
 class CAMExportManager(core.Base):
     """
-    Export manager used to export the setup's models in one of the formats defined the the ExportOptions objects.
+    Export manager used to export the setup's models in one of the formats defined the ExportOptions objects.
     The export is currently restricted to additive setups only and the availability of the export option and its settings depends on the chosen machine.
     """
     def __init__(self):
@@ -185,16 +495,23 @@ class CAMExportManager(core.Base):
         Executes an export based on the export options
         """
         return bool()
-    def createFormlabsOptions(self) -> CAMFormlabsExportOptions:
-        """
-        Creates a new Formlabs export option.
-        """
-        return CAMFormlabsExportOptions()
     def create3MFOptions(self) -> CAM3MFExportOptions:
         """
         Creates a new 3MF export option.
+        Returns new CAM3MFExportOptions.
         """
         return CAM3MFExportOptions()
+    def createCAMAdditiveBuildExportOptions(self) -> CAMAdditiveBuildExportOptions:
+        """
+        !!!!! Warning !!!!!
+        ! This is in preview state; please see the help for more info
+        !!!!! Warning !!!!!
+        
+        Creates a new export option based on the print setting's export formats.
+        FFF and DED machines are not supported, their export files are generated using posts.
+        Returns new CAMAdditiveBuildExportOptions.
+        """
+        return CAMAdditiveBuildExportOptions()
 
 class CAMExportOptions(core.Base):
     """
@@ -229,6 +546,34 @@ class CAMExportOptions(core.Base):
         The export object we want to export. Depending on the actual export option, this might be geometry, an operation or a setup.
         """
         pass
+    @property
+    def thumbnailPath(self) -> str:
+        """
+        Path to the thumbnail for the buildfile
+        """
+        return str()
+    @thumbnailPath.setter
+    def thumbnailPath(self, value: str):
+        """
+        Path to the thumbnail for the buildfile
+        """
+        pass
+    @property
+    def isThumbnailSupported(self) -> bool:
+        """
+        Method to check if the exporter implementation supports thumbnail
+        """
+        return bool()
+    @property
+    def error(self) -> str:
+        """
+        !!!!! Warning !!!!!
+        ! This is in preview state; please see the help for more info
+        !!!!! Warning !!!!!
+        
+        Gets the last encountered error message. Returns an empty string if no errors have been found.
+        """
+        return str()
 
 class CAMFolders(core.Base):
     """
@@ -239,6 +584,12 @@ class CAMFolders(core.Base):
     @staticmethod
     def cast(arg) -> CAMFolders:
         return CAMFolders()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CAMFolder:
+        return None
+    def __iter__(self) -> Iterator[CAMFolder]:
+        return None
     def item(self, index: int) -> CAMFolder:
         """
         Function that returns the specified folder using an index into the collection.
@@ -267,35 +618,74 @@ class CAMFolders(core.Base):
         """
         return int()
 
-class CAMInspectionResults(core.Base):
+class CAMLibrary(core.Base):
     """
-    Collection that provides access to the Measures in a results folder.
+    The CAMLibrary is the base-class for all other asset-specific libraries.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> CAMInspectionResults:
-        return CAMInspectionResults()
-    def item(self, index: int) -> CAMMeasure:
+    def cast(arg) -> CAMLibrary:
+        return CAMLibrary()
+    def urlByLocation(self, location: LibraryLocations) -> core.URL:
         """
-        Function that returns the specified measure using an index into the collection.
-        index : The index of the item within the collection to return.  The first item in the collection has an index of 0.
-        Returns the specified item or null if an invalid index was specified.
+        Get the URL for a given LibraryLocations.
+        location : The LibraryLocations to be converted into an URL.
+        Returns the URL for given location.
         """
-        return CAMMeasure()
-    def itemByName(self, name: str) -> CAMMeasure:
+        return core.URL()
+    def displayName(self, url: core.URL) -> str:
         """
-        Returns the measure with the specified name (as appears in the browser).
-        name : The name (as it appears in the browser) of the measure.
-        Returns the specified measure or null in the case where there is no measure with the specified name.
+        Get the localized display name for a given URL. The URL must point to a folder.
+        url : The URL that defines the path to a folder.
+        Returns localized display name for the folder. Returns empty string for invalid URL.
         """
-        return CAMMeasure()
+        return str()
+    def childFolderURLs(self, url: core.URL) -> list[core.URL]:
+        """
+        Get all library folders under given URL.
+        url : The URL to the parent folder.
+        Returns list of folder URLs at given location.
+        """
+        return [core.URL()]
+    def childAssetURLs(self, url: core.URL) -> list[core.URL]:
+        """
+        Get all assets under given URL.
+        url : The URL to the parent folder.
+        Returns list of asset URLs at given location.
+        """
+        return [core.URL()]
+    def deleteFolder(self, url: core.URL) -> bool:
+        """
+        Delete folder by URL from the library. Any content of the folder will also be deleted.
+        Throw an error if given URL does not point to a valid folder or the URL is read-only.
+        url : The URL to the folder that should be removed.
+        Returns true if folder was deleted successfully, false otherwise
+        """
+        return bool()
+    def deleteAsset(self, url: core.URL) -> bool:
+        """
+        Delete asset by URL from the library.
+        Throw an error if given URL does not point to a valid asset or the URL is read-only.
+        url : The URL to the asset that should be removed.
+        Returns true if asset was deleted successfully, false otherwise
+        """
+        return bool()
+    def createFolder(self, parentUrl: core.URL, folderName: str) -> core.URL:
+        """
+        Create a new folder in the library. Create the folder under given parent URL with given folder name. Add counting suffix, in case a folder with given name already exists.
+        Throw an error if given URL does not point to a valid folder or the URL is read-only. Also throws an error if given folder name is empty.
+        parentUrl : The parent URL for the folder to be created.
+        folderName : Name of the new folder to be created. Must not be empty.
+        Returns the URL to the newly created folder
+        """
+        return core.URL()
     @property
-    def count(self) -> int:
+    def assetTypeName(self) -> str:
         """
-        The number of measures in the collection.
+        Get the name of the asset type which can be accessed by the library.
         """
-        return int()
+        return str()
 
 class CAMLibraryManager(core.Base):
     """
@@ -308,40 +698,42 @@ class CAMLibraryManager(core.Base):
     def cast(arg) -> CAMLibraryManager:
         return CAMLibraryManager()
     @property
-    def fusion360PostFolder(self) -> str:
-        """
-        Gets the absolute path to the folder containing Fusion 360 posts. Fusion 360 posts
-        appear in the post library under the Fusion 360 tab.
-        """
-        return str()
-    @property
-    def localPostFolder(self) -> str:
-        """
-        Gets the absolute path to the folder containing local posts. Local posts appear
-        in post library under the local tab.
-        """
-        return str()
-    @property
-    def fusion360MachineFolder(self) -> str:
-        """
-        Gets the absolute path to the folder containing Fusion 360 machines. Fusion 360
-        machines appear in the machine library under the Fusion 360 tab.
-        """
-        return str()
-    @property
-    def localMachineFolder(self) -> str:
-        """
-        Gets the absolute path to the folder containing local machines. Local Machines appear
-        in machine library under the local tab.
-        """
-        return str()
-    @property
     def networkMachineFolder(self) -> str:
         """
         Gets the absolute path to the folder containing network machines. Network machines
         appear in the machine library under the network tab.
         """
         return str()
+    @property
+    def machineLibrary(self) -> MachineLibrary:
+        """
+        The MachineLibrary provides access to machines.
+        """
+        return MachineLibrary()
+    @property
+    def toolLibraries(self) -> ToolLibraries:
+        """
+        The ToolLibraries provides access to tools.
+        """
+        return ToolLibraries()
+    @property
+    def templateLibrary(self) -> CAMTemplateLibrary:
+        """
+        The CAMTemplateLibrary provides access to templates
+        """
+        return CAMTemplateLibrary()
+    @property
+    def printSettingLibrary(self) -> PrintSettingLibrary:
+        """
+        The PrintSettingLibrary provides access to print settings.
+        """
+        return PrintSettingLibrary()
+    @property
+    def postLibrary(self) -> PostLibrary:
+        """
+        The PostLibrary provides access to postConfigurations.
+        """
+        return PostLibrary()
 
 class CAMManager(core.Base):
     """
@@ -377,29 +769,10 @@ class CAMManager(core.Base):
     @property
     def networkMachineIntegrationManager(self) -> NetworkMachineIntegrationManager:
         """
-        NetworkMachineIntegrationManager provides access to properties and events needed to
-        integrate addins into the 'Find network machines' dialog, which enables users to add
-        machine configurations representing machines on the network to their machine library.
+        Gets the NetworkMachineIntegrationManager needed to integrate add-ins into the 'Find network machines' dialog. T
         Return a NetworkMachineIntegrationManager object or null if it failed.
         """
         return NetworkMachineIntegrationManager()
-
-class CAMMeasure(core.Base):
-    """
-    Object that represents a Measure folder.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> CAMMeasure:
-        return CAMMeasure()
-    @property
-    def inspectionPathResults(self) -> InspectionPathResults:
-        """
-        Access all the surface inspection results from a measure
-        return a collection of surface inspection results from a measure or null if none found
-        """
-        return InspectionPathResults()
 
 class CAMParameter(core.Base):
     """
@@ -464,20 +837,6 @@ class CAMParameter(core.Base):
     def value(self) -> ParameterValue:
         """
         Returns an object that allows you to get and set the value associated with the parameter.
-        Within CAM operations, floating point values (via FloatParameterValue) are returned
-        and set using a standardized set of "internal" units, rather than using the document units.
-        The units used depend on the type of parameter. For reference, the units used are:
-        Length - centimeters (cm)
-        Angle - radians (rad)
-        Linear velocity - millimeters/minute (mm/min)
-        Rotational velocity - revolutions per minute (rpm)
-        Time - seconds (s)
-        Weight - kilograms (kg)
-        Power - Watts (W)
-        Flow rate - liters/minute (l/min)
-        Area - square centimeters (cm²)
-        Volume - cubic centimeters (cm³)
-        Temperature - degrees celsius (C)
         """
         return ParameterValue()
 
@@ -490,6 +849,12 @@ class CAMParameters(core.Base):
     @staticmethod
     def cast(arg) -> CAMParameters:
         return CAMParameters()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CAMParameter:
+        return None
+    def __iter__(self) -> Iterator[CAMParameter]:
+        return None
     def item(self, index: int) -> CAMParameter:
         """
         Function that returns the specified parameter using an index into the collection.
@@ -520,6 +885,12 @@ class CAMPatterns(core.Base):
     @staticmethod
     def cast(arg) -> CAMPatterns:
         return CAMPatterns()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CAMPattern:
+        return None
+    def __iter__(self) -> Iterator[CAMPattern]:
+        return None
     def item(self, index: int) -> CAMPattern:
         """
         Function that returns the specified pattern using an index into the collection.
@@ -548,6 +919,88 @@ class CAMPatterns(core.Base):
         """
         return int()
 
+class CAMTemplate(core.Base):
+    """
+    Object that represents a template for a set of operations. These can be created from operations,
+    optionally stored to files or in a library. The template can be used to re-create those operations
+    in another document.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CAMTemplate:
+        return CAMTemplate()
+    @staticmethod
+    def createFromXML(xml: str) -> CAMTemplate:
+        """
+        Creates a CAMTemplate from an XML string. Invalid template XML will produce errors
+        xml : The XML representation to act as a base for creating a template.
+        Returns the newly created template.
+        """
+        return CAMTemplate()
+    @staticmethod
+    def createFromOperations(operations: list[Operation]) -> CAMTemplate:
+        """
+        Create a CAMTemplate from a list of Operations
+        operations : An array of operations to bundle into a template.
+        Returns the newly created template.
+        """
+        return CAMTemplate()
+    @staticmethod
+    def createHoleTemplateFromOperations(operations: list[Operation]) -> CAMTemplate:
+        """
+        Create a hole CAMTemplate from a list of hole operations. Hole templates may be used in Hole Recognition
+        operations : A list of operations to bundle into a template. Only 2D Adaptive, 2D Chamfer, 2D Contour, 2D Pocket, Bore,
+        Circular, Drill and Thread operations are allowed in hole templates. Passing in other operation types will throw an error.
+        Returns the newly created template.
+        """
+        return CAMTemplate()
+    @staticmethod
+    def createFromFile(filePath: str) -> CAMTemplate:
+        """
+        Create a CAMTemplate from a file on disk, i.e. Import the template file. Invalid files will produce errors
+        filePath : The path to a template file.
+        Returns the newly created template.
+        """
+        return CAMTemplate()
+    def save(self, filePath: str) -> bool:
+        """
+        Save the CAMTemplate to a file
+        filePath : The path to the file you wish to save
+        Returns true if the template was saved successfully, false otherwise.
+        """
+        return bool()
+    @property
+    def name(self) -> str:
+        """
+        Gets and sets the name of the template.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Gets and sets the name of the template.
+        """
+        pass
+    @property
+    def description(self) -> str:
+        """
+        Gets and sets the description of the template.
+        """
+        return str()
+    @description.setter
+    def description(self, value: str):
+        """
+        Gets and sets the description of the template.
+        """
+        pass
+    @property
+    def isHoleTemplate(self) -> bool:
+        """
+        Whether or not this is a hole template
+        """
+        return bool()
+
 class ChildOperationList(core.Base):
     """
     Provides access to the collection of child operations, folders and patterns of an existing setup.
@@ -557,6 +1010,12 @@ class ChildOperationList(core.Base):
     @staticmethod
     def cast(arg) -> ChildOperationList:
         return ChildOperationList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> core.Base:
+        return None
+    def __iter__(self) -> Iterator[core.Base]:
+        return None
     def item(self, index: int) -> core.Base:
         """
         Returns the specified item using an index into the collection.
@@ -585,25 +1044,164 @@ class ChildOperationList(core.Base):
         """
         return int()
 
-class CreateMachineConfigurationsEventHandler(core.EventHandler):
+class CreateFromCAMTemplateInput(core.Base):
     """
-    Event handler for the CreateMachineConfigurationsEvent.
+    Object that contains the settings used by createFromCAMTemplate.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> CreateMachineConfigurationsEventHandler:
-        return CreateMachineConfigurationsEventHandler()
-    def notify(self, eventArgs: CreateMachineConfigurationsEventArgs) -> None:
+    def cast(arg) -> CreateFromCAMTemplateInput:
+        return CreateFromCAMTemplateInput()
+    @staticmethod
+    def create() -> CreateFromCAMTemplateInput:
         """
-        The function called by Fusion 360 when the associated event is fired.
-        eventArgs : Returns an object that provides access to additional information associated with the event.
+        Creates an empty input object to be passed into createFromCAMTemplate
+        The newly created input object.
+        """
+        return CreateFromCAMTemplateInput()
+    @property
+    def camTemplate(self) -> CAMTemplate:
+        """
+        Gets and sets the template to be instantiated.
+        """
+        return CAMTemplate()
+    @camTemplate.setter
+    def camTemplate(self, value: CAMTemplate):
+        """
+        Gets and sets the template to be instantiated.
+        """
+        pass
+    @property
+    def mode(self) -> AutomaticGenerationModes:
+        """
+        Gets and sets the mode to be used for generation. Defaults to Skip Generation.
+        """
+        return AutomaticGenerationModes()
+    @mode.setter
+    def mode(self, value: AutomaticGenerationModes):
+        """
+        Gets and sets the mode to be used for generation. Defaults to Skip Generation.
         """
         pass
 
+class CurveSelections(core.Base):
+    """
+    Collection for all curve selections to be passed to a CadContours2DParameterValue object.
+    This is a read-only container. It returns the curve selections associated with the parent parameter value object, but does not write to it.
+    To apply changes done to the collection and the selections it contains, CadContours2DParameterValue.applyCurveSelections(this) needs to be called.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CurveSelections:
+        return CurveSelections()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CurveSelection:
+        return None
+    def __iter__(self) -> Iterator[CurveSelection]:
+        return None
+    def item(self, index: int) -> CurveSelection:
+        """
+        Function that returns the specified curve selection object using an index into the collection.
+        index : The index of the item within the collection to return.  The first item in the collection has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return CurveSelection()
+    def clear(self) -> None:
+        """
+        Clears all entries.
+        """
+        pass
+    def createNewChainSelection(self) -> ChainSelection:
+        """
+        Creates a new chain selection and adds it to the end of the collection.
+        Returns newly created ChainSelection.
+        """
+        return ChainSelection()
+    def createNewFaceContourSelection(self) -> FaceContourSelection:
+        """
+        Creates a new face contour selection and adds it to the end of the collection.
+        Returns newly created FaceContourSelection.
+        """
+        return FaceContourSelection()
+    def createNewSilhouetteSelection(self) -> SilhouetteSelection:
+        """
+        Creates a new silhouette selection and adds it to the end of the collection.
+        Returns newly created SilhouetteSelection.
+        """
+        return SilhouetteSelection()
+    def createNewPocketSelection(self) -> PocketSelection:
+        """
+        Creates a new pocket selection and adds it to the end of the collection.
+        Returns newly created PocketSelection.
+        """
+        return PocketSelection()
+    def createNewSketchSelection(self) -> SketchSelection:
+        """
+        Creates a new sketch selection and adds it to the end of the collection.
+        """
+        return SketchSelection()
+    def createNewPocketRecognitionSelection(self) -> PocketRecognitionSelection:
+        """
+        Creates a new pocket recognition selection and adds it to the end of the collection.
+        """
+        return PocketRecognitionSelection()
+    @property
+    def count(self) -> int:
+        """
+        The number of items in the collection.
+        """
+        return int()
+
+class GeneratedData(core.Base):
+    """
+    Parent class of all generated data classes. Acts like a void pointer for the entries in the OperationBase.GeneratedDataCollection property.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> GeneratedData:
+        return GeneratedData()
+
+class GeneratedDataCollection(core.Base):
+    """
+    Collection can hold multiple GeneratedData results for a particular operation, setup or folder.
+    In the case of folders and setups, the data associated with the child operations is not added to the collection.
+    In most cases folders and setups will not have any items in the collection, whereas most operations will only have one.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> GeneratedDataCollection:
+        return GeneratedDataCollection()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> GeneratedData:
+        return None
+    def __iter__(self) -> Iterator[GeneratedData]:
+        return None
+    def item(self, index: int) -> GeneratedData:
+        """
+        Gets the desired generated data at the given index.
+        """
+        return GeneratedData()
+    def itemByIdentifier(self, resultType: GeneratedDataType) -> GeneratedData:
+        """
+        Gets the desired generated data. Generated result objects are unique for a given identifier, but may contain any number of child objects.
+        """
+        return GeneratedData()
+    @property
+    def count(self) -> int:
+        """
+        The number of items in the collection.
+        """
+        return int()
+
 class GenerateToolpathFuture(core.Base):
     """
-    Used to check the state and get back the results of toolpath generation.
+     Used to check the state and get back the results of an operation generation.
     """
     def __init__(self):
         pass
@@ -613,19 +1211,19 @@ class GenerateToolpathFuture(core.Base):
     @property
     def numberOfOperations(self) -> int:
         """
-        Returns a number of operations need to be generated.
+        Returns the number of operations that need to be generated.
         """
         return int()
     @property
     def numberOfCompleted(self) -> int:
         """
-        Returns a number of operations whose toolpath generation are completed.
+        Returns the number of operations whose generation is complete.
         """
         return int()
     @property
     def operations(self) -> Operations:
         """
-        Returns all operations that need to be generated.
+        Returns a collection of all operations that need to be generated.
         """
         return Operations()
     @property
@@ -634,133 +1232,59 @@ class GenerateToolpathFuture(core.Base):
         Returns true if all operations are generated.
         """
         return bool()
-
-class InspectionPathResult(core.Base):
-    """
-    Class to represent measured results from an surface inspection path.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> InspectionPathResult:
-        return InspectionPathResult()
     @property
-    def pointResults(self) -> InspectionPointResults:
+    def numberOfTasks(self) -> int:
         """
-        return all the point results for the path.
+        Returns the number of tasks of operations that need to be generated.
         """
-        return InspectionPointResults()
-
-class InspectionPathResults(core.Base):
-    """
-    collection of inspection paths results.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> InspectionPathResults:
-        return InspectionPathResults()
-    def item(self, index: int) -> InspectionPathResult:
-        """
-        Function that returns the specified InspectionPathResult using an index into the collection.
-        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
-        Returns the specified item or null if an invalid index was specified.
-        """
-        return InspectionPathResult()
+        return int()
     @property
-    def count(self) -> int:
+    def numberOfCompletedTasks(self) -> int:
         """
-        The number of InspectionPathResult in the collection.
+        Returns the number of tasks of operations whose generation is complete.
         """
         return int()
 
-class InspectionPointResult(core.Base):
+class GeometrySelection(core.Base):
     """
-    Class to represent an inspection point's measured result.
-    These are created as a result of probing a surface inspection path.
-    For each point on the surface inspection path, the nominal position is
-    the contact position on the CAD model. The measured 'contact point' is
-    recorded when probing and a notional projected point can be calculated
-    on the CAD model. The error is calculated as the deviation from the
-    nominal over and above the tolerance.
-    All values are in the Fusion's internal units which for positional and length values is CM.
+    Base parent class for all selection classes. All selections are currently restricted to B-Rep entities or sketches.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> InspectionPointResult:
-        return InspectionPointResult()
+    def cast(arg) -> GeometrySelection:
+        return GeometrySelection()
     @property
-    def nominalPosition(self) -> core.Point3D:
+    def value(self) -> list[core.Base]:
         """
-        get the nominal position of the inspection point.
+        Returns the resulting value of the selection. In general, this returns the input selection, but child classes can override the return value if needed.
+        Refer to the child classes comments for further details. The collection may contain duplicates.
         """
-        return core.Point3D()
+        return [core.Base()]
     @property
-    def projectedPoint(self) -> core.Point3D:
+    def hasWarning(self) -> bool:
         """
-        get the projected position of the measured point.
+        Gets if warnings were encountered when applying the selection to a parent.
         """
-        return core.Point3D()
+        return bool()
     @property
-    def contact(self) -> core.Point3D:
+    def hasError(self) -> bool:
         """
-        get the contact position of the inspection point.
+        Gets if errors were encountered when applying the selection to a a parent.
         """
-        return core.Point3D()
+        return bool()
     @property
-    def offset(self) -> float:
+    def warning(self) -> str:
         """
-        get offset associated with the inspection point.
+        Gets the last warning string encountered after the selection was applied to a parent.
         """
-        return float()
+        return str()
     @property
-    def delta(self) -> core.Vector3D:
+    def error(self) -> str:
         """
-        get the deviation vector of the measured point from nominal.
+        Gets the last warning string encountered after the selection was applied to a parent.
         """
-        return core.Vector3D()
-    @property
-    def deviation(self) -> float:
-        """
-        get the deviation of the measured point.
-        """
-        return float()
-    @property
-    def error(self) -> float:
-        """
-        get the error of the measured point adjusting by the allowable tolerance.
-        """
-        return float()
-    @property
-    def state(self) -> InspectionPointState:
-        """
-        Get the state of the result.
-        """
-        return InspectionPointState()
-
-class InspectionPointResults(core.Base):
-    """
-    collection of inspection point results
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> InspectionPointResults:
-        return InspectionPointResults()
-    def item(self, index: int) -> InspectionPointResult:
-        """
-        Function that returns the specified InspectionPointResult using an index into the collection.
-        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
-        Returns the specified item or null if an invalid index was specified.
-        """
-        return InspectionPointResult()
-    @property
-    def count(self) -> int:
-        """
-        The number of InspectionPointResult in the collection.
-        """
-        return int()
+        return str()
 
 class Machine(core.Base):
     """
@@ -780,7 +1304,7 @@ class Machine(core.Base):
         """
         return Machine()
     @staticmethod
-    def createFromFile(location: LibraryLocation, filePath: str) -> Machine:
+    def createFromFile(location: LibraryLocations, filePath: str) -> Machine:
         """
         Creates a Machine from a file.
         location : The location in the machine library.
@@ -790,16 +1314,19 @@ class Machine(core.Base):
         Returns the newly created machine with a valid kinematics tree.
         """
         return Machine()
-    def save(self, location: LibraryLocation, filePath: str) -> bool:
+    @staticmethod
+    def create(machineInput: MachineInput) -> Machine:
         """
-        Save the Machine to a file.
-        Any subsequent edits will need to be saved again.
-        location : The location in the machine library to save the machine to.
-        filePath : The path of the file to save the machine as.
-        The path is relative to the library location given, unless library location is External,
-        then the filePath is expected to be an absolute path.
-        .machine will be appended if no extension is given.
-        Returns true if the machine was saved successfully, false otherwise.
+        Creates a machine from a "MachineInput" input object
+        machineInput : Input object that is used to hold the details needed for creating a machine.
+        Returns the newly created machine in a valid state.
+        """
+        return Machine()
+    def equivalentTo(self, machine: Machine) -> bool:
+        """
+        Checks if the machine is equivalent to this one.
+        machine : The machine to compare this one to
+        True if the machines are equivalent
         """
         return bool()
     @property
@@ -852,11 +1379,32 @@ class Machine(core.Base):
         """
         return MachineCapabilities()
     @property
-    def kinematics(self) -> MachineKinematics:
+    def hasPost(self) -> bool:
         """
-        Gets the kinematics tree of the machine.
+        Checks if the machine has a post.
+        Returns a boolean telling if the Machine has a post assigned.
         """
-        return MachineKinematics()
+        return bool()
+    @property
+    def postURL(self) -> core.URL:
+        """
+        Gets or sets the URL of the post assigned to the machine.
+        Returns a string with the URL of the post assigned to the machine.
+        """
+        return core.URL()
+    @postURL.setter
+    def postURL(self, value: core.URL):
+        """
+        Gets or sets the URL of the post assigned to the machine.
+        Returns a string with the URL of the post assigned to the machine.
+        """
+        pass
+    @property
+    def elements(self) -> MachineElements:
+        """
+        Gets the list of elements that make up this machine.
+        """
+        return MachineElements()
 
 class MachineAxis(core.Base):
     """
@@ -892,53 +1440,171 @@ class MachineAxis(core.Base):
         """
         return bool()
     @property
-    def physicalMin(self) -> float:
-        """
-        The minimum possible value for this axis (in mm/deg).
-        Must be less than physicalMax.
-        Set the value of this and physicalMax to 0 to remove
-        axis limits.
-        """
-        return float()
-    @physicalMin.setter
-    def physicalMin(self, value: float):
-        """
-        The minimum possible value for this axis (in mm/deg).
-        Must be less than physicalMax.
-        Set the value of this and physicalMax to 0 to remove
-        axis limits.
-        """
-        pass
-    @property
-    def physicalMax(self) -> float:
-        """
-        The maximum possible value for this axis (in mm/deg).
-        Must be less than physicalMin.
-        Set the value of this and physicalMin to 0 to remove
-        axis limits.
-        """
-        return float()
-    @physicalMax.setter
-    def physicalMax(self, value: float):
-        """
-        The maximum possible value for this axis (in mm/deg).
-        Must be less than physicalMin.
-        Set the value of this and physicalMin to 0 to remove
-        axis limits.
-        """
-        pass
-    @property
     def homePosition(self) -> float:
         """
-        Specifies the value (in mm/deg) that this axis returns to when the machine is homed.
+        Specifies the value that this axis returns to when the machine is homed.
+        Units are cm for linear axes or radians for rotary axes.
         """
         return float()
     @homePosition.setter
     def homePosition(self, value: float):
         """
-        Specifies the value (in mm/deg) that this axis returns to when the machine is homed.
+        Specifies the value that this axis returns to when the machine is homed.
+        Units are cm for linear axes or radians for rotary axes.
         """
         pass
+    @property
+    def physicalRange(self) -> MachineAxisRange:
+        """
+        Range of possible values for this axis.
+        Units are cm for linear axes or radians for rotary axes.
+        """
+        return MachineAxisRange()
+    @physicalRange.setter
+    def physicalRange(self, value: MachineAxisRange):
+        """
+        Range of possible values for this axis.
+        Units are cm for linear axes or radians for rotary axes.
+        """
+        pass
+
+class MachineAxisConfiguration(core.Base):
+    """
+    MachineAxisConfiguration holds controller settings that differ for each axis.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineAxisConfiguration:
+        return MachineAxisConfiguration()
+    def deleteMe(self) -> None:
+        """
+        Delete this axis configuration from the controller configuration.
+        """
+        pass
+    @property
+    def partId(self) -> str:
+        """
+        ID of the part in the KinematicsMachineElement that this axis configuration modifies.
+        """
+        return str()
+    @property
+    def type(self) -> MachineAxisTypes:
+        """
+        The type of this axis configuration. Use this to inform a cast to the derived types.
+        """
+        return MachineAxisTypes()
+    @property
+    def isReversed(self) -> bool:
+        """
+        Does the axis move in the opposite direction to usual. For rotary axes this would mean it
+        uses the left hand rule, and for linear axes is moves in the opposite direction.
+        """
+        return bool()
+    @isReversed.setter
+    def isReversed(self, value: bool):
+        """
+        Does the axis move in the opposite direction to usual. For rotary axes this would mean it
+        uses the left hand rule, and for linear axes is moves in the opposite direction.
+        """
+        pass
+    @property
+    def maxNormalSpeed(self) -> float:
+        """
+        Specifies the maximum normal speed for this axis.
+        This would be called feedrate for a linear axis or rotary speed for a rotary axis.
+        Units are cm/s for linear axes or rad/s for rotary axes.
+        """
+        return float()
+    @maxNormalSpeed.setter
+    def maxNormalSpeed(self, value: float):
+        """
+        Specifies the maximum normal speed for this axis.
+        This would be called feedrate for a linear axis or rotary speed for a rotary axis.
+        Units are cm/s for linear axes or rad/s for rotary axes.
+        """
+        pass
+    @property
+    def maxRapidSpeed(self) -> float:
+        """
+        Specifies the maximum rapid speed for this axis.
+        This would be called feedrate for a linear axis or rotary speed for a rotary axis.
+        Units are cm/s for linear axes or rad/s for rotary axes.
+        """
+        return float()
+    @maxRapidSpeed.setter
+    def maxRapidSpeed(self, value: float):
+        """
+        Specifies the maximum rapid speed for this axis.
+        This would be called feedrate for a linear axis or rotary speed for a rotary axis.
+        Units are cm/s for linear axes or rad/s for rotary axes.
+        """
+        pass
+    @property
+    def coordinate(self) -> MachineAxisCoordinates:
+        """
+        Coordinate to use for post processing.
+        """
+        return MachineAxisCoordinates()
+    @coordinate.setter
+    def coordinate(self, value: MachineAxisCoordinates):
+        """
+        Coordinate to use for post processing.
+        """
+        pass
+
+class MachineAxisConfigurations(core.Base):
+    """
+    Collection of axis configuration objects.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineAxisConfigurations:
+        return MachineAxisConfigurations()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> MachineAxisConfiguration:
+        return None
+    def __iter__(self) -> Iterator[MachineAxisConfiguration]:
+        return None
+    def addLinear(self, partId: str) -> LinearMachineAxisConfiguration:
+        """
+        Add a new linear axis configuration for a kinematics part.
+        partId : ID used to label this axis configuration and link to a part in the kinematics tree.
+        partID must match a part of type AxisMachinePartType in the kinematics tree and the part must be a linear axis.
+        Returns the newly created LinearMachineAxisConfiguration or null if creation failed.
+        """
+        return LinearMachineAxisConfiguration()
+    def addRotary(self, partId: str) -> RotaryMachineAxisConfiguration:
+        """
+        Add a new rotary axis configuration for a kinematics part.
+        partId : ID used to label this axis configuration and link to a part in the kinematics tree.
+        partID must match a part of type AxisMachinePartType in the kinematics tree and the part must be a rotary axis.
+        Returns the newly created RotaryMachineAxisConfiguration or null if creation failed.
+        """
+        return RotaryMachineAxisConfiguration()
+    def item(self, index: int) -> MachineAxisConfiguration:
+        """
+        Get the configuration at index in this collection
+        index : Index of configuration.
+        Returns the MachineAxisConfiguration at index.
+        """
+        return MachineAxisConfiguration()
+    def itemById(self, id: str) -> MachineAxisConfiguration:
+        """
+        Get the configuration with the given ID
+        id : The ID for the configuration to get.
+        Return the MachineAxisConfiguration with the given ID, or null if the given ID does not
+        match any configuration in the collection.
+        """
+        return MachineAxisConfiguration()
+    @property
+    def count(self) -> int:
+        """
+        Get the number of configurations in the collection.
+        """
+        return int()
 
 class MachineAxisInput(core.Base):
     """
@@ -972,47 +1638,81 @@ class MachineAxisInput(core.Base):
     @property
     def homePosition(self) -> float:
         """
-        Specifies the value (in mm/deg) that this axis returns to when the machine is homed.
+        Specifies the value that this axis returns to when the machine is homed.
+        Units are cm for linear axes or radians for rotary axes.
         """
         return float()
     @homePosition.setter
     def homePosition(self, value: float):
         """
-        Specifies the value (in mm/deg) that this axis returns to when the machine is homed.
+        Specifies the value that this axis returns to when the machine is homed.
+        Units are cm for linear axes or radians for rotary axes.
         """
         pass
     @property
-    def physicalMin(self) -> float:
+    def physicalRange(self) -> MachineAxisRange:
         """
-        The minimum possible value for this axis (in mm/deg).
-        Set the value of this and physicalMax to 0 to create an
-        unlimited axis.
+        Range of possible values for this axis.
+        Units are cm for linear axes or radians for rotary axes.
         """
-        return float()
-    @physicalMin.setter
-    def physicalMin(self, value: float):
+        return MachineAxisRange()
+    @physicalRange.setter
+    def physicalRange(self, value: MachineAxisRange):
         """
-        The minimum possible value for this axis (in mm/deg).
-        Set the value of this and physicalMax to 0 to create an
-        unlimited axis.
+        Range of possible values for this axis.
+        Units are cm for linear axes or radians for rotary axes.
         """
         pass
+
+class MachineAxisRange(core.Base):
+    """
+    Class representing limits of motion for a machine axis.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineAxisRange:
+        return MachineAxisRange()
+    @staticmethod
+    def create(min: float, max: float) -> MachineAxisRange:
+        """
+        Creates a new range object with limited extents.
+        Requires min to be less than or equal to max.
+        Types of the fields depend on where this range is being used. Centimeters are used for distances and radians for angles.
+        min : New minimum value for range.
+        max : New maximum value for range.
+        A new range object. Returns null if validation fails.
+        """
+        return MachineAxisRange()
+    @staticmethod
+    def createInfinite() -> MachineAxisRange:
+        """
+        Creates a new unbounded range object.
+        A new range object.
+        """
+        return MachineAxisRange()
     @property
-    def physicalMax(self) -> float:
+    def min(self) -> float:
         """
-        The maximum possible value for this axis (in mm/deg).
-        Set the value of this and physicalMin to 0 to create an
-        unlimited axis.
+        Minimum value of range.
+        Type depends on where this range is being used. Centimeters are used for distances and radians for angles.
+        Returns -infinity if this range is infinite.
         """
         return float()
-    @physicalMax.setter
-    def physicalMax(self, value: float):
+    @property
+    def max(self) -> float:
         """
-        The maximum possible value for this axis (in mm/deg).
-        Set the value of this and physicalMin to 0 to create an
-        unlimited axis.
+        Maximum value of range
+        Type depends on where this range is being used. Centimeters are used for distances and radians for angles.
+        Returns infinity if this range is infinite.
         """
-        pass
+        return float()
+    @property
+    def isInfinite(self) -> bool:
+        """
+        Is the range infinite.
+        """
+        return bool()
 
 class MachineCapabilities(core.Base):
     """
@@ -1059,130 +1759,119 @@ class MachineCapabilities(core.Base):
         Gets and sets if the machine is capable of subtractive cutting.
         """
         pass
+    @property
+    def isAdditiveSupported(self) -> bool:
+        """
+        Gets and sets if the machine is capable of additive operations.
+        """
+        return bool()
+    @isAdditiveSupported.setter
+    def isAdditiveSupported(self, value: bool):
+        """
+        Gets and sets if the machine is capable of additive operations.
+        """
+        pass
+    @property
+    def additiveTechnology(self) -> AdditiveTechnologies:
+        """
+        Gets which additive technology the machine supports.
+        Return "NA" if the machine does not support Additive
+        """
+        return AdditiveTechnologies()
 
-class MachineDescription(core.Base):
+class MachineElement(core.Base):
     """
-    A description of a machine used to preview machines in the 'Find network machines' dialog
+    Base class for objects that compose a machine.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> MachineDescription:
-        return MachineDescription()
-    @staticmethod
-    def create(vendor: str, model: str, ipAddress: str) -> MachineDescription:
-        """
-        Creates a new MachineDescription.
-        vendor : The machine vendor.
-        model : The machine model.
-        ipAddress : The machine's ipv4 ip address.
-        Returns the newly created MachineDescription object, and allocates a unique id for the
-        object, or null if the creation failed.
-        """
-        return MachineDescription()
+    def cast(arg) -> MachineElement:
+        return MachineElement()
     @property
-    def id(self) -> int:
+    def elementId(self) -> str:
         """
-        Gets this MachineDescription's unique id. This id can be used to match
-        MachineDescription objects provided during the SearchNetworkMachinesEvent with those
-        requested to create machine configurations for during the CreateMachineConfigurations
-        event.
+        Identifier for this element. Unique within an element type.
+        """
+        return str()
+    @property
+    def typeId(self) -> str:
+        """
+        Identifier for this type of machine element.
+        """
+        return str()
+
+class MachineElements(core.Base):
+    """
+    Collection of machine elements.
+    These elements contain the properties that define the machine.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineElements:
+        return MachineElements()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> MachineElement:
+        return None
+    def __iter__(self) -> Iterator[MachineElement]:
+        return None
+    def item(self, index: int) -> MachineElement:
+        """
+        Get the element at a particular index in the collection.
+        index : Index of element.
+        Returns the element at the given index.
+        """
+        return MachineElement()
+    def defaultItemByType(self, typeId: str) -> MachineElement:
+        """
+        Returns the default item of the given type.
+        In most cases this will be the element with an element ID of "default".
+        typeId : Element typeId to get the default for. See staticTypeId for the desired element type.
+        Returns the specified Element or null if no matching type ID is found.
+        """
+        return MachineElement()
+    def itemsByType(self, typeId: str) -> list[MachineElement]:
+        """
+        Gets the element of specified type.
+        typeId : Element typeId to filter. See staticTypeId for the desired element type.
+        Returns a list of elements filtered to the specified type or an empty array if there is no match with the specified typeId.
+        """
+        return [MachineElement()]
+    def itemById(self, typeId: str, elementId: str) -> MachineElement:
+        """
+        Gets an element of a specific type by ID.
+        typeId : Element typeId to filter. See staticTypeId for the desired element type.
+        elementId : Element ID to select.
+        Returns an element of the desired type with the specified ID or null in the case where no match is found.
+        """
+        return MachineElement()
+    def countByType(self, typeId: str) -> int:
+        """
+        Number of elements of specified type.
+        typeId : Element typeId to filter. See staticTypeId for the desired element type.
+        Returns the number of elements of the requested type. Returns zero if no elements match the specified type ID.
         """
         return int()
     @property
-    def vendor(self) -> str:
+    def count(self) -> int:
         """
-        Gets and sets the vendor name of the machine.
+        Total number of elements in collection.
         """
-        return str()
-    @vendor.setter
-    def vendor(self, value: str):
-        """
-        Gets and sets the vendor name of the machine.
-        """
-        pass
-    @property
-    def model(self) -> str:
-        """
-        Gets and sets the model name of the machine.
-        """
-        return str()
-    @model.setter
-    def model(self, value: str):
-        """
-        Gets and sets the model name of the machine.
-        """
-        pass
-    @property
-    def ipAddress(self) -> str:
-        """
-        Gets and sets the ip address of the machine.
-        """
-        return str()
-    @ipAddress.setter
-    def ipAddress(self, value: str):
-        """
-        Gets and sets the ip address of the machine.
-        """
-        pass
-    @property
-    def control(self) -> str:
-        """
-        Gets and sets the controller name of the machine. Controller info is not displayed if
-        not set.
-        """
-        return str()
-    @control.setter
-    def control(self, value: str):
-        """
-        Gets and sets the controller name of the machine. Controller info is not displayed if
-        not set.
-        """
-        pass
-    @property
-    def iconPath(self) -> str:
-        """
-        Gets and sets the absolute path to the 128x128 png image of the machine. A default
-        image is used if not set.
-        """
-        return str()
-    @iconPath.setter
-    def iconPath(self, value: str):
-        """
-        Gets and sets the absolute path to the 128x128 png image of the machine. A default
-        image is used if not set.
-        """
-        pass
-    @property
-    def serial(self) -> str:
-        """
-        Gets and sets the serial number of the machine. A serial number is not displayed if not
-        set.
-        """
-        return str()
-    @serial.setter
-    def serial(self, value: str):
-        """
-        Gets and sets the serial number of the machine. A serial number is not displayed if not
-        set.
-        """
-        pass
+        return int()
 
-class MachineKinematics(core.Base):
+class MachineInput(core.Base):
     """
-    Object that represents the kinematics tree in the machine.
+    Base abstract class for inputs to be used when creating machines.
+    Used by Machine.create(MachineInput) method.
+    Implemented by "MachineFromFileInput" and "MachineFromLibraryinput" classes.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> MachineKinematics:
-        return MachineKinematics()
-    @property
-    def parts(self) -> MachineParts:
-        """
-        Get the root parts collection.
-        """
-        return MachineParts()
+    def cast(arg) -> MachineInput:
+        return MachineInput()
 
 class MachinePart(core.Base):
     """
@@ -1211,7 +1900,7 @@ class MachinePart(core.Base):
         Get or set the parent of this part.
         Setting the parent will add this part to the end of the parent's children
         collection. Setting the parent will throw an error if the new parent is this
-        part or a child this part.
+        part or a child of this part.
         """
         return MachinePart()
     @parent.setter
@@ -1220,7 +1909,7 @@ class MachinePart(core.Base):
         Get or set the parent of this part.
         Setting the parent will add this part to the end of the parent's children
         collection. Setting the parent will throw an error if the new parent is this
-        part or a child this part.
+        part or a child of this part.
         """
         pass
     @property
@@ -1244,6 +1933,14 @@ class MachinePart(core.Base):
         Only valid when partType is Axis, otherwise returns null
         """
         return MachineAxis()
+    @property
+    def spindle(self) -> MachineSpindle:
+        """
+        Get the spindle object for this part used to reference this part for other
+        operations.
+        Will return null if the part has no spindle assigned.
+        """
+        return MachineSpindle()
 
 class MachinePartInput(core.Base):
     """
@@ -1258,17 +1955,23 @@ class MachinePartInput(core.Base):
         return MachinePartInput()
     def createAxisInput(self, axisType: MachineAxisTypes) -> MachineAxisInput:
         """
-        Create a new MachineAxisInput object to be used to create a new MachineAxis.
+        Creates a new MachineAxisInput object to be used to create a new MachineAxis.
         Set this object on to an axis type MachinePartInput to create a new MachineAxis
         with that part.
         axisType : The type of MachineAxisInput to create.
         Returns a LinearMachineAxisInput or RotaryMachineAxisInput, or null if the creation failed.
         """
         return MachineAxisInput()
+    def createSpindleInput(self) -> MachineSpindleInput:
+        """
+        Creates a new MachineSpindleInput object to be used to create a new MachineSpindle.
+        Returns new MachineSpindleInput object.
+        """
+        return MachineSpindleInput()
     @property
     def id(self) -> str:
         """
-        Get or set the internal ID of the part, used to reference this part for other
+        Gets or sets the internal ID of the part, used to reference this part for other
         operations. This ID can be any string.
         This must be unique with respect to other MachineParts in the Machine.
         """
@@ -1276,7 +1979,7 @@ class MachinePartInput(core.Base):
     @id.setter
     def id(self, value: str):
         """
-        Get or set the internal ID of the part, used to reference this part for other
+        Gets or sets the internal ID of the part, used to reference this part for other
         operations. This ID can be any string.
         This must be unique with respect to other MachineParts in the Machine.
         """
@@ -1290,36 +1993,56 @@ class MachinePartInput(core.Base):
     @property
     def axisInput(self) -> MachineAxisInput:
         """
-        Get or Set an axis input object to create a new MachineAxis with this part.
+        Gets or sets an axis input object to create a new MachineAxis with this part.
         Only valid when partType is Axis.
         """
         return MachineAxisInput()
     @axisInput.setter
     def axisInput(self, value: MachineAxisInput):
         """
-        Get or Set an axis input object to create a new MachineAxis with this part.
+        Gets or sets an axis input object to create a new MachineAxis with this part.
         Only valid when partType is Axis.
+        """
+        pass
+    @property
+    def spindleInput(self) -> MachineSpindleInput:
+        """
+        Gets or sets an spindle input object to create a new MachineSpindle with this part.
+        Only valid when partType is not Axis.
+        """
+        return MachineSpindleInput()
+    @spindleInput.setter
+    def spindleInput(self, value: MachineSpindleInput):
+        """
+        Gets or sets an spindle input object to create a new MachineSpindle with this part.
+        Only valid when partType is not Axis.
         """
         pass
 
 class MachineParts(core.Base):
     """
     Object that represents a collection of machine parts.
-    These parts are the children of another part or the collection of base parts from MachineKinematics
+    These parts are the children of another part or the collection of base parts from MachineKinematics.
     """
     def __init__(self):
         pass
     @staticmethod
     def cast(arg) -> MachineParts:
         return MachineParts()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> MachinePart:
+        return None
+    def __iter__(self) -> Iterator[MachinePart]:
+        return None
     def add(self, partInput: MachinePartInput) -> MachinePart:
         """
-        Add a new part to this collection. The part's parent will be set to the the owner of
+        Add a new part to this collection. The part's parent will be set to the owner of
         this collection, or null if this is the root parts collection.
         
         If the passed MachinePartInput has a MachineAxisInput a new MachineAxis will be created.
         partInput : Part input object used to create the new MachinePart.
-        Returns the newly creted MachinePart or null if creation failed.
+        Returns the newly created MachinePart or null if creation failed.
         """
         return MachinePart()
     def createPartInput(self, partType: MachinePartTypes) -> MachinePartInput:
@@ -1351,6 +2074,166 @@ class MachineParts(core.Base):
         Get the number of parts in this collection.
         """
         return int()
+
+class MachineQuery(core.Base):
+    """
+    MachineQuery defines the query to access Machines.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineQuery:
+        return MachineQuery()
+    def execute(self) -> list[Machine]:
+        """
+        Executes the query for specific machines based on the query's properties.
+        Returns a list of `Machine`. Each returned machine matches this query.
+        """
+        return [Machine()]
+    @property
+    def vendor(self) -> str:
+        """
+        The case-insensitive vendor specifies the vendor of the machine. The default empty vendor applies to all machines.
+        """
+        return str()
+    @vendor.setter
+    def vendor(self, value: str):
+        """
+        The case-insensitive vendor specifies the vendor of the machine. The default empty vendor applies to all machines.
+        """
+        pass
+    @property
+    def model(self) -> str:
+        """
+        The case-insensitive model specifies the model of the machine. The default empty model applies to all machines.
+        """
+        return str()
+    @model.setter
+    def model(self, value: str):
+        """
+        The case-insensitive model specifies the model of the machine. The default empty model applies to all machines.
+        """
+        pass
+    @property
+    def url(self) -> core.URL:
+        """
+        The URL specifies the location and folder to search for in the machine library.
+        Setting the URL updates the location.
+        """
+        return core.URL()
+    @url.setter
+    def url(self, value: core.URL):
+        """
+        The URL specifies the location and folder to search for in the machine library.
+        Setting the URL updates the location.
+        """
+        pass
+    @property
+    def location(self) -> LibraryLocations:
+        """
+        The location specifies the location to search in the machine library.
+        Setting the location clears any previous specified URL.
+        """
+        return LibraryLocations()
+    @location.setter
+    def location(self, value: LibraryLocations):
+        """
+        The location specifies the location to search in the machine library.
+        Setting the location clears any previous specified URL.
+        """
+        pass
+
+class MachineSpindle(core.Base):
+    """
+    Object representing a spindle on the machine
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineSpindle:
+        return MachineSpindle()
+    @property
+    def description(self) -> str:
+        """
+        The description of this spindle.
+        """
+        return str()
+    @description.setter
+    def description(self, value: str):
+        """
+        The description of this spindle.
+        """
+        pass
+    @property
+    def maxSpeed(self) -> float:
+        """
+        Specifies the maximum speed (rpm) for this spindle.
+        """
+        return float()
+    @maxSpeed.setter
+    def maxSpeed(self, value: float):
+        """
+        Specifies the maximum speed (rpm) for this spindle.
+        """
+        pass
+    @property
+    def minSpeed(self) -> float:
+        """
+        Specifies the minimum speed (rpm) for this spindle.
+        """
+        return float()
+    @minSpeed.setter
+    def minSpeed(self, value: float):
+        """
+        Specifies the minimum speed (rpm) for this spindle.
+        """
+        pass
+
+class MachineSpindleInput(core.Base):
+    """
+    Object representing the set of inputs required to create a new MachineSpindle.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineSpindleInput:
+        return MachineSpindleInput()
+    @property
+    def description(self) -> str:
+        """
+        The description of this spindle.
+        """
+        return str()
+    @description.setter
+    def description(self, value: str):
+        """
+        The description of this spindle.
+        """
+        pass
+    @property
+    def maxSpeed(self) -> float:
+        """
+        Specifies the maximum speed (rpm) for this spindle.
+        """
+        return float()
+    @maxSpeed.setter
+    def maxSpeed(self, value: float):
+        """
+        Specifies the maximum speed (rpm) for this spindle.
+        """
+        pass
+    @property
+    def minSpeed(self) -> float:
+        """
+        Specifies the minimum speed (rpm) for this spindle.
+        """
+        return float()
+    @minSpeed.setter
+    def minSpeed(self, value: float):
+        """
+        Specifies the minimum speed (rpm) for this spindle.
+        """
+        pass
 
 class MachiningTime(core.Base):
     """
@@ -1405,93 +2288,324 @@ class MachiningTime(core.Base):
         """
         return float()
 
-class NetworkMachineIntegrationInput(core.Base):
+class ManufacturingModel(core.Base):
     """
-    An input object required to register an addin for use in the 'Find network machines'
-    dialog. This input object defines properties of an addin and allows an addin to
-    customize its appearence in the 'Find network machines' dialog.
+    Represents a ManufacturingModel within a CAM design. A Manufacturing Model is a derive of the Design scene, which can be augmented without any effects of the original Design.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> NetworkMachineIntegrationInput:
-        return NetworkMachineIntegrationInput()
+    def cast(arg) -> ManufacturingModel:
+        return ManufacturingModel()
+    def activate(self) -> bool:
+        """
+        Makes the ManufacturingModel the active edit target in the user interface. This is the same
+        as enabling the radio button next to the occurrence in the browser.
+        Returns true if the activation was successful.
+        """
+        return bool()
+    def duplicate(self) -> ManufacturingModel:
+        """
+        Creates and returns a copy of the ManufacturingModel, within its parent collection.
+        The newly created ManufacturingModel will have a new unique name assigned.
+        Returns the newly created ManufacturingModel copy.
+        """
+        return ManufacturingModel()
+    def deleteMe(self) -> bool:
+        """
+        Deletes this ManufacturingModel. If this is part of a setup, the reference to this will be lost. The deletion makes that reference invalid.
+        Returns true if the delete is successful.
+        """
+        return bool()
+    @property
+    def name(self) -> str:
+        """
+        Gets or sets the display name of the ManufacturingModel.
+        This is the name that will be shown in the browser and other locations.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Gets or sets the display name of the ManufacturingModel.
+        This is the name that will be shown in the browser and other locations.
+        """
+        pass
+    @property
+    def id(self) -> str:
+        """
+        Gets the unique identifier of the ManufacturingModel within the document.
+        """
+        return str()
+    @property
+    def isActive(self) -> bool:
+        """
+        Gets whether this ManufacturingModel is active in the user interface.
+        This is the same as checking the state of the radio button next to the ManufacturingModel in the browser.
+        To activate the ManufacturingModel use the Activate method.
+        """
+        return bool()
+    @property
+    def occurrence(self) -> fusion.Occurrence:
+        """
+        Returns the occurrence for that ManufacturingModel.
+        Returns true Occurrence for the current ManufacturingModel.
+        """
+        return fusion.Occurrence()
+
+class ManufacturingModelInput(core.Base):
+    """
+    This class defines the methods and properties that pertain to the definition of a ManufacturingModel.
+    """
+    def __init__(self):
+        pass
     @staticmethod
-    def create(displayName: str, description: str) -> NetworkMachineIntegrationInput:
+    def cast(arg) -> ManufacturingModelInput:
+        return ManufacturingModelInput()
+    @property
+    def name(self) -> str:
         """
-        displayName : The name that will be presented to the user in the 'Find network machines' dialog.
-        description : A description of the addin which appears as a tooltip alongside the display name.
-        Returns true if the addin was successfully registered.
+        Name of the new ManufacturingModel.
+        The name is displayed in the browser tree.
         """
-        return NetworkMachineIntegrationInput()
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Name of the new ManufacturingModel.
+        The name is displayed in the browser tree.
+        """
+        pass
+
+class ManufacturingModels(core.Base):
+    """
+    Referenced from CAM product to access manufacturing models in document.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ManufacturingModels:
+        return ManufacturingModels()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ManufacturingModel:
+        return None
+    def __iter__(self) -> Iterator[ManufacturingModel]:
+        return None
+    def item(self, index: int) -> ManufacturingModel:
+        """
+        Get ManufacturingModel by index in collection.
+        Returns ManufacturingModel at given index.
+        """
+        return ManufacturingModel()
+    def itemByName(self, name: str) -> list[ManufacturingModel]:
+        """
+        Returns all ManufacturingModel with given name (as appears in the browser).
+        name : The name (as it appears in the browser) of the ManufacturingModel.
+        Returns all ManufacturingModel with the specified name.
+        """
+        return [ManufacturingModel()]
+    def itemById(self, id: str) -> ManufacturingModel:
+        """
+        Returns ManufacturingModel with given id.
+        id : The id of the ManufacturingModel.
+        Returns ManufacturingModel with the specified id or null if no ManufacturingModel has that id.
+        """
+        return ManufacturingModel()
+    def createInput(self) -> ManufacturingModelInput:
+        """
+        Create a new ManufacturingModelInput object. Use properties and methods on this object
+        to define the ManufacturingModel you want to create and then use the Add method, passing in
+        the ManufacturingModelInput object.
+        Returns new ManufacturingModelInput object.
+        """
+        return ManufacturingModelInput()
+    def add(self, input: ManufacturingModelInput) -> ManufacturingModel:
+        """
+        Create a new ManufacturingModel.
+        input : A ManufacturingModelInput object that defines the desired ManufacturingModel. Use the createInput
+        method to create a new ManufacturingModelInput object and then use methods on it to define the ManufacturingModel.
+        Returns the newly created ManufacturingModel.
+        """
+        return ManufacturingModel()
+    @property
+    def count(self) -> int:
+        """
+        The number of items in the collection.
+        """
+        return int()
+
+class ModifyUtility(core.Base):
+    """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
+    Base class for all modify utilities.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ModifyUtility:
+        return ModifyUtility()
+
+class NCProgramInput(core.Base):
+    """
+    The NCProgramInput holds all necessary information to create a new NC program.
+    It is needed for the NCPrograms.add method to instantiate a new NC program.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> NCProgramInput:
+        return NCProgramInput()
+    @property
+    def parameters(self) -> CAMParameters:
+        """
+        Get all parameters for the current NC program. Parameters are initialized by user defaults.
+        Configure operation parameters before creation for a better performance.
+        """
+        return CAMParameters()
+    @property
+    def operations(self) -> list[OperationBase]:
+        """
+        Gets and sets the operations which will be included in the NC program.
+        Valid input contains any number of operations, setups or folders.
+        For setups and folders all child operations will be added.
+        Operations will be post processed in setup order, with operations from the same setup grouped together.
+        Setting the nc_program_orderByTool BooleanParameterValue on the parameters property to true will reorder operations across multiple setups to reduce the number of tool changes.
+        """
+        return [OperationBase()]
+    @operations.setter
+    def operations(self, value: list[OperationBase]):
+        """
+        Gets and sets the operations which will be included in the NC program.
+        Valid input contains any number of operations, setups or folders.
+        For setups and folders all child operations will be added.
+        Operations will be post processed in setup order, with operations from the same setup grouped together.
+        Setting the nc_program_orderByTool BooleanParameterValue on the parameters property to true will reorder operations across multiple setups to reduce the number of tool changes.
+        """
+        pass
     @property
     def displayName(self) -> str:
         """
-        Gets and sets the display name of the addin that appears in the 'vendor' dropdown in
-        the 'Find network machines' dialog.
+        Optionally specify the display name that appears in the browser-tree to override the default.
         """
         return str()
     @displayName.setter
     def displayName(self, value: str):
         """
-        Gets and sets the display name of the addin that appears in the 'vendor' dropdown in
-        the 'Find network machines' dialog.
-        """
-        pass
-    @property
-    def description(self) -> str:
-        """
-        Gets and sets the description of the addin
-        """
-        return str()
-    @description.setter
-    def description(self, value: str):
-        """
-        Gets and sets the description of the addin
+        Optionally specify the display name that appears in the browser-tree to override the default.
         """
         pass
 
-class NetworkMachineIntegrationManager(core.Base):
+class NCProgramPostProcessOptions(core.Base):
     """
-    NetworkMachineManager provides access to properties and events needed to integrate
-    addins into the 'Find network machines' dialog, which enables users to add machine
-    configurations representing machines on the network to their machine library.
+    The NCProgramPostProcessOptions provides settings to control the post processing of NC programs.
+    It is needed for the NCPrograms.postProcess method for posting toolpaths and generating CNC files and setup sheets.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> NetworkMachineIntegrationManager:
-        return NetworkMachineIntegrationManager()
-    def registerNetworkMachineIntegration(self, networkMachineIntegrationInput: NetworkMachineIntegrationInput) -> bool:
+    def cast(arg) -> NCProgramPostProcessOptions:
+        return NCProgramPostProcessOptions()
+    @staticmethod
+    def create() -> NCProgramPostProcessOptions:
         """
-        Registers an addin for use in the 'Find network machines' dialog. This dialog will fire
-        the SearchNetworkMachinesEvent and CreateMachineConfigurationsEvent, which the addin
-        must handle. See SearchNetworkMachinesEvent and CreateMachineConfigurationsEvent for
-        details.
-        networkMachineIntegrationInput : An object defining properties of an addin, also allowing an addin to customize its
-        appearence in the 'Find network machines' dialog.
+        Creates a new NCProgramPostProcessOptions object to be used as an input argument by the postProcess()
+        method.
+        Returns the newly created NCProgramPostProcessOptions object or null if the creation failed.
+        """
+        return NCProgramPostProcessOptions()
+    @property
+    def isFailOnToolNumberDuplication(self) -> bool:
+        """
+        Toggles whether the post processing should abort if two tools with the same tool number have been detected.
+        True by default. If true, an exception will be thrown if at least two tools map to the same tool number.
+        If false, the post processor will not perform a tool change if the tool number is the same, which may mean that the wrong tool is used for an operation.
         """
         return bool()
+    @isFailOnToolNumberDuplication.setter
+    def isFailOnToolNumberDuplication(self, value: bool):
+        """
+        Toggles whether the post processing should abort if two tools with the same tool number have been detected.
+        True by default. If true, an exception will be thrown if at least two tools map to the same tool number.
+        If false, the post processor will not perform a tool change if the tool number is the same, which may mean that the wrong tool is used for an operation.
+        """
+        pass
     @property
-    def searchNetworkMachinesEvent(self) -> SearchNetworkMachinesEvent:
+    def postProcessExecutionBehavior(self) -> PostProcessExecutionBehaviors:
         """
-        This event is fired from the 'Find network machines' dialog when the corresponding
-        addin is selected from the vendor dropdown, or when 'search all vendors' is
-        selected. This event will allow the addin to initiate an enumeration of machines on
-        the network, and populate the 'Find network machines' dialog with descriptions of each
-        machine found. See SearchNetworkMachinesEvent for details.
+        Gets and sets the post process behavior with regards to the operations' error or out of date states.
+        Uses PostProcessExecutionBehavior_OmitInvalidAndEmptyOperations by default.
         """
-        return SearchNetworkMachinesEvent()
+        return PostProcessExecutionBehaviors()
+    @postProcessExecutionBehavior.setter
+    def postProcessExecutionBehavior(self, value: PostProcessExecutionBehaviors):
+        """
+        Gets and sets the post process behavior with regards to the operations' error or out of date states.
+        Uses PostProcessExecutionBehavior_OmitInvalidAndEmptyOperations by default.
+        """
+        pass
+
+class NCPrograms(core.Base):
+    """
+    Container for all NC programs. Referenced from CAM product to access NC programs in a document, similar to what Setups is for all setup objects.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> NCPrograms:
+        return NCPrograms()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> NCProgram:
+        return None
+    def __iter__(self) -> Iterator[NCProgram]:
+        return None
+    def item(self, index: int) -> NCProgram:
+        """
+        Function that returns the specified NC program using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return NCProgram()
+    def itemByName(self, name: str) -> NCProgram:
+        """
+        Returns the NC program with the specified name.
+        name : The name (as it appears in the browser) of the operation.
+        Returns the specified NC program or null in the case where there is no NC program with the specified name.
+        If there are multiple NC programs with the same name, the first item in the tree will be returned.
+        """
+        return NCProgram()
+    def itemByOperationId(self, id: int) -> NCProgram:
+        """
+        Returns the NC program with the specified operation id.
+        id : The id of the NC program.
+        Returns the specified NC program or null in the case where there is no NC program with the specified operation id.
+        """
+        return NCProgram()
+    def createInput(self) -> NCProgramInput:
+        """
+        Create a new NCProgramInput object. Use properties and methods on this object
+        to define the NC program you want to create and then use the Add method, passing in
+        the NCProgramInput object.
+        Returns a new NCProgramInput object.
+        """
+        return NCProgramInput()
+    def add(self, input: NCProgramInput) -> NCProgram:
+        """
+        Creates a new NC program.
+        input : NCProgramInput which will be used to create the NC program.
+        Returns the created NC program.
+        """
+        return NCProgram()
     @property
-    def createMachineConfigurationsEvent(self) -> CreateMachineConfigurationsEvent:
+    def count(self) -> int:
         """
-        This event is fired from the 'Find network machines' dialog when MachineDescription(s)
-        previously provided during the handling of the SearchNetworkMachines event are selected
-        to add to the user's Machine Library. This event will allow the addins to create
-        machine configurations corresponding to the selected MachineDescription objects.
-        See CreateMachineConfigurationsEvent for details.
+        The number of items in the collection.
         """
-        return CreateMachineConfigurationsEvent()
+        return int()
 
 class OperationBase(core.Base):
     """
@@ -1502,6 +2616,24 @@ class OperationBase(core.Base):
     @staticmethod
     def cast(arg) -> OperationBase:
         return OperationBase()
+    def deleteMe(self) -> bool:
+        """
+        Deletes the operation from the document.
+        In case of a setup or folder, all containing child operations will be deleted as well.
+        Returns true if the delete was successful.
+        """
+        return bool()
+    def modifyUtility(self, utility: ModifyUtilityTypes) -> ModifyUtility:
+        """
+        !!!!! Warning !!!!!
+        ! This is in preview state; please see the help for more info
+        !!!!! Warning !!!!!
+        
+        Get ModifyUtility for the current operation by given utility type.
+        utility : Defines the specific ModifyUtility.
+        Returns ModifyUtility for specific type or null if the type is not compatible with the operation.
+        """
+        return ModifyUtility()
     @property
     def name(self) -> str:
         """
@@ -1603,6 +2735,160 @@ class OperationBase(core.Base):
         Returns the collection of attributes associated with this object.
         """
         return core.Attributes()
+    @property
+    def strategy(self) -> str:
+        """
+        Gets the name of the strategy associated with this operation.
+        """
+        return str()
+    @property
+    def hasWarning(self) -> bool:
+        """
+        Gets if problems were encountered when generating the operation.
+        """
+        return bool()
+    @property
+    def hasError(self) -> bool:
+        """
+        Gets if errors were encountered when generating the operation.
+        """
+        return bool()
+    @property
+    def error(self) -> str:
+        """
+        Returns a message corresponding to any active error associated with the value of this parameter.
+        """
+        return str()
+    @property
+    def warning(self) -> str:
+        """
+        Returns a message corresponding to any active warning associated with the value of this parameter.
+        """
+        return str()
+    @property
+    def isLightBulbOn(self) -> bool:
+        """
+        Gets if this operation is currently visible in the graphics window. Use the
+        isLightBulbOn to change if the eye icon beside the operation node in the
+        browser is on or not. Parent nodes in the browser can have their light
+        bulb off which affects all of their children so this property does not
+        indicate if the operation is actually visible, just that it should be visible
+        if all of its parent nodes are also visible. Use the isVisible property
+        to determine if it's actually visible.
+        """
+        return bool()
+    @isLightBulbOn.setter
+    def isLightBulbOn(self, value: bool):
+        """
+        Gets if this operation is currently visible in the graphics window. Use the
+        isLightBulbOn to change if the eye icon beside the operation node in the
+        browser is on or not. Parent nodes in the browser can have their light
+        bulb off which affects all of their children so this property does not
+        indicate if the operation is actually visible, just that it should be visible
+        if all of its parent nodes are also visible. Use the isVisible property
+        to determine if it's actually visible.
+        """
+        pass
+    @property
+    def isVisible(self) -> bool:
+        """
+        Gets if this operation is currently visible in the graphics window. Use the
+        isLightBulbOn to change if the eye icon beside the operation node in the
+        browser is on or not. Parent nodes in the browser can have their light
+        bulb off which affects all of their children. This property indicates
+        the final result and whether this operation is actually visible or not.
+        """
+        return bool()
+    @property
+    def generatedDataCollection(self) -> GeneratedDataCollection:
+        """
+        Get the generated data associated with a given operation base instance. The type of data depends on the strategy type and might not be available for all strategy types.
+        The available types can be found in GeneratedData.cs
+        null if the given object does not have available generated data, an instance in one of the child classes otherwise.
+        """
+        return GeneratedDataCollection()
+
+class OperationInput(core.Base):
+    """
+    The OperationInput holds all necessary informations to create a new Operation.
+    Can be added to the Operations instance for creation.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> OperationInput:
+        return OperationInput()
+    @property
+    def strategy(self) -> str:
+        """
+        Get the current strategy
+        """
+        return str()
+    @property
+    def parameters(self) -> CAMParameters:
+        """
+        Get all parameters for the current strategy. Parameters are initialized by user defaults.
+        Configure operation parameters before creation for a better performance.
+        """
+        return CAMParameters()
+    @property
+    def tool(self) -> Tool:
+        """
+        Optionally specify the tool used by the operation. The ToolLibraries allows the access to Local and Fusion 360 tools.
+        """
+        return Tool()
+    @tool.setter
+    def tool(self, value: Tool):
+        """
+        Optionally specify the tool used by the operation. The ToolLibraries allows the access to Local and Fusion 360 tools.
+        """
+        pass
+    @property
+    def toolPreset(self) -> ToolPreset:
+        """
+        Optionally specify the preset of the tool. If no preset is specified, the operation gets its default feed and speed.
+        The Tool provides access to available presets. Use one of those presets to override the default.
+        An invalid preset will cause a failure during the creation of the operation.
+        """
+        return ToolPreset()
+    @toolPreset.setter
+    def toolPreset(self, value: ToolPreset):
+        """
+        Optionally specify the preset of the tool. If no preset is specified, the operation gets its default feed and speed.
+        The Tool provides access to available presets. Use one of those presets to override the default.
+        An invalid preset will cause a failure during the creation of the operation.
+        """
+        pass
+    @property
+    def displayName(self) -> str:
+        """
+        Optionally specify the display name that appears in the browser-tree to override the default.
+        """
+        return str()
+    @displayName.setter
+    def displayName(self, value: str):
+        """
+        Optionally specify the display name that appears in the browser-tree to override the default.
+        """
+        pass
+    @property
+    def generationMode(self) -> AutomaticGenerationModes:
+        """
+        Defines the automatic generation during the creation of the operation.
+        Can be used to force or skip the generation of the new operation.
+        By default the newly created operation will not be generated.
+        The default value is SkipGeneration.
+        """
+        return AutomaticGenerationModes()
+    @generationMode.setter
+    def generationMode(self, value: AutomaticGenerationModes):
+        """
+        Defines the automatic generation during the creation of the operation.
+        Can be used to force or skip the generation of the new operation.
+        By default the newly created operation will not be generated.
+        The default value is SkipGeneration.
+        """
+        pass
 
 class Operations(core.Base):
     """
@@ -1613,6 +2899,12 @@ class Operations(core.Base):
     @staticmethod
     def cast(arg) -> Operations:
         return Operations()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Operation:
+        return None
+    def __iter__(self) -> Iterator[Operation]:
+        return None
     def item(self, index: int) -> Operation:
         """
         Function that returns the specified operation using an index into the collection.
@@ -1634,12 +2926,148 @@ class Operations(core.Base):
         Returns the specified operation or null in the case where there is no operation with the specified operation id.
         """
         return Operation()
+    def createInput(self, strategy: str) -> OperationInput:
+        """
+        Creates a new OperationInput object, which is used to define the operation you want to create.
+        Use properties and methods on the returned OperationInput object to define the desired operation
+        and then pass it into the add method to create the operation.
+        strategy : The name of the strategy type that you want to create. Use the compatibleStrategies property of
+        Operations object to get a list of the names of the strategies.
+        Returns a new OperationInput object or will fail if an invalid strategy is specified.
+        """
+        return OperationInput()
+    def add(self, input: OperationInput) -> OperationBase:
+        """
+        Create a new Operation.
+        input : The OperationInput object defines the desired Operation. Use the createInput
+        method to create a new OperationInput object and then use methods on it to define the Operation.
+        The new Operation will be appended at the end of the current list of Operations.
+        Throws an error if the strategy type is incompatible with the setup.
+        Returns the newly created Operation.
+        """
+        return OperationBase()
     @property
     def count(self) -> int:
         """
         The number of items in the collection.
         """
         return int()
+    @property
+    def compatibleStrategies(self) -> list[OperationStrategy]:
+        """
+        Gets a list of the strategies that are compatible with the parent setup.
+        This only returns strategies that are allowed to be added based on the active Setup or CAMFolder.
+        
+        Note: There may be cases where a compatible strategy might not be allowed to be created
+        due to licensing or other issues like disabled preview features.
+        Returns an array of compatible strategies.
+        """
+        return [OperationStrategy()]
+
+class OperationStrategy(core.Base):
+    """
+    The OperationStrategy contains information about a strategy such as its name, title and description.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> OperationStrategy:
+        return OperationStrategy()
+    @staticmethod
+    def createFromString(name: str) -> OperationStrategy:
+        """
+        Create an OperationStrategy for a given name.
+        name : The name of the strategy.
+        Throws an error if the strategy name is unknown.
+        Returns the OperationStrategy for given strategy name.
+        """
+        return OperationStrategy()
+    @property
+    def name(self) -> str:
+        """
+        Get the name of the strategy. This is equivalent to the Operation's strategy property.
+        Use as strategy parameter when creating a OperationInput.
+        """
+        return str()
+    @property
+    def title(self) -> str:
+        """
+        Get the localized title of the strategy.
+        """
+        return str()
+    @property
+    def description(self) -> str:
+        """
+        Get the localized description of the strategy.
+        """
+        return str()
+    @property
+    def isGenerationAllowed(self) -> bool:
+        """
+        Returns true if the strategy is allowed to be generated due to licensing and enabled preview features.
+        Some strategies also require Active machining extension to be generated.
+        Returns false otherwise.
+        """
+        return bool()
+
+class OptimizedOrientationResult(core.Base):
+    """
+    The orientation result instance.
+    Contains properties that can be used to create a custom ranking and the orientation matrix.
+    The calculated ranking is based on the orientation operation's ranking priorities.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> OptimizedOrientationResult:
+        return OptimizedOrientationResult()
+    @property
+    def supportVolume(self) -> float:
+        """
+        The volume of the support hull below the oriented part.
+        The value is given in cubic centimeters
+        """
+        return float()
+    @property
+    def supportArea(self) -> float:
+        """
+        The shadow area of the support hull below the oriented part.
+        The value is given in squared centimeters
+        """
+        return float()
+    @property
+    def boundingBoxVolume(self) -> float:
+        """
+        The volume of the bounding box aligned to the world coordinate system of the oriented part.
+        The value is given in cubic centimeters
+        """
+        return float()
+    @property
+    def partHeight(self) -> float:
+        """
+        The resulting height of the oriented part.
+        The value is given in centimeters
+        """
+        return float()
+    @property
+    def centerOfGravityHeight(self) -> float:
+        """
+        The height of the center of gravity of the oriented part.
+        The value is given in centimeters
+        """
+        return float()
+    @property
+    def rankingValue(self) -> float:
+        """
+        The value which the initial ordering is based on. Calculated based on the properties above by the orientation operation.
+        """
+        return float()
+    @property
+    def transformation(self) -> core.Matrix3D:
+        """
+        The transformation matrix to be applied onto the occurrence's existing transformation at the time of the calculation.
+        """
+        return core.Matrix3D()
 
 class ParameterValue(core.Base):
     """
@@ -1657,6 +3085,115 @@ class ParameterValue(core.Base):
         Get the parameter object that the value is associated with.
         """
         return core.Base()
+
+class PostConfiguration(core.Base):
+    """
+    Object that represents a post configuration.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PostConfiguration:
+        return PostConfiguration()
+    @property
+    def vendor(self) -> str:
+        """
+        Gets the name of the vendor of the machine tool or controller this post configuration supports.
+        """
+        return str()
+    @property
+    def description(self) -> str:
+        """
+        Gets the description of the post.
+        """
+        return str()
+    @property
+    def capability(self) -> PostCapabilities:
+        """
+        Gets the capabilities supported by the post.
+        Capabilities define what types of operations can be post processed using this configuration.
+        """
+        return PostCapabilities()
+    @property
+    def version(self) -> str:
+        """
+        Gets the version of the post.
+        """
+        return str()
+    @property
+    def extension(self) -> str:
+        """
+        Gets the extension of the output file created by the post.
+        """
+        return str()
+
+class PostConfigurationQuery(core.Base):
+    """
+    A PostConfigurationQuery can be used to search a LibraryLocation for a set of PostConfiguration objects matching the required properties.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PostConfigurationQuery:
+        return PostConfigurationQuery()
+    def execute(self) -> list[PostConfiguration]:
+        """
+        Query for specific posts. This PostConfiguration query.
+        Returns a list of posts. Each returned post matches this query.
+        """
+        return [PostConfiguration()]
+    @property
+    def vendor(self) -> str:
+        """
+        The case-insensitive vendor specifies the vendor of the post configuration. The default empty vendor applies to all post configurations.
+        """
+        return str()
+    @vendor.setter
+    def vendor(self, value: str):
+        """
+        The case-insensitive vendor specifies the vendor of the post configuration. The default empty vendor applies to all post configurations.
+        """
+        pass
+    @property
+    def url(self) -> core.URL:
+        """
+        The URL specifies the location and folder to search for in the post library.
+        Setting the URL updates the location.
+        """
+        return core.URL()
+    @url.setter
+    def url(self, value: core.URL):
+        """
+        The URL specifies the location and folder to search for in the post library.
+        Setting the URL updates the location.
+        """
+        pass
+    @property
+    def capability(self) -> PostCapabilities:
+        """
+        Specifies the capability to search for in the post library.
+        """
+        return PostCapabilities()
+    @capability.setter
+    def capability(self, value: PostCapabilities):
+        """
+        Specifies the capability to search for in the post library.
+        """
+        pass
+    @property
+    def location(self) -> LibraryLocations:
+        """
+        The location specifies the location to search in the post library.
+        Setting the location clears any previous specified URL.
+        """
+        return LibraryLocations()
+    @location.setter
+    def location(self, value: LibraryLocations):
+        """
+        The location specifies the location to search in the post library.
+        Setting the location clears any previous specified URL.
+        """
+        pass
 
 class PostProcessInput(core.Base):
     """
@@ -1682,7 +3219,7 @@ class PostProcessInput(core.Base):
         properties before the filename (e.g. postConfiguration = cam.genericPostFolder + '/' + 'fanuc.cps')
         outputFolder : The path for the existing output folder where the .cnc files will be located.  This method will create the specified output folder if it does not already exist.
         It is not necessary to add a slash to the end of the outputFolder path.  You should use forward slashes in your path definition if you want your script to run on both Mac and Windows.
-        outputUnits : The units option for the cnc output.
+        outputUnits : The units option for the CNC output.
         Valid options are DocumentUnitsOutput, InchesOutput or MillimetersOutput
         Returns the newly created PostProcessInput object or null if the creation failed.
         """
@@ -1740,28 +3277,28 @@ class PostProcessInput(core.Base):
     @property
     def outputUnits(self) -> PostOutputUnitOptions:
         """
-        Gets and sets the units option for the cnc output.
+        Gets and sets the units option for the CNC output.
         Valid options are DocumentUnitsOutput, InchesOutput or MillimetersOutput
         """
         return PostOutputUnitOptions()
     @outputUnits.setter
     def outputUnits(self, value: PostOutputUnitOptions):
         """
-        Gets and sets the units option for the cnc output.
+        Gets and sets the units option for the CNC output.
         Valid options are DocumentUnitsOutput, InchesOutput or MillimetersOutput
         """
         pass
     @property
     def isOpenInEditor(self) -> bool:
         """
-        Gets and sets the option if opening the cnc file with the editor after it is created.
+        Gets and sets the option if opening the CNC file with the editor after it is created.
         The default value for this property is true.
         """
         return bool()
     @isOpenInEditor.setter
     def isOpenInEditor(self, value: bool):
         """
-        Gets and sets the option if opening the cnc file with the editor after it is created.
+        Gets and sets the option if opening the CNC file with the editor after it is created.
         The default value for this property is true.
         """
         pass
@@ -1799,146 +3336,608 @@ class PostProcessInput(core.Base):
         The default value for this is an empty NamedValues.
         """
         pass
-    @property
-    def machine(self) -> Machine:
-        """
-        Gets and sets the machine used for post processing.
-        It will override the machines associated with the operations or setup when posting.
-        The default value for this property is null.
-        """
-        return Machine()
-    @machine.setter
-    def machine(self, value: Machine):
-        """
-        Gets and sets the machine used for post processing.
-        It will override the machines associated with the operations or setup when posting.
-        The default value for this property is null.
-        """
-        pass
 
-class SandvikIntegration(core.Base):
+class PrintSetting(core.Base):
     """
-    This singleton object provides access to application-level events and properties
-    that relate to the CAM (Manufacture) workspace in Fusion 360.
+    Object that represents a PrintSetting.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> SandvikIntegration:
-        return SandvikIntegration()
+    def cast(arg) -> PrintSetting:
+        return PrintSetting()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> PrintSettingItem:
+        return None
+    def __iter__(self) -> Iterator[PrintSettingItem]:
+        return None
     @staticmethod
-    def get() -> SandvikIntegration:
+    def createFromXML(xmlContent: str) -> PrintSetting:
         """
-        Access to the root CAMGlobal object.
-        Return the root SandvikIntegration object or null if it failed.
+        Creates a PrintSetting from a xml content.
+        xmlContent : The xml content string of a PrintSetting file to act as a base for creating a PrintSetting from.
+        Returns the newly created PrintSetting.
         """
-        return SandvikIntegration()
-    def getStockMaterialId(self, setup: Setup) -> str:
+        return PrintSetting()
+    def parameters(self, type: PrintSettingItemTypes) -> CAMParameters:
         """
-        Get the stock material id specified for the Setup.
-        setup : The Setup object to get the stock material id for.
-        The ID of the stock material set for the Setup.
+        Function that returns the specified parameterTable using an enum into the collection.
+        type : The type of the item within the collection to return.
+        Returns the specified type of parameters or null if an invalid type was specified.
+        """
+        return CAMParameters()
+    def itemByName(self, name: str) -> PrintSettingItem:
+        """
+        Returns the PrintSetting item of the specified body preset.
+        name : The body preset id of the parameters.
+        Returns the specified parameters or  throws exception in the case where there is no parameters with the specified id.
+        """
+        return PrintSettingItem()
+    def duplicatePrintSettingItem(self, name: str) -> PrintSettingItem:
+        """
+        Duplicates the PrintSetting item of the specified body preset.
+        name : The body preset id of the parameters that has to be duplicated.
+        Returns the specified parameters or throws exception in the case where there is no parameters with the specified id.
+        """
+        return PrintSettingItem()
+    def deletePrintSettingItem(self, name: str) -> None:
+        """
+        Deletes the PrintSetting item of the specified body preset. Default item cant be deleted. Throws exception when name not found.
+        name : The body preset id of the parameters that has to be deleted.
+        """
+        pass
+    def setDefaultPrintSettingItem(self, name: str) -> None:
+        """
+        Defaults the PrintSetting item of the specified body preset. Throws exception when name not found.
+        name : The body preset id of the parameters that has to be defaulted.
+        """
+        pass
+    def getDefaultPrintSettingItem(self) -> PrintSettingItem:
+        """
+        Gets the default PrintSetting item of the specified body preset. Throws exception when name not found.
+        Returns the default parameters.
+        """
+        return PrintSettingItem()
+    def item(self, index: int) -> PrintSettingItem:
+        """
+        Get the PrintSettingItem at index in PrintSetting.
+        index : The index of the PrintSettingItem.
+        The PrintSettingItem at index.
+        """
+        return PrintSettingItem()
+    @property
+    def name(self) -> str:
+        """
+        Gets and sets the name of the PrintSetting.
         """
         return str()
-    def setStockMaterialId(self, setup: Setup, id: str) -> bool:
+    @name.setter
+    def name(self, value: str):
         """
-        Set the stock material id for the Setup.
-        setup : The Setup object to set the stock material id for.
-        Returns true if successful.
+        Gets and sets the name of the PrintSetting.
+        """
+        pass
+    @property
+    def description(self) -> str:
+        """
+        Gets and sets the description of the PrintSetting.
+        """
+        return str()
+    @description.setter
+    def description(self, value: str):
+        """
+        Gets and sets the description of the PrintSetting.
+        """
+        pass
+    @property
+    def technology(self) -> str:
+        """
+        Gets the technology of the PrintSetting.
+        """
+        return str()
+    @property
+    def id(self) -> str:
+        """
+        Gets the unique identifier of the PrintSetting.
+        Can be used for comparing PrintSettings within the document.
+        """
+        return str()
+    @property
+    def count(self) -> int:
+        """
+        Get the number of PrintSettingItems in this collection.
+        """
+        return int()
+
+class PrintSettingItem(core.Base):
+    """
+    Collection that provides access to the print setting parameters.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PrintSettingItem:
+        return PrintSettingItem()
+    @property
+    def name(self) -> str:
+        """
+        Body Preset get and set name.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Body Preset get and set name.
+        """
+        pass
+    @property
+    def description(self) -> str:
+        """
+        Body Preset get and set description.
+        """
+        return str()
+    @description.setter
+    def description(self, value: str):
+        """
+        Body Preset get and set description.
+        """
+        pass
+    @property
+    def parameters(self) -> CAMParameters:
+        """
+        Function that returns the parameters for reading and editing values.
+        Returns the parameters of specified item.
+        """
+        return CAMParameters()
+
+class PrintSettingQuery(core.Base):
+    """
+    A PrintSettingQuery can be used to search a LibraryLocation for a set of PrintSetting objects matching the required properties.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PrintSettingQuery:
+        return PrintSettingQuery()
+    def execute(self) -> list[PrintSetting]:
+        """
+        Query for specific PrintSettings. This PrintSettingQuery query.
+        Returns a list of PrintSetting. Each returned PrintSetting matches this query.
+        """
+        return [PrintSetting()]
+    @property
+    def name(self) -> str:
+        """
+        The case-insensitive name specifies the name of the PrintSetting.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        The case-insensitive name specifies the name of the PrintSetting.
+        """
+        pass
+    @property
+    def technology(self) -> str:
+        """
+        The case-insensitive technology specifies technology of the PrintSetting.
+        """
+        return str()
+    @technology.setter
+    def technology(self, value: str):
+        """
+        The case-insensitive technology specifies technology of the PrintSetting.
+        """
+        pass
+    @property
+    def vendor(self) -> str:
+        """
+        The case-insensitive vendor specifies vendor of the PrintSetting. Generic FFF PrintSetting doesnt have a vendor.
+        """
+        return str()
+    @vendor.setter
+    def vendor(self, value: str):
+        """
+        The case-insensitive vendor specifies vendor of the PrintSetting. Generic FFF PrintSetting doesnt have a vendor.
+        """
+        pass
+    @property
+    def material(self) -> str:
+        """
+        The case-insensitive material specifies material of the MPBF PrintSetting.
+        """
+        return str()
+    @material.setter
+    def material(self, value: str):
+        """
+        The case-insensitive material specifies material of the MPBF PrintSetting.
+        """
+        pass
+    @property
+    def layerHeight(self) -> float:
+        """
+        The layer height specifies layer height of the PrintSetting. This should match the PrintSetting layer height in cm.
+        """
+        return float()
+    @layerHeight.setter
+    def layerHeight(self, value: float):
+        """
+        The layer height specifies layer height of the PrintSetting. This should match the PrintSetting layer height in cm.
+        """
+        pass
+    @property
+    def url(self) -> core.URL:
+        """
+        The URL specifies the location and folder to search for in the PrintSetting library.
+        Setting the URL updates the location.
+        """
+        return core.URL()
+    @url.setter
+    def url(self, value: core.URL):
+        """
+        The URL specifies the location and folder to search for in the PrintSetting library.
+        Setting the URL updates the location.
+        """
+        pass
+    @property
+    def location(self) -> LibraryLocations:
+        """
+        The location specifies the location to search in the PrintSetting library.
+        Setting the location clears any previous specified URL.
+        """
+        return LibraryLocations()
+    @location.setter
+    def location(self, value: LibraryLocations):
+        """
+        The location specifies the location to search in the PrintSetting library.
+        Setting the location clears any previous specified URL.
+        """
+        pass
+
+class RecognizedHole(core.Base):
+    """
+    Object that represents a hole, a hole is made of one or more segments.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RecognizedHole:
+        return RecognizedHole()
+    @staticmethod
+    def recognizeHoles(bodies: list[core.Base]) -> RecognizedHoles:
+        """
+        Returns a collection of all recognized holes.
+        bodies : Model bodies on which to recognize holes.
+        """
+        return RecognizedHoles()
+    def segment(self, index: int) -> RecognizedHoleSegment:
+        """
+        Returns the segment at the specified index from this hole. The collection of segments that comprise this hole
+        are in order. The first segment is at the top of this hole and the last segment is at the bottom.
+        index : The index of the segment within this hole to return. The first segment in this hole has an index of 0.
+        """
+        return RecognizedHoleSegment()
+    @property
+    def axis(self) -> core.Vector3D:
+        """
+        Returns the unit vector that points straight up out of the hole in the global coordinate system.
+        """
+        return core.Vector3D()
+    @property
+    def isThreaded(self) -> bool:
+        """
+        Returns true if at least one segment of this hole is threaded, i.e. associated with a thread feature.
         """
         return bool()
-    def getStockMaterialText(self, setup: Setup) -> str:
+    @property
+    def segmentCount(self) -> int:
         """
-        Get the stock material id specified for the Setup.
-        setup : The Setup object to get the stock material id for.
-        The ID of the stock material set for the Setup.
+        Returns the number of segments contained in this hole.
         """
-        return str()
-    def setStockMaterialText(self, setup: Setup, text: str) -> bool:
+        return int()
+    @property
+    def top(self) -> core.Point3D:
         """
-        Set the stock material text for the Setup. This will be displayed in the user interface.
-        setup : The Setup object to set the stock material text for.
-        Returns true if successful.
+        Returns a point at the center of the hole top.
+        """
+        return core.Point3D()
+    @property
+    def bottom(self) -> core.Point3D:
+        """
+        Returns a point at the center of the hole bottom.
+        """
+        return core.Point3D()
+    @property
+    def topDiameter(self) -> float:
+        """
+        Returns the diameter of the top of this hole (top diameter of the first segment contained in this hole).
+        """
+        return float()
+    @property
+    def bottomDiameter(self) -> float:
+        """
+        Returns the diameter of the bottom of this hole (bottom diameter of the last segment contained in this hole).
+        """
+        return float()
+    @property
+    def totalLength(self) -> float:
+        """
+        Returns the total length of all segments contained in this hole.
+        """
+        return float()
+    @property
+    def hasWarnings(self) -> bool:
+        """
+        Returns true if there are any warnings associated with this hole.
         """
         return bool()
     @property
-    def preIntegrationEvent(self) -> SandvikPreIntegrationEvent:
+    def hasErrors(self) -> bool:
         """
-        This event will be fired just before an operation/setup dialog (create/edit) is
-        presented. This will allow the addin to indicate which, if any, of the integration
-        actions should be shown, as well as details of the presentation. See
-        SandvikPreIntegrationEventArgs for details.
+        Returns true if there are any errors associated with this hole.
         """
-        return SandvikPreIntegrationEvent()
+        return bool()
     @property
-    def integrationEvent(self) -> SandvikIntegrationEvent:
+    def isThrough(self) -> bool:
         """
-        An integration event will be fired when any of the buttons related to the
-        integration is pressed. The event arguments will provide information about which
-        button was pressed, and will provide contextual information, such as the object
-        active at the time.
+        Returns true if this is a through hole, i.e. if the bottom is open.
         """
-        return SandvikIntegrationEvent()
+        return bool()
+
+class RecognizedHoleGroup(core.Base):
+    """
+    Object that represents a collection of holes that contain similar geometry. Holes have similar geometry if they contain the same segment types with the same segment heights, diameters, etc...
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RecognizedHoleGroup:
+        return RecognizedHoleGroup()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RecognizedHole:
+        return None
+    def __iter__(self) -> Iterator[RecognizedHole]:
+        return None
+    @staticmethod
+    def recognizeHoleGroups(bodies: list[core.Base]) -> RecognizedHoleGroups:
+        """
+        Gets all recognized holes and returns them as hole groupings based on similar geometry.
+        bodies : Model bodies on which to recognize holes.
+        """
+        return RecognizedHoleGroups()
+    def item(self, index: int) -> RecognizedHole:
+        """
+        Returns the hole at the specified index from this hole group.
+        index : The index of the hole within this hole group to return. The first hole in this hole group has an index of 0.
+        """
+        return RecognizedHole()
     @property
-    def settings(self) -> str:
+    def count(self) -> int:
         """
-        Provides a mechanism to store and retrieve user-specific information as a hidden system preference.
+        Returns the number of holes contained in this hole group.
         """
-        return str()
-    @settings.setter
-    def settings(self, value: str):
+        return int()
+    @property
+    def hasWarnings(self) -> bool:
         """
-        Provides a mechanism to store and retrieve user-specific information as a hidden system preference.
+        Returns true if there are any warnings associated with this hole group.
         """
-        pass
+        return bool()
+    @property
+    def hasErrors(self) -> bool:
+        """
+        Returns true if there are any errors associated with this hole group.
+        """
+        return bool()
 
-class SandvikIntegrationEventHandler(core.EventHandler):
+class RecognizedHoleGroups(core.Base):
     """
-    Event handler for the SandvikIntegrationEvent event.
+    Object that represents a collection of hole groups.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> SandvikIntegrationEventHandler:
-        return SandvikIntegrationEventHandler()
-    def notify(self, eventArgs: SandvikIntegrationEventArgs) -> None:
+    def cast(arg) -> RecognizedHoleGroups:
+        return RecognizedHoleGroups()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RecognizedHoleGroup:
+        return None
+    def __iter__(self) -> Iterator[RecognizedHoleGroup]:
+        return None
+    def item(self, index: int) -> RecognizedHoleGroup:
         """
-        The function called by CAM when the associated event is fired.
-        eventArgs : Returns an object that provides access to additional information associated with the event.
+        Returns the hole group at the specified index from this collection of hole groups.
+        index : The index of the hole group within this hole group collection to return. The first hole group in this collection has an index of 0.
         """
-        pass
+        return RecognizedHoleGroup()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of hole groups contained in this hole group collection.
+        """
+        return int()
 
-class SandvikPreIntegrationEventHandler(core.EventHandler):
+class RecognizedHoles(core.Base):
     """
-    Event handler for the SandvikPreIntegrationEvent event.
+    Object that represents a collection of holes.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> SandvikPreIntegrationEventHandler:
-        return SandvikPreIntegrationEventHandler()
-    def notify(self, eventArgs: SandvikPreIntegrationEventArgs) -> None:
+    def cast(arg) -> RecognizedHoles:
+        return RecognizedHoles()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RecognizedHole:
+        return None
+    def __iter__(self) -> Iterator[RecognizedHole]:
+        return None
+    def item(self, index: int) -> RecognizedHole:
         """
-        The function called by CAM when the associated event is fired.
-        eventArgs : Returns an object that provides access to additional information associated with the event.
+        Returns the hole at the specified index from this collection of holes.
+        index : The index of the hole within this hole collection to return. The first hole in this collection has an index of 0.
         """
-        pass
+        return RecognizedHole()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of holes contained in this hole collection.
+        """
+        return int()
 
-class SearchNetworkMachinesEventHandler(core.EventHandler):
+class RecognizedHoleSegment(core.Base):
     """
-    Event handler for the SearchNetworkMachinesEvent event.
+    Object that represents a hole segment, i.e. a single geometric shape like a cylinder or cone within the context of a hole.
+    A segment represents a hole face.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> SearchNetworkMachinesEventHandler:
-        return SearchNetworkMachinesEventHandler()
-    def notify(self, eventArgs: SearchNetworkMachinesEventArgs) -> None:
+    def cast(arg) -> RecognizedHoleSegment:
+        return RecognizedHoleSegment()
+    @property
+    def holeSegmentType(self) -> HoleSegmentType:
         """
-        The function called by Fusion 360 when the associated event is fired.
-        eventArgs : An object that provides access to additional information associated with the event.
+        Returns whether this segment represents a cylinder, cone, flat, or torus geometry type
         """
+        return HoleSegmentType()
+    @property
+    def topDiameter(self) -> float:
+        """
+        Returns the diameter of the top of this segment.
+        """
+        return float()
+    @property
+    def bottomDiameter(self) -> float:
+        """
+        Returns the diameter of the bottom of this segment.
+        """
+        return float()
+    @property
+    def height(self) -> float:
+        """
+        Returns the height of this segment from top to bottom.
+        """
+        return float()
+    @property
+    def axis(self) -> core.Vector3D:
+        """
+        Returns the unit vector that points straight up out of the segment in the global coordinate system.
+        """
+        return core.Vector3D()
+    @property
+    def isThreaded(self) -> bool:
+        """
+        Returns true if this segment is threaded, i.e. associated with a thread feature.
+        """
+        return bool()
+    @property
+    def threadFeatures(self) -> list[fusion.ThreadFeature]:
+        """
+        Returns the thread features associated with this segment, or null if none exist for this segment.
+        """
+        return [fusion.ThreadFeature()]
+    @property
+    def halfAngle(self) -> float:
+        """
+        For hole segments of type Cone, returns the cone's half angle,
+        i.e. the angle between the axis of the cone and its surface. Returns 0 for other segment types.
+        """
+        return float()
+    @property
+    def faces(self) -> list[core.Base]:
+        """
+        Returns the model faces this segment references.
+        """
+        return [core.Base()]
+
+class RecognizedPocket(core.Base):
+    """
+    Object that represents a single pocket (an outer boundary with depth and optional islands)
+    which has been recognized on the model.
+    See PocketRecognitionSelection for making a selection as in the UI
+    """
+    def __init__(self):
         pass
+    @staticmethod
+    def cast(arg) -> RecognizedPocket:
+        return RecognizedPocket()
+    @staticmethod
+    def recognizePockets(body: core.Base, attackVector: core.Vector3D) -> RecognizedPockets:
+        """
+        Gets all recognized pockets from the given body and returns them
+        body : Model body on which to recognize pockets
+        attackVector : A vector defining the orientation in which to search for pockets. This should be the
+        vector pointing down along the tool towards its tip and the pocket floors.
+        """
+        return RecognizedPockets()
+    @property
+    def boundaries(self) -> list[core.Curve3DPath]:
+        """
+        Returns the outside boundaries of this pocket (in cm).
+        """
+        return [core.Curve3DPath()]
+    @property
+    def islands(self) -> list[core.Curve3DPath]:
+        """
+        Returns each island inside this pocket as a separate ProfileLoop object (in cm).
+        """
+        return [core.Curve3DPath()]
+    @property
+    def depth(self) -> float:
+        """
+        Returns the depth of the pocket in centimeters, i.e. the positive distance from top to bottom
+        """
+        return float()
+    @property
+    def isThrough(self) -> bool:
+        """
+        Returns true if this is a through pocket, i.e. if the bottom is open.
+        """
+        return bool()
+    @property
+    def isClosed(self) -> bool:
+        """
+        Returns true if this pocket is closed, i.e. if its boundary is a single closed curve.
+        """
+        return bool()
+    @property
+    def bottomType(self) -> RecognizedPocketBottomType:
+        """
+        Returns the type of bottom edge this pocket has.
+        """
+        return RecognizedPocketBottomType()
+
+class RecognizedPockets(core.Base):
+    """
+    Object that represents a collection of pockets.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RecognizedPockets:
+        return RecognizedPockets()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RecognizedPocket:
+        return None
+    def __iter__(self) -> Iterator[RecognizedPocket]:
+        return None
+    def item(self, index: int) -> RecognizedPocket:
+        """
+        Returns the pocket at the specified index from this collection of pockets.
+        index : The index of the pocket within this pocket collection to return. The first pocket in this collection has an index of 0.
+        """
+        return RecognizedPocket()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of pockets contained in this pocket collection.
+        """
+        return int()
 
 class SetupChangeEventHandler(core.EventHandler):
     """
@@ -1974,6 +3973,159 @@ class SetupEventHandler(core.EventHandler):
         """
         pass
 
+class SetupInput(core.Base):
+    """
+    Object that represents an setup creation parameters.
+    The input-object can be used from the Setups.add method
+    to instantiate a new setup
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SetupInput:
+        return SetupInput()
+    @property
+    def name(self) -> str:
+        """
+        Name of the new setup.
+        This is displayed in the browser tree and can be used to access the setup from Setups.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Name of the new setup.
+        This is displayed in the browser tree and can be used to access the setup from Setups.
+        """
+        pass
+    @property
+    def operationType(self) -> OperationTypes:
+        """
+        Operation Type for the setup
+        """
+        return OperationTypes()
+    @property
+    def models(self) -> list[core.Base]:
+        """
+        A list of models, where a model can be an Occurrence, BRepBody, or MeshBody.
+        The returned array is connected to the SetupInput and can be added to directly
+        without needing to create a new array, populate it, and assign it using this property,
+        although, that is supported too.
+        """
+        return [core.Base()]
+    @models.setter
+    def models(self, value: list[core.Base]):
+        """
+        A list of models, where a model can be an Occurrence, BRepBody, or MeshBody.
+        The returned array is connected to the SetupInput and can be added to directly
+        without needing to create a new array, populate it, and assign it using this property,
+        although, that is supported too.
+        """
+        pass
+    @property
+    def stockMode(self) -> SetupStockModes:
+        """
+        StockMode for the setup.
+        """
+        return SetupStockModes()
+    @stockMode.setter
+    def stockMode(self, value: SetupStockModes):
+        """
+        StockMode for the setup.
+        """
+        pass
+    @property
+    def stockSolids(self) -> list[core.Base]:
+        """
+        An array of models, where a model can be a Component, ManufacturingModel, BRepBody, or MeshBody.
+        Setting this property, or adding the first object to the returned array will automatically
+        set the stockMode to "SolidStock".
+        
+        The returned array is connected to the SetupInput and can be added to directly
+        without needing to create a new array, populate it, and assign it using this property,
+        although, that is supported too.
+        """
+        return [core.Base()]
+    @stockSolids.setter
+    def stockSolids(self, value: list[core.Base]):
+        """
+        An array of models, where a model can be a Component, ManufacturingModel, BRepBody, or MeshBody.
+        Setting this property, or adding the first object to the returned array will automatically
+        set the stockMode to "SolidStock".
+        
+        The returned array is connected to the SetupInput and can be added to directly
+        without needing to create a new array, populate it, and assign it using this property,
+        although, that is supported too.
+        """
+        pass
+    @property
+    def fixtureEnabled(self) -> bool:
+        """
+        Set this value to enable the use of fixtures for this setup.
+        To then set the fixture models themselves use the `fixtures` property.
+        """
+        return bool()
+    @fixtureEnabled.setter
+    def fixtureEnabled(self, value: bool):
+        """
+        Set this value to enable the use of fixtures for this setup.
+        To then set the fixture models themselves use the `fixtures` property.
+        """
+        pass
+    @property
+    def fixtures(self) -> list[core.Base]:
+        """
+        An array of models that represent fixtures, where a model can be an Occurrence,
+        BRepBody, or MeshBody.
+        
+        The returned array is connected to the SetupInput and can be added to directly
+        without needing to create a new array, populate it, and assign using this property,
+        although, that is supported too.
+        """
+        return [core.Base()]
+    @fixtures.setter
+    def fixtures(self, value: list[core.Base]):
+        """
+        An array of models that represent fixtures, where a model can be an Occurrence,
+        BRepBody, or MeshBody.
+        
+        The returned array is connected to the SetupInput and can be added to directly
+        without needing to create a new array, populate it, and assign using this property,
+        although, that is supported too.
+        """
+        pass
+    @property
+    def machine(self) -> Machine:
+        """
+        Gets and sets the Machine associated with the setup.
+        """
+        return Machine()
+    @machine.setter
+    def machine(self, value: Machine):
+        """
+        Gets and sets the Machine associated with the setup.
+        """
+        pass
+    @property
+    def printSetting(self) -> PrintSetting:
+        """
+        Gets and sets the PrintSetting associated with the setup.
+        """
+        return PrintSetting()
+    @printSetting.setter
+    def printSetting(self, value: PrintSetting):
+        """
+        Gets and sets the PrintSetting associated with the setup.
+        """
+        pass
+    @property
+    def parameters(self) -> CAMParameters:
+        """
+        Get all parameters for the setup to be created. Parameters are initialized by user defaults.
+        Configure operation parameters before creation for a better performance.
+        """
+        return CAMParameters()
+
 class Setups(core.Base):
     """
     Collection that provides access to all of the existing setups in a document.
@@ -1983,6 +4135,12 @@ class Setups(core.Base):
     @staticmethod
     def cast(arg) -> Setups:
         return Setups()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Setup:
+        return None
+    def __iter__(self) -> Iterator[Setup]:
+        return None
     def item(self, index: int) -> Setup:
         """
         Function that returns the specified setup using an index into the collection.
@@ -2004,12 +4162,518 @@ class Setups(core.Base):
         Returns the specified setup or null in the case where there is no setup with the specified operation id.
         """
         return Setup()
+    def createInput(self, type: OperationTypes) -> SetupInput:
+        """
+        Creates a new SetupInput object that is used to specify the input needed to create a new setup.
+        type : The type specifies the type of the setup that should be created.
+        Returns new SetupInput object.
+        """
+        return SetupInput()
+    def add(self, input: SetupInput) -> Setup:
+        """
+        Creates a new setup.
+        input : The input holds all the information needed to create a valid setup.
+        Returns newly created Setup instance.
+        """
+        return Setup()
     @property
     def count(self) -> int:
         """
         The number of setups in the collection.
         """
         return int()
+
+class Tool(core.Base):
+    """
+    Represents a Tool.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> Tool:
+        return Tool()
+    @staticmethod
+    def createFromJson(json: str) -> Tool:
+        """
+        Creates a Tool object from given JSON string.
+        json : The JSON should fully define the tool and contain all tool parameters.
+        If the JSON contains more than one tool, only the first Tool is loaded.
+        Returns the newly created Tool.
+        """
+        return Tool()
+    def toJson(self) -> str:
+        """
+        Generates and returns a JSON string that contains a description of this tool.
+        Returns a JSON string that contains a description of this tool.
+        """
+        return str()
+    @property
+    def parameters(self) -> CAMParameters:
+        """
+        Gets the CAMParameters collection associated with this tool. This
+        defines all of the settings that describe the details of the tool.
+        """
+        return CAMParameters()
+    @property
+    def presets(self) -> ToolPresets:
+        """
+        Gets the ToolPresets collection associated with this tool.
+        """
+        return ToolPresets()
+
+class ToolLibrary(core.Base):
+    """
+    ToolLibrary represents a collection of Tool objects.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ToolLibrary:
+        return ToolLibrary()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Tool:
+        return None
+    def __iter__(self) -> Iterator[Tool]:
+        return None
+    @staticmethod
+    def createFromJson(json: str) -> ToolLibrary:
+        """
+        Creates a ToolLibrary by given JSON-string. Raises an error if the given JSON is invalid.
+        json : The JSON contains all tools that should be added to the new ToolLibrary
+        Returns the newly created ToolLibrary.
+        """
+        return ToolLibrary()
+    @staticmethod
+    def createEmpty() -> ToolLibrary:
+        """
+        Creates an empty ToolLibrary.
+        Returns the newly created ToolLibrary.
+        """
+        return ToolLibrary()
+    def item(self, index: int) -> Tool:
+        """
+        Get Tool by index in ToolLibrary.
+        index : Index of the Tool in the ToolLibrary.
+        Returns the Tool in the ToolLibrary by given index.
+        """
+        return Tool()
+    def add(self, tool: Tool) -> bool:
+        """
+        Inserts a Tool at the end of the ToolLibrary.
+        tool : The Tool that should be added.
+        Returns true for successful insertion, false otherwise
+        """
+        return bool()
+    def remove(self, index: int) -> bool:
+        """
+        Remove Tool by index from ToolLibrary.
+        index : Index of the Tool in the ToolLibrary that should be removed.
+        Returns true for successful deletion, false otherwise
+        """
+        return bool()
+    def toJson(self) -> str:
+        """
+        Generate and return JSON string that contains all tools of that list.
+        Returns JSON string that contains all tools of that list.
+        """
+        return str()
+    def createQuery(self) -> ToolQuery:
+        """
+        Creates a new ToolQuery that is used to query the library for tools matching
+        the query.
+        Returns a new ToolQuery. The query is predefined by given parameter.
+        """
+        return ToolQuery()
+    @property
+    def count(self) -> int:
+        """
+        The number of tools in the ToolLibrary.
+        """
+        return int()
+
+class ToolPreset(core.Base):
+    """
+    A Preset defines the material specific properties of a Tool.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ToolPreset:
+        return ToolPreset()
+    @property
+    def name(self) -> str:
+        """
+        Gets and sets the name of that Preset.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Gets and sets the name of that Preset.
+        """
+        pass
+    @property
+    def id(self) -> str:
+        """
+        Gets and sets the identifier of that Preset. The id can be used to select a Preset for a Operation.
+        """
+        return str()
+    @id.setter
+    def id(self, value: str):
+        """
+        Gets and sets the identifier of that Preset. The id can be used to select a Preset for a Operation.
+        """
+        pass
+    @property
+    def parameters(self) -> CAMParameters:
+        """
+        Gets the CAMParameters collection for this Preset.
+        """
+        return CAMParameters()
+
+class ToolPresets(core.Base):
+    """
+    ToolPresets represents a collection of ToolPreset.
+    It provides access and allows the manipulation like removing and extending the list.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ToolPresets:
+        return ToolPresets()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ToolPreset:
+        return None
+    def __iter__(self) -> Iterator[ToolPreset]:
+        return None
+    def item(self, index: int) -> ToolPreset:
+        """
+        Get Preset by index.
+        index : Index of the Preset in the owning Tool that should be returned.
+        Returns Preset at by given index, null otherwise
+        """
+        return ToolPreset()
+    def itemsByName(self, name: str) -> list[ToolPreset]:
+        """
+        Search presets by name. Returns all presets for which the name matches the given pattern.
+        Compare is case insensitive and characters * and ? are used for wild-card matching.
+        name : Name of the Preset to search for. The string can define a pattern with wild-card matching.
+        '*' represents an arbitrary sequence including the empty sequence and '?' represents one arbitrary character.
+        Returns all presets with matching name.
+        """
+        return [ToolPreset()]
+    def add(self) -> ToolPreset:
+        """
+        Creates and inserts a new Preset at the end of the Preset collection of the owning Tool.
+        The new Preset will have the same values as the owning Tool.
+        Returns the newly created Preset
+        """
+        return ToolPreset()
+    def remove(self, index: int) -> bool:
+        """
+        Remove Preset by index from the owning Tool.
+        index : Index of the Preset in the Tool that should be removed.
+        Returns true for successful deletion, false otherwise
+        """
+        return bool()
+    @property
+    def count(self) -> int:
+        """
+        The number of Presets of the owning Tool.
+        """
+        return int()
+
+class ToolQuery(core.Base):
+    """
+    ToolQuery objects are used to search for a set of Tools or ToolLibrary objects inside of the ToolLibraries collection or for a set of Tools inside of a particular ToolLibrary.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ToolQuery:
+        return ToolQuery()
+    def execute(self) -> list[ToolQueryResult]:
+        """
+        Query for specific a Tool or ToolLbrary.
+        Returns a list of `ToolQueryResult`. Each result references a Tool that matches this query.
+        """
+        return [ToolQueryResult()]
+    @property
+    def vendor(self) -> str:
+        """
+        The case-insensitive vendor specifies the vendor of the tool. The default empty vendor applies to all tools.
+        """
+        return str()
+    @vendor.setter
+    def vendor(self, value: str):
+        """
+        The case-insensitive vendor specifies the vendor of the tool. The default empty vendor applies to all tools.
+        """
+        pass
+    @property
+    def url(self) -> core.URL:
+        """
+        The URL specifies the location and folder to search for in the Tool library.
+        Setting the URL updates the location.
+        When searching inside a ToolLibrary the URL will be ignored.
+        """
+        return core.URL()
+    @url.setter
+    def url(self, value: core.URL):
+        """
+        The URL specifies the location and folder to search for in the Tool library.
+        Setting the URL updates the location.
+        When searching inside a ToolLibrary the URL will be ignored.
+        """
+        pass
+    @property
+    def location(self) -> LibraryLocations:
+        """
+        Specifies the location to search in the Tool library.
+        Setting the location clears any previous specified URL.
+        When searching inside a ToolLibrary the location will be ignored.
+        """
+        return LibraryLocations()
+    @location.setter
+    def location(self, value: LibraryLocations):
+        """
+        Specifies the location to search in the Tool library.
+        Setting the location clears any previous specified URL.
+        When searching inside a ToolLibrary the location will be ignored.
+        """
+        pass
+    @property
+    def criteria(self) -> core.NamedValues:
+        """
+        List of all criteria a tool must fulfill. Use the suffix '.min' and '.max', to define a upper and / or lower boundary for a particular value.
+        """
+        return core.NamedValues()
+
+class ToolQueryResult(core.Base):
+    """
+    The ToolQueryResult represents one result item of a ToolQuery.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ToolQueryResult:
+        return ToolQueryResult()
+    @property
+    def toolLibraryURL(self) -> core.URL:
+        """
+        The URL defines the location of the ToolLibrary asset in ToolLibraries.
+        """
+        return core.URL()
+    @property
+    def toolLibrary(self) -> ToolLibrary:
+        """
+        The ToolLibrary contains a Tool that matches the query.
+        """
+        return ToolLibrary()
+    @property
+    def tool(self) -> Tool:
+        """
+        The Tool that matches the query.
+        """
+        return Tool()
+    @property
+    def toolItemIndex(self) -> int:
+        """
+        The index specifies the index of the Tool inside the ToolLibrary.
+        """
+        return int()
+
+class AdditiveFFFLimitsMachineElement(MachineElement):
+    """
+    Machine element representing limits for fused filament fabrication (FFF) machine motion and temperatures.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> AdditiveFFFLimitsMachineElement:
+        return AdditiveFFFLimitsMachineElement()
+    @staticmethod
+    def staticTypeId() -> str:
+        """
+        Identifying name for all elements of this type.
+        Pass this to the itemByType or itemById methods of MachineElements to filter to elements of this type.
+        Returns identifier of this type.
+        """
+        return str()
+    @property
+    def homePosition(self) -> core.Point3D:
+        """
+        Position of the machine home location.
+        """
+        return core.Point3D()
+    @homePosition.setter
+    def homePosition(self, value: core.Point3D):
+        """
+        Position of the machine home location.
+        """
+        pass
+    @property
+    def parkPosition(self) -> core.Point3D:
+        """
+        Position machine moves to when "parked".
+        """
+        return core.Point3D()
+    @parkPosition.setter
+    def parkPosition(self, value: core.Point3D):
+        """
+        Position machine moves to when "parked".
+        """
+        pass
+    @property
+    def maximumBedTemperature(self) -> float:
+        """
+        Maximum bed temperature in degrees C.
+        """
+        return float()
+    @maximumBedTemperature.setter
+    def maximumBedTemperature(self, value: float):
+        """
+        Maximum bed temperature in degrees C.
+        """
+        pass
+    @property
+    def maximumXYSpeed(self) -> float:
+        """
+        Maximum supported speed for motion in the X or Y axes in cm/s.
+        """
+        return float()
+    @maximumXYSpeed.setter
+    def maximumXYSpeed(self, value: float):
+        """
+        Maximum supported speed for motion in the X or Y axes in cm/s.
+        """
+        pass
+    @property
+    def maximumZSpeed(self) -> float:
+        """
+        Maximum supported speed for motion in the Z axis in cm/s.
+        """
+        return float()
+    @maximumZSpeed.setter
+    def maximumZSpeed(self, value: float):
+        """
+        Maximum supported speed for motion in the Z axis in cm/s.
+        """
+        pass
+    @property
+    def maximumXYAcceleration(self) -> float:
+        """
+        Maximum supported acceleration for motion in the X or Y axes in cm/s^2.
+        """
+        return float()
+    @maximumXYAcceleration.setter
+    def maximumXYAcceleration(self, value: float):
+        """
+        Maximum supported acceleration for motion in the X or Y axes in cm/s^2.
+        """
+        pass
+    @property
+    def maximumZAcceleration(self) -> float:
+        """
+        Maximum supported acceleration for motion in the Z axis in cm/s^2.
+        """
+        return float()
+    @maximumZAcceleration.setter
+    def maximumZAcceleration(self, value: float):
+        """
+        Maximum supported acceleration for motion in the Z axis in cm/s^2.
+        """
+        pass
+
+class AdditivePlatformMachineElement(MachineElement):
+    """
+    Machine element representing the additive platform settings.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> AdditivePlatformMachineElement:
+        return AdditivePlatformMachineElement()
+    @staticmethod
+    def staticTypeId() -> str:
+        """
+        Identifying name for all elements of this type.
+        Pass this to the itemByType or itemById methods of MachineElements to filter to elements of this type.
+        Returns identifier of this type.
+        """
+        return str()
+    @property
+    def size(self) -> core.Point3D:
+        """
+        Usable platform size.
+        Units are cm.
+        """
+        return core.Point3D()
+    @size.setter
+    def size(self, value: core.Point3D):
+        """
+        Usable platform size.
+        Units are cm.
+        """
+        pass
+    @property
+    def origin(self) -> core.Point3D:
+        """
+        Origin point specifying the platform coordinates that correspond to the origin of the platform mesh.
+        Units are cm.
+        """
+        return core.Point3D()
+    @origin.setter
+    def origin(self, value: core.Point3D):
+        """
+        Origin point specifying the platform coordinates that correspond to the origin of the platform mesh.
+        Units are cm.
+        """
+        pass
+    @property
+    def clearance(self) -> float:
+        """
+        Clearance height used for automatically arranging parts and suggested height for positioning part on the build platform.
+        Units are cm.
+        """
+        return float()
+    @clearance.setter
+    def clearance(self, value: float):
+        """
+        Clearance height used for automatically arranging parts and suggested height for positioning part on the build platform.
+        Units are cm.
+        """
+        pass
+
+class AdditiveSetupUtility(ModifyUtility):
+    """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
+    AdditiveSetupUtility provides functionality for modifications of additive setups.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> AdditiveSetupUtility:
+        return AdditiveSetupUtility()
+    def splitSupport(self, targets: list[core.Base], splitType: SplitSupportTypes) -> bool:
+        """
+        !!!!! Warning !!!!!
+        ! This is in preview state; please see the help for more info
+        !!!!! Warning !!!!!
+        
+        Splits support structure of given target bodies into separate mesh body.
+        targets : Targets contain any input bodies whose support is to be inserted into a new mesh body.
+        Input target must belong to the setup and must be part of the associated manufacturing model.
+        Raises an error if any input target is not part of the setup or is not part of the associated manufacturing model.
+        splitType : The splitType defines the behavior for support that contains solid and open mesh geometry.
+        True on success, false on errors
+        """
+        return bool()
 
 class BooleanParameterValue(ParameterValue):
     """
@@ -2033,15 +4697,55 @@ class BooleanParameterValue(ParameterValue):
         """
         pass
 
+class CadContours2dParameterValue(ParameterValue):
+    """
+    A parameter value that is a CadContours2dParameterValue.
+    The user needs to set the parameter anew via the API after a model update or after the CurveSelections returned by getCurveSelections() has been edited.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CadContours2dParameterValue:
+        return CadContours2dParameterValue()
+    def getCurveSelections(self) -> CurveSelections:
+        """
+        Get the values of the parameter as a collection of CadCurves, which might consist of chains, pockets, silhouettes and face countours.
+        Returns current CurveSelections of the value.
+        """
+        return CurveSelections()
+    def applyCurveSelections(self, curveSelections: CurveSelections) -> None:
+        """
+        Set the values of the parameter as a collection of CadCurves.
+        If the input does not define continuous contours, the contour is amended and calculated, but only if used on Operations, not OperationInputs
+        When used with OperationInputs, the contours are calculated when creating an operation out of the input.
+        """
+        pass
+
 class CadObjectParameterValue(ParameterValue):
     """
-    A parameter value that is a CadObject.
+    A parameter value that is a collection of cad objects.
     """
     def __init__(self):
         pass
     @staticmethod
     def cast(arg) -> CadObjectParameterValue:
         return CadObjectParameterValue()
+    @property
+    def value(self) -> list[core.Base]:
+        """
+        Get or set the value of the parameter.
+        If the value originates from a component instead of an occurrence, or an occurrence outside of the CAM environment, then the subpath is checked against the CAM model tree.
+        An exception is thrown if the matching fails or the given entity does not match the expected type.
+        """
+        return [core.Base()]
+    @value.setter
+    def value(self, value: list[core.Base]):
+        """
+        Get or set the value of the parameter.
+        If the value originates from a component instead of an occurrence, or an occurrence outside of the CAM environment, then the subpath is checked against the CAM model tree.
+        An exception is thrown if the matching fails or the given entity does not match the expected type.
+        """
+        pass
 
 class CAM(core.Product):
     """
@@ -2052,62 +4756,55 @@ class CAM(core.Product):
     @staticmethod
     def cast(arg) -> CAM:
         return CAM()
-    def export3MFForDefaultAdditiveSetup(self, filepath: str, addSimulationInfo: bool, simPostProcess: bool, simSplitSurrogates: bool, simKeepThickeningStructure: bool) -> bool:
-        """
-        Exports the default additive setup's models into a 3mf file. The 3mf also contains machine and support information.
-        True on success, false on errors or wrong setup type
-        """
-        return bool()
     def generateToolpath(self, operations: core.Base) -> GenerateToolpathFuture:
         """
-        Generates/Regenerates all of the toolpaths (including those nested in sub-folders or patterns)
-        for the specified objects.
-        operations : An Operation, Setup, Folder or Pattern object for which to generate the toolpath/s for.  You can also
-        specify a collection of any combination of these object types.
-        Return GenerateToolpathFuture that includes the status of toolpath generation.
+        Generates or regenerates all the specified objects, including those nested in sub-folders or patterns.
+        operations : An Operation, Setup, Folder, or Pattern object. You can also use an ObjectCollection
+        to specify multiple objects of any of the supported types.
+        Return GenerateToolpathFuture that includes the status of the operation generation.
         """
         return GenerateToolpathFuture()
     def generateAllToolpaths(self, skipValid: bool) -> GenerateToolpathFuture:
         """
-        Generates/Regenerates all toolpaths (includes those nested in sub-folders or patterns) in the document.
-        skipValid : Option to skip valid toolpaths and only regenerate invalid toolpaths.
-        Return GenerateToolpathFuture that includes the status of toolpath generation.
+        Generates or regenerates all the operations in the document, including those nested in sub-folders or patterns.
+        skipValid : Option to skip valid operations and only regenerate invalid operations.
+        Return GenerateToolpathFuture that includes the status of operation generation.
         """
         return GenerateToolpathFuture()
     def clearToolpath(self, operations: core.Base) -> bool:
         """
-        Clears all of the toolpaths (including those nested in sub-folders or patterns) for the specified objects.
-        operations : An Operation, Setup, Folder or Pattern object for which to clear the toolpath/s for.  You can also
-        specify a collection of any combination of these object types.
+        Clears all the toolpaths for the specified objects, including those nested in sub-folders or patterns.
+        operations : An Operation, Setup, Folder, or Pattern object. You can also use and ObjectCollection
+        to specify multiple objects of any combination of types.
         Return true if successful.
         """
         return bool()
     def clearAllToolpaths(self) -> bool:
         """
-        Clears all the toolpaths (includes those nested in sub-folders or patterns) in the document
+        Clears all the toolpaths in the document, including those nested in sub-folders or patterns.
         Return true if successful.
         """
         return bool()
     def checkToolpath(self, operations: core.Base) -> bool:
         """
-        Checks if toolpath operations (including those nested in sub-folders or patterns) are valid for the specified objects.
-        operations : An Operation, Setup, Folder or Pattern object for which to check the toolpath/s of.  You can also
-        specify a collection of any combination of these object types.
-        Returns true if the toolpath operations are valid
+        Checks if the operations (including those nested in sub-folders or patterns) are valid and up to date.
+        operations : An Operation, Setup, Folder, or Pattern object. You can also use an ObjectCollection
+        to specify multiple objects of any of the supported types.
+        Returns true if the operations are valid
         """
         return bool()
     def checkAllToolpaths(self) -> bool:
         """
-        Checks if all the toolpath operations (includes those nested in sub-folders or patterns) in the document are valid
-        Returns true if the all toolpath operations are valid
+        Checks if all the operations (includes those nested in sub-folders or patterns) in the document are valid and up to date.
+        Returns true if the all operations are valid
         """
         return bool()
     def postProcess(self, operations: core.Base, input: PostProcessInput) -> bool:
         """
         Post all of the toolpaths (including those nested in sub-folders or patterns) for the specified objects.
         If post processing fails, an error message can be retrieved from the error log explaining the reason for the failure.
-        operations : An Operation, Setup, Folder or Pattern object for which to post the toolpath/s of.  You can also
-        specify a collection of any combination of these object types.
+        operations : An Operation, Setup, Folder, or Pattern object. You can also use an ObjectCollection
+        to specify multiple objects of any of the supported types.
         input : The PostProcessInput object that defines the post options and parameters.
         Returns true if successful
         """
@@ -2120,11 +4817,11 @@ class CAM(core.Product):
         Returns true if successful.
         """
         return bool()
-    def generateSetupSheet(self, operations: core.Base, format: SetupSheetFormats, folder: str, openDocument: bool) -> bool:
+    def generateSetupSheet(self, operations: core.Base, format: SetupSheetFormats, folder: str, openDocument: bool = True) -> bool:
         """
         Generate the setup sheets for the specified objects
-        operations : An Operation, Setup, Folder or Pattern object for which to generate the setup sheet/s for.  You can also
-        specify a collection of any combination of these object types.
+        operations : An Operation, Setup, Folder, or Pattern object. You can also use an ObjectCollection
+        to specify multiple objects of any of the supported types.
         format : The document format for the setup sheet.  Valid options are HTMLFormat and ExcelFormat.
         Limitation: "ExcelFormat" can be used in windows OS only.
         folder : The destination folder to locate the setup sheet documents in.
@@ -2132,7 +4829,7 @@ class CAM(core.Product):
         Returns true if successful
         """
         return bool()
-    def generateAllSetupSheets(self, format: SetupSheetFormats, folder: str, openDocument: bool) -> bool:
+    def generateAllSetupSheets(self, format: SetupSheetFormats, folder: str, openDocument: bool = True) -> bool:
         """
         Generates all of the setup sheets for all of the operations in the document
         format : The document format for the setup sheet.  Valid options are HTMLFormat and ExcelFormat.
@@ -2145,18 +4842,36 @@ class CAM(core.Product):
     def getMachiningTime(self, operations: core.Base, feedScale: float, rapidFeed: float, toolChangeTime: float) -> MachiningTime:
         """
         Get the machining time for the specified objects.
-        operations : An Operation, Setup, Folder or Pattern object for which to get the machining time for.  You can also
-        specify a collection of any combination of these object types.
+        operations : An Operation, Setup, Folder, or Pattern object. You can also use an ObjectCollection
+        to specify multiple objects of any of the supported types.
         feedScale : The feed scale value (%) to use.
         rapidFeed : The rapid feed rate in centimeters per second.
         toolChangeTime : The tool change time in seconds.
         Returns a MachiningTime object that has properties holding the calculation results.
         """
         return MachiningTime()
+    def generateTemplateXML(self, operations: core.Base) -> str:
+        """
+        Generates a template for the specified Operations, Setups, or Folders and returns
+        the template as an XML string.
+        operations : An Operation, Setup or Folder object from which to generate the template. You can also
+        specify a collection of any combination of these object types.
+        Returns the template XML as a string.
+        """
+        return str()
+    def checkValidity(self) -> None:
+        """
+        Checks whether the models used by the operations have changed in the mean time
+        and invalidates the affected operations if needed.
+        Should be used for cases where the automatic detection does not work yet,
+        for instance when design changes are expected before a Manufacture API call.
+        Also recommended at the beginning of a script or the beginning of an event handler.
+        """
+        pass
     @property
     def setups(self) -> Setups:
         """
-        Returns the Setups collection that provides access to existing setups
+        Returns the Setups collection that provides access to existing setups.
         """
         return Setups()
     @property
@@ -2193,75 +4908,85 @@ class CAM(core.Product):
     @property
     def designRootOccurrence(self) -> fusion.Occurrence:
         """
-        Returns the occurrence that references the design root component in CAM product.
+        The CAM product has its own root component which has a single occurrence that
+        references the Design root occurrence. This property returns this occurrence.
         """
         return fusion.Occurrence()
     @property
-    def flatPatternOccurrences(self) -> fusion.OccurrenceList:
+    def allMachines(self) -> list[Machine]:
         """
-        Returns a read only list of flat pattern occurrences in CAM product.
+        Gets an array containing all the machines in the document.
         """
-        return fusion.OccurrenceList()
-    @property
-    def allMachines(self) -> core.ObjectCollection:
-        """
-        Gets a collection containing all of the machines in the document.
-        """
-        return core.ObjectCollection()
+        return [Machine()]
     @property
     def setupCreated(self) -> SetupEvent:
         """
-        The SetupCreated event fires when a new setup was created.
+        The SetupCreated event fires when a new setup is created.
         """
         return SetupEvent()
     @property
     def setupDestroying(self) -> SetupEvent:
         """
-        The setupDestroying event fires before a setup will be destroyed.
+        The setupDestroying event fires before a setup is destroyed.
         """
         return SetupEvent()
     @property
     def setupChanged(self) -> SetupChangeEvent:
         """
-        The SetupChanged event fires when a setup was modified.
+        The SetupChanged event fires when a setup is modified.
         """
         return SetupChangeEvent()
     @property
     def setupActivating(self) -> SetupEvent:
         """
-        The SetupActivating event fires before a setup will be activated.
+        The SetupActivating event fires before a setup is activated.
         """
         return SetupEvent()
     @property
     def setupActivated(self) -> SetupEvent:
         """
-        The SetupActivated event fires when a setup was activated.
+        The SetupActivated event fires when a setup is activated.
         """
         return SetupEvent()
     @property
     def setupDeactivating(self) -> SetupEvent:
         """
-        The SetupDeactivating event fires before a setup will be deactivated.
+        The SetupDeactivating event fires before a setup is deactivated.
         """
         return SetupEvent()
     @property
     def setupDeactivated(self) -> SetupEvent:
         """
-        The SetupDeactivated event fires when a setup was deactivated.
+        The SetupDeactivated event fires when a setup is deactivated.
         """
         return SetupEvent()
     @property
     def exportManager(self) -> CAMExportManager:
         """
-        Returns the API-only Export Manager instance
+        Returns the Export Manager which provides access to the functionality
+        to export in various formats.
         """
         return CAMExportManager()
     @property
-    def inspectionResults(self) -> CAMInspectionResults:
+    def manufacturingModels(self) -> ManufacturingModels:
         """
-        Returns the results collection that provides access to existing measures then pathMeasures and manualMeasures
+        Returns the collection of manufacturing models in the document.
         """
-        return CAMInspectionResults()
+        return ManufacturingModels()
+    @property
+    def documentToolLibrary(self) -> DocumentToolLibrary:
+        """
+        Gets the document ToolLibrary. The ToolLibrary contains all tools used by any operation inside the document.
+        Changes to the original ToolLibrary will not affect any operation because the document ToolLibrary is an
+        independent copy.
+        """
+        return DocumentToolLibrary()
+    @property
+    def ncPrograms(self) -> NCPrograms:
+        """
+        Returns the collection of NC programs in the document.
+        """
+        return NCPrograms()
 
 class CAM3MFExportOptions(CAMExportOptions):
     """
@@ -2372,6 +5097,48 @@ class CAM3MFExportOptions(CAMExportOptions):
         The default value is false.
         """
         pass
+    @property
+    def metadata(self) -> CAM3MFExportMetadataOptions:
+        """
+        Class for setting the meta data options with in the 3mf export
+        """
+        return CAM3MFExportMetadataOptions()
+
+class CAMAdditiveBuildExportOptions(CAMExportOptions):
+    """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
+    Additive buildfile export option. Available with all additive machines except for FFF and DED based machines.
+    Currently picks the first export filter from the print setting's export filter list.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CAMAdditiveBuildExportOptions:
+        return CAMAdditiveBuildExportOptions()
+    @property
+    def exportFilters(self) -> list[CAMAdditiveBuildExportFilter]:
+        """
+        Gets a list of available export filters from the setup's print setting.
+        The export object must be set before using this function.
+        """
+        return [CAMAdditiveBuildExportFilter()]
+    @property
+    def selectedExportFilterId(self) -> str:
+        """
+        Gets and sets the export filter to be used for the export.
+        By default, this is the first entry in the print setting's filter list.
+        """
+        return str()
+    @selectedExportFilterId.setter
+    def selectedExportFilterId(self, value: str):
+        """
+        Gets and sets the export filter to be used for the export.
+        By default, this is the first entry in the print setting's filter list.
+        """
+        pass
 
 class CAMFolder(OperationBase):
     """
@@ -2382,13 +5149,20 @@ class CAMFolder(OperationBase):
     @staticmethod
     def cast(arg) -> CAMFolder:
         return CAMFolder()
-    def createFromTemplate(self, templateFilePath: str) -> core.ObjectCollection:
+    def activate(self) -> bool:
         """
-        Create and add operations, folders or patterns from the specified template file to the end of this folder.
-        templateFilePath : The full path to the template file.
-        Returns the collection containing all of the operations, folders and patterns created from the template file.
+        Sets this object as the default container.
+        Returns true if the activation was successful.
         """
-        return core.ObjectCollection()
+        return bool()
+    def createFromCAMTemplate2(self, input: CreateFromCAMTemplateInput) -> list[OperationBase]:
+        """
+        Create new operations, folders, or patterns from the specified CAMTemplate. They
+        are added to the end of the parent setup.
+        input : Input object that contains the template to create from and the generation mode.
+        Returns an array containing all of the operations, folders and patterns created from the template.
+        """
+        return [OperationBase()]
     @property
     def isActive(self) -> bool:
         """
@@ -2437,29 +5211,103 @@ class CAMFolder(OperationBase):
         """
         return core.ObjectCollection()
 
-class CAMFormlabsExportOptions(CAMExportOptions):
+class CAMHoleRecognition(OperationBase):
     """
-    Formlabs export option. Available only with Formlabs machines. Expects a setup as its export object.
+    Object that represents a hole recognition object in an existing Setup, Folder or Pattern.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> CAMFormlabsExportOptions:
-        return CAMFormlabsExportOptions()
-    @property
-    def areSupportsIncluded(self) -> bool:
+    def cast(arg) -> CAMHoleRecognition:
+        return CAMHoleRecognition()
+    def activate(self) -> bool:
         """
-        Flag toggling if supports should be included in the exported file. The flag is only evaluated if the user has bought the extension.
-        The default value is false.
+        Set this object as the default container.
+        Returns true if the activation was successful.
         """
         return bool()
-    @areSupportsIncluded.setter
-    def areSupportsIncluded(self, value: bool):
+    @property
+    def isActive(self) -> bool:
         """
-        Flag toggling if supports should be included in the exported file. The flag is only evaluated if the user has bought the extension.
-        The default value is false.
+        Gets if this hole recognition is active.
         """
+        return bool()
+    @property
+    def operations(self) -> Operations:
+        """
+        Returns the Operations collection that provides access to existing individual operations
+        in this hole recognition.
+        """
+        return Operations()
+    @property
+    def folders(self) -> CAMFolders:
+        """
+        Returns the Folders collection that provides access to existing folders
+        in this hole recognition.
+        """
+        return CAMFolders()
+    @property
+    def children(self) -> ChildOperationList:
+        """
+        Returns a collection containing all of the immediate (top level) child operations, folders and patterns in this folder
+        in the order they appear in the browser.
+        """
+        return ChildOperationList()
+    @property
+    def parent(self) -> core.Base:
+        """
+        Returns the parent Setup, Folder or Pattern for this Folder.
+        """
+        return core.Base()
+    @property
+    def allOperations(self) -> list[OperationBase]:
+        """
+        Returns an array containing all of the operations in this hole recognition.
+        This includes all operations nested in folders and patterns.
+        """
+        return [OperationBase()]
+
+class CAMTemplateLibrary(CAMLibrary):
+    """
+    The CAMTemplateLibrary provides access to templates. Using this object you can import templates
+    and get existing templates using a URL.
+    """
+    def __init__(self):
         pass
+    @staticmethod
+    def cast(arg) -> CAMTemplateLibrary:
+        return CAMTemplateLibrary()
+    def importTemplate(self, camTemplate: CAMTemplate, destinationUrl: core.URL) -> core.URL:
+        """
+        Import a given template at a specific location. The template will be stored in the library. Throws an error if the given URL is read-only.
+        camTemplate : The template that should be imported.
+        destinationUrl : The URL to the folder where to save the template.
+        Returns the URL of the newly imported template, or null if the import failed.
+        """
+        return core.URL()
+    def updateTemplate(self, camTemplate: CAMTemplate, url: core.URL) -> core.URL:
+        """
+        Update a template in the library. The library substitutes the existing template at the URL by given template. Throws an error if the URL does not already point to an existing template.
+        If the name member of the CAMTemplate doesn't match the name portion of the URL then this will include a rename operation and the returned URL will reflect the new name.
+        camTemplate : The template that should be persisted.
+        url : The URL to the existing template in the library that should be updated.
+        Returns the URL of the updated template, or null if the update failed.
+        """
+        return core.URL()
+    def templateAtURL(self, url: core.URL) -> CAMTemplate:
+        """
+        Gets a specific template specified by the given URL. Returns null if the specified template does not exist.
+        url : The URL to the template to be fetched.
+        Returns the template for a valid URL, returns null otherwise.
+        """
+        return CAMTemplate()
+    def childTemplates(self, url: core.URL) -> list[CAMTemplate]:
+        """
+        Get all templates by the given parent folder URL. Returns null if there is no folder at the URL.
+        url : The URL of the folder to get the templates from.
+        Returns an array of templates contained within the specified folder URL. Returns null if the URL is not valid.
+        """
+        return [CAMTemplate()]
 
 class ChoiceParameterValue(ParameterValue):
     """
@@ -2493,76 +5341,120 @@ class ChoiceParameterValue(ParameterValue):
         """
         pass
 
-class CreateMachineConfigurationsEvent(core.Event):
+class ControllerConfigurationMachineElement(MachineElement):
     """
-    This event is fired from the 'Find network machines' dialog when MachineDescription(s)
-    previously provided during the handling of the SearchNetworkMachines event are selected
-    to add to the user's Machine Library. This event will allow the addins to create
-    machine configurations corresponding to the selected MachineDescription objects.
-    Handlers of this event should create machine configurations corresponding to each
-    MachineDescription present in the 'machineDescriptions' property in the
-    CreateMachineConfigurationsEventArgs and set them on the 'machines' property of the
-    event args. See CreateMachineConfigurationsEventArgs for details. Note that this event is
-    raised on a background thread.
+    Machine element representing controller settings for kinematics.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> CreateMachineConfigurationsEvent:
-        return CreateMachineConfigurationsEvent()
-    def add(self, handler: CreateMachineConfigurationsEventHandler) -> bool:
+    def cast(arg) -> ControllerConfigurationMachineElement:
+        return ControllerConfigurationMachineElement()
+    @staticmethod
+    def staticTypeId() -> str:
         """
-        Add a handler to be notified when the CreateMachineConfigurationsEvent occurs.
-        handler : The handler object to be called when this event is fired.
-        Returns true if the addition of the handler was successful.
+        Identifying name for all elements of this type.
+        Pass this to the itemByType or itemById methods of MachineElements to filter to elements of this type.
+        Returns identifier of this type.
         """
-        return bool()
-    def remove(self, handler: CreateMachineConfigurationsEventHandler) -> bool:
+        return str()
+    @property
+    def axisConfigurations(self) -> MachineAxisConfigurations:
         """
-        Removes a handler from the CreateMachineConfigurationsEvent.
-        handler : The handler object to be removed from the event.
-        Returns true if removal of the handler was successful.
+        Gets the collection of axis configuration objects.
         """
-        return bool()
+        return MachineAxisConfigurations()
+    @property
+    def maxNormalSpeed(self) -> float:
+        """
+        Global maximum non-rapid linear motion speed.
+        Units are cm/s.
+        """
+        return float()
+    @maxNormalSpeed.setter
+    def maxNormalSpeed(self, value: float):
+        """
+        Global maximum non-rapid linear motion speed.
+        Units are cm/s.
+        """
+        pass
+    @property
+    def maxBlockProcessingSpeed(self) -> int:
+        """
+        Maximum block processing rate for the controller.
+        """
+        return int()
+    @maxBlockProcessingSpeed.setter
+    def maxBlockProcessingSpeed(self, value: int):
+        """
+        Maximum block processing rate for the controller.
+        """
+        pass
 
-class CreateMachineConfigurationsEventArgs(core.EventArgs):
+class CurveSelection(GeometrySelection):
     """
-    This EventArgs object will be sent with the CreateMachineConfigurationsEvent.
+    Base class of all curve based geometry selections.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> CreateMachineConfigurationsEventArgs:
-        return CreateMachineConfigurationsEventArgs()
+    def cast(arg) -> CurveSelection:
+        return CurveSelection()
     @property
-    def machineDescriptions(self) -> list[MachineDescription]:
+    def inputGeometry(self) -> list[core.Base]:
         """
-        Gets the collection of MachineDescription objects for which machine configurations
-        must be created. These MachineDescription(s) will be a subset of those previously
-        provided by the addin's SearchNetworkMachinesEventHandler.
-        Returns a list of MachineDescription objects which is a subset of the list that was
-        previously set by this addin on the 'machineDescriptions' property of the
-        SearchNetworkMachinesEventArgs.
+        Get or set the value of the input geometry.
+        If the value originates from a component instead of an occurrence, or an occurrence outside of the CAM environment, then the subpath is checked against the CAM model tree.
+        For some child classes, this may be the same as the value property, but might also consist of fewer elements.
+        Valid elements depend on the capabilities of the derived class. An exception is thrown if the matching fails or the given entity does not match the expected type.
         """
-        return [MachineDescription()]
-    @property
-    def machines(self) -> list[Machine]:
+        return [core.Base()]
+    @inputGeometry.setter
+    def inputGeometry(self, value: list[core.Base]):
         """
-        Gets and sets the list of Machine objects. Machines should be created corresponding to
-        each of the MachineDescription objects provided in the machineDescriptions property.
-        Machines can be created using adsk.cam.Machine.createFromTemplate or
-        adsk.cam.Machine.createFromFile.
-        """
-        return [Machine()]
-    @machines.setter
-    def machines(self, value: list[Machine]):
-        """
-        Gets and sets the list of Machine objects. Machines should be created corresponding to
-        each of the MachineDescription objects provided in the machineDescriptions property.
-        Machines can be created using adsk.cam.Machine.createFromTemplate or
-        adsk.cam.Machine.createFromFile.
+        Get or set the value of the input geometry.
+        If the value originates from a component instead of an occurrence, or an occurrence outside of the CAM environment, then the subpath is checked against the CAM model tree.
+        For some child classes, this may be the same as the value property, but might also consist of fewer elements.
+        Valid elements depend on the capabilities of the derived class. An exception is thrown if the matching fails or the given entity does not match the expected type.
         """
         pass
+
+class DocumentToolLibrary(ToolLibrary):
+    """
+    DocumentToolLibrary provides access to tools used by the document. It supports
+    adding, updating and deleting tools in the document tool library.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> DocumentToolLibrary:
+        return DocumentToolLibrary()
+    def operationsByTool(self, tool: Tool) -> list[Operation]:
+        """
+        Returns all operations that use the given tool. The tool must exist in the document tool library.
+        Raises an error if the tool is not in the document.
+        tool : The tool to search for in operations. The tool must exist in the document.
+        Returns operations using a specific tool.
+        """
+        return [Operation()]
+    def update(self, tool: Tool, updateFeedAndSpeed: bool) -> bool:
+        """
+        Update the given tool in the document tool library. The update applies all changes to the
+        tool in the document tool library and therefore on all operations that use the tool.
+        Will error if the tool does not exist in the document tool library.
+        tool : The tool that should be updated.
+        updateFeedAndSpeed : The id of the Tool in the document that should be updated.
+        Returns true if the update was successful.
+        """
+        return bool()
+    def toolsBySetupOrFolder(self, setupOrFolder: OperationBase) -> list[Tool]:
+        """
+        Returns all tools used in a given setup or folder. Given setup or folder must belong to the document of the DocumentToolLibrary.
+        Raises an error if given operation is not in the document.
+        setupOrFolder : The setup or folder to get tools from. Must belong to the document.
+        Returns tools used by a specific setup or folder.
+        """
+        return [Tool()]
 
 class FloatParameterValue(ParameterValue):
     """
@@ -2585,6 +5477,12 @@ class FloatParameterValue(ParameterValue):
         Get or set the value of the parameter.
         """
         pass
+    @property
+    def type(self) -> FloatParameterValueTypes:
+        """
+        Get the type of the float parameter.
+        """
+        return FloatParameterValueTypes()
 
 class IntegerParameterValue(ParameterValue):
     """
@@ -2608,6 +5506,30 @@ class IntegerParameterValue(ParameterValue):
         """
         pass
 
+class KinematicsMachineElement(MachineElement):
+    """
+    Machine element representing the machine's kinematics tree.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> KinematicsMachineElement:
+        return KinematicsMachineElement()
+    @staticmethod
+    def staticTypeId() -> str:
+        """
+        Identifying name for all elements of this type.
+        Pass this to the itemByType or itemById methods of MachineElements to filter to elements of this type.
+        Returns identifier of this type.
+        """
+        return str()
+    @property
+    def parts(self) -> MachineParts:
+        """
+        Get the root parts collection.
+        """
+        return MachineParts()
+
 class LinearMachineAxis(MachineAxis):
     """
     Object that represents an axis with linear motion (e.g. X, Y, and Z).
@@ -2629,6 +5551,17 @@ class LinearMachineAxis(MachineAxis):
         The unit vector that represents the direction along which the axis will move.
         """
         pass
+
+class LinearMachineAxisConfiguration(MachineAxisConfiguration):
+    """
+    A MachineAxisConfiguration holding settings specific to linear axes.
+    This class currently has no members.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> LinearMachineAxisConfiguration:
+        return LinearMachineAxisConfiguration()
 
 class LinearMachineAxisInput(MachineAxisInput):
     """
@@ -2654,6 +5587,253 @@ class LinearMachineAxisInput(MachineAxisInput):
         """
         pass
 
+class MachineFromFileInput(MachineInput):
+    """
+    Object used as input to create a machine from a local file.
+    It is used by the Machine.create method.
+    The object holds the data needed to create a machine from a local machine file.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineFromFileInput:
+        return MachineFromFileInput()
+    @staticmethod
+    def create(filePath: str) -> MachineFromFileInput:
+        """
+        Creates a MachineFromFileInput object to be used as
+        input for Machine.create method.
+        filePath : The path to a machine file to be processed.
+        The filePath is expected to be an absolute path to the machine file on disk.
+        The newly created "MachineFromFileInput" object in a valid state.
+        """
+        return MachineFromFileInput()
+    @property
+    def filePath(self) -> str:
+        """
+        The path to a file to act as a base for creating a machine from.
+        The filePath is expected to be an absolute path to the local machine file.
+        """
+        return str()
+    @property
+    def ignoreSimulationModel(self) -> bool:
+        """
+        Whether or not to ignore the simulation model
+        when creating/loading the machine.
+        """
+        return bool()
+    @ignoreSimulationModel.setter
+    def ignoreSimulationModel(self, value: bool):
+        """
+        Whether or not to ignore the simulation model
+        when creating/loading the machine.
+        """
+        pass
+
+class MachineFromLibraryInput(MachineInput):
+    """
+    Object used as input to create a machine from library URL.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineFromLibraryInput:
+        return MachineFromLibraryInput()
+    @staticmethod
+    def create(url: core.URL) -> MachineFromLibraryInput:
+        """
+        Creates a MachineFromLibraryInput object to be used as
+        input for Machine.create method, in order to create
+        a machine from a library location.
+        url : The URL path to the library machine.
+        Returns newly created MachineFromLibraryInput object in a valid state.
+        """
+        return MachineFromLibraryInput()
+    @property
+    def url(self) -> core.URL:
+        """
+        The URL path to the library machine.
+        """
+        return core.URL()
+    @property
+    def ignoreSimulationModel(self) -> bool:
+        """
+        Gets and sets whether or not to ignore the simulation model
+        when creating or loading the machine.
+        """
+        return bool()
+    @ignoreSimulationModel.setter
+    def ignoreSimulationModel(self, value: bool):
+        """
+        Gets and sets whether or not to ignore the simulation model
+        when creating or loading the machine.
+        """
+        pass
+
+class MachineFromTemplateInput(MachineInput):
+    """
+    Object used as input to create a machine from a given template.
+    Used by "Machine.create(MachineInput)" method.
+    The object holds the data needed to create a machine based on the specified template.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineFromTemplateInput:
+        return MachineFromTemplateInput()
+    @staticmethod
+    def create(machineTemplate: MachineTemplate) -> MachineFromTemplateInput:
+        """
+        Create a "MachineFromTemplateInput" object to be used as
+        input for "Machine.create(MachineInput)" method.
+        machineTemplate : The template to act as a base for creating a machine from.
+        The newly created "MachineFromTemplateInput" object in a valid state.
+        """
+        return MachineFromTemplateInput()
+    @property
+    def machineTemplate(self) -> MachineTemplate:
+        """
+        Machine template identifier used to generate a certain type of machine.
+        """
+        return MachineTemplate()
+
+class MachineLibrary(CAMLibrary):
+    """
+    The MachineLibrary provides access to machines. Using this object you can import machines
+    and get existing machines using either URL or query to find specific Machines.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MachineLibrary:
+        return MachineLibrary()
+    def createQuery(self, location: LibraryLocations, vendor: str = "", model: str = "") -> MachineQuery:
+        """
+        Creates a new MachineQuery that is used to query the library for machines matching
+        the query.
+        location : The location specifies the LibraryLocations where to search for in the machine library.
+        vendor : The vendor specifies the vendor of the machine. The default empty vendor applies to all machines.
+        model : The model specifies the model of the machine. The default empty model applies to all machines.
+        Returns a new MachineQuery. The query is predefined by given parameter.
+        """
+        return MachineQuery()
+    def importMachine(self, machine: Machine, destinationUrl: core.URL, machineName: str) -> core.URL:
+        """
+        Import a given machine at a specific location. The machine will be stored in the library. Throws an error, if the given URL is read-only.
+        machine : The machine that should be imported.
+        destinationUrl : The URL to the folder where to save the machine.
+        machineName : The name of the machine that should be created due to the import. The name can be extended if the asset already exists at given location to ensure a unique name.
+        Returns the URL of the newly imported machine, or null if the import failed.
+        """
+        return core.URL()
+    def updateMachine(self, url: core.URL, machine: Machine) -> bool:
+        """
+        Update a machine in the library. The library overrides the URL by given machine. Throws an error if the URL does not already point to an existing machine.
+        url : The URL to the existing asset in the library that should be updated.
+        machine : The machine that should be persisted.
+        Returns true if asset was updated successfully, false otherwise.
+        """
+        return bool()
+    def machineAtURL(self, url: core.URL) -> Machine:
+        """
+        Get a specific machine by the given URL. Returns null, if the URL does not exist.
+        url : The URL to the machine to be loaded.
+        Returns the machine for a valid URL, returns null otherwise.
+        """
+        return Machine()
+    def childMachines(self, url: core.URL) -> list[Machine]:
+        """
+        Get all machines by the given parent folder URL. Returns null, if the URL does not exist.
+        url : The URL of the folder to get machines from.
+        Returns the machine for a valid URL, returns null otherwise.
+        """
+        return [Machine()]
+
+class NCProgram(OperationBase):
+    """
+    Object that represents an existing NC program.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> NCProgram:
+        return NCProgram()
+    def updatePostParameters(self, parameters: CAMParameters) -> bool:
+        """
+        Overrides the default post parameters of this NC program with the given user's input.
+        Returns true if the update was successful. False otherwise.
+        """
+        return bool()
+    def postProcess(self, options: NCProgramPostProcessOptions) -> bool:
+        """
+        Creates machine-specific NC code for this NC program.
+        options : NCProgramPostProcessOptions to speficy the behavior on internal warning.
+        Can be null if the default values should be used.
+        If needed it can be created by its static create() method.
+        Returns true if the post process was successful.
+        """
+        return bool()
+    @property
+    def operations(self) -> list[OperationBase]:
+        """
+        Gets and sets the operations which will be included in the NC program.
+        Valid input contains any number of operations, setups or folders.
+        For setups and folders all child operations will be added.
+        Operations will be post processed in setup order, with operations from the same setup grouped together.
+        Setting the nc_program_orderByTool BooleanParameterValue on the parameters property to true will reorder operations across multiple setups to reduce the number of tool changes.
+        """
+        return [OperationBase()]
+    @operations.setter
+    def operations(self, value: list[OperationBase]):
+        """
+        Gets and sets the operations which will be included in the NC program.
+        Valid input contains any number of operations, setups or folders.
+        For setups and folders all child operations will be added.
+        Operations will be post processed in setup order, with operations from the same setup grouped together.
+        Setting the nc_program_orderByTool BooleanParameterValue on the parameters property to true will reorder operations across multiple setups to reduce the number of tool changes.
+        """
+        pass
+    @property
+    def filteredOperations(self) -> list[OperationBase]:
+        """
+        Gets all valid operations derived from the operations property. The list is ordered with respect to the nc_program_oderByTool parameter and conssiders the number of instances in a setup.
+        """
+        return [OperationBase()]
+    @property
+    def postConfiguration(self) -> PostConfiguration:
+        """
+        Gets and sets the post configuration of this NC program.
+        """
+        return PostConfiguration()
+    @postConfiguration.setter
+    def postConfiguration(self, value: PostConfiguration):
+        """
+        Gets and sets the post configuration of this NC program.
+        """
+        pass
+    @property
+    def machine(self) -> Machine:
+        """
+        Gets and sets the machine of this NC program.
+        When a machine is set, "use machine configuration" is automatically set to true.
+        If this machine has a default post assigned, this post will be set for the NC program as well.
+        """
+        return Machine()
+    @machine.setter
+    def machine(self, value: Machine):
+        """
+        Gets and sets the machine of this NC program.
+        When a machine is set, "use machine configuration" is automatically set to true.
+        If this machine has a default post assigned, this post will be set for the NC program as well.
+        """
+        pass
+    @property
+    def postParameters(self) -> CAMParameters:
+        """
+        Gets the post parameters of this NC program.
+        """
+        return CAMParameters()
+
 class Operation(OperationBase):
     """
     Object that represents an operation in an existing Setup, Folder or Pattern.
@@ -2664,12 +5844,6 @@ class Operation(OperationBase):
     def cast(arg) -> Operation:
         return Operation()
     @property
-    def strategyType(self) -> OperationStrategyTypes:
-        """
-        Gets the strategy type for this operation.
-        """
-        return OperationStrategyTypes()
-    @property
     def isToolpathValid(self) -> bool:
         """
         Gets if the toolpath for this operation is currently valid. (has not become invalidated by model changes).
@@ -2678,13 +5852,7 @@ class Operation(OperationBase):
     @property
     def isGenerating(self) -> bool:
         """
-        Gets if the toolpath is in the process of generating.
-        """
-        return bool()
-    @property
-    def hasWarning(self) -> bool:
-        """
-        Gets if problems were encountered when generating the toolpath for this operation.
+        Gets if the operation is being generated.
         """
         return bool()
     @property
@@ -2708,33 +5876,181 @@ class Operation(OperationBase):
     @property
     def generatingProgress(self) -> str:
         """
-        Gets the toolpath generation progress value for this operation.
+        Gets the generation progress value for this operation.
         """
         return str()
     @property
-    def toolJson(self) -> str:
+    def tool(self) -> Tool:
         """
-        Get or set the tool in JSON format for this operation. Adds tool to the document.
+        Get or set the tool for this operation. The document's tool library will be updated accordingly.
+        The tool instance returned is a copy and therefore is not referenced by the operation.
+        To change the tool of the operation, the new tool must be assigned to the operation.
+        Setting a tool will override the current preset and will fall back to the default preset of the new tool.
         """
-        return str()
-    @toolJson.setter
-    def toolJson(self, value: str):
+        return Tool()
+    @tool.setter
+    def tool(self, value: Tool):
         """
-        Get or set the tool in JSON format for this operation. Adds tool to the document.
+        Get or set the tool for this operation. The document's tool library will be updated accordingly.
+        The tool instance returned is a copy and therefore is not referenced by the operation.
+        To change the tool of the operation, the new tool must be assigned to the operation.
+        Setting a tool will override the current preset and will fall back to the default preset of the new tool.
         """
         pass
     @property
-    def toolPresetId(self) -> str:
+    def toolPreset(self) -> ToolPreset:
         """
-        Get or set the id of the tool preset to be used. Must be valid for the applied tool.
+        Get or set the tool preset to be used. Must be a valid preset of the already assigned tool. Returns null if the operation has no tool or preset.
         """
-        return str()
-    @toolPresetId.setter
-    def toolPresetId(self, value: str):
+        return ToolPreset()
+    @toolPreset.setter
+    def toolPreset(self, value: ToolPreset):
         """
-        Get or set the id of the tool preset to be used. Must be valid for the applied tool.
+        Get or set the tool preset to be used. Must be a valid preset of the already assigned tool. Returns null if the operation has no tool or preset.
         """
         pass
+
+class OptimizedOrientationResults(GeneratedData):
+    """
+    Collection of OptimizedOrientationResult instances associated with a given optimized orientation object inside an additive setup.
+    The number of instances is the number of results given and the initial orientation result.
+    The initial orientation will contain the orientation matrix, but not the other values calculated by the orientation operation.
+    Setting an OptimizedOrientationResult as the currentOrientationResult will transform the Occurrence assigned to the orientation operation.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> OptimizedOrientationResults:
+        return OptimizedOrientationResults()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> OptimizedOrientationResult:
+        return None
+    def __iter__(self) -> Iterator[OptimizedOrientationResult]:
+        return None
+    def item(self, index: int) -> OptimizedOrientationResult:
+        """
+        Gets the desired orientation result at the given index. The list is ordered given the orientation parameters of the parent orientation operation.
+        """
+        return OptimizedOrientationResult()
+    @property
+    def initialOrientationResult(self) -> OptimizedOrientationResult:
+        """
+        Gets the initial orientation of the component before any result has been applied.
+        """
+        return OptimizedOrientationResult()
+    @property
+    def currentOrientationResult(self) -> OptimizedOrientationResult:
+        """
+        Gets or sets the desired OrientationResult.
+        When setting, the orientation matrix is applied to the component selected in the parent orientation operation, possibly invalidating other operations.
+        """
+        return OptimizedOrientationResult()
+    @currentOrientationResult.setter
+    def currentOrientationResult(self, value: OptimizedOrientationResult):
+        """
+        Gets or sets the desired OrientationResult.
+        When setting, the orientation matrix is applied to the component selected in the parent orientation operation, possibly invalidating other operations.
+        """
+        pass
+    @property
+    def count(self) -> int:
+        """
+        The number of items in the collection.
+        """
+        return int()
+
+class PostLibrary(CAMLibrary):
+    """
+    The PostLibrary provides access to post configurations. Using this object you can import post configurations
+    and get existing post configurations using either a URL or query to find specific post configurations.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PostLibrary:
+        return PostLibrary()
+    def createQuery(self, location: LibraryLocations) -> PostConfigurationQuery:
+        """
+        Creates a new PostConfigurationQuery that is used to query the library for post configurations matching
+        the query.
+        location : The location specifies the LibraryLocations where to search for in the post library.
+        Returns a new PostConfigurationQuery. The query is predefined by given parameter.
+        """
+        return PostConfigurationQuery()
+    def importPostConfiguration(self, postConfig: PostConfiguration, destinationUrl: core.URL, postName: str) -> core.URL:
+        """
+        Import a given post configuration at a specific location. The post configuration will be stored in the library. Throws an error, if the given URL is read-only.
+        postConfig : The post configuration that should be imported.
+        destinationUrl : The URL to the folder where to save the post configuration.
+        postName : The name of the post configuration that should be created due to the import. The name can be extended if the name already exists at given location to ensure a unique name.
+        Returns the URL of the newly imported post configuration, or null if the import failed.
+        """
+        return core.URL()
+    def postConfigurationAtURL(self, url: core.URL) -> PostConfiguration:
+        """
+        Get a specific post configuration by the given URL. Returns null, if the URL does not exist.
+        url : The URL to the post configuration to be loaded.
+        Returns the post configuration for a valid URL, returns null otherwise.
+        """
+        return PostConfiguration()
+    def childPostConfigurations(self, url: core.URL) -> list[PostConfiguration]:
+        """
+        Get all posts by the given parent folder URL. Returns null, if the URL does not exist.
+        url : The URL of the folder to get post configurations from.
+        Returns all children posts for a valid URL, returns null otherwise.
+        """
+        return [PostConfiguration()]
+
+class PrintSettingLibrary(CAMLibrary):
+    """
+    The PrintSettingLibrary provides access to PrintSettings. Using this object you can import PrintSettings
+    and get existing PrintSettings using either URL or query to find specific PrintSetting.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PrintSettingLibrary:
+        return PrintSettingLibrary()
+    def createQuery(self, location: LibraryLocations) -> PrintSettingQuery:
+        """
+        Creates a new PrintSettingQuery that is used to query the library for PrintSettings matching
+        the query.
+        location : The location specifies the LibraryLocations where to search for in the PrintSetting library.
+        Returns a new PrintSettingQuery. The query is predefined by given parameter.
+        """
+        return PrintSettingQuery()
+    def importPrintSetting(self, printSetting: PrintSetting, destinationUrl: core.URL, printSettingName: str) -> core.URL:
+        """
+        Import a given PrintSetting at a specific location. The PrintSetting will be stored in the library. Throws an error if the given URL is read-only.
+        printSetting : The PrintSetting that should be imported.
+        destinationUrl : The URL to the folder where to save the PrintSetting.
+        printSettingName : The name that should be assigned to imported PrintSetting. The name can be extended if there already exists a PrintSetting at given location to ensure a unique name.
+        Returns the URL of the newly imported PrintSetting, or null if the import failed.
+        """
+        return core.URL()
+    def updatePrintSetting(self, url: core.URL, printSetting: PrintSetting) -> bool:
+        """
+        Update a PrintSetting in the library. The library overrides the URL by given PrintSetting. Throws an error if the URL does not already point to an existing printSetting.
+        url : The URL to the existing asset in the library that should be updated.
+        printSetting : The PrintSetting that should be persisted.
+        Returns true if asset was updated successfully, false otherwise.
+        """
+        return bool()
+    def printSettingAtURL(self, url: core.URL) -> PrintSetting:
+        """
+        Get a specific PrintSetting by the given URL. Returns null if the URL does not exist.
+        url : The URL to the PrintSetting to be loaded.
+        Returns the PrintSetting for a valid URL, returns null otherwise.
+        """
+        return PrintSetting()
+    def childPrintSettings(self, url: core.URL) -> list[PrintSetting]:
+        """
+        Get all PrintSettings by the given parent folder URL. Returns null, if the URL does not exist.
+        url : The URL of the folder to get PrintSettings from.
+        Returns the PrintSetting for a valid URL, returns null otherwise.
+        """
+        return [PrintSetting()]
 
 class RotaryMachineAxis(MachineAxis):
     """
@@ -2755,6 +6071,68 @@ class RotaryMachineAxis(MachineAxis):
     def rotationAxis(self, value: core.InfiniteLine3D):
         """
         The infinite line that defines the direction and location of the axis of rotation.
+        """
+        pass
+
+class RotaryMachineAxisConfiguration(MachineAxisConfiguration):
+    """
+    A MachineAxisConfiguration holding settings specific to rotary axes.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RotaryMachineAxisConfiguration:
+        return RotaryMachineAxisConfiguration()
+    @property
+    def wrapAroundAtRange(self) -> MachineAxisRange:
+        """
+        Specify the range that the axis value wraps around for unlimited axes.
+        If there are no wrap around limits then wrapAroundAtRange is infinite.
+        Units are radians.
+        """
+        return MachineAxisRange()
+    @wrapAroundAtRange.setter
+    def wrapAroundAtRange(self, value: MachineAxisRange):
+        """
+        Specify the range that the axis value wraps around for unlimited axes.
+        If there are no wrap around limits then wrapAroundAtRange is infinite.
+        Units are radians.
+        """
+        pass
+    @property
+    def reset(self) -> MachineResetOptions:
+        """
+        Specify when to reset the initial axis position.
+        """
+        return MachineResetOptions()
+    @reset.setter
+    def reset(self, value: MachineResetOptions):
+        """
+        Specify when to reset the initial axis position.
+        """
+        pass
+    @property
+    def useToolCenterPointControl(self) -> bool:
+        """
+        Specify if the axis supports Tool Center Point Control (TCP).
+        """
+        return bool()
+    @useToolCenterPointControl.setter
+    def useToolCenterPointControl(self, value: bool):
+        """
+        Specify if the axis supports Tool Center Point Control (TCP).
+        """
+        pass
+    @property
+    def rotaryPreference(self) -> MachineAnglePreferences:
+        """
+        Specify the preferred angle direction at the beginning of an operation.
+        """
+        return MachineAnglePreferences()
+    @rotaryPreference.setter
+    def rotaryPreference(self, value: MachineAnglePreferences):
+        """
+        Specify the preferred angle direction at the beginning of an operation.
         """
         pass
 
@@ -2784,208 +6162,6 @@ class RotaryMachineAxisInput(MachineAxisInput):
         """
         pass
 
-class SandvikIntegrationEvent(core.Event):
-    """
-    
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> SandvikIntegrationEvent:
-        return SandvikIntegrationEvent()
-    def add(self, handler: SandvikIntegrationEventHandler) -> bool:
-        """
-        Add a handler to be notified when the SandvikIntegrationEvent occurs.
-        handler : The handler object to be called when this event is fired.
-        Returns true if the addition of the handler was successful.
-        """
-        return bool()
-    def remove(self, handler: SandvikIntegrationEventHandler) -> bool:
-        """
-        Removes a handler from the SandvikIntegrationEvent.
-        handler : The handler object to be removed from the event.
-        Returns true if removal of the handler was successful.
-        """
-        return bool()
-
-class SandvikIntegrationEventArgs(core.EventArgs):
-    """
-    This EventArgs object will be sent with the SandvikIntegrationEvent.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> SandvikIntegrationEventArgs:
-        return SandvikIntegrationEventArgs()
-    @property
-    def action(self) -> str:
-        """
-        The action to be performed -- by convention with Sandvik.
-        Actions include:
-        "selectAssembly"
-        "getToolRecommendation"
-        "getCuttingData"
-        "setMaterial"
-        """
-        return str()
-    @property
-    def contextObject(self) -> OperationBase:
-        """
-        Provides access to the object that is being edited or created.
-        """
-        return OperationBase()
-
-class SandvikPreIntegrationEvent(core.Event):
-    """
-    
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> SandvikPreIntegrationEvent:
-        return SandvikPreIntegrationEvent()
-    def add(self, handler: SandvikPreIntegrationEventHandler) -> bool:
-        """
-        Add a handler to be notified when the SandvikPreIntegrationEvent occurs.
-        handler : The handler object to be called when this event is fired.
-        Returns true if the addition of the handler was successful.
-        """
-        return bool()
-    def remove(self, handler: SandvikPreIntegrationEventHandler) -> bool:
-        """
-        Removes a handler from the SandvikPreIntegrationEvent.
-        handler : The handler object to be removed from the event.
-        Returns true if removal of the handler was successful.
-        """
-        return bool()
-
-class SandvikPreIntegrationEventArgs(core.EventArgs):
-    """
-    This EventArgs object will be sent with the SandvikPreIntegrationEvent.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> SandvikPreIntegrationEventArgs:
-        return SandvikPreIntegrationEventArgs()
-    @property
-    def contextObject(self) -> OperationBase:
-        """
-        Provides access to the object that is being edited or created.
-        """
-        return OperationBase()
-    @property
-    def showSetMaterial(self) -> bool:
-        """
-        Initially false, this should be set to true to enable the display of the "Set Material"
-        action on the Setup create/edit dialog.
-        """
-        return bool()
-    @showSetMaterial.setter
-    def showSetMaterial(self, value: bool):
-        """
-        Initially false, this should be set to true to enable the display of the "Set Material"
-        action on the Setup create/edit dialog.
-        """
-        pass
-    @property
-    def showSelectToolAssembly(self) -> bool:
-        """
-        Initially false, this should be set to true to enable the display of the "Select Tool Assembly"
-        action on the Operation create/edit dialog.
-        """
-        return bool()
-    @showSelectToolAssembly.setter
-    def showSelectToolAssembly(self, value: bool):
-        """
-        Initially false, this should be set to true to enable the display of the "Select Tool Assembly"
-        action on the Operation create/edit dialog.
-        """
-        pass
-    @property
-    def showGetToolRecommendation(self) -> bool:
-        """
-        Initially false, this should be set to true to enable the display of the "Get Tool Recommendation"
-        action on the Operation create/edit dialog.
-        """
-        return bool()
-    @showGetToolRecommendation.setter
-    def showGetToolRecommendation(self, value: bool):
-        """
-        Initially false, this should be set to true to enable the display of the "Get Tool Recommendation"
-        action on the Operation create/edit dialog.
-        """
-        pass
-    @property
-    def showGetCuttingData(self) -> bool:
-        """
-        Initially false, this should be set to true to enable the display of the "Get Cutting Data"
-        action on the Operation create/edit dialog.
-        """
-        return bool()
-    @showGetCuttingData.setter
-    def showGetCuttingData(self, value: bool):
-        """
-        Initially false, this should be set to true to enable the display of the "Get Cutting Data"
-        action on the Operation create/edit dialog.
-        """
-        pass
-
-class SearchNetworkMachinesEvent(core.Event):
-    """
-    This event is fired from the 'Find network machines' dialog when the corresponding
-    addin is selected from the vendor dropdown, or when 'search all vendors' is
-    selected. This event will allow the addin to initiate an enumeration of machines on
-    the network. MachineDescription objects should be created for each machine found, and
-    an list of those MachineDescription objects should be set on the 'machineDescriptions'
-    property of the SearchNetworkMachinesEventArgs. Nothing should be set to signify no
-    machines found. See SearchNetworkMachinesEventArgs and MachineDescription for details.
-    Note that this event is raised on a background thread.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> SearchNetworkMachinesEvent:
-        return SearchNetworkMachinesEvent()
-    def add(self, handler: SearchNetworkMachinesEventHandler) -> bool:
-        """
-        Add a handler to be notified when the SearchNetworkMachinesEvent occurs.
-        handler : The handler object to be called when this event is fired.
-        Returns true if the addition of the handler was successful.
-        """
-        return bool()
-    def remove(self, handler: SearchNetworkMachinesEventHandler) -> bool:
-        """
-        Removes a handler from the SearchNetworkMachinesEvent.
-        handler : The handler object to be removed from the event.
-        Returns true if removal of the handler was successful.
-        """
-        return bool()
-
-class SearchNetworkMachinesEventArgs(core.EventArgs):
-    """
-    This EventArgs object will be sent with the SearchNetworkMachinesEvent.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> SearchNetworkMachinesEventArgs:
-        return SearchNetworkMachinesEventArgs()
-    @property
-    def machineDescriptions(self) -> list[MachineDescription]:
-        """
-        Gets and sets a list of MachineDescription objects representing machines found on the
-        network. Do not set anything to signify no machine found.
-        """
-        return [MachineDescription()]
-    @machineDescriptions.setter
-    def machineDescriptions(self, value: list[MachineDescription]):
-        """
-        Gets and sets a list of MachineDescription objects representing machines found on the
-        network. Do not set anything to signify no machine found.
-        """
-        pass
-
 class Setup(OperationBase):
     """
     Object that represents an existing Setup.
@@ -2995,13 +6171,20 @@ class Setup(OperationBase):
     @staticmethod
     def cast(arg) -> Setup:
         return Setup()
-    def createFromTemplate(self, templateFilePath: str) -> core.ObjectCollection:
+    def activate(self) -> bool:
         """
-        Create and add operations, folders or patterns from the specified template file to the end of this setup.
-        templateFilePath : The full path to the template file.
-        Returns the collection containing all of the operations, folders and patterns created from the template file.
+        Sets this object as the default container.
+        Returns true if the activation was successful.
         """
-        return core.ObjectCollection()
+        return bool()
+    def createFromCAMTemplate2(self, input: CreateFromCAMTemplateInput) -> list[OperationBase]:
+        """
+        Create new operations, folders, or patterns from the specified CAMTemplate. They
+        are added to the end of the parent setup.
+        input : Input object that contains the template to create from and the generation mode.
+        Returns an array containing all of the operations, folders and patterns created from the template.
+        """
+        return [OperationBase()]
     @property
     def operationType(self) -> OperationTypes:
         """
@@ -3039,49 +6222,120 @@ class Setup(OperationBase):
     @property
     def children(self) -> ChildOperationList:
         """
-        Returns a collection containing all of the immediate (top level) child operations, folders and patterns in this setup
+        Returns a collection containing all of the immediate (top level) child operations, folders and patterns in this setup,
         in the order they appear in the browser.
         """
         return ChildOperationList()
     @property
     def allOperations(self) -> core.ObjectCollection:
         """
-        Gets a collection containing all of the operations in this setup.
+        Returns an ObjectCollection containing all of the operations in this setup.
         This includes all operations nested in folders and patterns.
         """
         return core.ObjectCollection()
     @property
     def models(self) -> core.ObjectCollection:
         """
-        Gets and sets the bodies associated with the setup.  Passing in an empty ObjectCollection
-        will remove all current bodies.  Valid input is MeshBody and/or BRepBody objects.
+        Gets and sets the input models associated with the setup.  Passing in an empty ObjectCollection
+        will remove all current inputs.  Valid collection items are Occurrence, BRepBody, or MeshBody.
         """
         return core.ObjectCollection()
     @models.setter
     def models(self, value: core.ObjectCollection):
+        """
+        Gets and sets the input models associated with the setup.  Passing in an empty ObjectCollection
+        will remove all current inputs.  Valid collection items are Occurrence, BRepBody, or MeshBody.
+        """
+        pass
+    @property
+    def fixtures(self) -> core.ObjectCollection:
+        """
+        Gets and sets the fixtures associated with the setup.
+        To be able to set models as fixtures, the fixturesEnabled property has to be set first.
+        """
+        return core.ObjectCollection()
+    @fixtures.setter
+    def fixtures(self, value: core.ObjectCollection):
+        """
+        Gets and sets the fixtures associated with the setup.
+        To be able to set models as fixtures, the fixturesEnabled property has to be set first.
+        """
+        pass
+    @property
+    def stockSolids(self) -> core.ObjectCollection:
+        """
+        Gets and sets the stock solids associated with the setup. StockMode has to be set to `SolidStock` otherwise this will throw an error.
+        """
+        return core.ObjectCollection()
+    @stockSolids.setter
+    def stockSolids(self, value: core.ObjectCollection):
+        """
+        Gets and sets the stock solids associated with the setup. StockMode has to be set to `SolidStock` otherwise this will throw an error.
+        """
+        pass
+    @property
+    def machine(self) -> Machine:
+        """
+        Gets and sets the Machine associated with the setup. The returned Machine is a transient copy, so the Machine needs to be set to the Setup again to apply any changes.
+        
+        Note: At the moment it is not possible to set an additive machine.
+        """
+        return Machine()
+    @machine.setter
+    def machine(self, value: Machine):
+        """
+        Gets and sets the Machine associated with the setup. The returned Machine is a transient copy, so the Machine needs to be set to the Setup again to apply any changes.
+        
+        Note: At the moment it is not possible to set an additive machine.
+        """
+        pass
+    @property
+    def stockMode(self) -> SetupStockModes:
+        """
+        Gets and sets the bodies associated with the setup.  Passing in an empty ObjectCollection
+        will remove all current bodies.  Valid input is MeshBody and/or BRepBody objects.
+        """
+        return SetupStockModes()
+    @stockMode.setter
+    def stockMode(self, value: SetupStockModes):
         """
         Gets and sets the bodies associated with the setup.  Passing in an empty ObjectCollection
         will remove all current bodies.  Valid input is MeshBody and/or BRepBody objects.
         """
         pass
     @property
-    def fixtures(self) -> core.ObjectCollection:
+    def workCoordinateSystem(self) -> core.Matrix3D:
         """
-        Gets the fixtures associated with the setup.
+        Gets the Work Coordinate System associated with the setup as 4x4 matrix. From Matrix3D,
+        Orientation and Origin data can be fetched.
         """
-        return core.ObjectCollection()
+        return core.Matrix3D()
     @property
-    def stockSolids(self) -> core.ObjectCollection:
+    def fixtureEnabled(self) -> bool:
         """
-        Gets the stock solids associated with the setup.
+        Set this value to enable the use of fixtures for this setup.
+        To then set the fixture models themselves use the `fixtures` property.
         """
-        return core.ObjectCollection()
+        return bool()
+    @fixtureEnabled.setter
+    def fixtureEnabled(self, value: bool):
+        """
+        Set this value to enable the use of fixtures for this setup.
+        To then set the fixture models themselves use the `fixtures` property.
+        """
+        pass
     @property
-    def machine(self) -> Machine:
+    def printSetting(self) -> PrintSetting:
         """
-        Gets the Machine associated with the setup.
+        Gets and sets the PrintSetting associated with the setup.
         """
-        return Machine()
+        return PrintSetting()
+    @printSetting.setter
+    def printSetting(self, value: PrintSetting):
+        """
+        Gets and sets the PrintSetting associated with the setup.
+        """
+        pass
 
 class SetupChangeEvent(core.Event):
     """
@@ -3200,31 +6454,50 @@ class StringParameterValue(ParameterValue):
         """
         pass
 
-class CadMultiPointOnSurfaceParameterValue(CadObjectParameterValue):
+class ToolLibraries(CAMLibrary):
     """
-    A parameter value that is a CadMultiPointOnSurface.
+    The ToolLibraries object provides utilities to access, import and update tool libraries.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> CadMultiPointOnSurfaceParameterValue:
-        return CadMultiPointOnSurfaceParameterValue()
-    @property
-    def values(self) -> list[core.Point3D]:
+    def cast(arg) -> ToolLibraries:
+        return ToolLibraries()
+    def importToolLibrary(self, toolLibrary: ToolLibrary, destinationUrl: core.URL, libraryName: str) -> core.URL:
         """
-        Get/Set the values of the parameter as a vector of Point3D positions.
-        Points are in CM units.
-        Points are in model coordinates.
+        Import a given ToolLibrary from a specific location. The imported ToolLibrary can be accessed
+        through this ToolLibraries object. Throws an error, if the given URL is read-only.
+        toolLibrary : The ToolLibrary that should be imported.
+        destinationUrl : The URL to the parent folder where the imported tool library will be saved.
+        libraryName : The name of the library that should be created due to the import. If the specified name already
+        exists, a number will be added to the name to ensure it is unique.
+        Returns the URL of the newly imported tool library, or null if the import failed.
         """
-        return [core.Point3D()]
-    @values.setter
-    def values(self, value: list[core.Point3D]):
+        return core.URL()
+    def updateToolLibrary(self, url: core.URL, toolLibrary: ToolLibrary) -> bool:
         """
-        Get/Set the values of the parameter as a vector of Point3D positions.
-        Points are in CM units.
-        Points are in model coordinates.
+        Update ToolLibrary in ToolLibraries. Overrides the URL by given ToolLibrary.
+        Throws an error if the URL does not already point to an existing ToolLibrary.
+        url : The URL to the existing asset in the ToolLibraries that should be updated.
+        toolLibrary : The ToolLibrary that should be persisted.
+        Returns true if asset was updated successfully, false otherwise.
         """
-        pass
+        return bool()
+    def toolLibraryAtURL(self, url: core.URL) -> ToolLibrary:
+        """
+        Get a specific ToolLibrary by given URL. Returns null, if the URL does not exist.
+        url : The URL to the ToolLibrary to be loaded.
+        Returns the ToolLibrary for a valid URL, returns null otherwise.
+        """
+        return ToolLibrary()
+    def createQuery(self, location: LibraryLocations) -> ToolQuery:
+        """
+        Creates a new ToolQuery that is used to query the library for tools matching
+        the query.
+        location : The location specifies the LibraryLocations where to search.
+        Returns a new ToolQuery. The query is predefined by given parameter.
+        """
+        return ToolQuery()
 
 class CAMPattern(CAMFolder):
     """
@@ -3235,3 +6508,384 @@ class CAMPattern(CAMFolder):
     @staticmethod
     def cast(arg) -> CAMPattern:
         return CAMPattern()
+
+class ChainSelection(CurveSelection):
+    """
+    Represents a chain type of curve selection. Allows B-Rep edges and sketch geometry for the inputGeometry property.
+    The automatic tool side detection is currently disabled when using the API, thus the side is determined
+    based on the direction of the first edge and the z-axis of the tool orientation.
+    
+    This class overrides the value property of its GeometrySelection parent to return the result edge selection.
+    The result may contain more edges than the input if gaps between the desired start and end edge were automatically filled.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ChainSelection:
+        return ChainSelection()
+    @property
+    def isOpen(self) -> bool:
+        """
+        Property to get or set if an open contour should be closed or not.
+        If true and the input does not specify a closed contour, additional curve segments will be generated to close the contour.
+        """
+        return bool()
+    @isOpen.setter
+    def isOpen(self, value: bool):
+        """
+        Property to get or set if an open contour should be closed or not.
+        If true and the input does not specify a closed contour, additional curve segments will be generated to close the contour.
+        """
+        pass
+    @property
+    def isOpenAllowed(self) -> bool:
+        """
+        Property to specify if the underlying CadContours2DParameterValue allows open contours.
+        Some examples of some open contours are adaptive clearing 3d and swarf. And, some examples
+        of closed contours are face and machining boundary.
+        """
+        return bool()
+    @property
+    def isReverted(self) -> bool:
+        """
+        Property to control if the curve is reverted or not. The curve needs to be reverted,
+        if Fusion's guess does not match the user's expectation.
+        
+        The initial tool placement depends on the first input edge or sketch line and the height
+        of the bordering faces or sketch boundaries, with the tool being placed outside of the higher face or sketch boundary.
+        """
+        return bool()
+    @isReverted.setter
+    def isReverted(self, value: bool):
+        """
+        Property to control if the curve is reverted or not. The curve needs to be reverted,
+        if Fusion's guess does not match the user's expectation.
+        
+        The initial tool placement depends on the first input edge or sketch line and the height
+        of the bordering faces or sketch boundaries, with the tool being placed outside of the higher face or sketch boundary.
+        """
+        pass
+    @property
+    def extensionMethod(self) -> ExtensionMethods:
+        """
+        Property that gets and sets extension method to use. The default is TangentExtension.
+        Only applicable to open contours.
+        """
+        return ExtensionMethods()
+    @extensionMethod.setter
+    def extensionMethod(self, value: ExtensionMethods):
+        """
+        Property that gets and sets extension method to use. The default is TangentExtension.
+        Only applicable to open contours.
+        """
+        pass
+    @property
+    def extensionType(self) -> ExtensionTypes:
+        """
+        Property that gets and sets the desired extension type method. The default is DistanceCap.
+        This is only applicable to open contours.
+        """
+        return ExtensionTypes()
+    @extensionType.setter
+    def extensionType(self, value: ExtensionTypes):
+        """
+        Property that gets and sets the desired extension type method. The default is DistanceCap.
+        This is only applicable to open contours.
+        """
+        pass
+    @property
+    def startExtensionLength(self) -> float:
+        """
+        Property that gets and sets the length of the extension of an open curve at the start of the chain.
+        This is only applicable to open contours and when DistanceCap is chosen as the extension cap.
+        """
+        return float()
+    @startExtensionLength.setter
+    def startExtensionLength(self, value: float):
+        """
+        Property that gets and sets the length of the extension of an open curve at the start of the chain.
+        This is only applicable to open contours and when DistanceCap is chosen as the extension cap.
+        """
+        pass
+    @property
+    def endExtensionLength(self) -> float:
+        """
+        Property that gets and sets the length of the extension of an open curve at the end of the chain.
+        The value is specified in centimeters. This is only applicable to open contours and when DistanceCap
+        is chosen as the extension cap.
+        """
+        return float()
+    @endExtensionLength.setter
+    def endExtensionLength(self, value: float):
+        """
+        Property that gets and sets the length of the extension of an open curve at the end of the chain.
+        The value is specified in centimeters. This is only applicable to open contours and when DistanceCap
+        is chosen as the extension cap.
+        """
+        pass
+
+class FaceContourSelection(CurveSelection):
+    """
+    Represents a face type of curve selection. It allows BRepFace objects for the input geometry.
+    Overrides the GeometrySelection's value method to include other faces if the isSelectingSamePlaneFaces property is true and the selection has been applied.
+    The result of the value property call may contain duplicates.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> FaceContourSelection:
+        return FaceContourSelection()
+    @property
+    def loopType(self) -> LoopTypes:
+        """
+        Property to get and set the desired loop type. The default is AllLoops.
+        """
+        return LoopTypes()
+    @loopType.setter
+    def loopType(self, value: LoopTypes):
+        """
+        Property to get and set the desired loop type. The default is AllLoops.
+        """
+        pass
+    @property
+    def sideType(self) -> SideTypes:
+        """
+        Property to get and set the desired side type. The default is StartOutside.
+        """
+        return SideTypes()
+    @sideType.setter
+    def sideType(self, value: SideTypes):
+        """
+        Property to get and set the desired side type. The default is StartOutside.
+        """
+        pass
+    @property
+    def isSelectingSamePlaneFaces(self) -> bool:
+        """
+        Property to get and set if all planar faces lying in the same plane as the selected face should be automatically selected as well.
+        """
+        return bool()
+    @isSelectingSamePlaneFaces.setter
+    def isSelectingSamePlaneFaces(self, value: bool):
+        """
+        Property to get and set if all planar faces lying in the same plane as the selected face should be automatically selected as well.
+        """
+        pass
+
+class PocketRecognitionSelection(CurveSelection):
+    """
+    Pocket type curve selection. It searches for pockets matching the criteria on the selected bodies
+    The result of the value property call may contain duplicates.
+    See also RecognizedPockets for the ability to analyze the pockets
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PocketRecognitionSelection:
+        return PocketRecognitionSelection()
+    @property
+    def isSetupModelSelected(self) -> bool:
+        """
+        Flag to include all B-Rep bodies set as the setup models.
+        """
+        return bool()
+    @isSetupModelSelected.setter
+    def isSetupModelSelected(self, value: bool):
+        """
+        Flag to include all B-Rep bodies set as the setup models.
+        """
+        pass
+    @property
+    def areHolesIncluded(self) -> bool:
+        """
+        Flag to interpret holes as pockets.
+        """
+        return bool()
+    @areHolesIncluded.setter
+    def areHolesIncluded(self, value: bool):
+        """
+        Flag to interpret holes as pockets.
+        """
+        pass
+    @property
+    def minimumHoleDiameter(self) -> float:
+        """
+        Lower bound for the diameter for the hole detection. It can only be set if areHoldeIncluded is set to true.
+        """
+        return float()
+    @minimumHoleDiameter.setter
+    def minimumHoleDiameter(self, value: float):
+        """
+        Lower bound for the diameter for the hole detection. It can only be set if areHoldeIncluded is set to true.
+        """
+        pass
+    @property
+    def minimumCornerRadius(self) -> float:
+        """
+        The smallest corner radius that can appear in a pocket to machine.
+        """
+        return float()
+    @minimumCornerRadius.setter
+    def minimumCornerRadius(self, value: float):
+        """
+        The smallest corner radius that can appear in a pocket to machine.
+        """
+        pass
+    @property
+    def maximumCornerRadius(self) -> float:
+        """
+        The largest corner radius that can appear in a pocket to machine.
+        """
+        return float()
+    @maximumCornerRadius.setter
+    def maximumCornerRadius(self, value: float):
+        """
+        The largest corner radius that can appear in a pocket to machine.
+        """
+        pass
+    @property
+    def minimumPocketDepth(self) -> float:
+        """
+        The shallowest pocket (measured from top to bottom) to machine.
+        """
+        return float()
+    @minimumPocketDepth.setter
+    def minimumPocketDepth(self, value: float):
+        """
+        The shallowest pocket (measured from top to bottom) to machine.
+        """
+        pass
+    @property
+    def maximumPocketDepth(self) -> float:
+        """
+        The deepest pocket (measured from top to bottom) to machine.
+        """
+        return float()
+    @maximumPocketDepth.setter
+    def maximumPocketDepth(self, value: float):
+        """
+        The deepest pocket (measured from top to bottom) to machine.
+        """
+        pass
+
+class PocketSelection(CurveSelection):
+    """
+    Pocket type for a curve selection. Allows planar BREP face selections for the input geometry.
+    Overrides the GeometrySelection's the value property to include other faces if isSelectingSamePlaneFaces is set to true and the selection has been applied.
+    The result of the value property call may contain duplicates.
+    Note: selecting arbitrary faces, only planar faces are actually added to the list of faces to work with.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PocketSelection:
+        return PocketSelection()
+    @property
+    def extensionMethod(self) -> ExtensionMethods:
+        """
+        The desired extension method. TangentExtension by default.
+        """
+        return ExtensionMethods()
+    @extensionMethod.setter
+    def extensionMethod(self, value: ExtensionMethods):
+        """
+        The desired extension method. TangentExtension by default.
+        """
+        pass
+    @property
+    def isSelectingSamePlaneFaces(self) -> bool:
+        """
+        True if all planar faces lying in the same plane as the selected face should be automatically selected as well.
+        False by default.
+        """
+        return bool()
+    @isSelectingSamePlaneFaces.setter
+    def isSelectingSamePlaneFaces(self, value: bool):
+        """
+        True if all planar faces lying in the same plane as the selected face should be automatically selected as well.
+        False by default.
+        """
+        pass
+
+class SilhouetteSelection(CurveSelection):
+    """
+    Represents a silhouette type of curve selection. Allows BRepBody selections for the input geometry.
+    Overrides the GeometrySelection's the value property to include setup bodies if isSetupModelSelected is set to true and the selection has been applied.
+    The results may contain duplicates.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SilhouetteSelection:
+        return SilhouetteSelection()
+    @property
+    def loopType(self) -> LoopTypes:
+        """
+        Desired loop type. The default is AllLoops.
+        """
+        return LoopTypes()
+    @loopType.setter
+    def loopType(self, value: LoopTypes):
+        """
+        Desired loop type. The default is AllLoops.
+        """
+        pass
+    @property
+    def sideType(self) -> SideTypes:
+        """
+        Desired side type. The default is StartOutside.
+        """
+        return SideTypes()
+    @sideType.setter
+    def sideType(self, value: SideTypes):
+        """
+        Desired side type. The default is StartOutside.
+        """
+        pass
+    @property
+    def isSetupModelSelected(self) -> bool:
+        """
+        Flag to include all B-Rep bodies set as the setup models.
+        """
+        return bool()
+    @isSetupModelSelected.setter
+    def isSetupModelSelected(self, value: bool):
+        """
+        Flag to include all B-Rep bodies set as the setup models.
+        """
+        pass
+
+class SketchSelection(CurveSelection):
+    """
+    Represents a sketch curve selection. It allows entire sketches for the input geometry.
+    The result of the value property call may contain duplicates.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SketchSelection:
+        return SketchSelection()
+    @property
+    def loopType(self) -> LoopTypes:
+        """
+        Property to get and set the desired loop type. The default is AllLoops.
+        """
+        return LoopTypes()
+    @loopType.setter
+    def loopType(self, value: LoopTypes):
+        """
+        Property to get and set the desired loop type. The default is AllLoops.
+        """
+        pass
+    @property
+    def sideType(self) -> SideTypes:
+        """
+        Property to get and set the desired side type. The default is StartOutside.
+        """
+        return SideTypes()
+    @sideType.setter
+    def sideType(self, value: SideTypes):
+        """
+        Property to get and set the desired side type. The default is StartOutside.
+        """
+        pass

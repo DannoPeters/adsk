@@ -2,6 +2,7 @@
 # It does not reflect the actual implementation.
 
 from __future__ import annotations
+from collections.abc import Iterator
 
 from . import core
 
