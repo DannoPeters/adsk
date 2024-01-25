@@ -2,6 +2,7 @@
 # It does not reflect the actual implementation.
 
 from __future__ import annotations
+from collections.abc import Iterator
 
 class AppearanceSourceTypes():
     """
@@ -76,6 +77,14 @@ class Curve3DTypes():
     EllipticalArc3DCurveType = 4
     InfiniteLine3DCurveType = 5
     NurbsCurve3DCurveType = 6
+
+class DataFileCopyTypes():
+    """
+    The types of copy operations that can be performed when copy DesignDataFile.
+    """
+    def __init__(self):
+        pass
+    CopyDrawingsDataFileCopyType = 0
 
 class DefaultModelingOrientations():
     """
@@ -428,6 +437,16 @@ class OpenDocumentError():
         pass
     DocumentNotFoundError = 200
 
+class OperatingSystems():
+    """
+    Defines the various operating systems that a script or add-in can run on.
+    """
+    def __init__(self):
+        pass
+    WindowsOperatingSystem = 0
+    MacOperatingSystem = 1
+    WindowsAndMacOperatingSystem = 2
+
 class PaletteDockingOptions():
     """
     Defines the different options available when docking a palette to the Fusion 360 main window area.
@@ -461,6 +480,41 @@ class PaletteSnapOptions():
     PaletteSnapOptionsLeft = 1
     PaletteSnapOptionsRight = 2
     PaletteSnapOptionsBottom = 3
+
+class PanZoomOrbitShortcuts():
+    """
+    A list of the different predefined keyboard shortcuts for pan, zoom, and orbit.
+    """
+    def __init__(self):
+        pass
+    Fusion360PanZoomOrbitShortcut = 0
+    AliasPanZoomOrbitShortcut = 1
+    InventorPanZoomOrbitShortcut = 2
+    SolidWorksPanZoomOrbitShortcut = 3
+    TinkercadPanZoomOrbitShortcut = 4
+    PowerMillPanZoomOrbitShortcut = 5
+
+class ProgrammingLanguages():
+    """
+    Defines the various languages supported for Fusion scripts and add-ins.
+    """
+    def __init__(self):
+        pass
+    PromptForLanguage = 0
+    PythonProgrammingLanguage = 1
+    CPPProgramminglanguage = 2
+
+class ProjectedTextureMapTypes():
+    """
+    The different types of projected texture maps.
+    """
+    def __init__(self):
+        pass
+    AutomaticTextureMapProjection = 0
+    PlanarTextureMapProjection = 1
+    BoxTextureMapProjection = 2
+    SphericalTextureMapProjection = 3
+    CylindricalTextureMapProjection = 4
 
 class SaveLocalErrors():
     """
@@ -542,6 +596,33 @@ class TransparencyDisplayEffects():
     BetterPerformanceTransparencyEffect = 0
     BetterDisplayTransparencyEffect = 1
 
+class TriadChanges():
+    """
+    Defines the different types of edits that can be applied by the user to a triad command input.
+    """
+    def __init__(self):
+        pass
+    TriadChangeUnknown = 0
+    TriadChangeXTranslation = 1
+    TriadChangeYTranslation = 2
+    TriadChangeZTranslation = 3
+    TriadChangeXYTranslation = 4
+    TriadChangeYZTranslation = 5
+    TriadChangeXZTranslation = 6
+    TriadChangeXYZTranslation = 7
+    TriadChangeXRotation = 8
+    TriadChangeYRotation = 9
+    TriadChangeZRotation = 10
+    TriadChangeXScale = 11
+    TriadChangeYScale = 12
+    TriadChangeZScale = 13
+    TriadChangeXYScale = 14
+    TriadChangeYZScale = 15
+    TriadChangeXZScale = 16
+    TriadChangeXYZScale = 17
+    TriadChangeHorizontalFlip = 18
+    TriadChangeVerticalFlip = 19
+
 class UploadStates():
     """
     The different states of a file upload process.
@@ -572,6 +653,7 @@ class UserLanguages():
     PortugueseBrazilianLanguage = 11
     RussianLanguage = 12
     SpanishLanguage = 13
+    TurkishLanguage = 14
 
 class ValueInputError():
     """
@@ -663,7 +745,11 @@ class Base():
     @property
     def objectType(self) -> str:
         """
-        Returns a string indicating the type of the object.
+        This property is supported by all objects in the API and returns a string that contains
+        the full name (namespace::objecttype) describing the type of the object.
+        
+        It's often useful to use this in combination with the classType method to see if an object
+        is a certain type. For example: if obj.objectType == adsk.core.Point3D.classType():
         """
         return str()
     @property
@@ -705,6 +791,92 @@ class ActiveSelectionEventHandler(EventHandler):
         """
         pass
 
+class APIPreferences(Base):
+    """
+    Provides access to the various preferences associated with the API.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> APIPreferences:
+        return APIPreferences()
+    @property
+    def defaultScriptLanguage(self) -> ProgrammingLanguages:
+        """
+        Gets and sets the preference that controls which programming language
+        should be used when creating a new script. One option is to prompt the user.
+        """
+        return ProgrammingLanguages()
+    @defaultScriptLanguage.setter
+    def defaultScriptLanguage(self, value: ProgrammingLanguages):
+        """
+        Gets and sets the preference that controls which programming language
+        should be used when creating a new script. One option is to prompt the user.
+        """
+        pass
+    @property
+    def defaultAddInLanguage(self) -> ProgrammingLanguages:
+        """
+        Gets and sets the preference that controls which programming language
+        should be used when creating a new add-in. One option is to prompt the user.
+        """
+        return ProgrammingLanguages()
+    @defaultAddInLanguage.setter
+    def defaultAddInLanguage(self, value: ProgrammingLanguages):
+        """
+        Gets and sets the preference that controls which programming language
+        should be used when creating a new add-in. One option is to prompt the user.
+        """
+        pass
+    @property
+    def defaultPathForScriptsAndAddIns(self) -> str:
+        """
+        The default path where new scripts or add-ins will be created. Scripts will be
+        created in a "Scripts" subdirectory and add-ins will be created in an "AddIns"
+        subdirectory. This must be the full path to the parent folder.
+        
+        This path is also where Fusion will look for any scripts and add-ins and
+        automatically display them in the "Scripts and Add-Ins" dialog.
+        """
+        return str()
+    @defaultPathForScriptsAndAddIns.setter
+    def defaultPathForScriptsAndAddIns(self, value: str):
+        """
+        The default path where new scripts or add-ins will be created. Scripts will be
+        created in a "Scripts" subdirectory and add-ins will be created in an "AddIns"
+        subdirectory. This must be the full path to the parent folder.
+        
+        This path is also where Fusion will look for any scripts and add-ins and
+        automatically display them in the "Scripts and Add-Ins" dialog.
+        """
+        pass
+    @property
+    def debuggingPort(self) -> int:
+        """
+        Gets and sets the port used when connecting to Visual Studio Code.
+        """
+        return int()
+    @debuggingPort.setter
+    def debuggingPort(self, value: int):
+        """
+        Gets and sets the port used when connecting to Visual Studio Code.
+        """
+        pass
+    @property
+    def isDeveloperToolsEnabled(self) -> bool:
+        """
+        Gets and sets if access to "Developer Tools" should be enabled in pallets and
+        BrowserCommandInputs.
+        """
+        return bool()
+    @isDeveloperToolsEnabled.setter
+    def isDeveloperToolsEnabled(self, value: bool):
+        """
+        Gets and sets if access to "Developer Tools" should be enabled in pallets and
+        BrowserCommandInputs.
+        """
+        pass
+
 class Appearance(Base):
     """
     An appearance.
@@ -719,15 +891,6 @@ class Appearance(Base):
         Deletes the Appearance from the Design. This method is only valid for appearances
         that are in a Design and are unused.
         Returns true if the delete was successful.
-        """
-        return bool()
-    def copyTo(self, target: Base) -> bool:
-        """
-        Copies this appearance to the specified target.
-        ***Depricated Method: Use the addByCopyMethod on the Appearances object instead, where you can rename the copied Appearance
-        and the return type is Appearance rather than bool.***
-        target : The target can be a Design or MaterialFavorites object.
-        Returns true if the copy was successful.
         """
         return bool()
     @property
@@ -792,6 +955,12 @@ class Appearances(Base):
     @staticmethod
     def cast(arg) -> Appearances:
         return Appearances()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Appearance:
+        return None
+    def __iter__(self) -> Iterator[Appearance]:
+        return None
     def item(self, index: int) -> Appearance:
         """
         Returns the specified Appearance using an index into the collection.
@@ -821,7 +990,7 @@ class Appearances(Base):
         cannot be used to copy an Appearance to a library.
         appearanceToCopy : The Appearance you want to copy. The Appearance to copy can be from Favorites, a Library or from the
         appearances stored in the Design.
-        name : The Appearnce name to apply to the copy.
+        name : The Appearance name to apply to the copy.
         Returns the newly created Appearance or null if the copy operation failed.
         """
         return Appearance()
@@ -879,12 +1048,18 @@ class Application(Base):
         """
         return Application()
     @staticmethod
-    def log(message: str, level: LogLevels, type: LogTypes) -> None:
+    def log(message: str, level: LogLevels = LogLevels.InfoLogLevel, type: LogTypes = LogTypes.ConsoleLogType) -> None:
         """
-        Log Message.
-        message : The message to log.
-        level : The log level. Default value is Info.
-        type : The log type. Default value is Console.
+        Logs messages to either the TEXT COMMAND window or the Fusion app log file.
+        message : The message to write to the log.
+        level : The log level. Default value is InfoLogLevel. This is only used when the log type is FileLogType where the
+        log message will include the log level.
+        type : The log type. The default value is ConsoleLogType to write the message to the TEXT COMMAND window. When the
+        type is FileLogType, the message is written to Fusion's app log file which is the same file where Fusion writes
+        all of its log messages. You can get the path and filename of the current log file by using the TEXT COMMAND window.
+        In the lower-right corner you can choose "Txt", "Py", or "Js". Choose the "Txt" option and type "paths.get" in the
+        input field and press return. A list of all of the various paths used by Fusion will be displayed in the TEXT COMMAND
+        window. The line for "AppLogFilePath" has the full path to the log file.
         """
         pass
     def getLastError(self) -> tuple[int, str]:
@@ -906,7 +1081,7 @@ class Application(Base):
         be because the provided eventId is not unique.
         """
         return CustomEvent()
-    def fireCustomEvent(self, eventId: str, additionalInfo: str) -> bool:
+    def fireCustomEvent(self, eventId: str, additionalInfo: str = "") -> bool:
         """
         Fires a previously registered custom event. This method is used by a worker thread or another
         add-in to fire an event to the add-in that registered the event and is running in the primary thread.
@@ -1095,7 +1270,7 @@ class Application(Base):
         This event fires whether or not the online status was changed deliberately by the user by using the Fusion 360
         'Work Offline' command or because of inadvertent network/Internet connectivity issues.
         You can get the isOffline property of ApplicationEventArgs to determine whether Fusion 360 has gone Offline or
-        has come back Online.
+        has come back online.
         The client can add or remove ApplicationEventHandlers from the ApplicationEvent.
         """
         return ApplicationEvent()
@@ -1233,6 +1408,30 @@ class Application(Base):
         The dataFileComplete event fires when a data file upload has completed including any cloud side translations.
         """
         return DataEvent()
+    @property
+    def hasActiveJobs(self) -> bool:
+        """
+        Gets whether there are any active jobs.
+        """
+        return bool()
+    @property
+    def fontNames(self) -> list[str]:
+        """
+        Returns the names of all of the fonts that are available in Fusion when creating text.
+        """
+        return [str()]
+    @property
+    def scripts(self) -> Scripts:
+        """
+        return the API Add-in scripts
+        """
+        return Scripts()
+    @property
+    def dataFileCopyComplete(self) -> DataEvent:
+        """
+        The dataFileCopyComplete event fires when a data file copy has completed including any PIM Data copy.
+        """
+        return DataEvent()
 
 class ApplicationCommandEventHandler(EventHandler):
     """
@@ -1356,6 +1555,12 @@ class Attributes(Base):
     @staticmethod
     def cast(arg) -> Attributes:
         return Attributes()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Attribute:
+        return None
+    def __iter__(self) -> Iterator[Attribute]:
+        return None
     def item(self, index: int) -> Attribute:
         """
         Returns the specified attribute using an index into the collection.
@@ -1587,6 +1792,39 @@ class Camera(Base):
     @staticmethod
     def cast(arg) -> Camera:
         return Camera()
+    @staticmethod
+    def create() -> Camera:
+        """
+        Creates a new Camera object that is independent of any viewport. This can be used
+        to construct a camera to be used as input to modify a viewport, and create or
+        update a named view.
+        Returns the created camera.
+        """
+        return Camera()
+    def getExtents(self) -> tuple[bool, float, float]:
+        """
+        Gets the extents of the camera. This is only used for orthographic cameras.
+        width : The width of the extent in centimeters.
+        height : The height of the extent in centimeters.
+        Returns true if successful. This will fail in the case it is used for a perspective camera.
+        """
+        return (bool(), float(), float())
+    def setExtents(self, width: float, height: float) -> bool:
+        """
+        Sets the extents of the camera. This is only used for orthographic cameras.
+        The extents of a perspective camera is defined by a combination of the position
+        of the eye point (how close the eye is to the model) and the perspective angle.
+        
+        When the camera is assigned to a viewport, typically only the width or the
+        height is used depending on the aspect ratio of the viewport. For example,
+        if the width and height are both 10, but the viewport is twice as wide as
+        it is tall (2:1 aspect ratio). The height extent will be 10 and the width
+        extent will be recomputed to be 20 to match the viewport.
+        width : The width of the extent in centimeters.
+        height : The height of the extent in centimeters.
+        Returns true if successful. This will fail in the case it is used for a perspective camera.
+        """
+        return bool()
     @property
     def eye(self) -> Point3D:
         """
@@ -1654,32 +1892,6 @@ class Camera(Base):
         """
         pass
     @property
-    def viewExtents(self) -> float:
-        """
-        Defines the area that's visible by the camera. This
-        value is the radius of a sphere centered at the target point.
-        The camera will display everything within that sphere and
-        everything in front of and behind the sphere. Additional
-        geometry outside of the sphere will also be visible depending
-        on the shape of the window. Setting this
-        value can cause the eye and/or perspective angle to be
-        modified when the camera type is perspective.
-        """
-        return float()
-    @viewExtents.setter
-    def viewExtents(self, value: float):
-        """
-        Defines the area that's visible by the camera. This
-        value is the radius of a sphere centered at the target point.
-        The camera will display everything within that sphere and
-        everything in front of and behind the sphere. Additional
-        geometry outside of the sphere will also be visible depending
-        on the shape of the window. Setting this
-        value can cause the eye and/or perspective angle to be
-        modified when the camera type is perspective.
-        """
-        pass
-    @property
     def isFitView(self) -> bool:
         """
         If this property is true, when this camera is applied to a viewport it
@@ -1698,7 +1910,7 @@ class Camera(Base):
     @property
     def isSmoothTransition(self) -> bool:
         """
-        Determines whether Fusion 360 does a smooth transition to this camera positoin when the
+        Determines whether Fusion 360 does a smooth transition to this camera position when the
         camera is assigned to a ViewPort. If this is true it will do a smooth transition from
         the current camera position to the new camera position. If false, the view will jump
         to the position defined by the camera with no intermediate steps. This is useful if
@@ -1708,7 +1920,7 @@ class Camera(Base):
     @isSmoothTransition.setter
     def isSmoothTransition(self, value: bool):
         """
-        Determines whether Fusion 360 does a smooth transition to this camera positoin when the
+        Determines whether Fusion 360 does a smooth transition to this camera position when the
         camera is assigned to a ViewPort. If this is true it will do a smooth transition from
         the current camera position to the new camera position. If false, the view will jump
         to the position defined by the camera with no intermediate steps. This is useful if
@@ -1718,17 +1930,19 @@ class Camera(Base):
     @property
     def viewOrientation(self) -> ViewOrientations:
         """
-        Sets the camera to a standard orientation. If this is set,
-        it will result in resetting all of the camera values except
-        the camera type.
+        Sets the camera to a standard orientation. If this is set, it will result in resetting
+        all the camera values except the camera type. The orientation is based on the current
+        orientation defined by the ViewCube. This means, that the view orientations cannot be
+        expected to be consistent from one view to another.
         """
         return ViewOrientations()
     @viewOrientation.setter
     def viewOrientation(self, value: ViewOrientations):
         """
-        Sets the camera to a standard orientation. If this is set,
-        it will result in resetting all of the camera values except
-        the camera type.
+        Sets the camera to a standard orientation. If this is set, it will result in resetting
+        all the camera values except the camera type. The orientation is based on the current
+        orientation defined by the ViewCube. This means, that the view orientations cannot be
+        expected to be consistent from one view to another.
         """
         pass
 
@@ -1746,6 +1960,151 @@ class CameraEventHandler(EventHandler):
         """
         The function called by Fusion 360 when the associated event is fired.
         eventArgs : Returns an object that provides access to additional information associated with the event.
+        """
+        pass
+
+class CloudFileDialog(Base):
+    """
+    Provides access to a cloud file dialog. A cloud file dialog can be used to prompt the user
+    to select a location and file on Fusion Team.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CloudFileDialog:
+        return CloudFileDialog()
+    def showOpen(self) -> DialogResults:
+        """
+        Displays a modal open dialog, allowing the user to select one or more files. The return value
+        can be used to determine if the dialog was canceled without selecting a file. The dataFile
+        and dataFiles properties can be used to get the selected files.
+        Returns an enum value indicating which button was clicked on the dialog.
+        """
+        return DialogResults()
+    def showSave(self) -> DialogResults:
+        """
+        Displays a modal save dialog, allowing the user to specify a file. The return value
+        can be used to determine if the dialog was canceled without giving a filename. The filename
+        property can be used to get that file.
+        Returns an enum value indicating which button was clicked on the dialog.
+        """
+        return DialogResults()
+    @property
+    def title(self) -> str:
+        """
+        Gets or sets the title displayed on the dialog.
+        """
+        return str()
+    @title.setter
+    def title(self, value: str):
+        """
+        Gets or sets the title displayed on the dialog.
+        """
+        pass
+    @property
+    def dataFile(self) -> DataFile:
+        """
+        Gets the DataFile selected by the user in the dialog. This property is
+        used after the ShowOpen method has been called to retrieve
+        the filename specified by the user.
+        
+        If ShowOpen was used and isMultiSelectEnabled is true, then this property will
+        only display the first DataFile selected and the dataFiles property should be
+        used instead to retrieved the full list. If ShowSave was used, then only a
+        single DataFile is ever returned.
+        """
+        return DataFile()
+    @property
+    def dataFiles(self) -> list[DataFile]:
+        """
+        Gets the DataFiles specified by the user in the dialog. This property is
+        used after the ShowOpen method has been called to retrieve the DataFiles
+        specified by the user.
+        
+        If ShowOpen is used and isMultiSelectEnabled is true, the user is able to select
+        more than one file. This property returns all of the files that were selected.
+        """
+        return [DataFile()]
+    @property
+    def filter(self) -> str:
+        """
+        Gets or sets the current file type filter. This controls the types of files displayed in
+        the dialog. The filter consists of file extensions separated by a semi-colon. The string
+        below is an example of the filter used by Fusion for the Open command.
+        
+        "f3d;f2d;f2t;fbrd;fsch;flbr;fprj;prt;par;sldprt;sldasm;ipt;iam;stp;ste;step"
+        
+        An empty string indicates that no filter should be used and all files in the current
+        DataFolder should be displayed.
+        """
+        return str()
+    @filter.setter
+    def filter(self, value: str):
+        """
+        Gets or sets the current file type filter. This controls the types of files displayed in
+        the dialog. The filter consists of file extensions separated by a semi-colon. The string
+        below is an example of the filter used by Fusion for the Open command.
+        
+        "f3d;f2d;f2t;fbrd;fsch;flbr;fprj;prt;par;sldprt;sldasm;ipt;iam;stp;ste;step"
+        
+        An empty string indicates that no filter should be used and all files in the current
+        DataFolder should be displayed.
+        """
+        pass
+    @property
+    def dataFolder(self) -> DataFolder:
+        """
+        Gets or sets the initial DataFolder displayed in the dialog. The DataFolder should be in current project.
+        If null, this defaults to the DataFolder that is currently active in the Data Panel.
+        
+        When using the showSave method, use this property to get the DataFolder that the user specified.
+        """
+        return DataFolder()
+    @dataFolder.setter
+    def dataFolder(self, value: DataFolder):
+        """
+        Gets or sets the initial DataFolder displayed in the dialog. The DataFolder should be in current project.
+        If null, this defaults to the DataFolder that is currently active in the Data Panel.
+        
+        When using the showSave method, use this property to get the DataFolder that the user specified.
+        """
+        pass
+    @property
+    def filename(self) -> str:
+        """
+        Gets and sets the filename when using the showSave method. If you set this value before using the
+        showSave method, this will display the filename as the default in the dialog, but the user can
+        change it. The default is an empty string, which indicates there is not an initial filename.
+        
+        After calling the showSave method, use this property to get the filename the user specified. You
+        can use this in combination with the dataFolder property to know where the user has specified
+        to save the file.
+        """
+        return str()
+    @filename.setter
+    def filename(self, value: str):
+        """
+        Gets and sets the filename when using the showSave method. If you set this value before using the
+        showSave method, this will display the filename as the default in the dialog, but the user can
+        change it. The default is an empty string, which indicates there is not an initial filename.
+        
+        After calling the showSave method, use this property to get the filename the user specified. You
+        can use this in combination with the dataFolder property to know where the user has specified
+        to save the file.
+        """
+        pass
+    @property
+    def isMultiSelectEnabled(self) -> bool:
+        """
+        Gets or sets a value indicating whether the dialog allows multiple files to be selected. This
+        defaults to False when a new CloudFileDialog is created. It is only used when using the showOpen method.
+        """
+        return bool()
+    @isMultiSelectEnabled.setter
+    def isMultiSelectEnabled(self, value: bool):
+        """
+        Gets or sets a value indicating whether the dialog allows multiple files to be selected. This
+        defaults to False when a new CloudFileDialog is created. It is only used when using the showOpen method.
         """
         pass
 
@@ -1915,8 +2274,12 @@ class Command(Base):
         Returns true if getting the cursor information was successful.
         """
         return (bool(), str(), int(), int())
-    def beginStep(self, makeExistingStepNonUndoable: bool) -> bool:
+    def beginStep(self, makeExistingStepNonUndoable: bool = False) -> bool:
         """
+        !!!!! Warning !!!!!
+        ! This is in preview state; please see the help for more info
+        !!!!! Warning !!!!!
+        
         Begin a transacted step within the command's transaction.
         If the all of the command inputs are valid, this will trigger the execute event for the current step.
         makeExistingStepNonUndoable : If true the current step will not be undo-able.
@@ -2117,12 +2480,6 @@ class Command(Base):
         """
         pass
     @property
-    def selectionEvent(self) -> SelectionEvent:
-        """
-        This event has been retired. Equivalent functionality is supported by the preSelect event.
-        """
-        return SelectionEvent()
-    @property
     def isExecutedWhenPreEmpted(self) -> bool:
         """
         Specifies what the behavior will be when a command is preempted by the user executing another
@@ -2141,53 +2498,13 @@ class Command(Base):
     @property
     def helpFile(self) -> str:
         """
-        <p class='api'>Gets and sets the associated HTML help file for this command. If this is defined
-        then the help button will be displayed in the lower-left corner of the command dialog
-        and when clicked the help file will be displayed using the application defined by the
-        operating system for that file type. For example if the helpfile property references a .htm or .html
-        file, the default browser will be invoked to display the file. If a .pdf file is used then
-        whatever the default application is for viewing a pdf file will be invoked.</p>
-        
-        <p class='api'>The file referenced must be a local file and cannot be a URL. However, you can use a local
-        HTML file that redirects to a URL.</p>
-        
-        <pre class="api-code">&lt;html&gt;
-        &lt;head&gt;
-        &lt;meta http-equiv="refresh" content="0; url=http://example.com/" /&gt;
-        &lt;/head&gt;
-        &lt;body&gt;&lt;/body&gt;
-        &lt;/html&gt;
-        </pre>
-        
-        <p class='api'>The filename can be either a full path or a relative path with respect to the script or add-in
-        .py, .js, .dll, or .dylib file. If this is an empty string, (which is the default), then the
-        help button will not be displayed.</p>
+        Gets and sets the associated HTML help file for this command.
         """
         return str()
     @helpFile.setter
     def helpFile(self, value: str):
         """
-        <p class='api'>Gets and sets the associated HTML help file for this command. If this is defined
-        then the help button will be displayed in the lower-left corner of the command dialog
-        and when clicked the help file will be displayed using the application defined by the
-        operating system for that file type. For example if the helpfile property references a .htm or .html
-        file, the default browser will be invoked to display the file. If a .pdf file is used then
-        whatever the default application is for viewing a pdf file will be invoked.</p>
-        
-        <p class='api'>The file referenced must be a local file and cannot be a URL. However, you can use a local
-        HTML file that redirects to a URL.</p>
-        
-        <pre class="api-code">&lt;html&gt;
-        &lt;head&gt;
-        &lt;meta http-equiv="refresh" content="0; url=http://example.com/" /&gt;
-        &lt;/head&gt;
-        &lt;body&gt;&lt;/body&gt;
-        &lt;/html&gt;
-        </pre>
-        
-        <p class='api'>The filename can be either a full path or a relative path with respect to the script or add-in
-        .py, .js, .dll, or .dylib file. If this is an empty string, (which is the default), then the
-        help button will not be displayed.</p>
+        Gets and sets the associated HTML help file for this command.
         """
         pass
     @property
@@ -2308,8 +2625,8 @@ class Command(Base):
     @property
     def preSelectEnd(self) -> SelectionEvent:
         """
-        This event fires when the moused is moved away from an entity that was in a preselect state. If
-        your add-in has done something in reaction to the preSelect, like draw some custom graphics, this
+        This event fires when the moused is moved away from an entity that was in a pre-select state. If
+        your add-in has done something in reaction to the preSelect event, like draw some custom graphics, this
         event provides the notification to clean up whatever you've done that's associated with the current
         pre-select.
         
@@ -2341,6 +2658,10 @@ class Command(Base):
     @property
     def editingFeature(self) -> Base:
         """
+        !!!!! Warning !!!!!
+        ! This is in preview state; please see the help for more info
+        !!!!! Warning !!!!!
+        
         Sets the editing feature for this command. The timeline will be rolled to the editing feature
         on activate and will the current position will be restored on deactivate.
         """
@@ -2348,6 +2669,10 @@ class Command(Base):
     @editingFeature.setter
     def editingFeature(self, value: Base):
         """
+        !!!!! Warning !!!!!
+        ! This is in preview state; please see the help for more info
+        !!!!! Warning !!!!!
+        
         Sets the editing feature for this command. The timeline will be rolled to the editing feature
         on activate and will the current position will be restored on deactivate.
         """
@@ -2370,6 +2695,20 @@ class Command(Base):
         which BrowserCommandInput triggered the event.
         """
         return NavigationEvent()
+    @property
+    def preSelectStart(self) -> SelectionEvent:
+        """
+        As the mouse moves over entities in the graphics window, entities valid for selection are highlighted.
+        Before an entity is highlighted, Fusion determines if it is a valid selectable entity using the selection
+        filter defined on the SelectionCommandInput and the preSelect event of the command. The preSelectStart
+        event fires when the mouse first moves over an entity valid for selection. You can obtain the entity
+        and mouse position from the Selection object returned by the selection property of the SelectionEventArgs
+        object provided through the event.
+        
+        Some related events are the preSelectMouseMove event, which fires as the mouse moves across the entity,
+        and the preSelectEnd event, which fires when the mouse moves off the entity.
+        """
+        return SelectionEvent()
 
 class CommandCreatedEventHandler(EventHandler):
     """
@@ -2400,7 +2739,7 @@ class CommandDefinition(Base):
     @staticmethod
     def cast(arg) -> CommandDefinition:
         return CommandDefinition()
-    def execute(self, input: NamedValues) -> bool:
+    def execute(self, input: NamedValues = None) -> bool:
         """
         Executes this command definition. This is the same as the user clicking
         a button that is associated with this command definition.
@@ -2471,6 +2810,7 @@ class CommandDefinition(Base):
         The second option is to shorten the word by removing a section. For example, if the word is a full path to a
         file and a portion of the path is common you can remove that portion and replace it with the ellipsis character
         to indicate there is some missing text. There is a single UNICODE character you can use the ellipsis. It is '\u2026'.
+        
         """
         return str()
     @tooltip.setter
@@ -2491,6 +2831,7 @@ class CommandDefinition(Base):
         The second option is to shorten the word by removing a section. For example, if the word is a full path to a
         file and a portion of the path is common you can remove that portion and replace it with the ellipsis character
         to indicate there is some missing text. There is a single UNICODE character you can use the ellipsis. It is '\u2026'.
+        
         """
         pass
     @property
@@ -2541,7 +2882,13 @@ class CommandDefinitions(Base):
     @staticmethod
     def cast(arg) -> CommandDefinitions:
         return CommandDefinitions()
-    def addButtonDefinition(self, id: str, name: str, tooltip: str, resourceFolder: str) -> CommandDefinition:
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CommandDefinition:
+        return None
+    def __iter__(self) -> Iterator[CommandDefinition]:
+        return None
+    def addButtonDefinition(self, id: str, name: str, tooltip: str, resourceFolder: str = "") -> CommandDefinition:
         """
         Creates a new command definition that can be used to create a button control and handle the response when the button is clicked.
         id : The unique identifier for this command definition. It must be unique with respect to all other command definitions and is
@@ -2599,7 +2946,7 @@ class CommandDefinitions(Base):
         Returns the created CommandDefinition object or null if the creation failed.
         """
         return CommandDefinition()
-    def addListDefinition(self, id: str, name: str, listControlDisplayType: ListControlDisplayTypes, resourceFolder: str) -> CommandDefinition:
+    def addListDefinition(self, id: str, name: str, listControlDisplayType: ListControlDisplayTypes, resourceFolder: str = "") -> CommandDefinition:
         """
         Creates a new command definition that can be used to create a list of check boxes, radio buttons, or text with an icon within a pop-up.
         
@@ -2695,24 +3042,34 @@ class CommandInput(Base):
     def isEnabled(self) -> bool:
         """
         Gets or sets if this input is currently enabled or disabled for user interaction.
+        
+        Currently, the isEnabled property does not disable SelectionCommandInput objects but
+        instead has the same effect as the SelectionCommandInput.hasFocus property.
         """
         return bool()
     @isEnabled.setter
     def isEnabled(self, value: bool):
         """
         Gets or sets if this input is currently enabled or disabled for user interaction.
+        
+        Currently, the isEnabled property does not disable SelectionCommandInput objects but
+        instead has the same effect as the SelectionCommandInput.hasFocus property.
         """
         pass
     @property
     def isVisible(self) -> bool:
         """
         Gets or sets if this input will be visible to the user.
+        
+        Setting a SelectionCommandInput to be invisible will clear any selections it currently has.
         """
         return bool()
     @isVisible.setter
     def isVisible(self, value: bool):
         """
         Gets or sets if this input will be visible to the user.
+        
+        Setting a SelectionCommandInput to be invisible will clear any selections it currently has.
         """
         pass
     @property
@@ -2793,7 +3150,7 @@ class CommandInput(Base):
     def parentCommandInput(self) -> CommandInput:
         """
         Gets the parent CommandInput if this commandInput is the child of a TabCommandInput or GroupCommandInput.
-        Returns null if their is no parent.
+        Returns null if there is no parent.
         """
         return CommandInput()
 
@@ -2807,6 +3164,12 @@ class CommandInputs(Base):
     @staticmethod
     def cast(arg) -> CommandInputs:
         return CommandInputs()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CommandInput:
+        return None
+    def __iter__(self) -> Iterator[CommandInput]:
+        return None
     def item(self, index: int) -> CommandInput:
         """
         Returns the specified command input using an index into the collection.
@@ -2834,7 +3197,7 @@ class CommandInputs(Base):
         Returns the created ValueCommandInput object or null if the creation failed.
         """
         return ValueCommandInput()
-    def addBoolValueInput(self, id: str, name: str, isCheckBox: bool, resourceFolder: str, initialValue: bool) -> BoolValueCommandInput:
+    def addBoolValueInput(self, id: str, name: str, isCheckBox: bool, resourceFolder: str = "", initialValue: bool = False) -> BoolValueCommandInput:
         """
         Adds a new boolean input to the command. The input can be shown as a check box or a button. If it's a button
         you need to specify the resource folder to define the icon to use. Buttons don't have an up or down state but
@@ -2850,7 +3213,7 @@ class CommandInputs(Base):
         Returns the created BoolValueCommandInput object or null if the creation failed.
         """
         return BoolValueCommandInput()
-    def addStringValueInput(self, id: str, name: str, initialValue: str) -> StringValueCommandInput:
+    def addStringValueInput(self, id: str, name: str, initialValue: str = "") -> StringValueCommandInput:
         """
         Adds a new string input to the command.
         id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
@@ -2895,7 +3258,7 @@ class CommandInputs(Base):
         Returns the created ButtonRowCommandInput object or null if the creation failed.
         """
         return ButtonRowCommandInput()
-    def addFloatSliderCommandInput(self, id: str, name: str, unitType: str, min: float, max: float, hasTwoSliders: bool) -> FloatSliderCommandInput:
+    def addFloatSliderCommandInput(self, id: str, name: str, unitType: str, min: float, max: float, hasTwoSliders: bool = False) -> FloatSliderCommandInput:
         """
         Adds a new slider input to the command. The value type is double.
         id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
@@ -2909,7 +3272,7 @@ class CommandInputs(Base):
         Returns the created FloatSliderCommandInput object or null if the creation failed.
         """
         return FloatSliderCommandInput()
-    def addFloatSliderListCommandInput(self, id: str, name: str, unitType: str, valueList: list[float], hasTwoSliders: bool) -> FloatSliderCommandInput:
+    def addFloatSliderListCommandInput(self, id: str, name: str, unitType: str, valueList: list[float], hasTwoSliders: bool = False) -> FloatSliderCommandInput:
         """
         Adds a new slider input to the command. The value type is float.
         id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
@@ -2923,7 +3286,7 @@ class CommandInputs(Base):
         Returns the created FloatSliderCommandInput object or null if the creation failed.
         """
         return FloatSliderCommandInput()
-    def addIntegerSliderCommandInput(self, id: str, name: str, min: int, max: int, hasTwoSliders: bool) -> IntegerSliderCommandInput:
+    def addIntegerSliderCommandInput(self, id: str, name: str, min: int, max: int, hasTwoSliders: bool = False) -> IntegerSliderCommandInput:
         """
         Adds a new slider input to the command. The value type is integer.
         id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
@@ -2934,7 +3297,7 @@ class CommandInputs(Base):
         Returns the created IntegerSliderCommandInput object or null if the creation failed.
         """
         return IntegerSliderCommandInput()
-    def addIntegerSliderListCommandInput(self, id: str, name: str, valueList: list[int], hasTwoSliders: bool) -> IntegerSliderCommandInput:
+    def addIntegerSliderListCommandInput(self, id: str, name: str, valueList: list[int], hasTwoSliders: bool = False) -> IntegerSliderCommandInput:
         """
         Adds a new slider input to the command. The value type is integer.
         id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
@@ -2952,13 +3315,21 @@ class CommandInputs(Base):
         id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
         name : The displayed name of this command as seen in the dialog. If an empty string is provided then
         no name will be displayed and the text box will span the width of the command dialog.
-        formattedText : Gets and sets the formatted text displayed in the dialog. Formatted text includes
-        any basic html formatting that has been defined. For example, you can use basic html
+        formattedText : 
+        Specifies the formatted text to display in the input. For example, you can use basic html
         formatting such as <code>&lt;b&gt;Bold&lt;/b&gt;</code>, <code>&lt;i&gt;Italic&lt;/i&gt;</code>,
         and <code>&lt;br /&gt;</code> for a line break. It also supports hyperlinks, which when clicked
         by the user, Fusion 360 will open the specified URL in the default browser. Hyperlinks are defined
         using the <code>&lt;a&gt;</code> tag such as
-        "<code>You are using Autodesk's &lt;a href="http://fusion360.autodesk.com"&gt;Fusion 360&lt;/a&gt;.</code>".
+        "<code>You are using Autodesk's &lt;a href=http://fusion360.autodesk.com&gt;Fusion 360&lt;/a&gt;.</code>".
+        
+        If you are using HTML formatting in your text, it's best to set the text box to be read-only. However,
+        if you want to use the text box as a way to get input from the user, it's best to use simple text so
+        not HTML formatting is assumed. To do this, use an empty string for this argument and then set the text
+        using the text property after the input is created. When the text property is used any HTML formatting
+        is ignored and the text is treated as basics text. This can be useful if you're using the text box to
+        have the user enter HTML code so it's treated as a simple string.
+        
         numRows : Specifies the height of the text box as defined by the number of rows of text that can be displayed.
         If the text is larger than will fit in the box a scroll bar will automatically be displayed.
         isReadOnly : Specifies if the text box is read-only or not.
@@ -2995,7 +3366,7 @@ class CommandInputs(Base):
         Returns the created IntegerSpinnerCommandInput object or null if the creation failed.
         """
         return IntegerSpinnerCommandInput()
-    def addRadioButtonGroupCommandInput(self, id: str, name: str) -> RadioButtonGroupCommandInput:
+    def addRadioButtonGroupCommandInput(self, id: str, name: str = "") -> RadioButtonGroupCommandInput:
         """
         Adds a new Radio Button Group input to the command.
         id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
@@ -3012,7 +3383,7 @@ class CommandInputs(Base):
         Returns the created GroupCommandInput object or null if the creation failed.
         """
         return GroupCommandInput()
-    def addTabCommandInput(self, id: str, name: str, resourceFolder: str) -> TabCommandInput:
+    def addTabCommandInput(self, id: str, name: str, resourceFolder: str = "") -> TabCommandInput:
         """
         Adds a new Tab input to the command. Tab command inputs contain a set of command inputs and/or group command inputs
         id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
@@ -3054,7 +3425,7 @@ class CommandInputs(Base):
         Returns the created DistanceValueCommandInput object or null if the creation failed.
         """
         return DistanceValueCommandInput()
-    def addDirectionCommandInput(self, id: str, name: str, resourceFolder: str) -> DirectionCommandInput:
+    def addDirectionCommandInput(self, id: str, name: str, resourceFolder: str = "") -> DirectionCommandInput:
         """
         Adds a new direction command input to the command. The input can be shown as a check box or a button. If it's a button
         you need to specify the resource folder to define the icon to use for the Button.
@@ -3105,7 +3476,7 @@ class CommandInputs(Base):
         Returns the created AngleValueCommandInput object or null if the creation failed.
         """
         return AngleValueCommandInput()
-    def addBrowserCommandInput(self, id: str, name: str, htmlFileURL: str, minimumHeight: int, maximumHeight: int) -> BrowserCommandInput:
+    def addBrowserCommandInput(self, id: str, name: str, htmlFileURL: str, minimumHeight: int, maximumHeight: int = 0) -> BrowserCommandInput:
         """
         Adds a new command input to the command that behaves as a browser.
         id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
@@ -3128,6 +3499,28 @@ class CommandInputs(Base):
         Returns the created BrowserCommandInput object or null if the creation failed.
         """
         return BrowserCommandInput()
+    def addTriadCommandInput(self, id: str, transform: Matrix3D) -> TriadCommandInput:
+        """
+        Adds a new triad command input to the command. The input is initially invisible to allow you to define the desired
+        behavior and then set the isVisible property to true when you're ready to display the triad.
+        
+        The creation of a triad command input results in displaying many input fields in the command dialog. For example,
+        there can be individual fields for the X, Y, and Z offset distances, the X, Y, and Z scales, the X, Y, and Z angles, etc.
+        You control which fields are visible by setting properties on the returned TriadCommandInput. Even though each of these
+        appears as an individual input in the command dialog, and they are all associated with the single TriadCommandInput object.
+        It also results in graphics widgets being displayed to allow the user to define the values graphically.
+        
+        When a new triad is created, it displays all inputs except those that control scaling. You can use the
+        properties on the returned triad to define the inputs you want to display further.
+        
+        To simplify your command dialog it can be useful put the TriadCommandInput within a GroupCommandInput so it's
+        apparent to the user these items are related and they can be collapsed to reduce clutter in the dialog. This
+        also allows you to label the set of displayed inputs by using the name of the GroupCommandInput.
+        id : The unique ID of this command input. It must be unique with respect to the other inputs associated with this command.
+        transform : Defines the initial position and orientation of the manipulator.
+        Returns the created TriadCommandInput object or null if the creation failed.
+        """
+        return TriadCommandInput()
     @property
     def command(self) -> Command:
         """
@@ -3189,6 +3582,28 @@ class ControlDefinition(Base):
         """
         pass
 
+class CopyFileInput(Base):
+    """
+    An object that contains the information needed to do a copy design operation.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CopyFileInput:
+        return CopyFileInput()
+    @property
+    def targetFolder(self) -> DataFolder:
+        """
+        Gets and sets the target DataFolder where the design will be copied to.
+        """
+        return DataFolder()
+    @property
+    def copyType(self) -> DataFileCopyTypes:
+        """
+        Gets and sets the type of copy to be performed.
+        """
+        return DataFileCopyTypes()
+
 class Curve2D(Base):
     """
     The base class for all 2D transient geometry classes.
@@ -3246,6 +3661,38 @@ class Curve3D(Base):
         Returns an evaluator object that lets you perform additional evaluations on the curve.
         """
         return CurveEvaluator3D()
+
+class Curve3DPath(Base):
+    """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
+    Object that represents a collection of connected Curve3D objects.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> Curve3DPath:
+        return Curve3DPath()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Curve3D:
+        return None
+    def __iter__(self) -> Iterator[Curve3D]:
+        return None
+    def item(self, index: int) -> Curve3D:
+        """
+        Returns the Curve3D at the specified index from this collection of Curve3D objects.
+        index : The index of the Curve3D within this Curve3D collection to return. The first Curve3D in this collection has an index of 0.
+        """
+        return Curve3D()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of Curve3D objects contained in this Curve3D collection.
+        """
+        return int()
 
 class CurveEvaluator2D(Base):
     """
@@ -3756,11 +4203,11 @@ class Data(Base):
         """
         return PersonalUseLimits()
     @property
-    def activeSpaceCollectionId(self) -> str:
+    def activeFolder(self) -> DataFolder:
         """
-        Returns the Id of the currently active space collection.
+        Gets the active DataFolder as seen in the Fusion 360 Data Panel.
         """
-        return str()
+        return DataFolder()
 
 class DataEventHandler(EventHandler):
     """
@@ -3814,13 +4261,6 @@ class DataFile(Base):
         Returns true if successful.
         """
         return bool()
-    def assemblyPIMData(self, noTraverse: bool) -> str:
-        """
-        Retrieve the PIM data JSON for the assembly.
-        noTraverse : If false, traverse across referenced documents, otherwise do not.
-        
-        """
-        return str()
     def download(self, path: str, handler: DataEventHandler) -> bool:
         """
         Performs a synchronous or asynchronous download of this DataFile. Only DataFiles that represent
@@ -3844,7 +4284,7 @@ class DataFile(Base):
         Refreshes the data associated with a DataFile object to be up to date with the associated cloud data.
         The DataFile returned by the API reflects the local representation of the DataFile as used by the Data Panel.
         This is method is only useful in very limited cases and should rarely be used. In most cases the local
-        representation will match the actual data on the cloud. In rare occasions where Fusion was offline while
+        representation will match the actual data on the cloud. In rare occasions where Fusion was off-line while
         the cloud processing of DataFile is completed or the DataFile is not in the folder shown in the Data Panel.
         Getting a DataFileFolder contents forces an update of the local data for all of the data files it contains
         so they will all be up to date.
@@ -3979,7 +4419,7 @@ class DataFile(Base):
     @property
     def publicLink(self) -> str:
         """
-        Returns a short url of this data file which can be shared with others.
+        Returns a short URL of this data file which can be shared with others.
         """
         return str()
     @property
@@ -4018,6 +4458,19 @@ class DataFile(Base):
         the Datafile is now available.
         """
         return bool()
+    @property
+    def dateModified(self) -> int:
+        """
+        Returns the date when this data file was modified. Most changes to a
+        file result in a new version which means a new DataFile is created and will have a new
+        creation date. There are a few changes, like rename, that modify a DataFile without
+        creating a new version and the date of that change is returned by this property.
+        
+        The date is returned as UNIX epoch time, which is the number of seconds since January 1, 1970 (midnight UTC/GMT).
+        In Python you can import the standard time module to work with UNIX epoch time.
+        In C++ you can use functions in time.h and std::chrono to work with UNIX epoch time.
+        """
+        return int()
 
 class DataFileFuture(Base):
     """
@@ -4051,6 +4504,12 @@ class DataFiles(Base):
     @staticmethod
     def cast(arg) -> DataFiles:
         return DataFiles()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> DataFile:
+        return None
+    def __iter__(self) -> Iterator[DataFile]:
+        return None
     def item(self, index: int) -> DataFile:
         """
         Returns the specified data file.
@@ -4104,9 +4563,9 @@ class DataFolder(Base):
         """
         Uploads a set of files that represent an assembly There should only
         be a single top-level assembly file but there can be any number of other
-        files that represent subassemblies.
+        files that represent sub-assemblies.
         filenames : An array of strings that contains the list of all of the files that
-        are part of the assembly. The name of the the top-level assembly file
+        are part of the assembly. The name of the top-level assembly file
         must be the first file in the array.
         The upload process is asynchronous which means that this method
         will return before the upload process had completed. The returned
@@ -4183,6 +4642,12 @@ class DataFolders(Base):
     @staticmethod
     def cast(arg) -> DataFolders:
         return DataFolders()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> DataFolder:
+        return None
+    def __iter__(self) -> Iterator[DataFolder]:
+        return None
     def item(self, index: int) -> DataFolder:
         """
         Returns the specified folder.
@@ -4270,6 +4735,12 @@ class DataHubs(Base):
     @staticmethod
     def cast(arg) -> DataHubs:
         return DataHubs()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> DataHub:
+        return None
+    def __iter__(self) -> Iterator[DataHub]:
+        return None
     def item(self, index: int) -> DataHub:
         """
         Returns the specified hub.
@@ -4350,6 +4821,12 @@ class DataProjects(Base):
     @staticmethod
     def cast(arg) -> DataProjects:
         return DataProjects()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> DataProject:
+        return None
+    def __iter__(self) -> Iterator[DataProject]:
+        return None
     def item(self, index: int) -> DataProject:
         """
         Returns the specified project.
@@ -4357,7 +4834,7 @@ class DataProjects(Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return DataProject()
-    def add(self, name: str, purpose: str, contributors: str) -> DataProject:
+    def add(self, name: str, purpose: str = "", contributors: str = "") -> DataProject:
         """
         Creates a new project in the parent hub.
         name : The name of the project. This is the name visible to the user.
@@ -4414,6 +4891,12 @@ class DefaultUnitsPreferencesCollection(Base):
     @staticmethod
     def cast(arg) -> DefaultUnitsPreferencesCollection:
         return DefaultUnitsPreferencesCollection()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> DefaultUnitsPreferences:
+        return None
+    def __iter__(self) -> Iterator[DefaultUnitsPreferences]:
+        return None
     def item(self, index: int) -> DefaultUnitsPreferences:
         """
         Function that returns the specified DefaultUnitPreferences object using an index into the collection.
@@ -4425,7 +4908,7 @@ class DefaultUnitsPreferencesCollection(Base):
         """
         Returns the DefaultUnitsPreference object with the specified name.
         name : The name of the DefaultUnitsPreference to return.
-        Returns the DefaultUnitsPreference object or null if if an invalid name was specified.
+        Returns the DefaultUnitsPreference object or null if an invalid name was specified.
         """
         return DefaultUnitsPreferences()
     @property
@@ -4486,16 +4969,40 @@ class Document(Base):
         Returns true if the save as was successful.
         """
         return bool()
+    def updateAllReferences(self) -> bool:
+        """
+        Updates all out of date references. This is equivalent to clicking the "Out of Date"
+        button in the Quick Access Toolbar to update all out of date references.
+        """
+        return bool()
     @property
     def name(self) -> str:
         """
-        Gets and sets the name of the document.
+        This property gets and sets the name of the document. You can only set the
+        name of a document before the document is saved for the first time. You can
+        use the isSaved property to determine this. If the document has not been
+        saved and the name is changed, the specified name will be the default name
+        shown in the Save dialog, which the user can modify before saving the document.
+        
+        If the file has been saved, this property behaves as read-only. Setting the
+        name will fail because the name is controlled by the DataFile associated
+        with this document. However, you can edit the name of the DataFile, which
+        you can obtain by using the dataFile property of the document.
         """
         return str()
     @name.setter
     def name(self, value: str):
         """
-        Gets and sets the name of the document.
+        This property gets and sets the name of the document. You can only set the
+        name of a document before the document is saved for the first time. You can
+        use the isSaved property to determine this. If the document has not been
+        saved and the name is changed, the specified name will be the default name
+        shown in the Save dialog, which the user can modify before saving the document.
+        
+        If the file has been saved, this property behaves as read-only. Setting the
+        name will fail because the name is controlled by the DataFile associated
+        with this document. However, you can edit the name of the DataFile, which
+        you can obtain by using the dataFile property of the document.
         """
         pass
     @property
@@ -4588,6 +5095,12 @@ class Document(Base):
         this ID to match the completion of the save operation on the cloud to the original document.
         """
         return str()
+    @property
+    def designDataFile(self) -> DesignDataFile:
+        """
+        Gets the DesignDataFile that represents this document in A360.
+        """
+        return DesignDataFile()
 
 class DocumentEventHandler(EventHandler):
     """
@@ -4673,6 +5186,12 @@ class DocumentReferences(Base):
     @staticmethod
     def cast(arg) -> DocumentReferences:
         return DocumentReferences()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> DocumentReference:
+        return None
+    def __iter__(self) -> Iterator[DocumentReference]:
+        return None
     def item(self, index: int) -> DocumentReference:
         """
         Returns the specified DocumentReference.
@@ -4697,7 +5216,13 @@ class Documents(Base):
     @staticmethod
     def cast(arg) -> Documents:
         return Documents()
-    def add(self, documentType: DocumentTypes, visible: bool, options: NamedValues) -> Document:
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Document:
+        return None
+    def __iter__(self) -> Iterator[Document]:
+        return None
+    def add(self, documentType: DocumentTypes, visible: bool = True, options: NamedValues = None) -> Document:
         """
         Creates and opens a new document of the specified type.
         documentType : A value from the DocumentTypes enum that specifies the type of document to create.
@@ -4715,19 +5240,19 @@ class Documents(Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return Document()
-    def open(self, dataFile: DataFile, visible: bool) -> Document:
+    def open(self, dataFile: DataFile, visible: bool = True) -> Document:
         """
         Opens an item that has previously been saved.
         dataFile : The item to open.
-        visible : Specifies if the document should be opened visibly or not. Currently, documents can only
-        be opened visibly so this argument must always be true.
+        visible : Specifies if the document should be opened visibly or not.
         Returns the open document or null if the open failed.
         """
         return Document()
     @property
     def count(self) -> int:
         """
-        Returns the number of currently open files.
+        Returns the number of currently open documents. This includes documents that are
+        visible and invisible.
         """
         return int()
 
@@ -4787,6 +5312,12 @@ class FavoriteAppearances(Base):
     @staticmethod
     def cast(arg) -> FavoriteAppearances:
         return FavoriteAppearances()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Appearance:
+        return None
+    def __iter__(self) -> Iterator[Appearance]:
+        return None
     def item(self, index: int) -> Appearance:
         """
         Returns the specified Appearance using an index into the collection.
@@ -4832,6 +5363,12 @@ class FavoriteMaterials(Base):
     @staticmethod
     def cast(arg) -> FavoriteMaterials:
         return FavoriteMaterials()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Material:
+        return None
+    def __iter__(self) -> Iterator[Material]:
+        return None
     def item(self, index: int) -> Material:
         """
         Returns the specified Material using an index into the collection.
@@ -4946,11 +5483,11 @@ class FileDialog(Base):
         
         The following is an example of a filter string:
         
-        Text files (*.txt);;All files (*.*)
+           Text files (*.txt);;All files (*.*)
         
         You can add several filter patterns to a filter by separating the file types with semicolons, for example:
         
-        Image Files (*.BMP;*.JPG;*.GIF);;All files (*.*)
+           Image Files (*.BMP;*.JPG;*.GIF);;All files (*.*)
         """
         return str()
     @filter.setter
@@ -4965,11 +5502,11 @@ class FileDialog(Base):
         
         The following is an example of a filter string:
         
-        Text files (*.txt);;All files (*.*)
+           Text files (*.txt);;All files (*.*)
         
         You can add several filter patterns to a filter by separating the file types with semicolons, for example:
         
-        Image Files (*.BMP;*.JPG;*.GIF);;All files (*.*)
+           Image Files (*.BMP;*.JPG;*.GIF);;All files (*.*)
         """
         pass
     @property
@@ -5292,6 +5829,42 @@ class GeneralPreferences(Base):
         Get and sets the type of orbit.
         """
         pass
+    @property
+    def isSkipCreationWhenLiveUpdate(self) -> bool:
+        """
+        Gets and sets if the creation of launch items should be skipped for live update.
+        """
+        return bool()
+    @isSkipCreationWhenLiveUpdate.setter
+    def isSkipCreationWhenLiveUpdate(self, value: bool):
+        """
+        Gets and sets if the creation of launch items should be skipped for live update.
+        """
+        pass
+    @property
+    def isDefaultMeasureShown(self) -> bool:
+        """
+        Gets and sets if the default measure is shown.
+        """
+        return bool()
+    @isDefaultMeasureShown.setter
+    def isDefaultMeasureShown(self, value: bool):
+        """
+        Gets and sets if the default measure is shown.
+        """
+        pass
+    @property
+    def panZoomOrbitShortcuts(self) -> PanZoomOrbitShortcuts:
+        """
+        Gets and sets how pan, zoom, and orbit should behave
+        """
+        return PanZoomOrbitShortcuts()
+    @panZoomOrbitShortcuts.setter
+    def panZoomOrbitShortcuts(self, value: PanZoomOrbitShortcuts):
+        """
+        Gets and sets how pan, zoom, and orbit should behave
+        """
+        pass
 
 class GraphicsPreferences(Base):
     """
@@ -5374,6 +5947,46 @@ class GraphicsPreferences(Base):
         """
         Gets and sets the dimming percentage to use for hidden edges.
         the value is a percentage expressed by a value between 0 and 100.
+        """
+        pass
+    @property
+    def isWoodBumpEnabled(self) -> bool:
+        """
+        Gets and sets whether the bump effect is enabled when supported by the Wood (Solid)
+        and the graphics driver.
+        """
+        return bool()
+    @isWoodBumpEnabled.setter
+    def isWoodBumpEnabled(self, value: bool):
+        """
+        Gets and sets whether the bump effect is enabled when supported by the Wood (Solid)
+        and the graphics driver.
+        """
+        pass
+    @property
+    def isLimitEffectsDuringNavigation(self) -> bool:
+        """
+        Gets and sets if effects should be temporarily disabled
+        during navigation to maintain the frame rate.
+        """
+        return bool()
+    @isLimitEffectsDuringNavigation.setter
+    def isLimitEffectsDuringNavigation(self, value: bool):
+        """
+        Gets and sets if effects should be temporarily disabled
+        during navigation to maintain the frame rate.
+        """
+        pass
+    @property
+    def isSurfaceNormalDisplayDisabled(self) -> int:
+        """
+        Gets and sets whether the surface normal display is disabled.
+        """
+        return int()
+    @isSurfaceNormalDisplayDisabled.setter
+    def isSurfaceNormalDisplayDisabled(self, value: int):
+        """
+        Gets and sets whether the surface normal display is disabled.
         """
         pass
 
@@ -5481,7 +6094,9 @@ class ImportManager(Base):
         """
         Executes the import operation to import a file (of the format specified by the input ImportOptions object)
         to a new document.
-        ***This method does not currently support the DXF2DImportOptions ImportOptions object.***
+        
+        This method does not support the DXF2DImportOptions or SVGImportOptions objects. Use ImportToTarget or
+        ImportToTarget2 for those types.
         importOptions : An ImportOptions object that is created using one of the create methods on the ImportManager object. This
         defines the type of file and any available options supported for that file type.
         Returns the newly created Document object or null if the creation failed.
@@ -5496,7 +6111,8 @@ class ImportManager(Base):
         defines the type of file and any available options supported for that file type.
         Supplying a DXF2DImportOptions object will result in the creation of one or more sketches
         (depending on the layers in the DXF file) in the target component.
-        target : Currently supports importing to a Fusion 360 Component.
+        target : For most import types this will be a Component. For SVGImportOptions this is the sketch you want to
+        import the SVG data into.
         Returns true if the import was successful.
         """
         return bool()
@@ -5520,11 +6136,22 @@ class ImportManager(Base):
         defines the type of file and any available options supported for that file type.
         Supplying a DXF2DImportOptions object will result in the creation of one or more sketches
         (depending on the layers in the DXF file) in the target component.
-        target : Currently supports importing to a Fusion 360 Component.
+        target : For most import types this will be a Component. For SVGImportOptions this is the sketch you want to
+        import the SVG data into.
         Returns an ObjectCollection containing the results of whatever was created as a result of the import.
         null is returned in the case of failure.
         """
         return ObjectCollection()
+    def createSVGImportOptions(self, fullFilename: str) -> SVGImportOptions:
+        """
+        Creates a SVGImportOptions object that is used to import SVG data into a sketch. Creation
+        of the SVGImportOptions object does not perform the import. You must pass this object to the
+        importToTarget or importToTarget2 methods to perform the import and provide the sketch you want
+        to import to as the target.
+        fullFilename : The full filename, including the path, of the SVG file.
+        The created SVGImportOptions object or null if the creation failed.
+        """
+        return SVGImportOptions()
 
 class ImportOptions(Base):
     """
@@ -5540,13 +6167,13 @@ class ImportOptions(Base):
     @property
     def filename(self) -> str:
         """
-        Gets and sets the filename or url of the file to be imported.
+        Gets and sets the filename or URL of the file to be imported.
         """
         return str()
     @filename.setter
     def filename(self, value: str):
         """
-        Gets and sets the filename or url of the file to be imported.
+        Gets and sets the filename or URL of the file to be imported.
         """
         pass
     @property
@@ -5733,7 +6360,13 @@ class ListItems(Base):
     @staticmethod
     def cast(arg) -> ListItems:
         return ListItems()
-    def add(self, name: str, isSelected: bool, icon: str, beforeIndex: int) -> ListItem:
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ListItem:
+        return None
+    def __iter__(self) -> Iterator[ListItem]:
+        return None
+    def add(self, name: str, isSelected: bool, icon: str = "", beforeIndex: int = -1) -> ListItem:
         """
         Adds a new item to the list.
         name : The name of this item as it is displayed in the list.
@@ -5813,14 +6446,6 @@ class Material(Base):
         Returns true if the delete was successful.
         """
         return bool()
-    def copyTo(self, target: Base) -> Material:
-        """
-        Copies this material to the specified target.
-        ***Depricated Method: Use the addByCopyMethod on the Materials object instead, where you can rename the copied Material***
-        target : The target can be a Design or MaterialFavorites object.
-        Returns the new copy of the material or null if the copy failed.
-        """
-        return Material()
     @property
     def appearance(self) -> Appearance:
         """
@@ -5865,6 +6490,20 @@ class Material(Base):
         Returns the Parent object (a Library or a Design).
         """
         return Base()
+    @property
+    def description(self) -> str:
+        """
+        Gets and sets the description associated with this material.
+        Setting the description is only valid for materials in a document or the favorites list.
+        """
+        return str()
+    @description.setter
+    def description(self, value: str):
+        """
+        Gets and sets the description associated with this material.
+        Setting the description is only valid for materials in a document or the favorites list.
+        """
+        pass
 
 class MaterialLibraries(Base):
     """
@@ -5876,6 +6515,12 @@ class MaterialLibraries(Base):
     @staticmethod
     def cast(arg) -> MaterialLibraries:
         return MaterialLibraries()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> MaterialLibrary:
+        return None
+    def __iter__(self) -> Iterator[MaterialLibrary]:
+        return None
     def item(self, index: int) -> MaterialLibrary:
         """
         Method that returns the specified Material Library using an index into the collection.
@@ -6012,6 +6657,12 @@ class Materials(Base):
     @staticmethod
     def cast(arg) -> Materials:
         return Materials()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Material:
+        return None
+    def __iter__(self) -> Iterator[Material]:
+        return None
     def item(self, index: int) -> Material:
         """
         Returns the specified Material using an index into the collection.
@@ -6299,7 +6950,7 @@ class Matrix3D(Base):
         Returns true if successful.
         """
         return bool()
-    def setToRotateTo(self, _from: Vector3D, to: Vector3D, axis: Vector3D) -> bool:
+    def setToRotateTo(self, _from: Vector3D, to: Vector3D, axis: Vector3D = None) -> bool:
         """
         Sets to the matrix of rotation that would align the 'from' vector with the 'to' vector. The optional
         axis argument may be used when the two vectors are perpendicular and in opposite directions to
@@ -6374,7 +7025,7 @@ class MeasureManager(Base):
         was measured between them in centimeters.
         """
         return MeasureResults()
-    def measureAngle(self, geometryOne: Base, geometryTwo: Base, geometryThree: Base) -> MeasureResults:
+    def measureAngle(self, geometryOne: Base, geometryTwo: Base, geometryThree: Base = None) -> MeasureResults:
         """
         Measures the angle between the input geometry.
         geometryOne : The first geometry to measure the angle to. This can be any 3D point geometry (Construction Point, Vertex, SketchPoint, or Point3D),
@@ -6452,6 +7103,8 @@ class NamedValues(Base):
     @staticmethod
     def cast(arg) -> NamedValues:
         return NamedValues()
+    def __len__(self) -> int:
+        return 0
     @staticmethod
     def create() -> NamedValues:
         """
@@ -6493,6 +7146,154 @@ class NamedValues(Base):
         Returns the number of name value pairs in this object.
         """
         return int()
+
+class NamedView(Base):
+    """
+    Represents a named view as seen in the browser.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> NamedView:
+        return NamedView()
+    def deleteMe(self) -> bool:
+        """
+        Deletes this named view. This method will fail for any of the four standard named views.
+        This can be determined by checking to see if the isBuiltIn property is true.
+        """
+        return bool()
+    def apply(self) -> bool:
+        """
+        This updates the active viewport to use the camera associated with this named view.
+        Returns true if the operation was successful.
+        """
+        return bool()
+    @property
+    def parentProduct(self) -> Product:
+        """
+        Returns the parent product of this named view.
+        """
+        return Product()
+    @property
+    def isBuiltIn(self) -> bool:
+        """
+        Indicates if this named view is one of the four standard
+        named views ("TOP", "FRONT", "RIGHT", and "HOME"). There
+        is limited functionality with the four standard named views.
+        """
+        return bool()
+    @property
+    def name(self) -> str:
+        """
+        Gets and sets the name of this named view. This property
+        acts as read-only for the four standard named views.
+        This can be determined by checking to see if the isBuiltIn property is true.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Gets and sets the name of this named view. This property
+        acts as read-only for the four standard named views.
+        This can be determined by checking to see if the isBuiltIn property is true.
+        """
+        pass
+    @property
+    def camera(self) -> Camera:
+        """
+        Gets and sets the camera associated with this named view. This property
+        acts as read-only for the four standard named views.
+        This can be determined by checking to see if the isBuiltIn property is true.
+        """
+        return Camera()
+    @camera.setter
+    def camera(self, value: Camera):
+        """
+        Gets and sets the camera associated with this named view. This property
+        acts as read-only for the four standard named views.
+        This can be determined by checking to see if the isBuiltIn property is true.
+        """
+        pass
+
+class NamedViews(Base):
+    """
+    Collection that provides access to all of the existing named views associated
+    with a Product and supports the creation of new named views.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> NamedViews:
+        return NamedViews()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> NamedView:
+        return None
+    def __iter__(self) -> Iterator[NamedView]:
+        return None
+    def item(self, index: int) -> NamedView:
+        """
+        Returns the specified named view using an index into the collection. The four
+        standard named views ("TOP", "FRONT", "RIGHT", and "HOME") are not accessible
+        through this method. For the predefined view use the properties on this
+        collection that provide direct access to the specific named view.
+        index : The index of the named view within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified named view or an error if an invalid index was specified.
+        """
+        return NamedView()
+    def itemByName(self, name: str) -> NamedView:
+        """
+        Returns the specified named view using the name of the named view. The four
+        standard named views ("TOP", "FRONT", "RIGHT", and "HOME") are not accessible
+        through this method. For the predefined view use the properties on this
+        collection that provide direct access to the specific named view.
+        name : The name of the named view within the collection to return.
+        Returns null if the specified name was not found.
+        """
+        return NamedView()
+    def add(self, camera: Camera, name: str = "") -> NamedView:
+        """
+        Creates a new named view.
+        camera : The camera that defines the view. To create a named view for the active viewport
+        you can get a camera from the active viewport and provide it as input to this method.
+        name : The name of the named view. This must be unique with respect
+        to other named views in the product. This is optional and if
+        not provided a default unique name will be generated.
+        Returns the newly created NamedView object or fails if invalid input was provided.
+        """
+        return NamedView()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of named views associated with the product. The four
+        standard named views ("TOP", "FRONT", "RIGHT", and "HOME") are not included
+        in this count. Only user-created named view are counted.
+        """
+        return int()
+    @property
+    def topNamedView(self) -> NamedView:
+        """
+        Returns the standard named view called "TOP".
+        """
+        return NamedView()
+    @property
+    def frontNamedView(self) -> NamedView:
+        """
+        Returns the standard named view called "FRONT".
+        """
+        return NamedView()
+    @property
+    def rightNamedView(self) -> NamedView:
+        """
+        Returns the standard named view called "RIGHT".
+        """
+        return NamedView()
+    @property
+    def homeNamedView(self) -> NamedView:
+        """
+        Returns the standard named view called "HOME".
+        """
+        return NamedView()
 
 class NavigationEventHandler(EventHandler):
     """
@@ -6566,11 +7367,48 @@ class ObjectCollection(Base):
     @staticmethod
     def cast(arg) -> ObjectCollection:
         return ObjectCollection()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Base:
+        return None
+    def __iter__(self) -> Iterator[Base]:
+        return None
     @staticmethod
     def create() -> ObjectCollection:
         """
         Creates a new ObjectCollection object.
         Returns the newly created ObjectCollection.
+        """
+        return ObjectCollection()
+    @staticmethod
+    def createWithArray(array: list[Base]) -> ObjectCollection:
+        """
+        Creates a new ObjectCollection that is initialized with the content of the provided array.
+        array : An array of Fusion objects that are used to populate the ObjectCollection. For this method to
+        succeed, getting the input type correct is critical. The term "array" is used generically in the API
+        documentation and describes different things depending on the language being used.
+        
+        When using C++, std::vector is used to input and output a list of items.However, this particular method
+        requires that the content of the vector be of type core.base. If you have a vector of other types, you
+        need to convert it to core.base. The sample below illustrates converting a vector of Occurrence objects
+        into a vector of core.Base objects.
+        
+        <code><pre class="api-code">std::vector&lt;Ptr&lt;adsk::fusion::Occurrence&gt;&gt; occArray = rootComp-&gt;occurrences()-&gt;asArray();
+        std::vector&lt;Ptr&lt;adsk::core::Base&gt;&gt; occs{ occArray.begin(), occArray.end() };
+        Ptr&lt;ObjectCollection&gt; objColl = ObjectCollection::createWithArray(occs);</pre></code>
+        
+        When using Python, a Python List or Tuple is used as input. Something not obvious is that when an array is
+        returned from a method or property it's not returned as a standard Python List but is a special API-specific
+        class called "vector". Typically, you don't notice this isn't a List because it supports Python iteration
+        like a List does. Because the createWithArray method requires a standard Python list as input, you need to
+        convert it to a standard list before using it in the createWithArray method. For example, the
+        Occurrences.asArray method returns an "array" of the occurrences, which really returns a vector object
+        of the occurrences. The code below converts the vector into a standard list so it can be used to create an ObjectCollection.
+        
+        <code><pre class="api-code">occList = list(root.Occurrences.asArray())
+        objColl = adsk.core.ObjectCollection.craeteWithArray(occList)</pre></code>
+        
+        Returns the newly created ObjectCollection or null in the case of failure.
         """
         return ObjectCollection()
     def item(self, index: int) -> Base:
@@ -6603,7 +7441,7 @@ class ObjectCollection(Base):
         Returns true if the removal was successful.
         """
         return bool()
-    def find(self, item: Base, startIndex: int) -> int:
+    def find(self, item: Base, startIndex: int = 0) -> int:
         """
         Finds the specified component in the collection.
         item : The item to search for within the collection.
@@ -6624,6 +7462,12 @@ class ObjectCollection(Base):
         Returns true if successful.
         """
         return bool()
+    def asArray(self) -> list[Base]:
+        """
+        Returns the content of the ObjectCollection as an array.
+        Returns an array of the Fusion objects in the ObjectCollection.
+        """
+        return [Base()]
     @property
     def count(self) -> int:
         """
@@ -6766,25 +7610,7 @@ class Palette(Base):
         return Palette()
     def sendInfoToHTML(self, action: str, data: str) -> str:
         """
-        <p>Sends the string to the JavaScript associated with the loaded HTML. A variation of the
-        event handler below should be implemented in the JavaScript associated with the HTML to
-        receive the data. The event will be triggered by Fusion 360 whenever the sendInfoToHTML method
-        is called.</p>
-        
-        <pre class="api-code">window.fusionJavaScriptHandler = {
-        handle: function(actionString, dataString){
-        confirm('Action from Fusion: ' + actionString);
-        confirm('Data from Fusion: ' + dataString);
-        
-        // Build up JSON return string.
-        var result = {};
-        result.status = 'OK';
-        var response = JSON.stringify(result);
-        return response;
-        }
-        };</pre>
-        <p>Your JavaScript code should always return something in response because an empty string
-        response is assumed to be a failure.</p>
+        Sends the string to the JavaScript associated with the loaded HTML.
         action : The "action" string to pass to the JavaScript associated with the HTML. This string can be
         anything but will typically be JSON formatted information.
         data : The "data" string to pass to the JavaScript associated with the HTML. This string can be
@@ -6884,13 +7710,21 @@ class Palette(Base):
     @property
     def htmlFileURL(self) -> str:
         """
-        Gets and sets the URL to the HTML file currently being displayed. This can be local or on the web.
+        Gets and sets the URL to the HTML file that will be displayed in the palette. This can be a local file or a URL on the web
+        where the HTML will be read. To avoid reading a file, this can also be the full HTML definition as a string.
+        
+        If you are providing the HTML content as a string, it should begin with the <html> element. Any references made
+        in the HTML should be to URL's and not local files since the local path is ambiguous.
         """
         return str()
     @htmlFileURL.setter
     def htmlFileURL(self, value: str):
         """
-        Gets and sets the URL to the HTML file currently being displayed. This can be local or on the web.
+        Gets and sets the URL to the HTML file that will be displayed in the palette. This can be a local file or a URL on the web
+        where the HTML will be read. To avoid reading a file, this can also be the full HTML definition as a string.
+        
+        If you are providing the HTML content as a string, it should begin with the <html> element. Any references made
+        in the HTML should be to URL's and not local files since the local path is ambiguous.
         """
         pass
     @property
@@ -7034,7 +7868,13 @@ class Palettes(Base):
     @staticmethod
     def cast(arg) -> Palettes:
         return Palettes()
-    def add(self, id: str, name: str, htmlFileURL: str, isVisible: bool, showCloseButton: bool, isResizable: bool, width: int, height: int, useNewWebBrowser: bool) -> Palette:
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Palette:
+        return None
+    def __iter__(self) -> Iterator[Palette]:
+        return None
+    def add(self, id: str, name: str, htmlFileURL: str, isVisible: bool, showCloseButton: bool, isResizable: bool, width: int = 200, height: int = 200, useNewWebBrowser: bool = True) -> Palette:
         """
         Creates a new Palette.
         id : The unique id for this palette. The id must be unique with respect to all of the palettes.
@@ -7057,6 +7897,8 @@ class Palettes(Base):
         and you will always get a QT Web Browser regardless of how the argument is set. Because of this, it is highly
         recommended you set this argument to true to use the new browser because when support for the CEF browser is removed
         you will automatically be forced to use the QT Web Browser.
+        
+        This argument is no longer used because the new QT Web Browser is always used regardless of this parameter's value.
         Returns the newly created palette or null in the case the creation failed.
         """
         return Palette()
@@ -7072,6 +7914,25 @@ class Palettes(Base):
         Returns the palette at the specified ID.
         id : The Id of the palette within the collection to return.
         Returns the palette of the specified id or null if no palette has the specified id.
+        """
+        return Palette()
+    def add2(self, id: str, name: str, htmlFileURL: str, isVisible: bool, showCloseButton: bool, isResizable: bool, width: int = 200, height: int = 200) -> Palette:
+        """
+        Creates a new Palette.
+        id : The unique id for this palette. The id must be unique with respect to all of the palettes.
+        name : The displayed name of this palette. This is the name visible in the user interface.
+        htmlFileURL : Specifies the URL to the HTML file that will be displayed in the palette. This can be a local file or a URL on the web
+        where the HTML will be read. To avoid reading a file, this can also be the full HTML definition as a string.
+        
+        If you are providing the HTML content as a string, it should begin with the <html> element. Any references made
+        in the HTML should be to URL's and not local files since the local path is ambiguous.
+        isVisible : Specifies if the palette is initially visible or not. It's useful to create it invisibly, change other desired
+        properties and then use the isVisible property to finally make it visible to the user.
+        showCloseButton : Specifies if a "Close" button should be displayed on the palette to allow the user to easily close it.
+        isResizable : Specifies if the palette can be resized by the user or not.
+        width : Specifies the width of the palette in pixels. If no width is specified a default width will be used.
+        height : Specifies the height of the palette in pixels. If no height is specified a default height will be used.
+        Returns the newly created palette or null in the case the creation failed.
         """
         return Palette()
     @property
@@ -7122,7 +7983,7 @@ class Point2D(Base):
     def cast(arg) -> Point2D:
         return Point2D()
     @staticmethod
-    def create(x: float, y: float) -> Point2D:
+    def create(x: float = 0.0, y: float = 0.0) -> Point2D:
         """
         Creates a transient 2D point object.
         x : The x coordinate of the point
@@ -7254,7 +8115,7 @@ class Point3D(Base):
     def cast(arg) -> Point3D:
         return Point3D()
     @staticmethod
-    def create(x: float, y: float, z: float) -> Point3D:
+    def create(x: float = 0.0, y: float = 0.0, z: float = 0.0) -> Point3D:
         """
         Creates a transient 3D point object.
         x : The x coordinate of the point
@@ -7453,6 +8314,12 @@ class Preferences(Base):
         Gets the ProductUsageData object.
         """
         return ProductUsageData()
+    @property
+    def apiPreferences(self) -> APIPreferences:
+        """
+        Gets the APIPreferences object, which provides access to the various preferences associated with the API.
+        """
+        return APIPreferences()
 
 class Product(Base):
     """
@@ -7530,6 +8397,22 @@ class Product(Base):
         Returns the collection of attributes associated with this product.
         """
         return Attributes()
+    @property
+    def selectionSets(self) -> SelectionSets:
+        """
+        Returns the SelectionSets object associated with this product. If the product does
+        not support selection sets, null is returned. The SelectionSets object is used to
+        create and access existing selection sets.
+        """
+        return SelectionSets()
+    @property
+    def namedViews(self) -> NamedViews:
+        """
+        Returns the NamedViews object associated with this product. The NamedViews collection
+        provides access to the named views defined in this product and supports the
+        creation of new named views.
+        """
+        return NamedViews()
 
 class ProductPreferences(Base):
     """
@@ -7557,6 +8440,12 @@ class ProductPreferencesCollection(Base):
     @staticmethod
     def cast(arg) -> ProductPreferencesCollection:
         return ProductPreferencesCollection()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ProductPreferences:
+        return None
+    def __iter__(self) -> Iterator[ProductPreferences]:
+        return None
     def item(self, index: int) -> ProductPreferences:
         """
         Function that returns the specified ProductPreferences object using an index into the collection.
@@ -7568,7 +8457,7 @@ class ProductPreferencesCollection(Base):
         """
         Returns the ProductPreference object with the specified name.
         name : The name of the ProductPreferences to return.
-        Returns the ProductPreferences object or null if if an invalid name was specified.
+        Returns the ProductPreferences object or null if an invalid name was specified.
         """
         return ProductPreferences()
     @property
@@ -7587,6 +8476,12 @@ class Products(Base):
     @staticmethod
     def cast(arg) -> Products:
         return Products()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Product:
+        return None
+    def __iter__(self) -> Iterator[Product]:
+        return None
     def item(self, index: int) -> Product:
         """
         Function that returns the specified product using an index into the collection.
@@ -7623,25 +8518,57 @@ class ProductUsageData(Base):
     @property
     def isTrackingToImproveSoftwareEnabled(self) -> bool:
         """
-        Gets and sets if tracking to improve the software is enabled.
+        Gets and sets if data can be collected to help improve the products
+        and services that Autodesk provides. This is the preference setting
+        titled "Help develop our products and services".
         """
         return bool()
     @isTrackingToImproveSoftwareEnabled.setter
     def isTrackingToImproveSoftwareEnabled(self, value: bool):
         """
-        Gets and sets if tracking to improve the software is enabled.
+        Gets and sets if data can be collected to help improve the products
+        and services that Autodesk provides. This is the preference setting
+        titled "Help develop our products and services".
         """
         pass
     @property
     def isTrackingToImproveCommunicationEnabled(self) -> bool:
         """
-        Gets and sets if tracking to improve communication is enabled.
+        Gets and sets if data can be collected to improve communications. This is
+        the preferences setting titled "Customize our messaging".
         """
         return bool()
     @isTrackingToImproveCommunicationEnabled.setter
     def isTrackingToImproveCommunicationEnabled(self, value: bool):
         """
-        Gets and sets if tracking to improve communication is enabled.
+        Gets and sets if data can be collected to improve communications. This is
+        the preferences setting titled "Customize our messaging".
+        """
+        pass
+    @property
+    def isGoogleAnalyticsTrackingEnabled(self) -> bool:
+        """
+        Gets and sets if Google Analytics tracking is enabled.
+        """
+        return bool()
+    @isGoogleAnalyticsTrackingEnabled.setter
+    def isGoogleAnalyticsTrackingEnabled(self, value: bool):
+        """
+        Gets and sets if Google Analytics tracking is enabled.
+        """
+        pass
+    @property
+    def isLearningPanelContextEnabled(self) -> bool:
+        """
+        Gets and sets if data can be collected to enable the Learning Panel
+        to show information based on the current context.
+        """
+        return bool()
+    @isLearningPanelContextEnabled.setter
+    def isLearningPanelContextEnabled(self, value: bool):
+        """
+        Gets and sets if data can be collected to enable the Learning Panel
+        to show information based on the current context.
         """
         pass
 
@@ -7654,7 +8581,7 @@ class ProgressDialog(Base):
     @staticmethod
     def cast(arg) -> ProgressDialog:
         return ProgressDialog()
-    def show(self, title: str, message: str, minimumValue: int, maximumValue: int, delay: int) -> bool:
+    def show(self, title: str, message: str, minimumValue: int, maximumValue: int, delay: int = 0) -> bool:
         """
         Displays the progress dialog that includes a progress bar that can be used to display a continually updated
         message indicating the progress of a process that will take more than a few seconds.
@@ -7827,6 +8754,12 @@ class Properties(Base):
     @staticmethod
     def cast(arg) -> Properties:
         return Properties()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Property:
+        return None
+    def __iter__(self) -> Iterator[Property]:
+        return None
     def item(self, index: int) -> Property:
         """
         Returns the specified property from the collection using an index into the collection.
@@ -8109,6 +9042,479 @@ class RadialMarkingMenu(Base):
         """
         pass
 
+class SaveImageFileOptions(Base):
+    """
+    Class that defines the various options that can be used when saving a viewport as an image. This
+    object is created by using the static create method on the class and is then used as input to the
+    Viewport.saveAsImageFileWithOptions method.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SaveImageFileOptions:
+        return SaveImageFileOptions()
+    @staticmethod
+    def create(filename: str) -> SaveImageFileOptions:
+        """
+        Creates a new SaveImageFileOptions object. The returned object can be used to define
+        the various options to use when saving a viewport as an image. The object is passed
+        into the ViewPort.saveAsImageFileWithOptions method to create an image of the viewport.
+        filename : The full filename, including the path, of the image file.
+        The type of image file to be created is inferred from the extension of the filename.
+        Returns a SaveImageFileOptions object.
+        """
+        return SaveImageFileOptions()
+    @property
+    def filename(self) -> str:
+        """
+        Gets and sets the full filename, including the path, of the image file.
+        The type of image file to be created is inferred from the extension of the filename.
+        """
+        return str()
+    @filename.setter
+    def filename(self, value: str):
+        """
+        Gets and sets the full filename, including the path, of the image file.
+        The type of image file to be created is inferred from the extension of the filename.
+        """
+        pass
+    @property
+    def height(self) -> int:
+        """
+        Gets and set the height of the image to be created in pixels. A value of zero
+        is valid and indicates the current height of the viewport is to be used. When
+        the SaveImageFileOptions object is initially created, this is initialized to 0.
+        """
+        return int()
+    @height.setter
+    def height(self, value: int):
+        """
+        Gets and set the height of the image to be created in pixels. A value of zero
+        is valid and indicates the current height of the viewport is to be used. When
+        the SaveImageFileOptions object is initially created, this is initialized to 0.
+        """
+        pass
+    @property
+    def width(self) -> int:
+        """
+        Gets and set the width of the image to be created in pixels. A value of zero
+        is valid and indicates the current width of the viewport is to be used. When
+        the SaveImageFileOptions object is initially created, this is initialized to 0.
+        """
+        return int()
+    @width.setter
+    def width(self, value: int):
+        """
+        Gets and set the width of the image to be created in pixels. A value of zero
+        is valid and indicates the current width of the viewport is to be used. When
+        the SaveImageFileOptions object is initially created, this is initialized to 0.
+        """
+        pass
+    @property
+    def isBackgroundTransparent(self) -> bool:
+        """
+        Gets and sets if the background should be rendered as transparent. If false, the background will be the same as seen in Fusion.
+        
+        When the SaveImageFileOptions object is initially created, this is initialized to false.
+        """
+        return bool()
+    @isBackgroundTransparent.setter
+    def isBackgroundTransparent(self, value: bool):
+        """
+        Gets and sets if the background should be rendered as transparent. If false, the background will be the same as seen in Fusion.
+        
+        When the SaveImageFileOptions object is initially created, this is initialized to false.
+        """
+        pass
+    @property
+    def isAntiAliased(self) -> bool:
+        """
+        Gets and sets if the rendered image should be anti-aliased or not. If false, there is no anti-aliasing.
+        
+        When the SaveImageFileOptions object is initially created, this is initialized to true.
+        """
+        return bool()
+    @isAntiAliased.setter
+    def isAntiAliased(self, value: bool):
+        """
+        Gets and sets if the rendered image should be anti-aliased or not. If false, there is no anti-aliasing.
+        
+        When the SaveImageFileOptions object is initially created, this is initialized to true.
+        """
+        pass
+
+class Script(Base):
+    """
+    Object that represents a script or add-in.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> Script:
+        return Script()
+    def stop(self) -> bool:
+        """
+        If this script or add-in is running, this method will
+        stop it. The isRunning property can be used to determine
+        if it is running. If the script or add-in is not running and
+        this method is called, there is no effect.
+        Returns true if successful.
+        """
+        return bool()
+    def run(self, waitForFinish: bool = False) -> bool:
+        """
+        Runs this script or add-in, if it's not already running.
+        waitForFinish : Specifies if call will wait until the script or add-in has finished running.
+        For add-ins, this should always be false, because they typically continue to
+        run for the entire Fusion session.
+        
+        For scripts, there are cases where you might want to set this to true, where
+        you need to wait for the script to finish because you want to do something with
+        whatever it creates. Typically, this should be false, so it starts the script
+        and immediately returns.
+        Returns true if successful.
+        """
+        return bool()
+    def edit(self) -> bool:
+        """
+        Invokes the default edit behavior for this script or add-in.
+        Returns true if successful.
+        """
+        return bool()
+    @property
+    def name(self) -> str:
+        """
+        Gets the name of this script or add-in.
+        """
+        return str()
+    @property
+    def id(self) -> str:
+        """
+        Gets the ID of this script or add-in. This is typically a GUID and
+        is assumed to be unique with respect to all other add-ins.
+        """
+        return str()
+    @property
+    def folder(self) -> str:
+        """
+        Gets the full path of the folder that contains this script or add-in.
+        """
+        return str()
+    @property
+    def description(self) -> str:
+        """
+        Gets the description of this script or add-in.
+        """
+        return str()
+    @property
+    def author(self) -> str:
+        """
+        Returns the author information associated with this script or add-in.
+        """
+        return str()
+    @property
+    def version(self) -> str:
+        """
+        Returns the version information associated with this script or add-in.
+        """
+        return str()
+    @property
+    def isAddIn(self) -> bool:
+        """
+        Gets if this Script object represents a script or an add-in. Returns
+        true if it is an add-in.
+        """
+        return bool()
+    @property
+    def isRunOnStartup(self) -> bool:
+        """
+        Gets and sets whether this add-in will automatically run when
+        Fusion 360 is started. This property is only valid when the isAddIn
+        property returns true.
+        """
+        return bool()
+    @isRunOnStartup.setter
+    def isRunOnStartup(self, value: bool):
+        """
+        Gets and sets whether this add-in will automatically run when
+        Fusion 360 is started. This property is only valid when the isAddIn
+        property returns true.
+        """
+        pass
+    @property
+    def isRunning(self) -> bool:
+        """
+        Gets if this script or add-in is currently running.
+        """
+        return bool()
+    @property
+    def isVisible(self) -> bool:
+        """
+        Gets and sets whether the script or add-in is visible within the
+        “Scripts and Add-Ins” dialog. By default, all scripts and add-ins are
+        visible. Setting this to false will cause it to be hidden and unloaded
+        if it is already running. Also, if it’s an add-in set to load on startup, it
+        will no longer be loaded.
+        """
+        return bool()
+    @isVisible.setter
+    def isVisible(self, value: bool):
+        """
+        Gets and sets whether the script or add-in is visible within the
+        “Scripts and Add-Ins” dialog. By default, all scripts and add-ins are
+        visible. Setting this to false will cause it to be hidden and unloaded
+        if it is already running. Also, if it’s an add-in set to load on startup, it
+        will no longer be loaded.
+        """
+        pass
+    @property
+    def programmingLanguage(self) -> ProgrammingLanguages:
+        """
+        Returns the programming language this script or add-in is written in.
+        """
+        return ProgrammingLanguages()
+    @property
+    def targetOperatingSystem(self) -> OperatingSystems:
+        """
+        Returns the operating systems this script or add-in is available for.
+        """
+        return OperatingSystems()
+    @property
+    def isInternal(self) -> bool:
+        """
+        Indicates if this is an internal script or add-in that is delivered with Fusion.
+        Returns true if it is an internal script or add-in.
+        """
+        return bool()
+    @property
+    def isEditable(self) -> bool:
+        """
+        Indicates if this script or add-in is blocked from being edited by the user in the
+        "Scripts and Add-Ins" dialog.
+        """
+        return bool()
+    @property
+    def manifestContent(self) -> str:
+        """
+        Gets the full contents of the manifest file associated with this script
+        or add-in. This is particularly useful if you have any custom information
+        defined in the manifest. The manifest file uses JSON to format its content.
+        """
+        return str()
+
+class ScriptInput(Base):
+    """
+    Used when creating a new script or add-in to specify all of the required
+    and optional settings needed. This is created using the createScriptInput method
+    on the Scripts object.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ScriptInput:
+        return ScriptInput()
+    @property
+    def isAddIn(self) -> bool:
+        """
+        Specifies if a script or add-in is to be created. A value of true
+        indicates an add-in will be created.
+        """
+        return bool()
+    @isAddIn.setter
+    def isAddIn(self, value: bool):
+        """
+        Specifies if a script or add-in is to be created. A value of true
+        indicates an add-in will be created.
+        """
+        pass
+    @property
+    def programmingLanguage(self) -> ProgrammingLanguages:
+        """
+        Gets and sets which programming language the new script or add-in will use.
+        """
+        return ProgrammingLanguages()
+    @programmingLanguage.setter
+    def programmingLanguage(self, value: ProgrammingLanguages):
+        """
+        Gets and sets which programming language the new script or add-in will use.
+        """
+        pass
+    @property
+    def name(self) -> str:
+        """
+        Gets and sets the name of the script or add-in to create. This name must
+        be unique with respect to the other scripts and add-ins in the folder
+        specified by the targetFolder property.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Gets and sets the name of the script or add-in to create. This name must
+        be unique with respect to the other scripts and add-ins in the folder
+        specified by the targetFolder property.
+        """
+        pass
+    @property
+    def description(self) -> str:
+        """
+        The description of the add-in that is displayed in the "Scripts and Add-Ins"
+        dialog. This defaults to an empty string.
+        """
+        return str()
+    @description.setter
+    def description(self, value: str):
+        """
+        The description of the add-in that is displayed in the "Scripts and Add-Ins"
+        dialog. This defaults to an empty string.
+        """
+        pass
+    @property
+    def author(self) -> str:
+        """
+        The author of the add-in that is displayed in the "Scripts and Add-Ins"
+        dialog. This defaults to an empty string.
+        """
+        return str()
+    @author.setter
+    def author(self, value: str):
+        """
+        The author of the add-in that is displayed in the "Scripts and Add-Ins"
+        dialog. This defaults to an empty string.
+        """
+        pass
+    @property
+    def version(self) -> str:
+        """
+        The version of the add-in that is displayed in the "Scripts and Add-Ins"
+        dialog. This defaults to an empty string.
+        """
+        return str()
+    @version.setter
+    def version(self, value: str):
+        """
+        The version of the add-in that is displayed in the "Scripts and Add-Ins"
+        dialog. This defaults to an empty string.
+        """
+        pass
+    @property
+    def targetOperatingSystem(self) -> OperatingSystems:
+        """
+        Specifies the operating systems this script or add-in will be displayed
+        in the "Scripts and Add-Ins" dialog and where it will be automatically
+        run on startup, if that option is specified. Defaults to WindowsAndMacOperatingSystem
+        """
+        return OperatingSystems()
+    @targetOperatingSystem.setter
+    def targetOperatingSystem(self, value: OperatingSystems):
+        """
+        Specifies the operating systems this script or add-in will be displayed
+        in the "Scripts and Add-Ins" dialog and where it will be automatically
+        run on startup, if that option is specified. Defaults to WindowsAndMacOperatingSystem
+        """
+        pass
+    @property
+    def targetFolder(self) -> str:
+        """
+        The full path to the folder where the script or add-in will be created. By default,
+        this is an empty string which uses the default folder specified by the "Default Path for Scripts and Add-Ins" preference.
+        Specifying a path overrides the default and will create the script or add-in in the specified location.
+        No "Scripts" or "AddIns" sub-folder is created.
+        """
+        return str()
+    @targetFolder.setter
+    def targetFolder(self, value: str):
+        """
+        The full path to the folder where the script or add-in will be created. By default,
+        this is an empty string which uses the default folder specified by the "Default Path for Scripts and Add-Ins" preference.
+        Specifying a path overrides the default and will create the script or add-in in the specified location.
+        No "Scripts" or "AddIns" sub-folder is created.
+        """
+        pass
+    @property
+    def runOnStartup(self) -> bool:
+        """
+        If this Script represents an add-in and isAddIn is True, this specifies if the
+        add-in should be automatically started when Fusion starts up.
+        """
+        return bool()
+    @runOnStartup.setter
+    def runOnStartup(self, value: bool):
+        """
+        If this Script represents an add-in and isAddIn is True, this specifies if the
+        add-in should be automatically started when Fusion starts up.
+        """
+        pass
+
+class Scripts(Base):
+    """
+    API object that provides equivalent functionality of the "Scripts and Add-Ins" dialog.
+    Provides access to the scripts and add-ins that Fusion 360 is aware of. It also
+    supports loading other unknown scripts and add-ins, and creating new scripts and add-ins.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> Scripts:
+        return Scripts()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Script:
+        return None
+    def __iter__(self) -> Iterator[Script]:
+        return None
+    def item(self, index: int) -> Script:
+        """
+        Function that returns the specified script or add-in using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return Script()
+    def addNew(self, input: ScriptInput) -> Script:
+        """
+        Creates a new script or add-in. This uses the same internal template that's
+        used when creating a new script or add-in using the "Scripts and Add-Ins" dialog.
+        The provided ScriptInput object defines the information needed to create a new
+        script or add-in.
+        input : A ScriptInput object which defines the required information to create a new
+        script or add-in. It is created using the createNewScriptInput method.
+        Returns the newly created Script object.
+        """
+        return Script()
+    def createScriptInput(self, name: str, programmingLanguage: ProgrammingLanguages, isAddIn: bool) -> ScriptInput:
+        """
+        Creates a new ScriptInput object. Logically, this object is equivalent to the
+        dialog that is shown when you click the "Create" button in the "Scripts and Add-Ins"
+        command dialog. It collects the information needed to create a new script or
+        add-in. To create the script or add-in, call the addNew method, passing in the
+        ScriptInput object.
+        name : The name of the script or add-in to create. By default, it will be created in the
+        folder specified by the "Default Path for Scripts and Add-Ins" preference, but a
+        different path can be specified using the returned ScriptInput object. Regardless of
+        where it is created, the name must be unique with respect to the other scripts and
+        add-ins in that folder. If it's not unique the creation of the script or add-in will fail.
+        programmingLanguage : The programming language to use for the new script or add-in.
+        isAddIn : Specifies if a script or add-in is to be created. If true, an add-in is created.
+        Returns a ScriptInput object or null in the case of failure.
+        """
+        return ScriptInput()
+    def addExisting(self, scriptFolderPath: str) -> Script:
+        """
+        Fusion looks in specific folders for scripts and add-ins, but you can manually add
+        other scripts and add-ins to the list of known scripts and add-ins so they will be
+        listed in the "Scripts and Add-ins" dialog. This method does that.
+        scriptFolderPath : The full path to the folder that contains the script or add-in.
+        Returns the Script object that represents the script or add-in just added. Returns
+        null in the case of failure.
+        """
+        return Script()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of scripts and add-ins.
+        """
+        return int()
+
 class Selection(Base):
     """
     Provides access to a selection of an entity in the user interface.
@@ -8157,6 +9563,12 @@ class Selections(Base):
     @staticmethod
     def cast(arg) -> Selections:
         return Selections()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Selection:
+        return None
+    def __iter__(self) -> Iterator[Selection]:
+        return None
     def item(self, index: int) -> Selection:
         """
         Returns the specified selection using an index into the collection.
@@ -8229,8 +9641,129 @@ class Selections(Base):
         """
         pass
 
+class SelectionSet(Base):
+    """
+    The SelectionSet object represents a Selection Set as seen in the user interface. Using a SelectionSet,
+    you can access all the associated data, activate, and delete a selection set.
+    
+    In the user interface, selection sets are created by selecting geometry and then running the
+    "Create Selection Set" command from the context menu. All existing selection sets are shown
+    in a "Selection Sets" folder in the browser where they can be activated and deleted.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SelectionSet:
+        return SelectionSet()
+    def select(self) -> bool:
+        """
+        Causes the entities in this SelectionSet object to be the active selection.
+        Returns true if the selection was successful.
+        """
+        return bool()
+    def deleteMe(self) -> bool:
+        """
+        Deletes this SelectionSet object.
+        Returns true if the deletion was successful.
+        """
+        return bool()
+    @property
+    def name(self) -> str:
+        """
+        Gets and sets the name of the SelectionSet object. If a name is assigned that is already
+        used, Fusion will append a counter to the name to make it unique.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Gets and sets the name of the SelectionSet object. If a name is assigned that is already
+        used, Fusion will append a counter to the name to make it unique.
+        """
+        pass
+    @property
+    def entities(self) -> list[Base]:
+        """
+        Gets and sets the entities in the selection set. Setting this property is the equivalent
+        of using the "Update" option for a selection set in the user-interface.
+        
+        Setting the entities can fail in the case where you provide an entity that is not valid
+        for selection. All entities must be in the context of the root component. This means if
+        the entity isn't directly owned by the root component, it must be a proxy.
+        """
+        return [Base()]
+    @entities.setter
+    def entities(self, value: list[Base]):
+        """
+        Gets and sets the entities in the selection set. Setting this property is the equivalent
+        of using the "Update" option for a selection set in the user-interface.
+        
+        Setting the entities can fail in the case where you provide an entity that is not valid
+        for selection. All entities must be in the context of the root component. This means if
+        the entity isn't directly owned by the root component, it must be a proxy.
+        """
+        pass
+
+class SelectionSets(Base):
+    """
+    The SelectionSets object is used to create and access existing selection sets.
+    
+    In the user interface, selection sets are created by selecting geometry and then
+    running the "Create Selection Set" command from the context menu. All existing
+    selection sets are shown in a "Selection Sets" folder in the browser.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SelectionSets:
+        return SelectionSets()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SelectionSet:
+        return None
+    def __iter__(self) -> Iterator[SelectionSet]:
+        return None
+    def item(self, index: int) -> SelectionSet:
+        """
+        Returns the specified SelectionSet object using an index into the collection.
+        index : The index of the SelectionSet within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified SelectionSet or null if an invalid index was specified.
+        """
+        return SelectionSet()
+    def itemByName(self, name: str) -> SelectionSet:
+        """
+        Returns the specified SelectionSet object using the name of the selection set.
+        name : The name of the SelectionSet object to return.
+        Returns the specified SelectionSet object or null if no SelectionSet object exists with the specified name.
+        """
+        return SelectionSet()
+    def add(self, entities: list[Base], name: str = "") -> SelectionSet:
+        """
+        Adds a new SelectionSet to the parent product.
+        entities : An array of entities that will be in the created selection set. All entities must be in the
+        context of the root component. This means if the entity isn't directly owned by the root
+        component, it must be a proxy.
+        name : The name of the selection set. This is an optional argument is if not specified, or an empty string is
+        provided, Fusion will create a name for the selection set. If provided, the name should be unique with
+        respect to other selection sets in the product. If a name is provided that is the same as an existing
+        selection set, Fusion will append a counter to the name to make the name unique.
+        Returns the created selection set or null in the case the selection set couldn't be created. This method
+        can fail in the case where no entities are provided or if any of the provided entities are not selectable.
+        """
+        return SelectionSet()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of SelectionSet objects in the collection.
+        """
+        return int()
+
 class Status(Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     Used to communicate the current status of an object or operation. This provides the status
     and any error messages that might accompany an error or warning.
     """
@@ -8271,6 +9804,10 @@ class Status(Base):
 
 class StatusMessage(Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     Defines the message associated with a Status object.
     """
     def __init__(self):
@@ -8322,6 +9859,10 @@ class StatusMessage(Base):
 
 class StatusMessages(Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     A collection of status messages associated with a Status object. The primary purpose of the messages is to
     describe the reason for a warning or failure and display the messages in the alert dialog.
     """
@@ -8330,6 +9871,12 @@ class StatusMessages(Base):
     @staticmethod
     def cast(arg) -> StatusMessages:
         return StatusMessages()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> StatusMessage:
+        return None
+    def __iter__(self) -> Iterator[StatusMessage]:
+        return None
     def item(self, index: int) -> StatusMessage:
         """
         Returns the specified status message using an index into the collection.
@@ -8337,10 +9884,11 @@ class StatusMessages(Base):
         Returns the specified StatusMessage or null if an invalid index was specified.
         """
         return StatusMessage()
-    def addError(self, messageId: str, message: str) -> StatusMessage:
+    def addError(self, messageId: str = "", message: str = "") -> StatusMessage:
         """
         Adds a new error status message to the list of warning and error messages.
-        messageId : The ID of a predefined message or if an empty string is provided, the
+        messageId : 
+        The ID of a predefined message or if an empty string is provided, the
         default error message will be used. The displayed message is localized based on the
         current default language in Fusion. Below is a list of some valid message ID's and
         the corresponding English message.
@@ -8360,14 +9908,16 @@ class StatusMessages(Base):
         "NO_TARGET_BODY" - "No target body!"<br />
         "ORIGIN_SELECTION_MISSING" - "Origin geometry is missing."<br />
         "DRPOINT_COMPUTE_FAILED" - "Failed to evaluate the point due to the invalid input"<br />
+        
         message : This is not currently supported for custom feature compute errors and will be ignored.
         Returns true if the error message was successfully added.
         """
         return StatusMessage()
-    def addWarning(self, messageId: str, message: str) -> StatusMessage:
+    def addWarning(self, messageId: str = "", message: str = "") -> StatusMessage:
         """
         Adds a new warning status message to the list of warning and error messages.
-        messageId : The ID of a predefined message or if an empty string is provided, the
+        messageId : 
+        The ID of a predefined message or if an empty string is provided, the
         default error message will be used. The displayed message is localized based on the
         current default language in Fusion. Below is a list of some valid message ID's and
         the corresponding English message.
@@ -8387,6 +9937,7 @@ class StatusMessages(Base):
         "NO_TARGET_BODY" - "No target body!"<br />
         "ORIGIN_SELECTION_MISSING" - "Origin geometry is missing."<br />
         "DRPOINT_COMPUTE_FAILED" - "Failed to evaluate the point due to the invalid input"<br />
+        
         message : This is not currently supported for custom feature compute errors and will be ignored.
         Returns true if the warning message was successfully added.
         """
@@ -8667,9 +10218,12 @@ class SurfaceEvaluator(Base):
         return (bool(), Vector3D(), Vector3D())
     def isParameterOnFace(self, parameter: Point2D) -> bool:
         """
-        Determines if the specified parameter position lies with the parametric range of the surface.
+        Determines if the specified parameter position lies within the surface. When the SurfaceEvaluator
+        is obtained from a BRepFace object, this will respect the boundaries of the face and return true
+        when point is on the visible portion of the surface. When obtained from surface geometry it returns
+        true if the point is within the parametric range of surface.
         parameter : The parameter position to test.
-        Returns true if the parameter position lies within the valid parametric range of the surface.
+        Returns true if the parameter position lies within the surface.
         """
         return bool()
     def parametricRange(self) -> BoundingBox2D:
@@ -8704,6 +10258,23 @@ class SurfaceEvaluator(Base):
         edges and has a well-defined area.
         """
         return float()
+
+class TextureMapControl(Base):
+    """
+    Provides access to the various settings that control how a texture is applied to a body or mesh.
+    This is the base class for the various texture mapping techniques.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> TextureMapControl:
+        return TextureMapControl()
+    def reset(self) -> bool:
+        """
+        Resets the texture map back to its original default settings.
+        Returns true if the reset was successful.
+        """
+        return bool()
 
 class Toolbar(Base):
     """
@@ -8792,6 +10363,12 @@ class ToolbarControlList(Base):
     @staticmethod
     def cast(arg) -> ToolbarControlList:
         return ToolbarControlList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ToolbarControl:
+        return None
+    def __iter__(self) -> Iterator[ToolbarControl]:
+        return None
     def item(self, index: int) -> ToolbarControl:
         """
         Returns the ToolbarControl at the specified index.
@@ -8825,6 +10402,12 @@ class ToolbarControls(Base):
     @staticmethod
     def cast(arg) -> ToolbarControls:
         return ToolbarControls()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ToolbarControl:
+        return None
+    def __iter__(self) -> Iterator[ToolbarControl]:
+        return None
     def item(self, index: int) -> ToolbarControl:
         """
         Returns the ToolbarControl at the specified index.
@@ -8842,7 +10425,7 @@ class ToolbarControls(Base):
         Returns the ToolbarControl with the specified ID or null if no control has this ID.
         """
         return ToolbarControl()
-    def addCommand(self, commandDefinition: CommandDefinition, positionID: str, isBefore: bool) -> CommandControl:
+    def addCommand(self, commandDefinition: CommandDefinition, positionID: str = "", isBefore: bool = True) -> CommandControl:
         """
         Adds a button to the controls in the toolbar, panel, or drop-down. The ID of the created
         command control is inherited from the associated command definition.
@@ -8855,7 +10438,7 @@ class ToolbarControls(Base):
         Returns the newly created CommandControl object or null if the creation fails.
         """
         return CommandControl()
-    def addDropDown(self, text: str, resourceFolder: str, id: str, positionID: str, isBefore: bool) -> DropDownControl:
+    def addDropDown(self, text: str, resourceFolder: str, id: str = "", positionID: str = "", isBefore: bool = True) -> DropDownControl:
         """
         Adds a drop-down to the controls in the toolbar, panel, or drop-down. When the drop-down is initially created it will be empty.
         you can get the associated ToolbarControls object from the DropDownControl to add additional controls to the drop-down.
@@ -8872,7 +10455,7 @@ class ToolbarControls(Base):
         Returns the newly created DropDownControl object or null if the creation fails.
         """
         return DropDownControl()
-    def addSeparator(self, id: str, positionID: str, isBefore: bool) -> SeparatorControl:
+    def addSeparator(self, id: str = "", positionID: str = "", isBefore: bool = True) -> SeparatorControl:
         """
         Adds a separator to the controls in the toolbar, panel, or drop-down.
         id : Optional unique ID for the control. It must be unique with respect to other controls in this collection.
@@ -8885,7 +10468,7 @@ class ToolbarControls(Base):
         Returns the newly created separator controls or null if the creation fails.
         """
         return SeparatorControl()
-    def addSplitButton(self, defaultDefinition: CommandDefinition, additionalDefinitions: list[CommandDefinition], showLastUsed: bool, id: str, positionID: str, isBefore: bool) -> SplitButtonControl:
+    def addSplitButton(self, defaultDefinition: CommandDefinition, additionalDefinitions: list[CommandDefinition], showLastUsed: bool, id: str = "", positionID: str = "", isBefore: bool = True) -> SplitButtonControl:
         """
         Adds a split button to the controls in a toolbar. A split button has two active areas that the user can click;
         the main button portion and the drop-down arrow. Clicking the main button, executes the displayed command.
@@ -9017,6 +10600,12 @@ class ToolbarPanelList(Base):
     @staticmethod
     def cast(arg) -> ToolbarPanelList:
         return ToolbarPanelList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ToolbarPanel:
+        return None
+    def __iter__(self) -> Iterator[ToolbarPanel]:
+        return None
     def item(self, index: int) -> ToolbarPanel:
         """
         Returns the specified work space using an index into the collection.
@@ -9053,7 +10642,13 @@ class ToolbarPanels(Base):
     @staticmethod
     def cast(arg) -> ToolbarPanels:
         return ToolbarPanels()
-    def add(self, id: str, name: str, positionID: str, isBefore: bool) -> ToolbarPanel:
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ToolbarPanel:
+        return None
+    def __iter__(self) -> Iterator[ToolbarPanel]:
+        return None
+    def add(self, id: str, name: str, positionID: str = "", isBefore: bool = True) -> ToolbarPanel:
         """
         Creates a new ToolbarPanel. The panel is initially empty.
         Use the associated ToolbarControls collection to add buttons.
@@ -9102,6 +10697,12 @@ class Toolbars(Base):
     @staticmethod
     def cast(arg) -> Toolbars:
         return Toolbars()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Toolbar:
+        return None
+    def __iter__(self) -> Iterator[Toolbar]:
+        return None
     def item(self, index: int) -> Toolbar:
         """
         Returns the specified toolbar using an index into the collection.
@@ -9215,6 +10816,12 @@ class ToolbarTabList(Base):
     @staticmethod
     def cast(arg) -> ToolbarTabList:
         return ToolbarTabList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ToolbarTab:
+        return None
+    def __iter__(self) -> Iterator[ToolbarTab]:
+        return None
     def item(self, index: int) -> ToolbarTab:
         """
         Returns the specified tab using an index into the collection.
@@ -9245,6 +10852,12 @@ class ToolbarTabs(Base):
     @staticmethod
     def cast(arg) -> ToolbarTabs:
         return ToolbarTabs()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ToolbarTab:
+        return None
+    def __iter__(self) -> Iterator[ToolbarTab]:
+        return None
     def item(self, index: int) -> ToolbarTab:
         """
         Returns the specified toolbar tab using an index into the collection.
@@ -9491,7 +11104,7 @@ class UnitsManager(Base):
         Returns True if it is a valid expression.
         """
         return bool()
-    def evaluateExpression(self, expression: str, units: str) -> float:
+    def evaluateExpression(self, expression: str, units: str = "DefaultDistance") -> float:
         """
         Gets the value (in internal units) of the expression.
         expression : EvaluateExpression("1cm + 1in") -> 3.54
@@ -9515,7 +11128,7 @@ class UnitsManager(Base):
         Returns -1 AND GetLastError returns ExpressionError in the event of an error.
         """
         return float()
-    def formatInternalValue(self, internalValue: float, displayUnits: str, showUnits: bool) -> str:
+    def formatInternalValue(self, internalValue: float, displayUnits: str = "DefaultDistance", showUnits: bool = True) -> str:
         """
         Formats the internal value as a string. The output string is formatted using the current
         unit settings in preferences. The preferences control the number of decimal places, whether
@@ -9540,10 +11153,10 @@ class UnitsManager(Base):
         Returns an empty string and GetLastError returns ExpressionError in the event of an error.
         """
         return str()
-    def standardizeExpression(self, expression: str, units: str) -> str:
+    def standardizeExpression(self, expression: str, units: str = "DefaultDistance") -> str:
         """
         Standardizes the expression in terms of spacing and user preferences.
-        StandardizeExpression("1.5") -> depends on distance units, but with mmight be "1.5 mm"
+        StandardizeExpression("1.5") -> depends on distance units, but with might be "1.5 mm"
         StandardizeExpression("1.5", "in") -> "1.5 in"
         StandardizeExpression("1.5 cm + 1.50001 centimeter") -> "1.5 cm + 1.50001 cm"
         StandardizeExpression("1.5", "m * m * m / s") -> "1.5 m^3 /s"
@@ -9571,10 +11184,77 @@ class UnitsManager(Base):
         Returns the unit strings for the current default length unit as specified in preferences. - e.g. "cm" or "in"
         This is the string that is being used by Fusion 360 to represent the current length unit and is affected
         by the preference settings that let the user choose whether abbreviations and symbols can be used. This means
-        that inch length units can be returned as inch, in, or ". If you need a consistent way of determing the current
+        that inch length units can be returned as inch, in, or ". If you need a consistent way of determining the current
         length unit, the distanceDisplayUnits of the FusionUnitsManager object returns an enum value.
         """
         return str()
+
+class URL(Base):
+    """
+    A URL object provides useful and easy-to-use methods for creating, modifying, and analyzing URLs.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> URL:
+        return URL()
+    @staticmethod
+    def create(url: str) -> URL:
+        """
+        Create a new URL by given string.
+        url : The string is used to define the URL.
+        Returns the new URL object.
+        """
+        return URL()
+    def toString(self) -> str:
+        """
+        Get the entire URL as string.
+        Returns the entire URL as string.
+        """
+        return str()
+    def join(self, path: str) -> URL:
+        """
+        Join this URL with the given path and return the resulting URL. The operation does not alter the current URL.
+        Join inserts a slash '/' to properly extend the path, so that "http://foo".join("bar") will return "http://foo/bar", not "http://foobar".
+        path : The path to join to this URL.
+        Returns the joined URL.
+        """
+        return URL()
+    @property
+    def protocol(self) -> str:
+        """
+        Get the protocol scheme of the URL, including the final ':'.
+        Returns the protocol scheme of the URL.
+        """
+        return str()
+    @property
+    def pathName(self) -> str:
+        """
+        Get the path name of the URL, including the last '/' of the protocol followed by the path of the URL.
+        Returns the path of the URL.
+        """
+        return str()
+    @property
+    def leafName(self) -> str:
+        """
+        Get the leaf name of the URL, which is the section behind the last '/'.
+        Returns the leaf name of the URL.
+        """
+        return str()
+    @property
+    def parent(self) -> URL:
+        """
+        Get the parent URL, represented by the section before the last '/'.
+        Returns the parent URL object.
+        """
+        return URL()
+    @property
+    def isURLValid(self) -> bool:
+        """
+        Check whether the URL is valid. Ensures that the URL is formatted with a protocol followed by a path which can be empty.
+        The check is independent of the existence of the resource the URL may point to.
+        """
+        return bool()
 
 class User(Base):
     """
@@ -9588,7 +11268,7 @@ class User(Base):
     @property
     def userName(self) -> str:
         """
-        Returns the Username associated with this user's Autodesk account
+        Returns the user name associated with this user's Autodesk account
         """
         return str()
     @property
@@ -9621,11 +11301,11 @@ class UserInterface(Base):
     @staticmethod
     def cast(arg) -> UserInterface:
         return UserInterface()
-    def messageBox(self, text: str, title: str, buttons: MessageBoxButtonTypes, icon: MessageBoxIconTypes) -> DialogResults:
+    def messageBox(self, text: str, title: str = "", buttons: MessageBoxButtonTypes = MessageBoxButtonTypes.OKButtonType, icon: MessageBoxIconTypes = MessageBoxIconTypes.NoIconIconType) -> DialogResults:
         """
         Display a modal message box with the provided text.
         text : The message text to display in the dialog.
-        title : If the optional title argument is provided, it sets the title for the dialog, otherwise the default product name is used.
+        title : If the optional title argument is provided, it sets the title for the dialog, otherwise the script or add-in name is used.
         buttons : The optional buttons array can be used to specify which buttons to display on the dialog.
         The first button provided is the default action.
         If buttons are not specified, the dialog will default to a single OK button.
@@ -9633,12 +11313,12 @@ class UserInterface(Base):
         The button pressed to dismiss the dialog is returned.
         """
         return DialogResults()
-    def inputBox(self, prompt: str, title: str, defaultValue: str) -> tuple[str, bool]:
+    def inputBox(self, prompt: str, title: str = "", defaultValue: str = "") -> tuple[str, bool]:
         """
         Displays a modal dialog to get string input from the user.
         prompt : The message text to display in the dialog.
         cancelled : Indicates if the dialog was canceled.
-        title : Sets the title for the dialog if specified, otherwise the default product name is used.
+        title : Sets the title for the dialog if specified, otherwise the script or add-in name is used.
         defaultValue : The default string that's shown when the dialog is initially displayed, otherwise the input box is empty.
         Returns the string entered by the user but because the user can click Cancel, the canceled argument should be tested before using the string.
         """
@@ -9649,8 +11329,10 @@ class UserInterface(Base):
         for a selection in a script. If you need more control over the selection a command should be
         created and a SelectionCommandInput used.
         prompt : The prompt displayed to the user during the selection.
-        filter : A string defining the types of entities valid for selection. The valid list of selection filters can be found here: <a href="SelectionFilters_UM.htm">Selection Filters</a>.
+        filter : 
+        A string defining the types of entities valid for selection. The valid list of selection filters can be found here: <a href="SelectionFilters_UM.htm">Selection Filters</a>.
         You can combine multiple types by using a comma delimiter. For example, the string "PlanarFaces,ConstructionPlanes" will allow the selection of either a planar face or a construction plane.
+        
         Returns a Selection object that provides access the selected entity through it's "entity" property
         along with the location in space where the entity was selected. Asserts if the selection is aborted.
         """
@@ -9707,14 +11389,32 @@ class UserInterface(Base):
         return ToolbarTabList()
     def getText(self, module: str, id: str, defaultValue: str) -> str:
         """
-        Get the localized text for a specific application text string. The set of text strings available
-        are listed in the .xml files in the application's StringTable folders.
-        module : The module name. This is the same as the StringTable .xml filename without the .xml extension.
+        Get the localized text for a specific application text string. The strings used by Fusion are
+        stored in localized XML files that are installed with Fusion. On Windows, you can find them here:
+        
+        %LocalAppData%\Autodesk\webdeploy\production\VERSION_CODE\StringTable
+        
+        And on Mac, you can find them here:
+        
+        ~/Library/Application Support/Autodesk/webdeploy/production/VERSION_CODE/Autodesk Fusion 360.app/Contents/Libraries/Neutron/StringTable
+        
+        There is a folder for each language that Fusion supports, and the strings for that language are defined
+        in files within that folder. Fusion will use the language specified by the user in their preferences.
+        module : The module name. This is the same as the StringTable .xml filename without the .xml extension and
+        without the version number. For example, the file NaFusionUI10.xml contains many of the strings used
+        for Fusion's modeling commands. When specifying the module, this is specified as "NaFusionUI".
         id : The id of the text. This is the same as the 'commandName' field in the StringTable .xml file.
         defaultValue : A default string value to return if the module or string id is not found in the current locale.
         The localized string or the defaultValue if one is not found.
         """
         return str()
+    def createCloudFileDialog(self) -> CloudFileDialog:
+        """
+        Creates a new CloudFileDialog object which provides the ability to show a file selection dialog
+        to the user that allows them to choose a file from Fusion Team.
+        Returns the created CloudFileDialog object that you can use to define the contents of and display a standard file dialog.
+        """
+        return CloudFileDialog()
     @property
     def activeSelections(self) -> Selections:
         """
@@ -9896,7 +11596,7 @@ class ValueInput(Base):
     No semantics are associated with a ValueInput (e.g. is the string valid, can the string
     be converted to a double) - it is merely a way of supplying information in
     either string, double, boolean or object reference form as a function parameter.
-    ValueInput objects are typically used to specify things like an extrude depth, or hole dia, etc.
+    ValueInput objects are typically used to specify things like an extrude depth, or hole diameter, etc.
     """
     def __init__(self):
         pass
@@ -9908,7 +11608,7 @@ class ValueInput(Base):
         """
         Creates a new ValueInput object using a double. For example, if you create a value using
         the double value 2 and use it as input for a length, it will be interpreted as 2 cm because
-        centimeters are the internal unit for length. Values defined by a real are are always
+        centimeters are the internal unit for length. Values defined by a real are always
         interpreted to be in the appropriate internal unit.
         For example, if the value 2 is used to define the depth of an extrusion (a length value),
         it will be 2 cm because cm is the internal unit for lengths. If the value 2 is used
@@ -9929,10 +11629,10 @@ class ValueInput(Base):
         it will use the current active units. If the current active units are defined as inches
         the expression will be interpreted as 6 inches.
         You can specify the units as part of the string (i.e. "6 mm").
-        You can also use equations in the string (ie. "6 + 5mm")
+        You can also use equations in the string (i.e. "6 + 5mm")
         
         In order for an expression to be valid, its units must be compatible with the value it
-        represents. For example if you specify "5 in + 3 cm" as an expresssion to supply the value
+        represents. For example if you specify "5 in + 3 cm" as an expression to supply the value
         of an angle, it will fail because the units of the expression define a length.
         stringValue : The expression string
         Returns the newly created ValueInput object or null if the creation failed.
@@ -10005,7 +11705,7 @@ class Vector2D(Base):
     def cast(arg) -> Vector2D:
         return Vector2D()
     @staticmethod
-    def create(x: float, y: float) -> Vector2D:
+    def create(x: float = 0.0, y: float = 0.0) -> Vector2D:
         """
         Creates a 2D vector object.
         x : The x coordinate of the vector.
@@ -10152,7 +11852,7 @@ class Vector3D(Base):
     def cast(arg) -> Vector3D:
         return Vector3D()
     @staticmethod
-    def create(x: float, y: float, z: float) -> Vector3D:
+    def create(x: float = 0.0, y: float = 0.0, z: float = 0.0) -> Vector3D:
         """
         Creates a 3D vector object. This object is created statically using the Vector3D.create method.
         x : The optional x value.
@@ -10374,6 +12074,51 @@ class Viewport(Base):
         any viewport.
         """
         return Point2D()
+    def saveAsImageFileWithOptions(self, options: SaveImageFileOptions) -> bool:
+        """
+        Saves the current view to the specified image file. The view is re-rendered to the specified size and not
+        just scaled from the existing view. This allows you to generate higher resolution images than you could
+        do with just a screen capture.
+        options : A SaveImageFileOptions object that defines the various options that define how the image should be created.
+        The SaveImageFileOptions can be created by using the static create method on the SaveImageFileOptions class.
+        Returns true if the operation was successful.
+        """
+        return bool()
+    def setCurrentAsFront(self) -> bool:
+        """
+        Sets the "front" view to be the current view orientation.
+        Returns true if setting the view orientation was successful.
+        """
+        return bool()
+    def setCurrentAsTop(self) -> bool:
+        """
+        Sets the "top" view to be the current view orientation.
+        Returns true if setting the view orientation was successful.
+        """
+        return bool()
+    def setCurrentAsHome(self, isFitToView: bool) -> bool:
+        """
+        Sets the "home" view to be the current view orientation.
+        isFitToView : Specifies if when the view goes "home" if the view should be fit to the model
+        or not. True indicates the view will be fit to the model.
+        Returns true if setting the view orientation was successful.
+        """
+        return bool()
+    def goHome(self, transition: bool = True) -> bool:
+        """
+        Sets the camera of the viewport to the defined "home" position.
+        transition : If this is true it will do a smooth transition from
+        the current camera position to the home position. If false, the view will jump
+        to the home position with no intermediate steps.
+        Returns true if setting the view orientation was successful.
+        """
+        return bool()
+    def resetFront(self) -> bool:
+        """
+        Resets the front view to be the default front view orientation.
+        Returns true if resetting to front was successful.
+        """
+        return bool()
     @property
     def camera(self) -> Camera:
         """
@@ -10430,6 +12175,31 @@ class Viewport(Base):
         Gets and sets the current visual style being used.
         """
         pass
+    @property
+    def parentDocument(self) -> Document:
+        """
+        Returns the parent document of this viewport.
+        """
+        return Document()
+    @property
+    def frontEyeDirection(self) -> Vector3D:
+        """
+        Returns the direction of the front view as defined by the view cube.
+        This vector defines the direction from the eye to the target for the front view.
+        """
+        return Vector3D()
+    @property
+    def frontUpDirection(self) -> Vector3D:
+        """
+        Returns the up direction of the front view as defined by the view cube.
+        """
+        return Vector3D()
+    @property
+    def modelToViewSpaceTransform(self) -> Matrix3D:
+        """
+        Returns a transformation matrix that defines the transform from model to viewport space.
+        """
+        return Matrix3D()
 
 class WebRequestEventHandler(EventHandler):
     """
@@ -10609,6 +12379,12 @@ class WorkspaceList(Base):
     @staticmethod
     def cast(arg) -> WorkspaceList:
         return WorkspaceList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Workspace:
+        return None
+    def __iter__(self) -> Iterator[Workspace]:
+        return None
     def item(self, index: int) -> Workspace:
         """
         Returns the specified work space using an index into the collection.
@@ -10639,6 +12415,12 @@ class Workspaces(Base):
     @staticmethod
     def cast(arg) -> Workspaces:
         return Workspaces()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Workspace:
+        return None
+    def __iter__(self) -> Iterator[Workspace]:
+        return None
     def item(self, index: int) -> Workspace:
         """
         Returns the specified work space using an index into the collection.
@@ -11131,10 +12913,10 @@ class Arc2D(Curve2D):
     def cast(arg) -> Arc2D:
         return Arc2D()
     @staticmethod
-    def createByCenter(center: Point2D, radius: float, startAngle: float, endAngle: float, isClockwise: bool) -> Arc2D:
+    def createByCenter(center: Point2D, radius: float, startAngle: float, endAngle: float, isClockwise: bool = False) -> Arc2D:
         """
         Creates a transient 2D arc object specifying the center, radius and start and end angles.
-        A transient arc is not displayed or saved in a document. Transient arcs arcs are used as
+        A transient arc is not displayed or saved in a document. Transient arcs are used as
         a wrapper to work with raw 2D arc information.
         center : A Point2D object that defines the center position of the arc in 2D space.
         radius : The radius of the arc.
@@ -11148,7 +12930,7 @@ class Arc2D(Curve2D):
     def createByThreePoints(startPoint: Point2D, point: Point2D, endPoint: Point2D) -> Arc2D:
         """
         Creates a transient 2D arc by specifying 3 points.
-        A transient arc is not displayed or saved in a document. Transient arcs arcs are used as
+        A transient arc is not displayed or saved in a document. Transient arcs are used as
         a wrapper to work with raw 2D arc information.
         startPoint : The start point of the arc.
         point : A point along the arc.
@@ -11525,25 +13307,7 @@ class BrowserCommandInput(CommandInput):
         return BrowserCommandInput()
     def sendInfoToHTML(self, action: str, data: str) -> bool:
         """
-        <p>Sends the string to the JavaScript associated with the loaded HTML. A variation of the
-        event handler below should be implemented in the JavaScript associated with the HTML to
-        receive the data. The event will be triggered by Fusion 360 whenever the sendInfoToHTML method
-        is called.</p>
-        
-        <pre class="api-code">window.fusionJavaScriptHandler = {
-        handle: function(actionString, dataString){
-        confirm('Action from Fusion: ' + actionString);
-        confirm('Data from Fusion: ' + dataString);
-        
-        // Build up JSON return string.
-        var result = {};
-        result.status = 'OK';
-        var response = JSON.stringify(result);
-        return response;
-        }
-        };</pre>
-        <p>Your JavaScript code should always return something in response because an empty string
-        response is assumed to be a failure.</p>
+        Sends a string to the JavaScript associated with the loaded HTML.
         action : The "action" string to pass to the JavaScript associated with the HTML. This string can be
         anything but will typically be JSON formatted information.
         data : The "data" string to pass to the JavaScript associated with the HTML. This string can be
@@ -11723,7 +13487,7 @@ class CheckBoxControlDefinition(ControlDefinition):
 
 class ChoiceProperty(Property):
     """
-    A material or appearance property that is a pre-defined list of choices.
+    A material or appearance property that is a predefined list of choices.
     """
     def __init__(self):
         pass
@@ -11742,7 +13506,7 @@ class ChoiceProperty(Property):
     def value(self) -> str:
         """
         Gets and sets the which choice is selected from the set of choices.
-        The value is a string that matches one of the pre-defined choices.
+        The value is a string that matches one of the predefined choices.
         The names of the available choices can be obtained using GetChoices method.
         """
         return str()
@@ -11750,7 +13514,7 @@ class ChoiceProperty(Property):
     def value(self, value: str):
         """
         Gets and sets the which choice is selected from the set of choices.
-        The value is a string that matches one of the pre-defined choices.
+        The value is a string that matches one of the predefined choices.
         The names of the available choices can be obtained using GetChoices method.
         """
         pass
@@ -12492,6 +14256,32 @@ class DataEventArgs(EventArgs):
         """
         return Status()
 
+class DesignDataFile(DataFile):
+    """
+    A data file that represents a design file (f3d).
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> DesignDataFile:
+        return DesignDataFile()
+    def createCopyInput(self, targetFolder: DataFolder, copyType: DataFileCopyTypes) -> CopyFileInput:
+        """
+        Creates an input object to define how the design should be copied.
+        targetFolder : The target DataFolder where the design will be copied to.
+        copyType : The type of copy to be performed.
+        Returns the created CopyFileInput object or null in the case of invalid input.
+        """
+        return CopyFileInput()
+    def copyDesign(self, input: CopyFileInput) -> bool:
+        """
+        Method that copies the design.
+        input : The CopyFileInput object that defines how the copy is to be done. The CopyFileInput
+        object is created by using the createCopyInput method.
+        Returns true if the copy was successful.
+        """
+        return bool()
+
 class DirectionCommandInput(CommandInput):
     """
     Represents a command input that gets a direction from the user. This displays
@@ -12814,6 +14604,38 @@ class DocumentEventArgs(EventArgs):
         The full path to the file.
         """
         return str()
+    @property
+    def isOperationCancelled(self) -> bool:
+        """
+        Gets and sets if the operation for this event is to be canceled.
+        The description of the reason for canceling the operation can be set
+        with the cancelReason property.
+        This is only supported for the documentSaving event.
+        """
+        return bool()
+    @isOperationCancelled.setter
+    def isOperationCancelled(self, value: bool):
+        """
+        Gets and sets if the operation for this event is to be canceled.
+        The description of the reason for canceling the operation can be set
+        with the cancelReason property.
+        This is only supported for the documentSaving event.
+        """
+        pass
+    @property
+    def cancelReason(self) -> str:
+        """
+        Gets and sets the description of the reason why the operation is being canceled.
+        This property is only used if isOperationCancelled is set to true.
+        """
+        return str()
+    @cancelReason.setter
+    def cancelReason(self, value: str):
+        """
+        Gets and sets the description of the reason why the operation is being canceled.
+        This property is only used if isOperationCancelled is set to true.
+        """
+        pass
 
 class DropDownCommandInput(CommandInput):
     """
@@ -12940,7 +14762,7 @@ class DXF2DImportOptions(ImportOptions):
     @property
     def results(self) -> ObjectCollection:
         """
-        Returns a collection of Sketch objects. A sketch is created for each layer in the dxf file
+        Returns a collection of Sketch objects. A sketch is created for each layer in the DXF file
         that contains 2D geometry. Any 3D geometry contained in the DXF file is ignored.
         The names of the resulting sketches correspond to the layer names in the DXF file.
         Currently, the only way to get a single sketch as a result is to supply a DXF file that only has 2D geometry
@@ -12965,6 +14787,40 @@ class DXF2DImportOptions(ImportOptions):
         a single sketch will be created. If false a new sketch for each layer will be created
         where the sketch name will be the name of the layer. The default value for this
         property is false, resulting in a sketch for each layer.
+        """
+        pass
+    @property
+    def layers(self) -> list[str]:
+        """
+        Gets and sets the names of the layers that will be imported. When the DXF2DImportOptions
+        object is first created, the array returned is a list of all the layers in the DXF file.
+        By default, all layers will be imported. You can set the property using a new array that
+        contains the names of only those layers you want to import.
+        """
+        return [str()]
+    @layers.setter
+    def layers(self, value: list[str]):
+        """
+        Gets and sets the names of the layers that will be imported. When the DXF2DImportOptions
+        object is first created, the array returned is a list of all the layers in the DXF file.
+        By default, all layers will be imported. You can set the property using a new array that
+        contains the names of only those layers you want to import.
+        """
+        pass
+    @property
+    def isCreateControlPointSplines(self) -> bool:
+        """
+        When set to true, if there are any splines in the DXF they will be created as control
+        point splines. Otherwise they will be created as fixed splines that cannot be edited.
+        The default for this property is false, to create fixed splines.
+        """
+        return bool()
+    @isCreateControlPointSplines.setter
+    def isCreateControlPointSplines(self, value: bool):
+        """
+        When set to true, if there are any splines in the DXF they will be created as control
+        point splines. Otherwise they will be created as fixed splines that cannot be edited.
+        The default for this property is false, to create fixed splines.
         """
         pass
 
@@ -14953,6 +16809,15 @@ class NurbsCurve2D(Curve2D):
         Returns a new NurbsCurve2D object.
         """
         return NurbsCurve2D()
+    def reverse(self) -> bool:
+        """
+        Reverses the orientation of the curve so the start and end points
+        are swapped. The shape of the curve remains unchanged. This is
+        especially useful to prepare the curves to use with the merge
+        method.
+        
+        """
+        return bool()
     @property
     def controlPointCount(self) -> int:
         """
@@ -15089,6 +16954,15 @@ class NurbsCurve3D(Curve3D):
         Returns an independent copy of this NurbsCurve3D.
         """
         return NurbsCurve3D()
+    def reverse(self) -> bool:
+        """
+        Reverses the orientation of the curve so the start and end points
+        are swapped. The shape of the curve remains unchanged. This is
+        especially useful to prepare the curves to use with the merge
+        method.
+        
+        """
+        return bool()
     @property
     def controlPointCount(self) -> int:
         """
@@ -15425,6 +17299,62 @@ class Plane(Surface):
         """
         return Vector3D()
 
+class ProjectedTextureMapControl(TextureMapControl):
+    """
+    Provides access to the various settings that control how a projected texture is applied to a body.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ProjectedTextureMapControl:
+        return ProjectedTextureMapControl()
+    @property
+    def projectedTextureMapType(self) -> ProjectedTextureMapTypes:
+        """
+        Gets and sets how the texture map is being applied onto the body.
+        """
+        return ProjectedTextureMapTypes()
+    @projectedTextureMapType.setter
+    def projectedTextureMapType(self, value: ProjectedTextureMapTypes):
+        """
+        Gets and sets how the texture map is being applied onto the body.
+        """
+        pass
+    @property
+    def isCapped(self) -> bool:
+        """
+        When a cylindrical projected texture map is being used this property gets and sets if
+        a cap is use for the cylindrical projection. This property is only valid in the case
+        when the projectedTextureMapType returns CylindricalTextureMapProjection. The value of
+        this property should be ignored in all other cases and setting the property will have no effect.
+        """
+        return bool()
+    @isCapped.setter
+    def isCapped(self, value: bool):
+        """
+        When a cylindrical projected texture map is being used this property gets and sets if
+        a cap is use for the cylindrical projection. This property is only valid in the case
+        when the projectedTextureMapType returns CylindricalTextureMapProjection. The value of
+        this property should be ignored in all other cases and setting the property will have no effect.
+        """
+        pass
+    @property
+    def transform(self) -> Matrix3D:
+        """
+        Gets and sets the transform that defines the position and orientation of how the texture
+        is projected onto the body. The Z axis of the transform corresponds to the axis that is
+        specified in the user-interface and is the primary direction of the texture.
+        """
+        return Matrix3D()
+    @transform.setter
+    def transform(self, value: Matrix3D):
+        """
+        Gets and sets the transform that defines the position and orientation of how the texture
+        is projected onto the body. The Z axis of the transform corresponds to the axis that is
+        specified in the user-interface and is the primary direction of the texture.
+        """
+        pass
+
 class RadioButtonGroupCommandInput(CommandInput):
     """
     Provides a command input to get the choice from a radio button group from the user.
@@ -15509,7 +17439,9 @@ class SelectionCommandInput(CommandInput):
     def addSelectionFilter(self, filter: str) -> bool:
         """
         Adds an additional filter to the existing filter list.
-        filter : The name of a selection filter to add. The valid list of selection filters can be found here: <a href="SelectionFilters_UM.htm">Selection Filters</a>.
+        filter : 
+        The name of a selection filter to add. The valid list of selection filters can be found here: <a href="SelectionFilters_UM.htm">Selection Filters</a>.
+        
         Returns true if the filter was added successfully.
         """
         return bool()
@@ -15545,7 +17477,7 @@ class SelectionCommandInput(CommandInput):
         Returns true if the selection limits were successfully returned.
         """
         return (bool(), int(), int())
-    def setSelectionLimits(self, minimum: int, maximum: int) -> bool:
+    def setSelectionLimits(self, minimum: int, maximum: int = 0) -> bool:
         """
         Defines the limits for the number of selections associated with this input.
         A maximum value of 0 indicates that there is no maximum.
@@ -15576,13 +17508,13 @@ class SelectionCommandInput(CommandInput):
     @property
     def selectionFilters(self) -> list[str]:
         """
-        Gets or sets the list of selection filters. The valid list of selection filters can be found here: <a href="SelectionFilters_UM.htm">Selection Filters</a>.
+        Gets or sets the list of selection filters.
         """
         return [str()]
     @selectionFilters.setter
     def selectionFilters(self, value: list[str]):
         """
-        Gets or sets the list of selection filters. The valid list of selection filters can be found here: <a href="SelectionFilters_UM.htm">Selection Filters</a>.
+        Gets or sets the list of selection filters.
         """
         pass
     @property
@@ -15595,20 +17527,24 @@ class SelectionCommandInput(CommandInput):
     def hasFocus(self) -> bool:
         """
         Gets and sets if this selection input has focus with respect to other selection inputs on the
-        command dialog. Only one selection input on a dialog can have focus at a time so setting hasFocus to true
+        command dialog. Only one selection input on a dialog can have focus at a time, so setting hasFocus to true
         will remove the focus from the selection input that previously had focus. When a selection input
-        has focus, any user selections will be added to that selection input and the selection rules associated
+        has focus; any user selections will be added to that selection input, and the selection rules associated
         with that selection input will apply.
+        
+        Setting hasFocus to True for a selection input whose isVisible property is false will fail.
         """
         return bool()
     @hasFocus.setter
     def hasFocus(self, value: bool):
         """
         Gets and sets if this selection input has focus with respect to other selection inputs on the
-        command dialog. Only one selection input on a dialog can have focus at a time so setting hasFocus to true
+        command dialog. Only one selection input on a dialog can have focus at a time, so setting hasFocus to true
         will remove the focus from the selection input that previously had focus. When a selection input
-        has focus, any user selections will be added to that selection input and the selection rules associated
+        has focus; any user selections will be added to that selection input, and the selection rules associated
         with that selection input will apply.
+        
+        Setting hasFocus to True for a selection input whose isVisible property is false will fail.
         """
         pass
 
@@ -16047,6 +17983,84 @@ class StringValueCommandInput(CommandInput):
         """
         pass
 
+class SVGImportOptions(ImportOptions):
+    """
+    Defines that an SVG import is to be done and specifies the various options.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SVGImportOptions:
+        return SVGImportOptions()
+    @property
+    def transform(self) -> Matrix3D:
+        """
+        Gets and sets the transformation matrix that defines the position, orientation, scale, and
+        mirroring of the imported SVG data relative to the sketch coordinate system.
+        This property defaults to an identity matrix in a newly created SVGImportOptions object.
+        
+        You can define mirroring (the equivalent of horizontal or vertical flip) in the matrix. Doing
+        this gives you more explicit control over the results. You can also use the isHorizontalFlip
+        and isVerticalFlop properties to define the flip. These result in flipping the geometry along
+        the center of the geometry's bounding box.
+        """
+        return Matrix3D()
+    @transform.setter
+    def transform(self, value: Matrix3D):
+        """
+        Gets and sets the transformation matrix that defines the position, orientation, scale, and
+        mirroring of the imported SVG data relative to the sketch coordinate system.
+        This property defaults to an identity matrix in a newly created SVGImportOptions object.
+        
+        You can define mirroring (the equivalent of horizontal or vertical flip) in the matrix. Doing
+        this gives you more explicit control over the results. You can also use the isHorizontalFlip
+        and isVerticalFlop properties to define the flip. These result in flipping the geometry along
+        the center of the geometry's bounding box.
+        """
+        pass
+    @property
+    def isHorizontalFlip(self) -> bool:
+        """
+        Gets and sets if the SVG is flipped along the sketch X axis.
+        This property defaults to false in a newly created SVGImportOptions object.
+        """
+        return bool()
+    @isHorizontalFlip.setter
+    def isHorizontalFlip(self, value: bool):
+        """
+        Gets and sets if the SVG is flipped along the sketch X axis.
+        This property defaults to false in a newly created SVGImportOptions object.
+        """
+        pass
+    @property
+    def isVerticalFlip(self) -> bool:
+        """
+        Gets and sets if the SVG is flipped along the sketch Y axis.
+        This property defaults to false in a newly created SVGImportOptions object.
+        """
+        return bool()
+    @isVerticalFlip.setter
+    def isVerticalFlip(self, value: bool):
+        """
+        Gets and sets if the SVG is flipped along the sketch Y axis.
+        This property defaults to false in a newly created SVGImportOptions object.
+        """
+        pass
+    @property
+    def isControlPointFrameDisplayed(self) -> bool:
+        """
+        Gets and sets if any spline curves in the SVG should be drawn with their control
+        point frames. This property defaults to false in a newly created SVGImportOptions object.
+        """
+        return bool()
+    @isControlPointFrameDisplayed.setter
+    def isControlPointFrameDisplayed(self, value: bool):
+        """
+        Gets and sets if any spline curves in the SVG should be drawn with their control
+        point frames. This property defaults to false in a newly created SVGImportOptions object.
+        """
+        pass
+
 class TabCommandInput(CommandInput):
     """
     Tab command inputs contain a set of command inputs and/or group command inputs/
@@ -16117,7 +18131,7 @@ class TableCommandInput(CommandInput):
         Returns true if the delete was successful.
         """
         return bool()
-    def addCommandInput(self, input: CommandInput, row: int, column: int, rowSpan: int, columnSpan: int) -> bool:
+    def addCommandInput(self, input: CommandInput, row: int, column: int, rowSpan: int = 0, columnSpan: int = 0) -> bool:
         """
         Adds a command input to a particular cell in the table. Rows are automatically added to the table to
         able to contain the command input. The command input can span multiple columns within a row and spanning
@@ -16360,31 +18374,39 @@ class TextBoxCommandInput(CommandInput):
     @property
     def formattedText(self) -> str:
         """
-        Gets and sets the formatted text displayed in the dialog. Formatted text includes
-        any html formatting that has been defined. For example, you can use basic html formatting such as
-        <b>Bold</b>, <i>Italic</i>, and <br /> for a line break.
+        Gets and sets the formatted text displayed in the dialog.
         """
         return str()
     @formattedText.setter
     def formattedText(self, value: str):
         """
-        Gets and sets the formatted text displayed in the dialog. Formatted text includes
-        any html formatting that has been defined. For example, you can use basic html formatting such as
-        <b>Bold</b>, <i>Italic</i>, and <br /> for a line break.
+        Gets and sets the formatted text displayed in the dialog.
         """
         pass
     @property
     def text(self) -> str:
         """
-        Gets and sets the text in the text box. This returns the string
-        as seen in the text box with any formatting stripped out.
+        
+        Gets and sets the text in the text box. When text is set using the text property, any HTML formatting is
+        ignored and the full string will be displayed in the text box. For example, if you specify the string
+        "Here is a &lt;b&gt;Bold&lt;/b&gt; word", and use the formattedText property, you will see "Here is a <b>Bold</b> word" in
+        the text box. However, if you use the text property, you will see "Here is a &lt;b&gt;Bold&lt;/b&gt; word" and when you
+        get the text property you will get back "Here is a &lt;b&gt;Bold&lt;/b&gt; word". This can be useful if you're using
+        the text box to have the user enter HTML code so it's treated as a simple string.
+        
         """
         return str()
     @text.setter
     def text(self, value: str):
         """
-        Gets and sets the text in the text box. This returns the string
-        as seen in the text box with any formatting stripped out.
+        
+        Gets and sets the text in the text box. When text is set using the text property, any HTML formatting is
+        ignored and the full string will be displayed in the text box. For example, if you specify the string
+        "Here is a &lt;b&gt;Bold&lt;/b&gt; word", and use the formattedText property, you will see "Here is a <b>Bold</b> word" in
+        the text box. However, if you use the text property, you will see "Here is a &lt;b&gt;Bold&lt;/b&gt; word" and when you
+        get the text property you will get back "Here is a &lt;b&gt;Bold&lt;/b&gt; word". This can be useful if you're using
+        the text box to have the user enter HTML code so it's treated as a simple string.
+        
         """
         pass
     @property
@@ -16420,16 +18442,7 @@ class TextBoxCommandInput(CommandInput):
 
 class TextCommandPalette(Palette):
     """
-    <p class="api">Represents the palette that is the Text Command window in Fusion 360. You can obtain the Text Command palette by using the itemById method of the Palettes object and using "TextCommands" as the ID. Below is some sample code that illustrates making sure the palette is visible and writing some text to it.</p>
-    <pre class="api-code"><span style = "color:blue" ># Get the palette that represents the TEXT COMMANDS window.</span>
-    textPalette = ui.palettes.itemById('TextCommands')
-    
-    <span style = "color:blue"># Make sure the palette is visible.</span>
-    if not textPalette.isVisible:
-    textPalette.isVisible = True
-    
-    <span style= "color:blue" ># Write some text.</span>
-    textPalette.writeText('This is a text message.') </pre>
+    Represents the palette that is the Text Command window in Fusion 360.
     """
     def __init__(self):
         pass
@@ -16438,20 +18451,43 @@ class TextCommandPalette(Palette):
         return TextCommandPalette()
     def writeText(self, text: str) -> bool:
         """
-        <p class="api">Write the specified text to the TEXT COMMAND window. Below is some sample code that illustrates making sure the palette is visible and writing some text to it.</p>
-        <pre class="api-code"><span style = "color:blue" ># Get the palette that represents the TEXT COMMANDS window.</span>
-        textPalette = ui.palettes.itemById('TextCommands')
-        
-        <span style = "color:blue"># Make sure the palette is visible.</span>
-        if not textPalette.isVisible:
-        textPalette.isVisible = True
-        
-        <span style= "color:blue" ># Write some text.</span>
-        textPalette.writeText('This is a text message.') </pre>
+        Write the specified text to the TEXT COMMAND window.
         text : The text to write to the Text Command window.
         Returns true if successful.
         """
         return bool()
+
+class TextureMapControl3D(TextureMapControl):
+    """
+    Provides access to the various settings that control how a 3D texture is applied to a body.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> TextureMapControl3D:
+        return TextureMapControl3D()
+    def bestFit(self) -> bool:
+        """
+        Reorients the transform to best fit the geometry of the body.
+        Returns true if the best fit was successful.
+        """
+        return bool()
+    @property
+    def transform(self) -> Matrix3D:
+        """
+        Gets and sets the transform that defines the position and orientation of how the texture
+        is applied to the body. For wood grain, the Z direction of the defined coordinate system is
+        the direction of the grain.
+        """
+        return Matrix3D()
+    @transform.setter
+    def transform(self, value: Matrix3D):
+        """
+        Gets and sets the transform that defines the position and orientation of how the texture
+        is applied to the body. For wood grain, the Z direction of the defined coordinate system is
+        the direction of the grain.
+        """
+        pass
 
 class Torus(Surface):
     """
@@ -16551,6 +18587,907 @@ class Torus(Surface):
         """
         pass
 
+class TriadCommandInput(CommandInput):
+    """
+    Represents a command input that displays a triad and allows the user to control translation
+    rotation, and scaling. Using properties on the input you can choose which controls are available
+    to the user. This displays inputs in the command dialog where the user can enter values and also
+    displays a manipulator in the graphics window to allow them to graphically set the values. The
+    input boxes are displayed in the dialog when the isVisible property of the command input is true.
+    The manipulator is displayed in the graphics window when both the isVisible and isEnabled properties
+    are true.
+    
+    It will often be useful to first create a GroupCommandInput and then create the TriadCommandInput within the group so
+    it's apparent to the user these items are related and they can be collapsed to reduce clutter in the dialog. This also
+    allows you to label the set of displayed inputs by using the name of the GroupCommandInput.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> TriadCommandInput:
+        return TriadCommandInput()
+    def setTranslateVisibility(self, isVisible: bool) -> bool:
+        """
+        A convenience method to turn on and off the visibility of the X, Y, and Z
+        translation controls.
+        isVisible : Defines if the visibility of the controls should be turned on or off. True
+        indicates they will be visible.
+        Returns true if it was successful.
+        """
+        return bool()
+    def setPlanarMoveVisibility(self, isVisible: bool) -> bool:
+        """
+        A convenience method to turn on and off the visibility of the X-Y, Y-Z, and Z-X planar
+        translation controls.
+        isVisible : Defines if the visibility of the controls should be turned on or off. True
+        indicates they will be visible.
+        Returns true if it was successful.
+        """
+        return bool()
+    def setRotateVisibility(self, isVisible: bool) -> bool:
+        """
+        A convenience method to turn on and off the visibility of the X, Y, and Z
+        axis rotation controls.
+        isVisible : Defines if the visibility of the controls should be turned on or off. True
+        indicates they will be visible.
+        Returns true if it was successful.
+        """
+        return bool()
+    def setScaleVisibility(self, isVisible: bool) -> bool:
+        """
+        A convenience method to turn on and off the visibility of the controls that
+        define scaling in the X, Y, and Z direction and the X-Y, Y-Z, and Z-X planes.
+        isVisible : Defines if the visibility of the controls should be turned on or off. True
+        indicates they will be visible.
+        Returns true if it was successful.
+        """
+        return bool()
+    def setFlipVisibility(self, isVisible: bool) -> bool:
+        """
+        A convenience method to turn on and off the visibility of the horizontal
+        and vertical flip controls.
+        isVisible : Defines if the visibility of the controls should be turned on or off. True
+        indicates they will be visible.
+        Returns true if it was successful.
+        """
+        return bool()
+    def setFullVisibility(self, isVisible: bool) -> bool:
+        """
+        A convenience method to turn on and off the visibility of commonly used
+        controls in a triad. These include the X, Y, and Z axis translations, the
+        X, Y, and Z axis rotations, scaling in the X, Y, and Z directions, scaling
+        on the X-Y, Y-Z and Z-X planes, translation on the X-Y, Y-Z, and Z-X planes,
+        and the origin move.
+        isVisible : Defines if the visibility of the controls should be turned on or off. True
+        indicates they will be visible.
+        Returns true if it was successful.
+        """
+        return bool()
+    def hideAll(self) -> bool:
+        """
+        Hides all controls.
+        Returns true if hiding the controls was successful.
+        """
+        return bool()
+    def hideAllRotations(self) -> bool:
+        """
+        Sets all rotation related controls to be invisible. This is useful if you are only
+        using translations or scaling.
+        Returns true if hiding the controls was successful.
+        """
+        return bool()
+    def hideAllScaling(self) -> bool:
+        """
+        Sets all scaling related controls to be invisible. This is useful if you are only
+        using translations or rotations.
+        Returns true if hiding the controls was successful.
+        """
+        return bool()
+    @property
+    def isOriginTranslationVisible(self) -> bool:
+        """
+        Gets and sets if the control that supports translation in the X, Y, and Z directions
+        is visible in both the graphical manipulator and in the dialog. In the manipulator,
+        this is the large dot at the origin or the triad.
+        """
+        return bool()
+    @isOriginTranslationVisible.setter
+    def isOriginTranslationVisible(self, value: bool):
+        """
+        Gets and sets if the control that supports translation in the X, Y, and Z directions
+        is visible in both the graphical manipulator and in the dialog. In the manipulator,
+        this is the large dot at the origin or the triad.
+        """
+        pass
+    @property
+    def isXTranslationVisible(self) -> bool:
+        """
+        Gets and sets if the control that supports X Translation is visible in both the
+        graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isXTranslationVisible.setter
+    def isXTranslationVisible(self, value: bool):
+        """
+        Gets and sets if the control that supports X Translation is visible in both the
+        graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isYTranslationVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the Y Translation is visible in both the
+        graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isYTranslationVisible.setter
+    def isYTranslationVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the Y Translation is visible in both the
+        graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isZTranslationVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the Z Translation is visible in both the
+        graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isZTranslationVisible.setter
+    def isZTranslationVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the Z Translation is visible in both the
+        graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isXYPlaneTranslationVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the translation in the X-Y plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isXYPlaneTranslationVisible.setter
+    def isXYPlaneTranslationVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the translation in the X-Y plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isXZPlaneTranslationVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the translation in the X-Z plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isXZPlaneTranslationVisible.setter
+    def isXZPlaneTranslationVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the translation in the X-Z plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isYZPlaneTranslationVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the translation in the Y-Z plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isYZPlaneTranslationVisible.setter
+    def isYZPlaneTranslationVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the translation in the Y-Z plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isXRotationVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the rotation around the
+        X axis is visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isXRotationVisible.setter
+    def isXRotationVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the rotation around the
+        X axis is visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isYRotationVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the rotation around the
+        Y axis is visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isYRotationVisible.setter
+    def isYRotationVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the rotation around the
+        Y axis is visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isZRotationVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the rotation around the
+        Z axis is visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isZRotationVisible.setter
+    def isZRotationVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the rotation around the
+        Z axis is visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isXScalingInXYVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling along the
+        X axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the X-Y plane of the triad.
+        """
+        return bool()
+    @isXScalingInXYVisible.setter
+    def isXScalingInXYVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling along the
+        X axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the X-Y plane of the triad.
+        """
+        pass
+    @property
+    def isXScalingInXZVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling along the
+        X axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the X-Z plane of the triad.
+        """
+        return bool()
+    @isXScalingInXZVisible.setter
+    def isXScalingInXZVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling along the
+        X axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the X-Z plane of the triad.
+        """
+        pass
+    @property
+    def isYScalingInXYVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling along the
+        Y axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the X-Y plane of the triad.
+        """
+        return bool()
+    @isYScalingInXYVisible.setter
+    def isYScalingInXYVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling along the
+        Y axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the X-Y plane of the triad.
+        """
+        pass
+    @property
+    def isYScalingInYZVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling along the
+        Y axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the Y-Z plane of the triad.
+        """
+        return bool()
+    @isYScalingInYZVisible.setter
+    def isYScalingInYZVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling along the
+        Y axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the Y-Z plane of the triad.
+        """
+        pass
+    @property
+    def isZScalingInXZVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling along the
+        Z axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the X-Z plane of the triad.
+        """
+        return bool()
+    @isZScalingInXZVisible.setter
+    def isZScalingInXZVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling along the
+        Z axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the X-Z plane of the triad.
+        """
+        pass
+    @property
+    def isZScalingInYZVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling along the
+        Z axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the Y-Z plane of the triad.
+        """
+        return bool()
+    @isZScalingInYZVisible.setter
+    def isZScalingInYZVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling along the
+        Z axis is visible in both the graphical manipulator and in the dialog.
+        This control lies on the Y-Z plane of the triad.
+        """
+        pass
+    @property
+    def isXYPlaneScalingVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling in the X-Y plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isXYPlaneScalingVisible.setter
+    def isXYPlaneScalingVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling in the X-Y plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isXZPlaneScalingVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling in the X-Z plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isXZPlaneScalingVisible.setter
+    def isXZPlaneScalingVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling in the X-Z plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isYZPlaneScalingVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling in the Y-Z plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isYZPlaneScalingVisible.setter
+    def isYZPlaneScalingVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling in the Y-Z plane is
+        visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isUnifiedScalingVisible(self) -> bool:
+        """
+        Gets and sets if the control that defines the scaling in all directions
+        visible in both the graphical manipulator and in the dialog.
+        """
+        return bool()
+    @isUnifiedScalingVisible.setter
+    def isUnifiedScalingVisible(self, value: bool):
+        """
+        Gets and sets if the control that defines the scaling in all directions
+        visible in both the graphical manipulator and in the dialog.
+        """
+        pass
+    @property
+    def isHorizontalFlipVisible(self) -> bool:
+        """
+        Gets and sets if the control that lets the user flip horizontally (around the Y-Z plane of the triad)
+        is visible in both the graphical manipulator and the dialog.
+        """
+        return bool()
+    @isHorizontalFlipVisible.setter
+    def isHorizontalFlipVisible(self, value: bool):
+        """
+        Gets and sets if the control that lets the user flip horizontally (around the Y-Z plane of the triad)
+        is visible in both the graphical manipulator and the dialog.
+        """
+        pass
+    @property
+    def isVerticalFlipVisible(self) -> bool:
+        """
+        Gets and sets if the control that lets the user flip vertical (around the X-Z plane of the triad)
+        is visible in both the graphical manipulator and the dialog.
+        """
+        return bool()
+    @isVerticalFlipVisible.setter
+    def isVerticalFlipVisible(self, value: bool):
+        """
+        Gets and sets if the control that lets the user flip vertical (around the X-Z plane of the triad)
+        is visible in both the graphical manipulator and the dialog.
+        """
+        pass
+    @property
+    def xTranslation(self) -> float:
+        """
+        Gets and sets the current value of the translation along the X axis of the triad.
+        The value is in centimeters but will be displayed to the user in default units for the design.
+        
+        The isValidExpressions property should be checked before using the returned value.
+        """
+        return float()
+    @xTranslation.setter
+    def xTranslation(self, value: float):
+        """
+        Gets and sets the current value of the translation along the X axis of the triad.
+        The value is in centimeters but will be displayed to the user in default units for the design.
+        
+        The isValidExpressions property should be checked before using the returned value.
+        """
+        pass
+    @property
+    def xTranslationExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the X translation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression, the default user units of length are used.
+        """
+        return str()
+    @xTranslationExpression.setter
+    def xTranslationExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the X translation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression, the default user units of length are used.
+        """
+        pass
+    @property
+    def yTranslation(self) -> float:
+        """
+        Gets and sets the current value of the translation along the Y axis of the triad.
+        The value is in centimeters but will be displayed to the user in default units for the design.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @yTranslation.setter
+    def yTranslation(self, value: float):
+        """
+        Gets and sets the current value of the translation along the Y axis of the triad.
+        The value is in centimeters but will be displayed to the user in default units for the design.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def yTranslationExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the Y translation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression, the default user units of length are used.
+        """
+        return str()
+    @yTranslationExpression.setter
+    def yTranslationExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the Y translation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression, the default user units of length are used.
+        """
+        pass
+    @property
+    def zTranslation(self) -> float:
+        """
+        Gets and sets the current value of the translation along the Z axis of the triad.
+        The value is in centimeters but will be displayed to the user in default units for the design.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @zTranslation.setter
+    def zTranslation(self, value: float):
+        """
+        Gets and sets the current value of the translation along the Z axis of the triad.
+        The value is in centimeters but will be displayed to the user in default units for the design.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def zTranslationExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the Z translation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression, the default user units of length are used.
+        """
+        return str()
+    @zTranslationExpression.setter
+    def zTranslationExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the Z translation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression, the default user units of length are used.
+        """
+        pass
+    @property
+    def xRotation(self) -> float:
+        """
+        Gets and sets the current value of the rotation around the X axis of the triad. The value is in radians
+        but will be displayed to the user in degrees.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @xRotation.setter
+    def xRotation(self, value: float):
+        """
+        Gets and sets the current value of the rotation around the X axis of the triad. The value is in radians
+        but will be displayed to the user in degrees.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def xRotationExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the X rotation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression degrees are used.
+        """
+        return str()
+    @xRotationExpression.setter
+    def xRotationExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the X rotation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression degrees are used.
+        """
+        pass
+    @property
+    def yRotation(self) -> float:
+        """
+        Gets and sets the current value of the rotation around the Y axis of the triad. The value is in radians
+        but will be displayed to the user in degrees.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @yRotation.setter
+    def yRotation(self, value: float):
+        """
+        Gets and sets the current value of the rotation around the Y axis of the triad. The value is in radians
+        but will be displayed to the user in degrees.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def yRotationExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the Y rotation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression degrees are used.
+        """
+        return str()
+    @yRotationExpression.setter
+    def yRotationExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the Y rotation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression degrees are used.
+        """
+        pass
+    @property
+    def zRotation(self) -> float:
+        """
+        Gets and sets the current value of the rotation around the Z axis of the triad. The value is in radians
+        but will be displayed to the user in degrees.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @zRotation.setter
+    def zRotation(self, value: float):
+        """
+        Gets and sets the current value of the rotation around the Z axis of the triad. The value is in radians
+        but will be displayed to the user in degrees.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def zRotationExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the Z rotation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression degrees are used.
+        """
+        return str()
+    @zRotationExpression.setter
+    def zRotationExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the Z rotation. This can contain
+        equations and references to parameters but must result in a valid distance expression. If units
+        are not specified as part of the expression degrees are used.
+        """
+        pass
+    @property
+    def xScaleFactor(self) -> float:
+        """
+        Gets and sets the current value of the scale factor along the X axis of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @xScaleFactor.setter
+    def xScaleFactor(self, value: float):
+        """
+        Gets and sets the current value of the scale factor along the X axis of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def xScaleFactorExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the X scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        return str()
+    @xScaleFactorExpression.setter
+    def xScaleFactorExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the X scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        pass
+    @property
+    def yScaleFactor(self) -> float:
+        """
+        Gets and sets the current value of the scale factor along the Y axis of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @yScaleFactor.setter
+    def yScaleFactor(self, value: float):
+        """
+        Gets and sets the current value of the scale factor along the Y axis of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def yScaleFactorExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the Y scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        return str()
+    @yScaleFactorExpression.setter
+    def yScaleFactorExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the Y scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        pass
+    @property
+    def zScaleFactor(self) -> float:
+        """
+        Gets and sets the current value of the scale factor along the Z axis of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @zScaleFactor.setter
+    def zScaleFactor(self, value: float):
+        """
+        Gets and sets the current value of the scale factor along the Z axis of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def zScaleFactorExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the Z scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        return str()
+    @zScaleFactorExpression.setter
+    def zScaleFactorExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the Z scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        pass
+    @property
+    def xYPlaneScaleFactor(self) -> float:
+        """
+        Gets and sets the current value of the scale factor on the X-Y plane of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @xYPlaneScaleFactor.setter
+    def xYPlaneScaleFactor(self, value: float):
+        """
+        Gets and sets the current value of the scale factor on the X-Y plane of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def xYPlaneScaleFactorExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the X-Y plane scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        return str()
+    @xYPlaneScaleFactorExpression.setter
+    def xYPlaneScaleFactorExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the X-Y plane scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        pass
+    @property
+    def yZPlaneScaleFactor(self) -> float:
+        """
+        Gets and sets the current value of the scale factor on the Y-Z plane of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @yZPlaneScaleFactor.setter
+    def yZPlaneScaleFactor(self, value: float):
+        """
+        Gets and sets the current value of the scale factor on the Y-Z plane of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def yZPlaneScaleFactorExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the Y-Z plane scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        return str()
+    @yZPlaneScaleFactorExpression.setter
+    def yZPlaneScaleFactorExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the Y-Z plane scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        pass
+    @property
+    def zXPlaneScaleFactor(self) -> float:
+        """
+        Gets and sets the current value of the scale factor on the Z-X plane of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @zXPlaneScaleFactor.setter
+    def zXPlaneScaleFactor(self, value: float):
+        """
+        Gets and sets the current value of the scale factor on the Z-X plane of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def zXPlaneScaleFactorExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the Z-X plane scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        return str()
+    @zXPlaneScaleFactorExpression.setter
+    def zXPlaneScaleFactorExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the Z-X plane scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        pass
+    @property
+    def unifiedeScaleFactor(self) -> float:
+        """
+        Gets and sets the current value of the unified scale factor of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        return float()
+    @unifiedeScaleFactor.setter
+    def unifiedeScaleFactor(self, value: float):
+        """
+        Gets and sets the current value of the unified scale factor of the triad.
+        
+        The isValidExpressions property should be checked before using the value within the command.
+        """
+        pass
+    @property
+    def unifiedScaleFactorExpression(self) -> str:
+        """
+        Gets or sets the expression displayed in the input field for the unified scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        return str()
+    @unifiedScaleFactorExpression.setter
+    def unifiedScaleFactorExpression(self, value: str):
+        """
+        Gets or sets the expression displayed in the input field for the unified scale. This can contain
+        equations and references to parameters but must result in a valid unitless expression.
+        """
+        pass
+    @property
+    def isFlippedHorizontal(self) -> bool:
+        """
+        Gets and sets if the triad is flipped horizontally (around the around the Y-Z plane of the triad).
+        """
+        return bool()
+    @isFlippedHorizontal.setter
+    def isFlippedHorizontal(self, value: bool):
+        """
+        Gets and sets if the triad is flipped horizontally (around the around the Y-Z plane of the triad).
+        """
+        pass
+    @property
+    def isFlippedVertical(self) -> bool:
+        """
+        Gets and sets if the triad is flipped vertically (around the around the X-Z plane of the triad).
+        """
+        return bool()
+    @isFlippedVertical.setter
+    def isFlippedVertical(self, value: bool):
+        """
+        Gets and sets if the triad is flipped vertically (around the around the X-Z plane of the triad).
+        """
+        pass
+    @property
+    def transform(self) -> Matrix3D:
+        """
+        Gets or sets the current position, orientation, and scale of the triad using a transformation matrix.
+        """
+        return Matrix3D()
+    @transform.setter
+    def transform(self, value: Matrix3D):
+        """
+        Gets or sets the current position, orientation, and scale of the triad using a transformation matrix.
+        """
+        pass
+    @property
+    def positionTransform(self) -> Matrix3D:
+        """
+        Gets the current position and orientation of the triad using a transformation matrix. This transform
+        does not include any scaling.
+        """
+        return Matrix3D()
+    @property
+    def lastTransform(self) -> Matrix3D:
+        """
+        Returns the transform of the triad before the latest change. Using the matrices returned
+        by this property and the transform property you can determine what changed. The lastChangeMade
+        property is also useful to help you know the type of change to look for when comparing the
+        matrices.
+        """
+        return Matrix3D()
+    @property
+    def isValidExpressions(self) -> bool:
+        """
+        Returns true if all of the input fields have valid expressions. If this property is false,
+        the triad is incorrectly defined and the current values should not be used.
+        """
+        return bool()
+    @property
+    def lastChangeMade(self) -> TriadChanges:
+        """
+        Returns which value was most recently changed. To determine the actual change made you need
+        to compare the transforms returned by the transform and lastTransform properties. Having information
+        about the specific type of change made makes it easier to compare the matrices because you know
+        what to look for.
+        """
+        return TriadChanges()
+
 class UserInterfaceGeneralEvent(Event):
     """
     A UserInterfaceGeneralEvent is used for user-interface related events that don't
@@ -16622,15 +19559,27 @@ class ValidateInputsEventArgs(EventArgs):
     @property
     def areInputsValid(self) -> bool:
         """
-        Used during the AreInputsValid event to get or set if all inputs are valid
-        and the OK button should be enabled.
+        Used with AreInputsValid event to specify if the all of the inputs for the
+        command are valid or not. If you set this to false, indicating they are not
+        valid, the OK button for the dialog is disabled forcing the user to correct
+        the inputs before continuing. If you set this to true the OK button will be
+        enabled, as long as the inputs satisfy their own requirements. For example,
+        if a SelectionCommandInput is defined to have at minimum number of entities
+        selected, that requirement must be met, or if a ValueCommandInput has an invalid
+        value specified, the OK button will still be disabled.
         """
         return bool()
     @areInputsValid.setter
     def areInputsValid(self, value: bool):
         """
-        Used during the AreInputsValid event to get or set if all inputs are valid
-        and the OK button should be enabled.
+        Used with AreInputsValid event to specify if the all of the inputs for the
+        command are valid or not. If you set this to false, indicating they are not
+        valid, the OK button for the dialog is disabled forcing the user to correct
+        the inputs before continuing. If you set this to true the OK button will be
+        enabled, as long as the inputs satisfy their own requirements. For example,
+        if a SelectionCommandInput is defined to have at minimum number of entities
+        selected, that requirement must be met, or if a ValueCommandInput has an invalid
+        value specified, the OK button will still be disabled.
         """
         pass
     @property
@@ -16658,12 +19607,6 @@ class ValueCommandInput(CommandInput):
         value it is converted into a string using the unit type and displayed in the input box.
         When getting the value, the current expression string is evaluated and the database value
         for the unit type is returned.
-        
-        The isValidExpression property should be checked before using this
-        value within the command because if the expression can't be evaluated
-        there isn't a valid value. Fusion 360 won't allow the execution of a command
-        that contains ValueCommandInput object with invalid expressions so you can
-        dependably use the value in the execute event of the command.
         """
         return float()
     @value.setter
@@ -16675,12 +19618,6 @@ class ValueCommandInput(CommandInput):
         value it is converted into a string using the unit type and displayed in the input box.
         When getting the value, the current expression string is evaluated and the database value
         for the unit type is returned.
-        
-        The isValidExpression property should be checked before using this
-        value within the command because if the expression can't be evaluated
-        there isn't a valid value. Fusion 360 won't allow the execution of a command
-        that contains ValueCommandInput object with invalid expressions so you can
-        dependably use the value in the execute event of the command.
         """
         pass
     @property
@@ -16717,6 +19654,118 @@ class ValueCommandInput(CommandInput):
         not a valid value.
         """
         return bool()
+    @property
+    def isMinimumLimited(self) -> bool:
+        """
+        Gets and sets whether the minimum value has a limit. The minimum limit is set using
+        the minimumValue property, and the isMinimumInclusive property controls whether the minimum
+        includes the minimum value or must be greater than the minimum.
+        
+        When a new ValueCommandInput is created this defaults to false so there is no limit.
+        """
+        return bool()
+    @isMinimumLimited.setter
+    def isMinimumLimited(self, value: bool):
+        """
+        Gets and sets whether the minimum value has a limit. The minimum limit is set using
+        the minimumValue property, and the isMinimumInclusive property controls whether the minimum
+        includes the minimum value or must be greater than the minimum.
+        
+        When a new ValueCommandInput is created this defaults to false so there is no limit.
+        """
+        pass
+    @property
+    def minimumValue(self) -> float:
+        """
+        Gets and sets the minimum value for the input. Setting this value will automatically
+        set the isMinimumLimited property to true, enabling the use of the minimum value. Use
+        the isMinimumInclusive property to control if the minimum can be equal to this value or must
+        be greater than the minimum.
+        """
+        return float()
+    @minimumValue.setter
+    def minimumValue(self, value: float):
+        """
+        Gets and sets the minimum value for the input. Setting this value will automatically
+        set the isMinimumLimited property to true, enabling the use of the minimum value. Use
+        the isMinimumInclusive property to control if the minimum can be equal to this value or must
+        be greater than the minimum.
+        """
+        pass
+    @property
+    def isMinimumInclusive(self) -> bool:
+        """
+        Gets and sets if the minimum value can be equal to the value defined by the minimumValue
+        property or if it must be greater than.
+        
+        When a new ValueCommandInput is created, this defaults to true.
+        """
+        return bool()
+    @isMinimumInclusive.setter
+    def isMinimumInclusive(self, value: bool):
+        """
+        Gets and sets if the minimum value can be equal to the value defined by the minimumValue
+        property or if it must be greater than.
+        
+        When a new ValueCommandInput is created, this defaults to true.
+        """
+        pass
+    @property
+    def isMaximumLimited(self) -> bool:
+        """
+        Gets and sets whether the maximum value has a limit. The maximum limit is set using
+        the maximumValue property, and the isMaximumInclusive property controls whether the maximum
+        includes the maximum value or must be less than the maximum.
+        
+        When a new ValueCommandInput is created this defaults to false so there is no limit.
+        """
+        return bool()
+    @isMaximumLimited.setter
+    def isMaximumLimited(self, value: bool):
+        """
+        Gets and sets whether the maximum value has a limit. The maximum limit is set using
+        the maximumValue property, and the isMaximumInclusive property controls whether the maximum
+        includes the maximum value or must be less than the maximum.
+        
+        When a new ValueCommandInput is created this defaults to false so there is no limit.
+        """
+        pass
+    @property
+    def maximumValue(self) -> float:
+        """
+        Gets and sets the maximum value for the input. Setting this value will automatically
+        set the isMaximumLimited property to true, enabling the use of the maximum value. Use
+        the isMaximumInclusive property to control if the maximum can be equal to this value or must
+        be less than the maximum.
+        """
+        return float()
+    @maximumValue.setter
+    def maximumValue(self, value: float):
+        """
+        Gets and sets the maximum value for the input. Setting this value will automatically
+        set the isMaximumLimited property to true, enabling the use of the maximum value. Use
+        the isMaximumInclusive property to control if the maximum can be equal to this value or must
+        be less than the maximum.
+        """
+        pass
+    @property
+    def isMaximumInclusive(self) -> bool:
+        """
+        Gets and sets if the maximum value can be equal to the value defined by the maximumValue
+        property or if it must be less than the maximum.
+        
+        When a new ValueCommandInput is created, this defaults to true.
+        """
+        return bool()
+    @isMaximumInclusive.setter
+    def isMaximumInclusive(self, value: bool):
+        """
+        Gets and sets if the maximum value can be equal to the value defined by the maximumValue
+        property or if it must be less than the maximum.
+        
+        When a new ValueCommandInput is created, this defaults to true.
+        """
+        pass
 
 class WebRequestEvent(Event):
     """

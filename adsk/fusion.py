@@ -2,8 +2,19 @@
 # It does not reflect the actual implementation.
 
 from __future__ import annotations
+from collections.abc import Iterator
 
 from . import core
+
+class BendReliefShapes():
+    """
+    The bend relief shapes used for a single bend.
+    """
+    def __init__(self):
+        pass
+    StraightBendReliefShape = 0
+    TearBendReliefShape = 1
+    RoundBendReliefShape = 2
 
 class BooleanTypes():
     """
@@ -14,6 +25,56 @@ class BooleanTypes():
     DifferenceBooleanType = 0
     IntersectionBooleanType = 1
     UnionBooleanType = 2
+
+class BossAlignmentTypes():
+    """
+    List of different types of boss alignment shape types.
+    """
+    def __init__(self):
+        pass
+    BossAlignFlat = 0
+    BossAlignStepOut = 1
+    BossAlignStepIn = 2
+
+class BossHoleExtentTypes():
+    """
+    List of the different types of boss hole extent types.
+    """
+    def __init__(self):
+        pass
+    BossHoleThrough = 0
+    BossBlindFull = 1
+    BossBlindDepth = 2
+
+class BossRibExtentTypes():
+    """
+    List of different types of boss rib extent type.
+    """
+    def __init__(self):
+        pass
+    RibSizeByLength = 0
+    RibSizeToNext = 1
+    RibSuppressed = 2
+
+class BossRibShapeTypes():
+    """
+    List of different types of boss rib shape.
+    """
+    def __init__(self):
+        pass
+    BossRibShapeNone = 0
+    BossRibShapeChamfer = 1
+    BossRibShapeFillet = 2
+
+class BossShapeTypes():
+    """
+    List of different boss shank shape types.
+    """
+    def __init__(self):
+        pass
+    BossBlank = 0
+    BossConstDiameter = 1
+    BossConstThickness = 2
 
 class BRepConvertOptions():
     """
@@ -72,16 +133,6 @@ class ChamferCornerTypes():
     ChamferCornerType = 0
     MiterCornerType = 1
     BlendCornertype = 2
-
-class ChamferTypes():
-    """
-    List of the different ways a chamfer can be defined.
-    """
-    def __init__(self):
-        pass
-    EqualDistanceChamferType = 0
-    TwoDistancesChamferType = 1
-    DistanceAndAngleChamferType = 2
 
 class CoilFeatureSectionPositions():
     """
@@ -304,6 +355,7 @@ class JointGeometryTypes():
     JointPlanarBRepFaceGeometry = 6
     JointNonPlanarBRepFaceGeometry = 7
     JointBetweenTwoPlanesGeometry = 8
+    JointByTwoEdgeIntersectionGeometry = 9
 
 class JointKeyPointTypes():
     """
@@ -345,6 +397,28 @@ class LineStylePatterns():
     tracksLineStylePattern = 6
     zigzagLineStylePattern = 7
 
+class LocalRenderStates():
+    """
+    The different states of a local rendering.
+    """
+    def __init__(self):
+        pass
+    QueuedLocalRenderState = 0
+    ProcessingLocalRenderState = 1
+    FinishedLocalRenderState = 2
+    FailedLocalRenderState = 3
+
+class LoftRailEdgeConditions():
+    """
+    Defines the different conditions that can be applied to a loft rail
+    when the rail entity is defined by BRepEdge objects.
+    """
+    def __init__(self):
+        pass
+    G0LoftRailEdgeCondition = 0
+    G1LoftRailEdgeCondition = 1
+    G2LoftRailEdgeCondition = 2
+
 class MeshRefinementSettings():
     """
     The different refinement settings supported when exporting the design as an STL or 3MF file.
@@ -371,6 +445,8 @@ class MeshUnits():
 class OffsetCornerTypes():
     """
     Specifies the different types of corners that can be created when offsetting a wire body.
+    These settings are used when the curves are offset outwards, which creates a gap at the
+    corner. These represent the three ways the gap is filled.
     """
     def __init__(self):
         pass
@@ -408,6 +484,16 @@ class PatternEntityTypes():
     BodiesPatternType = 2
     OccurrencesPatternType = 3
 
+class PipeSectionTypes():
+    """
+    List of the different section types of a Pipe.
+    """
+    def __init__(self):
+        pass
+    CircularPipeSectionType = 0
+    SquarePipeSectionType = 1
+    TriangularPipeSectionType = 2
+
 class PointContainment():
     """
     Types that define the nature of the relationship between a point and a containing entity.
@@ -418,6 +504,67 @@ class PointContainment():
     PointOnPointContainment = 1
     PointOutsidePointContainment = 2
     UnknownPointContainment = 3
+
+class RenderAspectRatios():
+    """
+    Types that indicate the output aspect ratio when rendering a scene. This is
+    used with in-canvas rendering, to allow you to define a different aspect
+    ratio than the current active viewport.
+    """
+    def __init__(self):
+        pass
+    CurrentViewportRenderAspectRatio = 0
+    Square1to1RenderAspectRatio = 1
+    Presentation4to3RenderAspectRatio = 2
+    Widescreen16to9RenderAspectRatio = 3
+    Landscape5to4RenderAspectRatio = 4
+    Portrait4to5RenderAspectRatio = 5
+    CustomRenderAspectRatio = 6
+
+class RenderResolutions():
+    """
+    The different standard resolutions supported when rendering.
+    """
+    def __init__(self):
+        pass
+    Web800x600RenderResolution = 0
+    Web1024x768RenderResolution = 1
+    Web1152x864RenderResolution = 2
+    Web1280x1024RenderResolution = 3
+    Web1600x1200RenderResolution = 4
+    Mobile960x640RenderResolution = 5
+    Mobile1136x640RenderResolution = 6
+    Mobile1334x750RenderResolution = 7
+    Mobile1920x1080RenderResolution = 8
+    Mobile2048x1536RenderResolution = 9
+    Print1800x1200RenderResolution = 10
+    Print2100x1500RenderResolution = 11
+    Print3000x2400RenderResolution = 12
+    Print3300x2550RenderResolution = 13
+    Video854x480RenderResolution = 14
+    Video1280x720RenderResolution = 15
+    Video1920x1080RenderResolution = 16
+    CustomRenderResolution = 17
+
+class RenderSceneBackgroundTypes():
+    """
+    Types that indicate the type of background being used to render the scene.
+    """
+    def __init__(self):
+        pass
+    EnvironmentRenderSceneBackgroundType = 0
+    SolidColorRenderSceneBackgroundType = 1
+
+class RipFeatureDefinitionTypes():
+    """
+    Specifies the different ways a Rip feature can be defined.
+    """
+    def __init__(self):
+        pass
+    UndefinedRipFeatureDefinitionType = 0
+    FaceRipFeatureDefinitionType = 1
+    AlongEdgeRipFeatureDefinitionType = 2
+    BetweenPointsRipFeatureDefinitionType = 3
 
 class RuledSurfaceCornerTypes():
     """
@@ -447,6 +594,15 @@ class SilhouetteSplitOperations():
     SilhouetteSplitFacesOnlyOperation = 0
     SilhouetteSplitShelledBodyOperation = 1
     SilhouetteSplitSolidBodyOperation = 2
+
+class SplineDegrees():
+    """
+    Defines the options used when specifying the degree of a spline.
+    """
+    def __init__(self):
+        pass
+    SplineDegreeThree = 3
+    SplineDegreeFive = 5
 
 class SplitFaceSplitTypes():
     """
@@ -576,6 +732,17 @@ class ThreadLocations():
     HighEndThreadLocation = 0
     LowEndThreadLocation = 1
 
+class ThreeBendReliefShapes():
+    """
+    The bend relief shapes used when three bends intersect.
+    """
+    def __init__(self):
+        pass
+    NoReplacementThreeBendReliefShape = 0
+    IntersectionThreeBendReliefShape = 1
+    FullRoundThreeBendReliefShape = 2
+    RoundWithRadiusThreeBendReliefShape = 3
+
 class TriangleMeshQualityOptions():
     """
     Types that indicate the level of quality of a triangle mesh.
@@ -586,6 +753,29 @@ class TriangleMeshQualityOptions():
     NormalQualityTriangleMesh = 11
     HighQualityTriangleMesh = 13
     VeryHighQualityTriangleMesh = 15
+
+class TwoBendReliefPlacements():
+    """
+    The placement options for a two bend relief.
+    """
+    def __init__(self):
+        pass
+    NoTwoBendReliefPlacement = 0
+    IntersectionTwoBendReliefPlacement = 1
+    TangentTwoBendReliefPlacement = 2
+
+class TwoBendReliefShapes():
+    """
+    The bend relief shapes used when two bends intersect.
+    """
+    def __init__(self):
+        pass
+    RoundTwoBendReliefShape = 0
+    SquareTwoBendReliefShape = 1
+    TearTwoBendReliefShape = 2
+    TrimToBendTwoBendReliefShape = 3
+    LinearWeldTwoBendReliefShape = 4
+    ArcWeldTwoBendReliefShape = 5
 
 class UntrimLoopTypes():
     """
@@ -609,6 +799,229 @@ class ViewCorners():
     upperRightViewCorner = 1
     lowerLeftViewCorner = 2
     lowerRightViewCorner = 3
+
+class AccessibilityAnalyses(core.Base):
+    """
+    Provides access to any accessibility analyses results in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> AccessibilityAnalyses:
+        return AccessibilityAnalyses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> AccessibilityAnalysis:
+        return None
+    def __iter__(self) -> Iterator[AccessibilityAnalysis]:
+        return None
+    def item(self, index: int) -> AccessibilityAnalysis:
+        """
+        A method that returns the specified AccessibilityAnalysis object using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection
+        has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return AccessibilityAnalysis()
+    def itemByName(self, name: str) -> AccessibilityAnalysis:
+        """
+        A method that returns the specified AccessibilityAnalysis object using the name of the analysis
+        as displayed in the browser.
+        name : The name of the AccessibilityAnalysis object as displayed in the browser.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return AccessibilityAnalysis()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of AccessibilityAnalysis objects in the collection.
+        """
+        return int()
+
+class Analyses(core.Base):
+    """
+    Provides access to the existing analysis results within a design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> Analyses:
+        return Analyses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Analysis:
+        return None
+    def __iter__(self) -> Iterator[Analysis]:
+        return None
+    def item(self, index: int) -> Analysis:
+        """
+        A method that returns the specified Analysis using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection
+        has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return Analysis()
+    def itemByName(self, name: str) -> Analysis:
+        """
+        A method that returns the specified Analysis using the name of the analysis
+        as it is displayed in the browser.
+        name : The name of the Analysis as it is displayed in the browser.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return Analysis()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of Analysis objects in the collection.
+        """
+        return int()
+    @property
+    def accessibilityAnalyses(self) -> AccessibilityAnalyses:
+        """
+        Returns the AccessibilityAnalyses object, which provides access to any existing AccessibilityAnalysis
+        objects in the design.
+        """
+        return AccessibilityAnalyses()
+    @property
+    def curvatureCombAnalyses(self) -> CurvatureCombAnalyses:
+        """
+        Returns the CurvatureCombAnalyses object, which provides access to any existing CurvatureCombAnalysis
+        objects in the design.
+        """
+        return CurvatureCombAnalyses()
+    @property
+    def curvatureMapAnalyses(self) -> CurvatureMapAnalyses:
+        """
+        Returns the CurvatureMapAnalyses object, which provides access to any existing CurvatureMapAnalysis
+        objects in the design.
+        """
+        return CurvatureMapAnalyses()
+    @property
+    def draftAnalyses(self) -> DraftAnalyses:
+        """
+        Returns the DraftAnalyses object, which provides access to any existing DraftAnalysis
+        objects in the design.
+        """
+        return DraftAnalyses()
+    @property
+    def isoCurveAnalyses(self) -> IsoCurveAnalyses:
+        """
+        Returns the IsoCurveAnalyses object, which provides access to any existing IsoCurveAnalysis
+        objects in the design.
+        """
+        return IsoCurveAnalyses()
+    @property
+    def minimumRadiusAnalyses(self) -> MinimumRadiusAnalyses:
+        """
+        Returns the MinimumRadiusAnalyses object, which provides access to any existing MinimumRadiusAnalysis
+        objects in the design.
+        """
+        return MinimumRadiusAnalyses()
+    @property
+    def sectionAnalyses(self) -> SectionAnalyses:
+        """
+        Returns the SectionAnalyses object, which provides access to any existing SectionAnalysis
+        objects in the design.
+        """
+        return SectionAnalyses()
+    @property
+    def zebraAnalyses(self) -> ZebraAnalyses:
+        """
+        Returns the ZebraAnalyses object, which provides access to any existing ZebraAnalysis
+        objects in the design.
+        """
+        return ZebraAnalyses()
+    @property
+    def isLightBulbOn(self) -> bool:
+        """
+        A property that gets and sets if the display is enabled for all Analysis objects in the design.
+        If this is false, all Analysis results will be hidden. If this is true, the Analysis
+        objects whose isLightBulbOn property is also true will be visible.
+        """
+        return bool()
+    @isLightBulbOn.setter
+    def isLightBulbOn(self, value: bool):
+        """
+        A property that gets and sets if the display is enabled for all Analysis objects in the design.
+        If this is false, all Analysis results will be hidden. If this is true, the Analysis
+        objects whose isLightBulbOn property is also true will be visible.
+        """
+        pass
+
+class Analysis(core.Base):
+    """
+    The base class Analysis object that represents all the types of analysis results.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> Analysis:
+        return Analysis()
+    def deleteMe(self) -> bool:
+        """
+        A method that deletes this Analysis.
+        Returns true if the delete was successful.
+        """
+        return bool()
+    @property
+    def name(self) -> str:
+        """
+        A property that gets and sets the name of the analysis. If you use a name that is not unique,
+        Fusion will automatically append a number to the name to make it unique.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        A property that gets and sets the name of the analysis. If you use a name that is not unique,
+        Fusion will automatically append a number to the name to make it unique.
+        """
+        pass
+    @property
+    def isLightBulbOn(self) -> bool:
+        """
+        A property that gets and sets if the display is enabled for this Analysis object. If false,
+        this analysis will be hidden. If true and the IsLightBulbOn property of the
+        Analyses object is True the Analysis will be visible.
+        """
+        return bool()
+    @isLightBulbOn.setter
+    def isLightBulbOn(self, value: bool):
+        """
+        A property that gets and sets if the display is enabled for this Analysis object. If false,
+        this analysis will be hidden. If true and the IsLightBulbOn property of the
+        Analyses object is True the Analysis will be visible.
+        """
+        pass
+    @property
+    def isVisible(self) -> bool:
+        """
+        Gets if this Analysis is currently visible in the graphics window. The visibility is
+        controlled by a combination of the isLightBulbOn properties of the Analyses collection
+        object and the Analysis object. If both are true, the Analysis will be visible.
+        """
+        return bool()
+    @property
+    def attributes(self) -> core.Attributes:
+        """
+        A property that returns the collection of attributes associated with this Analysis.
+        """
+        return core.Attributes()
+    @property
+    def entityToken(self) -> str:
+        """
+        Returns a token for the Analysis object. The token can be saved and used later with
+        the Design.findEntityByToken method to get back the same Analysis.
+        
+        When using entity tokens, it's crucial to understand that the token string returned
+        for a specific entity can be different over time. For example, you can have two different
+        token strings obtained from the same entity at different times, and when you use
+        findEntityByToken they will both return the same entity. Because of that, you should
+        never compare entity tokens as a way to determine what the token represents. Instead,
+        you need to use the findEntityByToken method to get the two entities identified by the
+        tokens and then compare them.
+        """
+        return str()
 
 class AreaProperties(core.Base):
     """
@@ -728,7 +1141,7 @@ class AsBuiltJoint(core.Base):
         Returns true if successful.
         """
         return bool()
-    def setAsRevoluteJointMotion(self, rotationAxis: JointDirections, geometry: JointGeometry, customRotationAxisEntity: core.Base) -> bool:
+    def setAsRevoluteJointMotion(self, rotationAxis: JointDirections, geometry: JointGeometry = None, customRotationAxisEntity: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a revolute joint.
         
@@ -744,7 +1157,7 @@ class AsBuiltJoint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsSliderJointMotion(self, sliderDirection: JointDirections, geometry: JointGeometry, customSliderDirectionEntity: core.Base) -> bool:
+    def setAsSliderJointMotion(self, sliderDirection: JointDirections, geometry: JointGeometry = None, customSliderDirectionEntity: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a slider joint.
         
@@ -759,7 +1172,7 @@ class AsBuiltJoint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsCylindricalJointMotion(self, rotationAxis: JointDirections, geometry: JointGeometry, customRotationAxisEntity: core.Base) -> bool:
+    def setAsCylindricalJointMotion(self, rotationAxis: JointDirections, geometry: JointGeometry = None, customRotationAxisEntity: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a cylindrical joint.
         
@@ -775,7 +1188,7 @@ class AsBuiltJoint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsPinSlotJointMotion(self, rotationAxis: JointDirections, slideDirection: JointDirections, geometry: JointGeometry, customRotationAxisEntity: core.Base, customSlideDirectionEntity: core.Base) -> bool:
+    def setAsPinSlotJointMotion(self, rotationAxis: JointDirections, slideDirection: JointDirections, geometry: JointGeometry = None, customRotationAxisEntity: core.Base = None, customSlideDirectionEntity: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a pin-slot joint.
         
@@ -794,7 +1207,7 @@ class AsBuiltJoint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsPlanarJointMotion(self, normalDirection: JointDirections, geometry: JointGeometry, customNormalDirectionEntity: core.Base, customPrimarySlideDirection: core.Base) -> bool:
+    def setAsPlanarJointMotion(self, normalDirection: JointDirections, geometry: JointGeometry = None, customNormalDirectionEntity: core.Base = None, customPrimarySlideDirection: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a planar joint.
         
@@ -814,7 +1227,7 @@ class AsBuiltJoint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsBallJointMotion(self, pitchDirection: JointDirections, yawDirection: JointDirections, geometry: JointGeometry, customPitchDirection: core.Base, customYawDirection: core.Base) -> bool:
+    def setAsBallJointMotion(self, pitchDirection: JointDirections, yawDirection: JointDirections, geometry: JointGeometry = None, customPitchDirection: core.Base = None, customYawDirection: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a ball joint.
         
@@ -999,7 +1412,7 @@ class AsBuiltJointInput(core.Base):
         Returns true if successful.
         """
         return bool()
-    def setAsRevoluteJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base) -> bool:
+    def setAsRevoluteJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a revolute joint.
         rotationAxis : Specifies which axis the rotation is around. If this is set to CustomJointDirection then the
@@ -1010,7 +1423,7 @@ class AsBuiltJointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsSliderJointMotion(self, sliderDirection: JointDirections, customSliderDirectionEntity: core.Base) -> bool:
+    def setAsSliderJointMotion(self, sliderDirection: JointDirections, customSliderDirectionEntity: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a slider joint.
         sliderDirection : Specifies which axis the slide direction is along. If this is set to CustomJointDirection then the
@@ -1020,7 +1433,7 @@ class AsBuiltJointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsCylindricalJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base) -> bool:
+    def setAsCylindricalJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a cylindrical joint.
         rotationAxis : Specifies which axis the rotation is around. If this is set to CustomJointDirection then the
@@ -1031,7 +1444,7 @@ class AsBuiltJointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsPinSlotJointMotion(self, rotationAxis: JointDirections, slideDirection: JointDirections, customRotationAxisEntity: core.Base, customSlideDirectionEntity: core.Base) -> bool:
+    def setAsPinSlotJointMotion(self, rotationAxis: JointDirections, slideDirection: JointDirections, customRotationAxisEntity: core.Base = None, customSlideDirectionEntity: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a pin-slot joint.
         rotationAxis : Specifies which axis the rotation is around. If this is set to CustomJointDirection then the
@@ -1045,7 +1458,7 @@ class AsBuiltJointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsPlanarJointMotion(self, normalDirection: JointDirections, customNormalDirectionEntity: core.Base, customPrimarySlideDirection: core.Base) -> bool:
+    def setAsPlanarJointMotion(self, normalDirection: JointDirections, customNormalDirectionEntity: core.Base = None, customPrimarySlideDirection: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a planar joint.
         normalDirection : Defines the direction of the normal of the single degree of rotation.
@@ -1060,7 +1473,7 @@ class AsBuiltJointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsBallJointMotion(self, pitchDirection: JointDirections, yawDirection: JointDirections, customPitchDirection: core.Base, customYawDirection: core.Base) -> bool:
+    def setAsBallJointMotion(self, pitchDirection: JointDirections, yawDirection: JointDirections, customPitchDirection: core.Base = None, customYawDirection: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a ball joint.
         pitchDirection : Defines the direction the pitch angle is measured from. This can be ZAxisJointDirection or CustomJointDirection. If
@@ -1127,6 +1540,12 @@ class AsBuiltJointList(core.Base):
     @staticmethod
     def cast(arg) -> AsBuiltJointList:
         return AsBuiltJointList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> AsBuiltJoint:
+        return None
+    def __iter__(self) -> Iterator[AsBuiltJoint]:
+        return None
     def item(self, index: int) -> AsBuiltJoint:
         """
         Function that returns the specified as-built joint using an index into the list.
@@ -1158,6 +1577,12 @@ class AsBuiltJoints(core.Base):
     @staticmethod
     def cast(arg) -> AsBuiltJoints:
         return AsBuiltJoints()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> AsBuiltJoint:
+        return None
+    def __iter__(self) -> Iterator[AsBuiltJoint]:
+        return None
     def item(self, index: int) -> AsBuiltJoint:
         """
         Function that returns the specified as-built joint using an index into the collection.
@@ -1227,7 +1652,7 @@ class BaseComponent(core.Base):
         The occurrences referenced by the specified component.
         """
         return OccurrenceList()
-    def findBRepUsingRay(self, originPoint: core.Point3D, rayDirection: core.Vector3D, entityType: BRepEntityTypes, proximityTolerance: float, visibleEntitiesOnly: bool, hitPoints: core.ObjectCollection) -> core.ObjectCollection:
+    def findBRepUsingRay(self, originPoint: core.Point3D, rayDirection: core.Vector3D, entityType: BRepEntityTypes, proximityTolerance: float = -1, visibleEntitiesOnly: bool = True, hitPoints: core.ObjectCollection = None) -> core.ObjectCollection:
         """
         Finds all the B-Rep entities that are intersected by the specified ray. This can return BRepFace, BrepEdge,
         and BRepVertex objects.
@@ -1248,7 +1673,7 @@ class BaseComponent(core.Base):
         once, the entity is returned once for the first intersection.
         """
         return core.ObjectCollection()
-    def findBRepUsingPoint(self, point: core.Point3D, entityType: BRepEntityTypes, proximityTolerance: float, visibleEntitiesOnly: bool) -> core.ObjectCollection:
+    def findBRepUsingPoint(self, point: core.Point3D, entityType: BRepEntityTypes, proximityTolerance: float = -1, visibleEntitiesOnly: bool = True) -> core.ObjectCollection:
         """
         Finds all the entities of the specified type at the specified location.
         point : Input coordinate that specifies the component space point at which to find the entities.
@@ -1325,6 +1750,13 @@ class BaseComponent(core.Base):
         Returns the parent product this component is owned by.
         """
         return Design()
+    @property
+    def canvases(self) -> Canvases:
+        """
+        Returns the canvases collection associated with this component. This provides access to the
+        existing canvases and supports the creation of new canvases.
+        """
+        return Canvases()
 
 class BaseFeatures(core.Base):
     """
@@ -1335,6 +1767,12 @@ class BaseFeatures(core.Base):
     @staticmethod
     def cast(arg) -> BaseFeatures:
         return BaseFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BaseFeature:
+        return None
+    def __iter__(self) -> Iterator[BaseFeature]:
+        return None
     def item(self, index: int) -> BaseFeature:
         """
         Function that returns the specified base feature using an index into the collection.
@@ -1362,6 +1800,727 @@ class BaseFeatures(core.Base):
         """
         return int()
 
+class BossFeatureInput(core.Base):
+    """
+    This class defines the methods and properties that pertain to the definition of a boss feature or a boss connection
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> BossFeatureInput:
+        return BossFeatureInput()
+    def setPositionBySketchPoints(self, pointOrPoints: core.Base) -> bool:
+        """
+        Defines the position and orientation of the boss feature using a sketch point(s).
+        pointOrPoints : The sketch point or ObjectCollection of sketch points that defines the position(s) for boss mating location.
+        The orientation of the boss feature is inferred from the normal (Z-axis) of the point's parent sketch.
+        The natural direction (or direction of the screw) will be opposite the normal of the sketch.
+        If multiple sketch points are provided all must belong to the same sketch.
+        Participant bodies will be inferred from closest visible bodies unless specified explicitly.
+        Returns true if successful.
+        """
+        return bool()
+    def createSideInput(self) -> BossFeatureSideInput:
+        """
+        Creates a new BossFeatureSideInput object that is used to specify the input for boss feature side.
+        This object can be set to side1 or side2. Side1 is meant to be side where screw head engages with the boss
+        and Side2 is meant to be a side where screw thread engages with the part or metal inserts.
+        Returns BossFeatureSideInput if successful.
+        """
+        return BossFeatureSideInput()
+    @property
+    def targetBaseFeature(self) -> BaseFeature:
+        """
+        When creating a feature that is owned by a base feature, set this property to the
+        base feature you want to associate the new feature with. By default, this is null,
+        meaning it will not be associated with a base feature.
+        
+        Because of a current limitation, if you want to create a feature associated with a base
+        feature, you must set this property AND call the startEdit method of the base feature,
+        create the feature, and then call the finishEdit method of the base feature. The base
+        feature must be in an "edit" state to be able to add any additional items to it.
+        """
+        return BaseFeature()
+    @targetBaseFeature.setter
+    def targetBaseFeature(self, value: BaseFeature):
+        """
+        When creating a feature that is owned by a base feature, set this property to the
+        base feature you want to associate the new feature with. By default, this is null,
+        meaning it will not be associated with a base feature.
+        
+        Because of a current limitation, if you want to create a feature associated with a base
+        feature, you must set this property AND call the startEdit method of the base feature,
+        create the feature, and then call the finishEdit method of the base feature. The base
+        feature must be in an "edit" state to be able to add any additional items to it.
+        """
+        pass
+    @property
+    def creationOccurrence(self) -> Occurrence:
+        """
+        In order for geometry to be transformed correctly, an Occurrence for creation needs to be
+        specified when the boss feature is created based on geometry (e.g. point) in another
+        component AND (the boss) is not in the root component.
+        The CreationOccurrence is analogous to the active occurrence in the UI
+        A value of null indicates that everything is in the context of a single component.
+        The occurrence provided sets scope for detection of target participant bodies.
+        """
+        return Occurrence()
+    @creationOccurrence.setter
+    def creationOccurrence(self, value: Occurrence):
+        """
+        In order for geometry to be transformed correctly, an Occurrence for creation needs to be
+        specified when the boss feature is created based on geometry (e.g. point) in another
+        component AND (the boss) is not in the root component.
+        The CreationOccurrence is analogous to the active occurrence in the UI
+        A value of null indicates that everything is in the context of a single component.
+        The occurrence provided sets scope for detection of target participant bodies.
+        """
+        pass
+    @property
+    def participantBodies(self) -> list[BRepBody]:
+        """
+        Gets and sets the list of bodies that will participate in the boss feature. If body provided does
+        not intersect with direction vector at proposed position points it will be ignored. If more bodies intersect
+        at given position point only the closest body will be accepted. Boss feature works with solid bodies only.
+        If this property has not been set (or is empty) closest visible bodies will be detected automatically
+        based on proposed positions and orientation.
+        """
+        return [BRepBody()]
+    @participantBodies.setter
+    def participantBodies(self, value: list[BRepBody]):
+        """
+        Gets and sets the list of bodies that will participate in the boss feature. If body provided does
+        not intersect with direction vector at proposed position points it will be ignored. If more bodies intersect
+        at given position point only the closest body will be accepted. Boss feature works with solid bodies only.
+        If this property has not been set (or is empty) closest visible bodies will be detected automatically
+        based on proposed positions and orientation.
+        """
+        pass
+    @property
+    def side1(self) -> BossFeatureSideInput:
+        """
+        Gets or sets inputs for top side of the boss feature connection. It is the side where screw head engages with the boss.
+        Default Side1 direction is considered direction of Z-axis of the parent sketch for selected position point.
+        """
+        return BossFeatureSideInput()
+    @side1.setter
+    def side1(self, value: BossFeatureSideInput):
+        """
+        Gets or sets inputs for top side of the boss feature connection. It is the side where screw head engages with the boss.
+        Default Side1 direction is considered direction of Z-axis of the parent sketch for selected position point.
+        """
+        pass
+    @property
+    def side2(self) -> BossFeatureSideInput:
+        """
+        Gets or sets inputs for bottom side of the boss feature connection. It is the side where screw thread engages with the part or metal insert.
+        Default Side2 direction is considered opposite to the direction Z-axis of the parent sketch for selected position point.
+        """
+        return BossFeatureSideInput()
+    @side2.setter
+    def side2(self, value: BossFeatureSideInput):
+        """
+        Gets or sets inputs for bottom side of the boss feature connection. It is the side where screw thread engages with the part or metal insert.
+        Default Side2 direction is considered opposite to the direction Z-axis of the parent sketch for selected position point.
+        """
+        pass
+    @property
+    def isDefaultDirection(self) -> bool:
+        """
+        Get or set if the boss feature (or boss connection) goes in the default direction or is reversed.
+        """
+        return bool()
+    @isDefaultDirection.setter
+    def isDefaultDirection(self, value: bool):
+        """
+        Get or set if the boss feature (or boss connection) goes in the default direction or is reversed.
+        """
+        pass
+    @property
+    def offset(self) -> core.ValueInput:
+        """
+        Get or set offset of the parting face from the selected position point.
+        """
+        return core.ValueInput()
+    @offset.setter
+    def offset(self, value: core.ValueInput):
+        """
+        Get or set offset of the parting face from the selected position point.
+        """
+        pass
+
+class BossFeatures(core.Base):
+    """
+    Collection that provides access to all of the existing boss features in a design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> BossFeatures:
+        return BossFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BossFeature:
+        return None
+    def __iter__(self) -> Iterator[BossFeature]:
+        return None
+    def item(self, index: int) -> BossFeature:
+        """
+        Function that returns the specified boss feature using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return BossFeature()
+    def itemByName(self, name: str) -> BossFeature:
+        """
+        Function that returns the specified boss feature using the name of the feature.
+        name : The name of the feature within the collection to return. This is the name seen in the timeline.
+        Returns the specified item or null if the specified name was not found.
+        """
+        return BossFeature()
+    def add(self, input: BossFeatureInput) -> list[BossFeature]:
+        """
+        Creates a new boss feature (or more boss features) based on the information provided
+        by a BossFeatureInput object.
+        To create a new boss or boss connection, use createInput function to define a new input object for
+        the type of boss feature you want to create. Use the methods and properties on the input object
+        to define any additional inputs. Once the information is defined on the input object, you
+        can pass it to the Add method to create the boss feature or boss connection.
+        input : The BossFeatureInput object that defines the boss or boss connection you want to create.
+        Returns the newly created BossFeature objects or empty vector/list if the creation failed.
+        """
+        return [BossFeature()]
+    def createInput(self) -> BossFeatureInput:
+        """
+        Creates a new BossFeatureInput object that is used to specify the input needed to create a new boss feature(s).
+        Returns the newly created BossFeatureInput object or null if the creation failed.
+        """
+        return BossFeatureInput()
+    @property
+    def count(self) -> int:
+        """
+        The number of boss features in the collection.
+        """
+        return int()
+
+class BossFeatureSideInput(core.Base):
+    """
+    This class defines the methods and properties that pertain to the definition of a single side of boss feature
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> BossFeatureSideInput:
+        return BossFeatureSideInput()
+    def setBlank(self, diameter: core.ValueInput) -> None:
+        """
+        Set boss shape into blank constant diameter shank with no hole.
+        diameter : The outside diameter for the boss feature shank.
+        
+        """
+        pass
+    def setSimple(self, diameter: core.ValueInput, holeDiameter: core.ValueInput) -> None:
+        """
+        Set boss shape into constant diameter shank with simple hole.
+        diameter : The outside diameter for the boss feature shank.
+        holeDiameter : The hole diameter.
+        
+        """
+        pass
+    def setCounterbore(self, diameter: core.ValueInput, holeDiameter: core.ValueInput, holeMajorDiameter: core.ValueInput, depth: core.ValueInput) -> None:
+        """
+        Set boss shape into constant diameter shank with counterbore hole.
+        diameter : The outside diameter for the boss feature shank.
+        holeDiameter : The hole diameter.
+        holeMajorDiameter : The hole major (or counterbore) diameter.
+        depth : With respect to hole orientation in the boss feature the parameter is either the counterbore depth or thickness of the material
+        under the screw head.
+        
+        """
+        pass
+    def setCountersink(self, diameter: core.ValueInput, holeDiameter: core.ValueInput, holeMajorDiameter: core.ValueInput, depth: core.ValueInput, countersinkAngle: core.ValueInput = None) -> None:
+        """
+        Set boss shape into constant diameter shank with countersink hole.
+        diameter : The outside diameter for the boss feature shank.
+        holeDiameter : The hole diameter.
+        holeMajorDiameter : The hole major (or countersink) diameter.
+        depth : With respect to hole orientation in the boss feature the parameter is either the counterbore depth or thickness of the material
+        under the screw head.
+        countersinkAngle : Optional parameter for hole countersink angle. If not specified it is set to 90 deg.
+        
+        """
+        pass
+    def setRibExtent(self, position: core.Base, ribExtentTypes: list[int]) -> None:
+        """
+        Set rib extent type for particular rib for position point provided.
+        position : Position point object for the rib extent types provided
+        ribExtentTypes : Vector of BossRibExtentTypes for individual rib based on rib count input.
+        
+        """
+        pass
+    def clearRibExtent(self) -> None:
+        """
+        Clears rib extent types for all position points.
+        
+        """
+        pass
+    @property
+    def alignmentType(self) -> BossAlignmentTypes:
+        """
+        Get or set boss alignment shape. This usually corresponds to the alignment shape of the boss counterpart.
+        """
+        return BossAlignmentTypes()
+    @alignmentType.setter
+    def alignmentType(self, value: BossAlignmentTypes):
+        """
+        Get or set boss alignment shape. This usually corresponds to the alignment shape of the boss counterpart.
+        """
+        pass
+    @property
+    def holeExtentType(self) -> BossHoleExtentTypes:
+        """
+        Get or set hole extent this feature represents. For top side only through hole extent is accepted.
+        """
+        return BossHoleExtentTypes()
+    @holeExtentType.setter
+    def holeExtentType(self, value: BossHoleExtentTypes):
+        """
+        Get or set hole extent this feature represents. For top side only through hole extent is accepted.
+        """
+        pass
+    @property
+    def ribType(self) -> BossRibShapeTypes:
+        """
+        Type of boss ribs this feature represents.
+        """
+        return BossRibShapeTypes()
+    @ribType.setter
+    def ribType(self, value: BossRibShapeTypes):
+        """
+        Type of boss ribs this feature represents.
+        """
+        pass
+    @property
+    def offsetClearance(self) -> core.ValueInput:
+        """
+        Get or set offset clearance as additional small offset from the selected parting plane and position point.
+        """
+        return core.ValueInput()
+    @offsetClearance.setter
+    def offsetClearance(self, value: core.ValueInput):
+        """
+        Get or set offset clearance as additional small offset from the selected parting plane and position point.
+        """
+        pass
+    @property
+    def diameter(self) -> core.ValueInput:
+        """
+        Get or set boss shank diameter.
+        """
+        return core.ValueInput()
+    @diameter.setter
+    def diameter(self, value: core.ValueInput):
+        """
+        Get or set boss shank diameter.
+        """
+        pass
+    @property
+    def draftAngle(self) -> core.ValueInput:
+        """
+        Get or set shank draft angle.
+        """
+        return core.ValueInput()
+    @draftAngle.setter
+    def draftAngle(self, value: core.ValueInput):
+        """
+        Get or set shank draft angle.
+        """
+        pass
+    @property
+    def alignmentDiameter(self) -> core.ValueInput:
+        """
+        Get or set alignment diameter.
+        """
+        return core.ValueInput()
+    @alignmentDiameter.setter
+    def alignmentDiameter(self, value: core.ValueInput):
+        """
+        Get or set alignment diameter.
+        """
+        pass
+    @property
+    def alignmentDepth(self) -> core.ValueInput:
+        """
+        Get or set alignment depth.
+        """
+        return core.ValueInput()
+    @alignmentDepth.setter
+    def alignmentDepth(self, value: core.ValueInput):
+        """
+        Get or set alignment depth.
+        """
+        pass
+    @property
+    def alignmentDraftAngle(self) -> core.ValueInput:
+        """
+        Get or set alignment draft angle.
+        """
+        return core.ValueInput()
+    @alignmentDraftAngle.setter
+    def alignmentDraftAngle(self, value: core.ValueInput):
+        """
+        Get or set alignment draft angle.
+        """
+        pass
+    @property
+    def holeDiameter(self) -> core.ValueInput:
+        """
+        Get or set hole diameter.
+        """
+        return core.ValueInput()
+    @holeDiameter.setter
+    def holeDiameter(self, value: core.ValueInput):
+        """
+        Get or set hole diameter.
+        """
+        pass
+    @property
+    def holeDraftAngle(self) -> core.ValueInput:
+        """
+        Get or set hole draft angle.
+        """
+        return core.ValueInput()
+    @holeDraftAngle.setter
+    def holeDraftAngle(self, value: core.ValueInput):
+        """
+        Get or set hole draft angle.
+        """
+        pass
+    @property
+    def holeDepth(self) -> core.ValueInput:
+        """
+        Get or set hole depth with respect to hole extent type.
+        If hole extent type is set to BossHoleThrough parameter is ignored. If hole extent type is BossBlindFull
+        the parameter is a distance from farthest face. If hole extent type is set to BossBlindDepth the parameter
+        is a distance from start face of the hole.
+        """
+        return core.ValueInput()
+    @holeDepth.setter
+    def holeDepth(self, value: core.ValueInput):
+        """
+        Get or set hole depth with respect to hole extent type.
+        If hole extent type is set to BossHoleThrough parameter is ignored. If hole extent type is BossBlindFull
+        the parameter is a distance from farthest face. If hole extent type is set to BossBlindDepth the parameter
+        is a distance from start face of the hole.
+        """
+        pass
+    @property
+    def holeMajorDiameter(self) -> core.ValueInput:
+        """
+        Get or set major hole diameter for counterbore or countersink hole.
+        This input is ignored for blank boss or boss with simple hole.
+        """
+        return core.ValueInput()
+    @holeMajorDiameter.setter
+    def holeMajorDiameter(self, value: core.ValueInput):
+        """
+        Get or set major hole diameter for counterbore or countersink hole.
+        This input is ignored for blank boss or boss with simple hole.
+        """
+        pass
+    @property
+    def holeMajorDepth(self) -> core.ValueInput:
+        """
+        Get or set major hole depth for counterbore and countersink hole or material thickness under screw head
+        based on hole orientation in a boss feature. This input is ignored for blank boss or boss with simple hole.
+        """
+        return core.ValueInput()
+    @holeMajorDepth.setter
+    def holeMajorDepth(self, value: core.ValueInput):
+        """
+        Get or set major hole depth for counterbore and countersink hole or material thickness under screw head
+        based on hole orientation in a boss feature. This input is ignored for blank boss or boss with simple hole.
+        """
+        pass
+    @property
+    def holeMajorDraftAngle(self) -> core.ValueInput:
+        """
+        Get or set major hole draft angle for counterbore and countersink hole.
+        This input is ignored for blank boss or boss with simple hole.
+        """
+        return core.ValueInput()
+    @holeMajorDraftAngle.setter
+    def holeMajorDraftAngle(self, value: core.ValueInput):
+        """
+        Get or set major hole draft angle for counterbore and countersink hole.
+        This input is ignored for blank boss or boss with simple hole.
+        """
+        pass
+    @property
+    def holeCountersinkAngle(self) -> core.ValueInput:
+        """
+        Get or set countersink angle for countersink hole. This input is used only for countersink hole.
+        """
+        return core.ValueInput()
+    @holeCountersinkAngle.setter
+    def holeCountersinkAngle(self, value: core.ValueInput):
+        """
+        Get or set countersink angle for countersink hole. This input is used only for countersink hole.
+        """
+        pass
+    @property
+    def rootRadius(self) -> core.ValueInput:
+        """
+        Get or set blend radius of the boss shank and participant body.
+        """
+        return core.ValueInput()
+    @rootRadius.setter
+    def rootRadius(self, value: core.ValueInput):
+        """
+        Get or set blend radius of the boss shank and participant body.
+        """
+        pass
+    @property
+    def tipRadius(self) -> core.ValueInput:
+        """
+        Get or set blend radius of the boss shank top parting face.
+        """
+        return core.ValueInput()
+    @tipRadius.setter
+    def tipRadius(self, value: core.ValueInput):
+        """
+        Get or set blend radius of the boss shank top parting face.
+        """
+        pass
+    @property
+    def alignmentTipRadius(self) -> core.ValueInput:
+        """
+        Get or set blend radius of the boss alignment tip.
+        """
+        return core.ValueInput()
+    @alignmentTipRadius.setter
+    def alignmentTipRadius(self, value: core.ValueInput):
+        """
+        Get or set blend radius of the boss alignment tip.
+        """
+        pass
+    @property
+    def alignmentRootRadius(self) -> core.ValueInput:
+        """
+        Get or set blend radius of the boss alignment root.
+        """
+        return core.ValueInput()
+    @alignmentRootRadius.setter
+    def alignmentRootRadius(self, value: core.ValueInput):
+        """
+        Get or set blend radius of the boss alignment root.
+        """
+        pass
+    @property
+    def holeStartRadius(self) -> core.ValueInput:
+        """
+        Get or set blend radius of the hole start.
+        """
+        return core.ValueInput()
+    @holeStartRadius.setter
+    def holeStartRadius(self, value: core.ValueInput):
+        """
+        Get or set blend radius of the hole start.
+        """
+        pass
+    @property
+    def holeEndRadius(self) -> core.ValueInput:
+        """
+        Get or set blend radius of the hole end.
+        """
+        return core.ValueInput()
+    @holeEndRadius.setter
+    def holeEndRadius(self, value: core.ValueInput):
+        """
+        Get or set blend radius of the hole end.
+        """
+        pass
+    @property
+    def holeMajorTipRadius(self) -> core.ValueInput:
+        """
+        Get or set blend radius of major hole counterbore.
+        """
+        return core.ValueInput()
+    @holeMajorTipRadius.setter
+    def holeMajorTipRadius(self, value: core.ValueInput):
+        """
+        Get or set blend radius of major hole counterbore.
+        """
+        pass
+    @property
+    def holeMajorRootRadius(self) -> core.ValueInput:
+        """
+        Get or set blend radius of major hole counterbore root.
+        """
+        return core.ValueInput()
+    @holeMajorRootRadius.setter
+    def holeMajorRootRadius(self, value: core.ValueInput):
+        """
+        Get or set blend radius of major hole counterbore root.
+        """
+        pass
+    @property
+    def ribLength(self) -> core.ValueInput:
+        """
+        Get or set ribs length measured from the shank axis.
+        """
+        return core.ValueInput()
+    @ribLength.setter
+    def ribLength(self, value: core.ValueInput):
+        """
+        Get or set ribs length measured from the shank axis.
+        """
+        pass
+    @property
+    def ribOffset(self) -> core.ValueInput:
+        """
+        Get or set ribs offset from the top face or alignment face.
+        """
+        return core.ValueInput()
+    @ribOffset.setter
+    def ribOffset(self, value: core.ValueInput):
+        """
+        Get or set ribs offset from the top face or alignment face.
+        """
+        pass
+    @property
+    def ribThickness(self) -> core.ValueInput:
+        """
+        Get or set ribs thickness.
+        """
+        return core.ValueInput()
+    @ribThickness.setter
+    def ribThickness(self, value: core.ValueInput):
+        """
+        Get or set ribs thickness.
+        """
+        pass
+    @property
+    def ribDraftAngle(self) -> core.ValueInput:
+        """
+        Get or set ribs draft angle.
+        """
+        return core.ValueInput()
+    @ribDraftAngle.setter
+    def ribDraftAngle(self, value: core.ValueInput):
+        """
+        Get or set ribs draft angle.
+        """
+        pass
+    @property
+    def ribOuterDraftAngle(self) -> core.ValueInput:
+        """
+        Get or set rib outer draft angle.
+        """
+        return core.ValueInput()
+    @ribOuterDraftAngle.setter
+    def ribOuterDraftAngle(self, value: core.ValueInput):
+        """
+        Get or set rib outer draft angle.
+        """
+        pass
+    @property
+    def ribCutSize(self) -> core.ValueInput:
+        """
+        Get or set size of rib chamfer or fillet.
+        """
+        return core.ValueInput()
+    @ribCutSize.setter
+    def ribCutSize(self, value: core.ValueInput):
+        """
+        Get or set size of rib chamfer or fillet.
+        """
+        pass
+    @property
+    def ribChamferAngle(self) -> core.ValueInput:
+        """
+        Get or set rib chamfer angle. This input is used only for rib with chamfer.
+        """
+        return core.ValueInput()
+    @ribChamferAngle.setter
+    def ribChamferAngle(self, value: core.ValueInput):
+        """
+        Get or set rib chamfer angle. This input is used only for rib with chamfer.
+        """
+        pass
+    @property
+    def ribTipRadius(self) -> core.ValueInput:
+        """
+        Get or set rib outer tip blend radius.
+        """
+        return core.ValueInput()
+    @ribTipRadius.setter
+    def ribTipRadius(self, value: core.ValueInput):
+        """
+        Get or set rib outer tip blend radius.
+        """
+        pass
+    @property
+    def ribRootRadius(self) -> core.ValueInput:
+        """
+        Get or set rib base root blend radius.
+        """
+        return core.ValueInput()
+    @ribRootRadius.setter
+    def ribRootRadius(self, value: core.ValueInput):
+        """
+        Get or set rib base root blend radius.
+        """
+        pass
+    @property
+    def ribRotation(self) -> core.ValueInput:
+        """
+        Get or set rotation angle of the first rib from the reference vector.
+        Reference vector is X-axis of the parent sketch from selected sketch point(s).
+        """
+        return core.ValueInput()
+    @ribRotation.setter
+    def ribRotation(self, value: core.ValueInput):
+        """
+        Get or set rotation angle of the first rib from the reference vector.
+        Reference vector is X-axis of the parent sketch from selected sketch point(s).
+        """
+        pass
+    @property
+    def ribTotalAngle(self) -> core.ValueInput:
+        """
+        Get or set total angle for ribs distribution. Default is 360 deg.
+        """
+        return core.ValueInput()
+    @ribTotalAngle.setter
+    def ribTotalAngle(self, value: core.ValueInput):
+        """
+        Get or set total angle for ribs distribution. Default is 360 deg.
+        """
+        pass
+    @property
+    def ribCount(self) -> core.ValueInput:
+        """
+        Get or set number of ribs.
+        """
+        return core.ValueInput()
+    @ribCount.setter
+    def ribCount(self, value: core.ValueInput):
+        """
+        Get or set number of ribs.
+        """
+        pass
+
+class BossPositionDefinition(core.Base):
+    """
+    The base class for the classes that define how a boss feature can be positioned.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> BossPositionDefinition:
+        return BossPositionDefinition()
+
 class BoundaryFillFeatureInput(core.Base):
     """
     This class defines the methods and properties that pertain to the definition of a BoundaryFillFeatureInput.
@@ -1380,6 +2539,7 @@ class BoundaryFillFeatureInput(core.Base):
         problems and possibly a crash. If you have created a BoundFillFeatureInput object and don't want to finish
         the feature creation, you need to call the cancel method on the BoundaryFillFeatureInput object to
         safely abort the current boundary fill transaction.
+        Returns true if successful.
         """
         return bool()
     @property
@@ -1459,6 +2619,18 @@ class BoundaryFillFeatureInput(core.Base):
         feature must be in an "edit" state to be able to add any additional items to it.
         """
         pass
+    @property
+    def isRemoveTools(self) -> bool:
+        """
+        Gets and sets whether any BRepBodys that were used as tools should be removed as part of the feature creation.
+        """
+        return bool()
+    @isRemoveTools.setter
+    def isRemoveTools(self, value: bool):
+        """
+        Gets and sets whether any BRepBodys that were used as tools should be removed as part of the feature creation.
+        """
+        pass
 
 class BoundaryFillFeatures(core.Base):
     """
@@ -1470,6 +2642,12 @@ class BoundaryFillFeatures(core.Base):
     @staticmethod
     def cast(arg) -> BoundaryFillFeatures:
         return BoundaryFillFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BoundaryFillFeature:
+        return None
+    def __iter__(self) -> Iterator[BoundaryFillFeature]:
+        return None
     def item(self, index: int) -> BoundaryFillFeature:
         """
         Function that returns the specified boundary fill feature using an index into the collection.
@@ -1528,6 +2706,12 @@ class BoxFeatures(core.Base):
     @staticmethod
     def cast(arg) -> BoxFeatures:
         return BoxFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BoxFeature:
+        return None
+    def __iter__(self) -> Iterator[BoxFeature]:
+        return None
     def item(self, index: int) -> BoxFeature:
         """
         Function that returns the specified box feature using an index into the collection.
@@ -1559,6 +2743,12 @@ class BRepBodies(core.Base):
     @staticmethod
     def cast(arg) -> BRepBodies:
         return BRepBodies()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepBody:
+        return None
+    def __iter__(self) -> Iterator[BRepBody]:
+        return None
     def item(self, index: int) -> BRepBody:
         """
         Function that returns the specified body using an index into the collection.
@@ -1573,7 +2763,7 @@ class BRepBodies(core.Base):
         The BRepBody or null if a body with the defined name is not found.
         """
         return BRepBody()
-    def add(self, body: BRepBody, targetBaseFeature: BaseFeature) -> BRepBody:
+    def add(self, body: BRepBody, targetBaseFeature: BaseFeature = None) -> BRepBody:
         """
         Creates a new BRepBody object. The input can be a persisted or transient BRepBody and the
         result is a persisted BRepBody. In a model where the design history is ignored (direct edit model)
@@ -1713,7 +2903,7 @@ class BRepBody(core.Base):
         or face was split. Returns an empty array in the case where no match is found.
         """
         return [core.Base()]
-    def getPhysicalProperties(self, accuracy: CalculationAccuracy) -> PhysicalProperties:
+    def getPhysicalProperties(self, accuracy: CalculationAccuracy = CalculationAccuracy.LowCalculationAccuracy) -> PhysicalProperties:
         """
         Returns the PhysicalProperties object that has properties for getting the area, density, mass, volume, moments, etc
         of this body.
@@ -2054,6 +3244,21 @@ class BRepBody(core.Base):
         property is false).
         """
         return str()
+    @property
+    def textureMapControl(self) -> core.TextureMapControl:
+        """
+        Returns the TextureMapControl object associated with this body when there is an
+        appearance assigned to the body that has a texture associated with it. If there
+        isn't a texture, this property will return null. If there is a texture, you can
+        use the returned object to query and modify how the texture is applied to the body.
+        """
+        return core.TextureMapControl()
+    @property
+    def isSheetMetal(self) -> bool:
+        """
+        Indicates if this body represents a sheet metal folded part or not and if a flat pattern can be created.
+        """
+        return bool()
 
 class BRepBodyDefinition(core.Base):
     """
@@ -2194,6 +3399,12 @@ class BRepCells(core.Base):
     @staticmethod
     def cast(arg) -> BRepCells:
         return BRepCells()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepCell:
+        return None
+    def __iter__(self) -> Iterator[BRepCell]:
+        return None
     def item(self, index: int) -> BRepCell:
         """
         Function that returns the specified BRepCell using an index into the collection.
@@ -2373,6 +3584,12 @@ class BRepCoEdgeDefinitions(core.Base):
     @staticmethod
     def cast(arg) -> BRepCoEdgeDefinitions:
         return BRepCoEdgeDefinitions()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepCoEdgeDefinition:
+        return None
+    def __iter__(self) -> Iterator[BRepCoEdgeDefinition]:
+        return None
     def item(self, index: int) -> BRepCoEdgeDefinition:
         """
         Function that returns the specified BRepCoEdgeDefinition object using an index into the collection.
@@ -2405,6 +3622,12 @@ class BRepCoEdges(core.Base):
     @staticmethod
     def cast(arg) -> BRepCoEdges:
         return BRepCoEdges()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepCoEdge:
+        return None
+    def __iter__(self) -> Iterator[BRepCoEdge]:
+        return None
     def item(self, index: int) -> BRepCoEdge:
         """
         Function that returns the specified co-edge using an index into the collection.
@@ -2691,6 +3914,12 @@ class BRepEdges(core.Base):
     @staticmethod
     def cast(arg) -> BRepEdges:
         return BRepEdges()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepEdge:
+        return None
+    def __iter__(self) -> Iterator[BRepEdge]:
+        return None
     def item(self, index: int) -> BRepEdge:
         """
         Function that returns the specified edge using an index into the collection.
@@ -2968,6 +4197,12 @@ class BRepFaceDefinitions(core.Base):
     @staticmethod
     def cast(arg) -> BRepFaceDefinitions:
         return BRepFaceDefinitions()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepFaceDefinition:
+        return None
+    def __iter__(self) -> Iterator[BRepFaceDefinition]:
+        return None
     def item(self, index: int) -> BRepFaceDefinition:
         """
         Function that returns the specified BRepFaceDefinition object using an index into the collection.
@@ -3001,6 +4236,12 @@ class BRepFaces(core.Base):
     @staticmethod
     def cast(arg) -> BRepFaces:
         return BRepFaces()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepFace:
+        return None
+    def __iter__(self) -> Iterator[BRepFace]:
+        return None
     def item(self, index: int) -> BRepFace:
         """
         Function that returns the specified face using an index into the collection.
@@ -3132,6 +4373,12 @@ class BRepLoopDefinitions(core.Base):
     @staticmethod
     def cast(arg) -> BRepLoopDefinitions:
         return BRepLoopDefinitions()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepLoopDefinition:
+        return None
+    def __iter__(self) -> Iterator[BRepLoopDefinition]:
+        return None
     def item(self, index: int) -> BRepLoopDefinition:
         """
         Function that returns the specified BRepLoopDefinition object using an index into the collection.
@@ -3161,6 +4408,12 @@ class BRepLoops(core.Base):
     @staticmethod
     def cast(arg) -> BRepLoops:
         return BRepLoops()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepLoop:
+        return None
+    def __iter__(self) -> Iterator[BRepLoop]:
+        return None
     def item(self, index: int) -> BRepLoop:
         """
         Function that returns the specified loop using an index into the collection.
@@ -3324,6 +4577,12 @@ class BRepLumpDefinitions(core.Base):
     @staticmethod
     def cast(arg) -> BRepLumpDefinitions:
         return BRepLumpDefinitions()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepLumpDefinition:
+        return None
+    def __iter__(self) -> Iterator[BRepLumpDefinition]:
+        return None
     def item(self, index: int) -> BRepLumpDefinition:
         """
         Function that returns the specified BRepLumpDefinition object using an index into the collection.
@@ -3353,6 +4612,12 @@ class BRepLumps(core.Base):
     @staticmethod
     def cast(arg) -> BRepLumps:
         return BRepLumps()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepLump:
+        return None
+    def __iter__(self) -> Iterator[BRepLump]:
+        return None
     def item(self, index: int) -> BRepLump:
         """
         Function that returns the specified lump using an index into the collection.
@@ -3535,6 +4800,12 @@ class BRepShellDefinitions(core.Base):
     @staticmethod
     def cast(arg) -> BRepShellDefinitions:
         return BRepShellDefinitions()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepShellDefinition:
+        return None
+    def __iter__(self) -> Iterator[BRepShellDefinition]:
+        return None
     def item(self, index: int) -> BRepShellDefinition:
         """
         Function that returns the specified BRepShellDefinition object using an index into the collection.
@@ -3564,6 +4835,12 @@ class BRepShells(core.Base):
     @staticmethod
     def cast(arg) -> BRepShells:
         return BRepShells()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepShell:
+        return None
+    def __iter__(self) -> Iterator[BRepShell]:
+        return None
     def item(self, index: int) -> BRepShell:
         """
         Function that returns the specified shell using an index into the collection.
@@ -3721,6 +4998,12 @@ class BRepVertices(core.Base):
     @staticmethod
     def cast(arg) -> BRepVertices:
         return BRepVertices()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepVertex:
+        return None
+    def __iter__(self) -> Iterator[BRepVertex]:
+        return None
     def item(self, index: int) -> BRepVertex:
         """
         Function that returns the specified vertex using an index into the collection.
@@ -3904,13 +5187,20 @@ class BRepWireEdgeDefinition(core.Base):
 
 class BRepWireEdgeDefinitions(core.Base):
     """
-    
+    A collection of BRepWireEdgeDefinition objects. Using this collection you can create new
+    BRepWireDefinition objects to full define a wire body.
     """
     def __init__(self):
         pass
     @staticmethod
     def cast(arg) -> BRepWireEdgeDefinitions:
         return BRepWireEdgeDefinitions()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepWireEdgeDefinition:
+        return None
+    def __iter__(self) -> Iterator[BRepWireEdgeDefinition]:
+        return None
     def item(self, index: int) -> BRepWireEdgeDefinition:
         """
         Function that returns the specified BRepWireEdgeDefinition object using an index into the collection.
@@ -3946,6 +5236,12 @@ class BRepWires(core.Base):
     @staticmethod
     def cast(arg) -> BRepWires:
         return BRepWires()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> BRepWire:
+        return None
+    def __iter__(self) -> Iterator[BRepWire]:
+        return None
     def item(self, index: int) -> BRepWire:
         """
         Function that returns the specified wire using an index into the collection.
@@ -3959,6 +5255,499 @@ class BRepWires(core.Base):
         The number of B-Rep wire bodies in the collection.
         """
         return int()
+
+class Canvas(core.Base):
+    """
+    Represents a Canvas within a component.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> Canvas:
+        return Canvas()
+    def deleteMe(self) -> bool:
+        """
+        Deletes the canvas from the component.
+        """
+        return bool()
+    def saveImage(self, filename: str) -> bool:
+        """
+        Saves the image associated with the canvas to the specified file. This is useful in
+        cases where the original image file is no longer available but you need the image
+        for some other purpose.
+        filename : The full filename of the image to save, including the extension of the file, which
+        controls what format the image file will be. If file extension is other than png, jpeg
+        or tiff, then by default png extension will be added to the filename
+        Returns true if writing the file was successful.
+        """
+        return bool()
+    def flipHorizontal(self) -> bool:
+        """
+        Flips the image along the horizontal axis. This is a convenience method that
+        flips the direction of the X axis of the transform.
+        Returns true if the flip was successful.
+        """
+        return bool()
+    def flipVertical(self) -> bool:
+        """
+        Flips the image along the vertical axis. This is a convenience method that
+        flips the direction of the Y axis of the transform.
+        Returns true if the flip was successful.
+        """
+        return bool()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> Canvas:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return Canvas()
+    @property
+    def name(self) -> str:
+        """
+        Gets and sets the name of the canvas. This is the name seen in the browser and timeline.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Gets and sets the name of the canvas. This is the name seen in the browser and timeline.
+        """
+        pass
+    @property
+    def planarEntity(self) -> core.Base:
+        """
+        Gets and sets the plane the canvas is associated with. This can be either a planar Face
+        or a construction plane. In the case where the design history is not being captured or
+        the canvas is being created in a base feature, this can be a Plane object.
+        """
+        return core.Base()
+    @planarEntity.setter
+    def planarEntity(self, value: core.Base):
+        """
+        Gets and sets the plane the canvas is associated with. This can be either a planar Face
+        or a construction plane. In the case where the design history is not being captured or
+        the canvas is being created in a base feature, this can be a Plane object.
+        """
+        pass
+    @property
+    def opacity(self) -> int:
+        """
+        Gets and sets the opacity of the canvas where 0 is completely
+        transparent and 100 is completely opaque. Setting this property
+        to a value outside the range of 0-100 will result in the value
+        being set to the closest valid value.
+        """
+        return int()
+    @opacity.setter
+    def opacity(self, value: int):
+        """
+        Gets and sets the opacity of the canvas where 0 is completely
+        transparent and 100 is completely opaque. Setting this property
+        to a value outside the range of 0-100 will result in the value
+        being set to the closest valid value.
+        """
+        pass
+    @property
+    def isDisplayedThrough(self) -> bool:
+        """
+        Controls if the image is visible through the model or not.
+        """
+        return bool()
+    @isDisplayedThrough.setter
+    def isDisplayedThrough(self, value: bool):
+        """
+        Controls if the image is visible through the model or not.
+        """
+        pass
+    @property
+    def isSelectable(self) -> bool:
+        """
+        Controls if the canvas is selectable or not within the graphics window.
+        """
+        return bool()
+    @isSelectable.setter
+    def isSelectable(self, value: bool):
+        """
+        Controls if the canvas is selectable or not within the graphics window.
+        """
+        pass
+    @property
+    def isRenderable(self) -> bool:
+        """
+        Controls if the canvas will be rendered when ray tracing within the Render workspace.
+        """
+        return bool()
+    @isRenderable.setter
+    def isRenderable(self, value: bool):
+        """
+        Controls if the canvas will be rendered when ray tracing within the Render workspace.
+        """
+        pass
+    @property
+    def isVisible(self) -> bool:
+        """
+        Returns if the canvas is currently visible in the graphics window. The isLightBulbOn
+        property of the canvas controls if the canvas should be displayed or not, but even
+        when true, the canvas may not be visible because the occurrence that references the
+        component may not be visible. It's also possible to turn off the visibility of all
+        canvases for a component. This property takes all of that into account when reporting
+        if the canvas is visible or not.
+        """
+        return bool()
+    @property
+    def imageFilename(self) -> str:
+        """
+        Gets and sets the filename of the image used for the canvas. When getting this property,
+        the filename returned is the file that was used when the canvas was initially created.
+        it's possible the file may no longer exist.
+        
+        When setting this property, it is the full filename to the image to use for the canvas.
+        PNG, JPEG, and TIFF files are supported.
+        """
+        return str()
+    @imageFilename.setter
+    def imageFilename(self, value: str):
+        """
+        Gets and sets the filename of the image used for the canvas. When getting this property,
+        the filename returned is the file that was used when the canvas was initially created.
+        it's possible the file may no longer exist.
+        
+        When setting this property, it is the full filename to the image to use for the canvas.
+        PNG, JPEG, and TIFF files are supported.
+        """
+        pass
+    @property
+    def plane(self) -> core.Plane:
+        """
+        Returns a Plane object that represents the position and orientation of the canvas in model space.
+        """
+        return core.Plane()
+    @property
+    def transform(self) -> core.Matrix2D:
+        """
+        Gets and sets the transform of the canvas. This allows you to control the position, rotation,
+        scaling, and flipping. The X and Y axes defined by the matrix and must be perpendicular to one another.
+        
+        This is a 3x3 matrix where the third column controls the position of the canvas and
+        defines the position using 2D coordinates in the model space.
+        """
+        return core.Matrix2D()
+    @transform.setter
+    def transform(self, value: core.Matrix2D):
+        """
+        Gets and sets the transform of the canvas. This allows you to control the position, rotation,
+        scaling, and flipping. The X and Y axes defined by the matrix and must be perpendicular to one another.
+        
+        This is a 3x3 matrix where the third column controls the position of the canvas and
+        defines the position using 2D coordinates in the model space.
+        """
+        pass
+    @property
+    def isLightBulbOn(self) -> bool:
+        """
+        Gets and sets if the light bulb of this canvas as displayed in the browser is on or off.
+        
+        A canvas will only be visible if the light bulb is switched on. However, the light bulb
+        can be on and the canvas still invisible if the visibility of a higher level occurrence
+        has its light bulb off or if the light bulb for Canvases folder is off to turn off all
+        canvases in a component.
+        """
+        return bool()
+    @isLightBulbOn.setter
+    def isLightBulbOn(self, value: bool):
+        """
+        Gets and sets if the light bulb of this canvas as displayed in the browser is on or off.
+        
+        A canvas will only be visible if the light bulb is switched on. However, the light bulb
+        can be on and the canvas still invisible if the visibility of a higher level occurrence
+        has its light bulb off or if the light bulb for Canvases folder is off to turn off all
+        canvases in a component.
+        """
+        pass
+    @property
+    def entityToken(self) -> str:
+        """
+        Returns a token for the Canvas object. This can be saved and used at a later
+        time with the Design.findEntityByToken method to get back the same canvas.
+        
+        When using entity tokens it's important to understand that the token string returned for a
+        specific entity can be different over time. However, even if you have two different token
+        strings that were obtained from the same entity, when you use findEntityByToken they
+        will both return the same entity. Because of that you should never compare entity tokens
+        as way to determine what the token represents. Instead, you need to use the findEntityByToken
+        method to get the two entities identified by the tokens and then compare them.
+        """
+        return str()
+    @property
+    def assemblyContext(self) -> Occurrence:
+        """
+        Returns the assembly occurrence (i.e. the occurrence) of this object
+        in an assembly. This is only valid in the case where this is acting
+        as a proxy in an assembly. Returns null in the case where the object
+        is not in the context of an assembly but is already the native object.
+        """
+        return Occurrence()
+    @property
+    def nativeObject(self) -> Canvas:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return Canvas()
+    @property
+    def timelineObject(self) -> TimelineObject:
+        """
+        Returns the timeline object associated with the creation of this canvas.
+        """
+        return TimelineObject()
+
+class Canvases(core.Base):
+    """
+    Provides access to the Canvases in a component and provides the functionality
+    to add new Canvases.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> Canvases:
+        return Canvases()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Canvas:
+        return None
+    def __iter__(self) -> Iterator[Canvas]:
+        return None
+    def item(self, index: int) -> Canvas:
+        """
+        Returns the specified canvas using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return Canvas()
+    def itemByName(self, name: str) -> Canvas:
+        """
+        Returns the specified canvas using the name of the canvas.
+        name : The name of the canvas as seen in the browser and timeline.
+        Returns the specified Canvas, if it exists. Otherwise it returns null.
+        """
+        return Canvas()
+    def add(self, input: CanvasInput) -> Canvas:
+        """
+        Creates a new canvas. Use the createInput method to first create an input object and
+        set the available options. Then, pass that input object to the add method to create the canvas.
+        input : The CanvasInput object that defines the required information needed to create a new canvas.
+        A CanvasInput object is the logical equivalent to the command dialog when creating
+        a canvas. It provides access to the various options when creating a canvas. Calling the add method and passing
+        in the CanvasInput is the equivalent to clicking the OK button on the dialog to create the canvas.
+        Returns the newly created Canvas object.
+        """
+        return Canvas()
+    def createInput(self, imageFilename: str, planarEntity: core.Base) -> CanvasInput:
+        """
+        Creates a new CanvasInput object. A CanvasInput object is the logical equivalent to the command dialog when creating
+        a canvas. It provides access to the various options when creating a canvas. Calling the add method and passing
+        in the CanvasInput is the equivalent to clicking the OK button on the dialog to create the canvas.
+        imageFilename : The full filename to the image to use for the canvas. PNG, JPEG, and TIFF files are supported.
+        planarEntity : A planar BRepFace or a Construction plane to create the canvas on. If the canvas is being created in a base
+        feature or in a design where the design history is not being captured, this can be a Plane object.
+        Returns a CanvasInput object or null in the case of failure.
+        """
+        return CanvasInput()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of canvases in the component.
+        """
+        return int()
+
+class CanvasInput(core.Base):
+    """
+    The CanvasInput object is used to define the various options when creating a new canvas. It's created
+    using the Canvases.createInput method and is used by the Canvases.add method to create a Canvas.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CanvasInput:
+        return CanvasInput()
+    def flipHorizontal(self) -> bool:
+        """
+        Flips the image along the horizontal axis. This is a convenience method that
+        flips the direction of the X axis of the transform.
+        Returns true if the flip was successful.
+        """
+        return bool()
+    def flipVertical(self) -> bool:
+        """
+        Flips the image along the vertical axis. This is a convenience method that
+        flips the direction of the Y axis of the transform.
+        Returns true if the flip was successful.
+        """
+        return bool()
+    @property
+    def planarEntity(self) -> core.Base:
+        """
+        Gets and sets the plane the canvas is associated with. This can be either a planar Face
+        or a construction plane. In the case where the design history is not being captured or
+        the canvas is being created in a base feature, this can be a Plane object.
+        """
+        return core.Base()
+    @planarEntity.setter
+    def planarEntity(self, value: core.Base):
+        """
+        Gets and sets the plane the canvas is associated with. This can be either a planar Face
+        or a construction plane. In the case where the design history is not being captured or
+        the canvas is being created in a base feature, this can be a Plane object.
+        """
+        pass
+    @property
+    def opacity(self) -> int:
+        """
+        Gets and sets the opacity of the canvas where 0 is completely
+        transparent and 100 is completely opaque. Setting this property
+        to a value outside the range of 0-100 will result in the value
+        being set to the closest valid value.
+        
+        Defaults to 50 when the input is created.
+        """
+        return int()
+    @opacity.setter
+    def opacity(self, value: int):
+        """
+        Gets and sets the opacity of the canvas where 0 is completely
+        transparent and 100 is completely opaque. Setting this property
+        to a value outside the range of 0-100 will result in the value
+        being set to the closest valid value.
+        
+        Defaults to 50 when the input is created.
+        """
+        pass
+    @property
+    def isDisplayedThrough(self) -> bool:
+        """
+        Controls if the image is visible through the model or not.
+        
+        Defaults to true when the input is created.
+        """
+        return bool()
+    @isDisplayedThrough.setter
+    def isDisplayedThrough(self, value: bool):
+        """
+        Controls if the image is visible through the model or not.
+        
+        Defaults to true when the input is created.
+        """
+        pass
+    @property
+    def isSelectable(self) -> bool:
+        """
+        Controls if the canvas is selectable or not within the graphics window.
+        
+        Defaults to false when the input is created.
+        """
+        return bool()
+    @isSelectable.setter
+    def isSelectable(self, value: bool):
+        """
+        Controls if the canvas is selectable or not within the graphics window.
+        
+        Defaults to false when the input is created.
+        """
+        pass
+    @property
+    def isRenderable(self) -> bool:
+        """
+        Controls if the canvas will be rendered when ray tracing within the Render workspace.
+        
+        Defaults to false when the input is created.
+        """
+        return bool()
+    @isRenderable.setter
+    def isRenderable(self, value: bool):
+        """
+        Controls if the canvas will be rendered when ray tracing within the Render workspace.
+        
+        Defaults to false when the input is created.
+        """
+        pass
+    @property
+    def imageFilename(self) -> str:
+        """
+        Gets and sets the filename of the image used for the canvas.
+        
+        When setting this property, it is the full filename to the image to use for the canvas.
+        PNG, JPEG, and TIFF files are supported.
+        """
+        return str()
+    @imageFilename.setter
+    def imageFilename(self, value: str):
+        """
+        Gets and sets the filename of the image used for the canvas.
+        
+        When setting this property, it is the full filename to the image to use for the canvas.
+        PNG, JPEG, and TIFF files are supported.
+        """
+        pass
+    @property
+    def plane(self) -> core.Plane:
+        """
+        Returns a Plane object that is obtained from the planar face or construction plane
+        and defines the parameter space the canvas is positioned relative to.
+        """
+        return core.Plane()
+    @property
+    def transform(self) -> core.Matrix2D:
+        """
+        Gets and sets the transform of the canvas. This allows you to control the position, rotation,
+        scaling, and flipping. The X and Y axes defined by the matrix, must be perpendicular to one another.
+        The directions of the X and Y axes defines the orientation of the image.
+        
+        This is a 3x3 matrix where the third column controls the position of the canvas and is relative to
+        the parameter space of the plane defined by the specified planar face or construction plane.
+        """
+        return core.Matrix2D()
+    @transform.setter
+    def transform(self, value: core.Matrix2D):
+        """
+        Gets and sets the transform of the canvas. This allows you to control the position, rotation,
+        scaling, and flipping. The X and Y axes defined by the matrix, must be perpendicular to one another.
+        The directions of the X and Y axes defines the orientation of the image.
+        
+        This is a 3x3 matrix where the third column controls the position of the canvas and is relative to
+        the parameter space of the plane defined by the specified planar face or construction plane.
+        """
+        pass
+    @property
+    def targetBaseFeature(self) -> BaseFeature:
+        """
+        When creating a feature that is owned by a base feature, set this property to the
+        base feature you want to associate the new feature with. By default, this is null,
+        meaning it will not be associated with a base feature.
+        
+        Because of a current limitation, if you want to create a feature associated with a base
+        feature, you must set this property AND call the startEdit method of the base feature,
+        create the feature, and then call the finishEdit method of the base feature. The base
+        feature must be in an "edit" state to be able to add any additional items to it.
+        """
+        return BaseFeature()
+    @targetBaseFeature.setter
+    def targetBaseFeature(self, value: BaseFeature):
+        """
+        When creating a feature that is owned by a base feature, set this property to the
+        base feature you want to associate the new feature with. By default, this is null,
+        meaning it will not be associated with a base feature.
+        
+        Because of a current limitation, if you want to create a feature associated with a base
+        feature, you must set this property AND call the startEdit method of the base feature,
+        create the feature, and then call the finishEdit method of the base feature. The base
+        feature must be in an "edit" state to be able to add any additional items to it.
+        """
+        pass
 
 class ChamferEdgeSet(core.Base):
     """
@@ -4000,6 +5789,12 @@ class ChamferEdgeSets(core.Base):
     @staticmethod
     def cast(arg) -> ChamferEdgeSets:
         return ChamferEdgeSets()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ChamferEdgeSet:
+        return None
+    def __iter__(self) -> Iterator[ChamferEdgeSet]:
+        return None
     def item(self, index: int) -> ChamferEdgeSet:
         """
         Function that returns the specified chamfer edge set using an index into the collection.
@@ -4091,81 +5886,6 @@ class ChamferFeatureInput(core.Base):
     @staticmethod
     def cast(arg) -> ChamferFeatureInput:
         return ChamferFeatureInput()
-    def setToEqualDistance(self, distance: core.ValueInput) -> bool:
-        """
-        Adds a set of edges to this input.
-        distance : A ValueInput object that defines the size of the chamfer. If the ValueInput uses
-        a real then it is interpreted as centimeters. If it is a string then the units
-        can be defined as part of the string (i.e. "2 in"). If no units are specified
-        it is interpreted using the current default units for length.
-        Returns true if the set of edges was successfully added to the ChamferFeatureInput.
-        """
-        return bool()
-    def setToTwoDistances(self, distanceOne: core.ValueInput, distanceTwo: core.ValueInput) -> bool:
-        """
-        Adds a set of edges to this input.
-        distanceOne : A ValueInput object that defines the distanceOne of the chamfer. This distance
-        is along the face which is on the left of the selected edge.
-        If the ValueInput uses a real then it is interpreted as centimeters.
-        If it is a string then the units can be defined as part of the string (i.e. "2 in").
-        If no units are specified it is interpreted using the current default units for length.
-        distanceTwo : A ValueInput object that defines the distanceTwo of the chamfer. This distance
-        is along the face which is on the right of the selected edge.
-        If the ValueInput uses a real then it is interpreted as centimeters.
-        If it is a string then the units can be defined as part of the string (i.e. "2 in").
-        If no units are specified it is interpreted using the current default units for length.
-        Returns true if successful.
-        """
-        return bool()
-    def setToDistanceAndAngle(self, distance: core.ValueInput, angle: core.ValueInput) -> bool:
-        """
-        Adds a set of edges to this input.
-        distance : A ValueInput object that defines the distance of the chamfer. This distance
-        is along the face which is on the right of the selected edge.
-        If the ValueInput uses a real then it is interpreted as centimeters.
-        If it is a string then the units can be defined as part of the string (i.e. "2 in").
-        If no units are specified it is interpreted using the current default units for length.
-        angle : A valueInput object that defines the angle. The direction will be towards to the face
-        which is on the left of the selected edge. This can be a string or a value.
-        If it's a string it is interpreted using the current document units and can include
-        equations. For example all of the following are valid as long as they result in
-        angle units; "45", "45 deg", "a1 / 2". If a value is input it is interpreted
-        as radians. It cannot be negative.
-        Returns true if successful.
-        """
-        return bool()
-    @property
-    def edges(self) -> core.ObjectCollection:
-        """
-        Gets and sets the collection of edges that will be chamfered.
-        
-        To use this property, you need to position the timeline marker to immediately before this feature.
-        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
-        """
-        return core.ObjectCollection()
-    @edges.setter
-    def edges(self, value: core.ObjectCollection):
-        """
-        Gets and sets the collection of edges that will be chamfered.
-        
-        To use this property, you need to position the timeline marker to immediately before this feature.
-        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
-        """
-        pass
-    @property
-    def isTangentChain(self) -> bool:
-        """
-        Gets and sets if any edges that are tangentially connected to any of chamfered
-        edges will also be included in the chamfer.
-        """
-        return bool()
-    @isTangentChain.setter
-    def isTangentChain(self, value: bool):
-        """
-        Gets and sets if any edges that are tangentially connected to any of chamfered
-        edges will also be included in the chamfer.
-        """
-        pass
     @property
     def targetBaseFeature(self) -> BaseFeature:
         """
@@ -4221,6 +5941,12 @@ class ChamferFeatures(core.Base):
     @staticmethod
     def cast(arg) -> ChamferFeatures:
         return ChamferFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ChamferFeature:
+        return None
+    def __iter__(self) -> Iterator[ChamferFeature]:
+        return None
     def item(self, index: int) -> ChamferFeature:
         """
         Function that returns the specified chamfer feature using an index into the collection.
@@ -4228,16 +5954,6 @@ class ChamferFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return ChamferFeature()
-    def createInput(self, edges: core.ObjectCollection, isTangentChain: bool) -> ChamferFeatureInput:
-        """
-        Creates a ChamferFeatureInput object. Use properties and methods on this object
-        to define the chamfer you want to create and then use the Add method, passing in
-        the ChamferFeatureInput object.
-        edges : The collection of edges that will be chamfered.
-        isTangentChain : Boolean indicating if all edges that are tangentially connected to any of the input edges should be included in the chamfer or not.
-        Returns the newly created ChamferFeatureInput object or null if the creation failed.
-        """
-        return ChamferFeatureInput()
     def add(self, input: ChamferFeatureInput) -> ChamferFeature:
         """
         Creates a new chamfer feature.
@@ -4269,21 +5985,102 @@ class ChamferFeatures(core.Base):
         """
         return int()
 
-class ChamferTypeDefinition(core.Base):
+class CircularPatternConstraintInput(core.Base):
     """
-    The base class for the classes that define how a chamfer can be defined.
+    This class defines the methods and properties that pertain to the definition of a circular pattern
+    in a sketch.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> ChamferTypeDefinition:
-        return ChamferTypeDefinition()
+    def cast(arg) -> CircularPatternConstraintInput:
+        return CircularPatternConstraintInput()
     @property
-    def parentFeature(self) -> ChamferFeature:
+    def entities(self) -> list[SketchEntity]:
         """
-        Returns the feature that owns this chamfer type definition
+        Gets and sets the entities to pattern. Sketch points and curves are valid
+        entities to pattern.
         """
-        return ChamferFeature()
+        return [SketchEntity()]
+    @entities.setter
+    def entities(self, value: list[SketchEntity]):
+        """
+        Gets and sets the entities to pattern. Sketch points and curves are valid
+        entities to pattern.
+        """
+        pass
+    @property
+    def centerPoint(self) -> SketchPoint:
+        """
+        Gets and sets the sketch point that defines the center of the pattern.
+        """
+        return SketchPoint()
+    @centerPoint.setter
+    def centerPoint(self, value: SketchPoint):
+        """
+        Gets and sets the sketch point that defines the center of the pattern.
+        """
+        pass
+    @property
+    def quantity(self) -> core.ValueInput:
+        """
+        Gets and sets quantity of the elements.
+        """
+        return core.ValueInput()
+    @quantity.setter
+    def quantity(self, value: core.ValueInput):
+        """
+        Gets and sets quantity of the elements.
+        """
+        pass
+    @property
+    def totalAngle(self) -> core.ValueInput:
+        """
+        Gets and sets total angle. A positive angle is a counter-clockwise direction and
+        a negative angle can be used to reverse the direction.
+        An angle of 360 degrees or 2 pi radians will create a full circular pattern.
+        """
+        return core.ValueInput()
+    @totalAngle.setter
+    def totalAngle(self, value: core.ValueInput):
+        """
+        Gets and sets total angle. A positive angle is a counter-clockwise direction and
+        a negative angle can be used to reverse the direction.
+        An angle of 360 degrees or 2 pi radians will create a full circular pattern.
+        """
+        pass
+    @property
+    def isSymmetric(self) -> bool:
+        """
+        Gets and sets if the angle extent is in one direction or is symmetric.
+        """
+        return bool()
+    @isSymmetric.setter
+    def isSymmetric(self, value: bool):
+        """
+        Gets and sets if the angle extent is in one direction or is symmetric.
+        """
+        pass
+    @property
+    def isSuppressed(self) -> list[bool]:
+        """
+        Specifies which, if any, instances of the pattern are suppressed. This
+        defaults to all instances being visible. This returns an array of Booleans
+        that indicates if a particular instance in the pattern is suppressed or
+        not. A value of true will result in the associated instance being
+        suppressed.
+        """
+        return [bool()]
+    @isSuppressed.setter
+    def isSuppressed(self, value: list[bool]):
+        """
+        Specifies which, if any, instances of the pattern are suppressed. This
+        defaults to all instances being visible. This returns an array of Booleans
+        that indicates if a particular instance in the pattern is suppressed or
+        not. A value of true will result in the associated instance being
+        suppressed.
+        """
+        pass
 
 class CircularPatternFeatureInput(core.Base):
     """
@@ -4414,6 +6211,12 @@ class CircularPatternFeatures(core.Base):
     @staticmethod
     def cast(arg) -> CircularPatternFeatures:
         return CircularPatternFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CircularPatternFeature:
+        return None
+    def __iter__(self) -> Iterator[CircularPatternFeature]:
+        return None
     def item(self, index: int) -> CircularPatternFeature:
         """
         Function that returns the specified circular pattern feature using an index into the collection.
@@ -4674,6 +6477,12 @@ class CoilFeatures(core.Base):
     @staticmethod
     def cast(arg) -> CoilFeatures:
         return CoilFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CoilFeature:
+        return None
+    def __iter__(self) -> Iterator[CoilFeature]:
+        return None
     def item(self, index: int) -> CoilFeature:
         """
         Function that returns the specified coil feature using an index into the collection.
@@ -4808,6 +6617,12 @@ class CombineFeatures(core.Base):
     @staticmethod
     def cast(arg) -> CombineFeatures:
         return CombineFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CombineFeature:
+        return None
+    def __iter__(self) -> Iterator[CombineFeature]:
+        return None
     def item(self, index: int) -> CombineFeature:
         """
         Function that returns the specified combine feature using an index into the collection.
@@ -4860,6 +6675,12 @@ class ComponentList(core.Base):
     @staticmethod
     def cast(arg) -> ComponentList:
         return ComponentList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Component:
+        return None
+    def __iter__(self) -> Iterator[Component]:
+        return None
     def item(self, index: int) -> Component:
         """
         Function that returns the specified component using an index into the collection.
@@ -4883,6 +6704,12 @@ class Components(core.Base):
     @staticmethod
     def cast(arg) -> Components:
         return Components()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Component:
+        return None
+    def __iter__(self) -> Iterator[Component]:
+        return None
     def item(self, index: int) -> Component:
         """
         Function that returns the specified component using an index into the collection.
@@ -4921,6 +6748,12 @@ class ConstructionAxes(core.Base):
     @staticmethod
     def cast(arg) -> ConstructionAxes:
         return ConstructionAxes()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ConstructionAxis:
+        return None
+    def __iter__(self) -> Iterator[ConstructionAxis]:
+        return None
     def item(self, index: int) -> ConstructionAxis:
         """
         Function that returns the specified construction axis using an index into the collection.
@@ -4936,7 +6769,7 @@ class ConstructionAxes(core.Base):
         Returns the specified item or null if an invalid name was specified.
         """
         return ConstructionAxis()
-    def createInput(self, occurrenceForCreation: Occurrence) -> ConstructionAxisInput:
+    def createInput(self, occurrenceForCreation: Occurrence = None) -> ConstructionAxisInput:
         """
         Create a ConstructionAxisInput object that is in turn used to create a ConstructionAxis.
         occurrenceForCreation : A creation occurrence is needed if the input is in another component AND the
@@ -5682,6 +7515,12 @@ class ConstructionPlanes(core.Base):
     @staticmethod
     def cast(arg) -> ConstructionPlanes:
         return ConstructionPlanes()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ConstructionPlane:
+        return None
+    def __iter__(self) -> Iterator[ConstructionPlane]:
+        return None
     def item(self, index: int) -> ConstructionPlane:
         """
         Function that returns the specified construction plane using an index into the collection.
@@ -5697,7 +7536,7 @@ class ConstructionPlanes(core.Base):
         Returns the specified item or null if an invalid name was specified.
         """
         return ConstructionPlane()
-    def createInput(self, occurrenceForCreation: Occurrence) -> ConstructionPlaneInput:
+    def createInput(self, occurrenceForCreation: Occurrence = None) -> ConstructionPlaneInput:
         """
         Create a ConstructionPlaneInput object that is in turn used to create a ConstructionPlane.
         occurrenceForCreation : A creation occurrence is needed if the input is in another component AND the
@@ -6041,6 +7880,12 @@ class ConstructionPoints(core.Base):
     @staticmethod
     def cast(arg) -> ConstructionPoints:
         return ConstructionPoints()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ConstructionPoint:
+        return None
+    def __iter__(self) -> Iterator[ConstructionPoint]:
+        return None
     def item(self, index: int) -> ConstructionPoint:
         """
         Function that returns the specified construction point using an index into the collection.
@@ -6056,7 +7901,7 @@ class ConstructionPoints(core.Base):
         Returns the specified item or null if an invalid name was specified.
         """
         return ConstructionPoint()
-    def createInput(self, occurrenceForCreation: Occurrence) -> ConstructionPointInput:
+    def createInput(self, occurrenceForCreation: Occurrence = None) -> ConstructionPointInput:
         """
         Create a ConstructionPointInput object that is in turn used
         to create a ConstructionPoint.
@@ -6150,6 +7995,12 @@ class ContactSets(core.Base):
     @staticmethod
     def cast(arg) -> ContactSets:
         return ContactSets()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ContactSet:
+        return None
+    def __iter__(self) -> Iterator[ContactSet]:
+        return None
     def item(self, index: int) -> ContactSet:
         """
         Returns the specified contact set using an index into the collection.
@@ -6189,6 +8040,12 @@ class CopyPasteBodies(core.Base):
     @staticmethod
     def cast(arg) -> CopyPasteBodies:
         return CopyPasteBodies()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CopyPasteBody:
+        return None
+    def __iter__(self) -> Iterator[CopyPasteBody]:
+        return None
     def item(self, index: int) -> CopyPasteBody:
         """
         Function that returns the specified Copy/Paste Body feature using an index into the collection.
@@ -6217,8 +8074,88 @@ class CopyPasteBodies(core.Base):
         """
         return int()
 
+class CurvatureCombAnalyses(core.Base):
+    """
+    Provides access to any curvature comb analyses results in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CurvatureCombAnalyses:
+        return CurvatureCombAnalyses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CurvatureCombAnalysis:
+        return None
+    def __iter__(self) -> Iterator[CurvatureCombAnalysis]:
+        return None
+    def item(self, index: int) -> CurvatureCombAnalysis:
+        """
+        A method that returns the specified CurvatureCombAnalysis object using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection
+        has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return CurvatureCombAnalysis()
+    def itemByName(self, name: str) -> CurvatureCombAnalysis:
+        """
+        A method that returns the specified CurvatureCombAnalysis object using the name of the analysis
+        as displayed in the browser.
+        name : The name of the CurvatureCombAnalysis object as displayed in the browser.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return CurvatureCombAnalysis()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of CurvatureCombAnalysis objects in the collection.
+        """
+        return int()
+
+class CurvatureMapAnalyses(core.Base):
+    """
+    Provides access to any curvature map analyses results in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CurvatureMapAnalyses:
+        return CurvatureMapAnalyses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CurvatureMapAnalysis:
+        return None
+    def __iter__(self) -> Iterator[CurvatureMapAnalysis]:
+        return None
+    def item(self, index: int) -> CurvatureMapAnalysis:
+        """
+        A method that returns the specified CurvatureMapAnalysis object using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection
+        has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return CurvatureMapAnalysis()
+    def itemByName(self, name: str) -> CurvatureMapAnalysis:
+        """
+        A method that returns the specified CurvatureMapAnalysis object using the name of the analysis
+        as displayed in the browser.
+        name : The name of the CurvatureMapAnalysis object as displayed in the browser.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return CurvatureMapAnalysis()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of CurvatureMapAnalysis objects in the collection.
+        """
+        return int()
+
 class CustomFeatureDefinition(core.Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     The CustomFeatureDefinition object defines a specific type of custom feature. It contains
     the settings that apply to all custom features of that type and is used when creating new
     custom features of that type. It also supports the events used to handle changes to custom
@@ -6327,6 +8264,10 @@ class CustomFeatureDefinition(core.Base):
 
 class CustomFeatureDependencies(core.Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     A collection of dependencies associated with a particular custom feature. These
     are the entities that the custom feature is dependent on. If these entities are
     modified, it will cause the custom feature to recompute so it can be up to date.
@@ -6338,6 +8279,12 @@ class CustomFeatureDependencies(core.Base):
     @staticmethod
     def cast(arg) -> CustomFeatureDependencies:
         return CustomFeatureDependencies()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CustomFeatureDependency:
+        return None
+    def __iter__(self) -> Iterator[CustomFeatureDependency]:
+        return None
     def item(self, index: int) -> CustomFeatureDependency:
         """
         Function that returns the specified custom dependency using an index into the collection.
@@ -6379,6 +8326,10 @@ class CustomFeatureDependencies(core.Base):
 
 class CustomFeatureDependency(core.Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     A custom feature dependency defines a dependency the custom feature has on an entity
     outside the custom feature. For example, a feature might be dependent on a face or a
     point and if those entities are modified the custom feature needs to recompute to be
@@ -6422,6 +8373,10 @@ class CustomFeatureDependency(core.Base):
 
 class CustomFeatureEventHandler(core.EventHandler):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     The CustomFeatureEventHandler is a client implemented class that can be added as
     a handler to a CustomFeatureEvent.
     """
@@ -6439,6 +8394,10 @@ class CustomFeatureEventHandler(core.EventHandler):
 
 class CustomFeatureInput(core.Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     This class defines the methods and properties that pertain to the definition of a Ruled Surface feature.
     """
     def __init__(self):
@@ -6457,7 +8416,7 @@ class CustomFeatureInput(core.Base):
         Returns true if the dependency was successfully added.
         """
         return bool()
-    def addCustomParameter(self, id: str, label: str, value: core.ValueInput, units: str, isVisible: bool) -> bool:
+    def addCustomParameter(self, id: str, label: str, value: core.ValueInput, units: str, isVisible: bool = True) -> bool:
         """
         Defines the information needed to create a new custom parameter that will be associated with
         this feature. A custom parameter appears as a model parameter and will be listed as a child of the
@@ -6533,6 +8492,10 @@ class CustomFeatureInput(core.Base):
 
 class CustomFeatureParameters(core.Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     A collection of custom parameters associated with a particular custom feature.
     """
     def __init__(self):
@@ -6540,6 +8503,12 @@ class CustomFeatureParameters(core.Base):
     @staticmethod
     def cast(arg) -> CustomFeatureParameters:
         return CustomFeatureParameters()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CustomFeatureParameter:
+        return None
+    def __iter__(self) -> Iterator[CustomFeatureParameter]:
+        return None
     def item(self, index: int) -> CustomFeatureParameter:
         """
         Function that returns the specified custom parameter feature using an index into the collection.
@@ -6563,6 +8532,10 @@ class CustomFeatureParameters(core.Base):
 
 class CustomFeatures(core.Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     Collection that provides access to all of the existing custom features in a component
     and supports the ability to create new custom features.
     """
@@ -6571,6 +8544,12 @@ class CustomFeatures(core.Base):
     @staticmethod
     def cast(arg) -> CustomFeatures:
         return CustomFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CustomFeature:
+        return None
+    def __iter__(self) -> Iterator[CustomFeature]:
+        return None
     def item(self, index: int) -> CustomFeature:
         """
         Function that returns the specified ruled surface feature using an index into the collection.
@@ -6625,14 +8604,7 @@ class CustomGraphicsBillBoard(core.Base):
         Creates a new CustomGraphicsBillBoard object that can be used when calling the billBoarding property
         of the CustomGraphicsEntity object to specify the billboarding behavior of some custom graphics. Once
         created you can assign it to a custom graphics entity using its billBoarding property.
-        anchorPoint : Specifies the coordinate that the graphics will anchor to. The anchor point is the point where the
-        custom graphics are anchored in world space. As the user manipulates the camera and rotates around
-        the model, making it appear that world space is rotating, the graphics remain facing the camera and
-        the anchor point defines the common location between world space and the graphics.
-        
-        For graphics where the If the isViewDependent property of the graphics entity is true, then the
-        anchor point is defined in pixels relative to the upper-left corner of the view and the z component
-        of the input point is ignored.
+        anchorPoint : The parameter must be input and can be null but the value is ignored. Use of the anchor point has been retired and it is no longer used.
         Returns the newly created CustomGraphicsBillBoard object or null in the case of failure. This can be assigned
         to a custom graphics entity using its billBoarding property.
         """
@@ -6640,19 +8612,33 @@ class CustomGraphicsBillBoard(core.Base):
     @property
     def anchorPoint(self) -> core.Point3D:
         """
+        
+        <mark>RETIRED - This property has been retired. It is not needed since the matrix defined for the CustomGraphicsText
+        object defines the position and anchor for the billboarded text. Getting the value of this property will return a
+        point at the origin. Setting this property will be ignored.
+        </mark>
+        
         Specifies the coordinate in model or view space that the graphics will anchor to. For graphics that
         represent a label, this will typically be the point where the label attaches to the model. A
         CustomGraphicsAnchorPoint can be created using the static create method on the CustomGraphicsAnchorPoint
         object.
+        
         """
         return core.Point3D()
     @anchorPoint.setter
     def anchorPoint(self, value: core.Point3D):
         """
+        
+        <mark>RETIRED - This property has been retired. It is not needed since the matrix defined for the CustomGraphicsText
+        object defines the position and anchor for the billboarded text. Getting the value of this property will return a
+        point at the origin. Setting this property will be ignored.
+        </mark>
+        
         Specifies the coordinate in model or view space that the graphics will anchor to. For graphics that
         represent a label, this will typically be the point where the label attaches to the model. A
         CustomGraphicsAnchorPoint can be created using the static create method on the CustomGraphicsAnchorPoint
         object.
+        
         """
         pass
     @property
@@ -6687,36 +8673,6 @@ class CustomGraphicsBillBoard(core.Base):
         of the graphics. Otherwise it uses the x axis of the view.
         """
         pass
-
-class CustomGraphicsBRepEdges(core.Base):
-    """
-    A collection of CustomGraphicsBRepEdge objects associated with a specific CustomGraphics body object.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> CustomGraphicsBRepEdges:
-        return CustomGraphicsBRepEdges()
-
-class CustomGraphicsBRepFaces(core.Base):
-    """
-    A collection of CustomGraphicsBRepFace objects associated with a specific CustomGraphicsBRepBody object.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> CustomGraphicsBRepFaces:
-        return CustomGraphicsBRepFaces()
-
-class CustomGraphicsBRepVertices(core.Base):
-    """
-    A collection of CustomGraphicsBRepVertex objects associated with a specific CustomGraphics body object.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> CustomGraphicsBRepVertices:
-        return CustomGraphicsBRepVertices()
 
 class CustomGraphicsColorEffect(core.Base):
     """
@@ -6801,7 +8757,7 @@ class CustomGraphicsCoordinates(core.Base):
     @property
     def colors(self) -> list[int]:
         """
-        Gets and sets the colors assoicated with the coordinate data. This is used when a mesh is
+        Gets and sets the colors associated with the coordinate data. This is used when a mesh is
         displayed using per-vertex coloring.
         The color at each vertex is represented by four values where they are the red, green, blue,
         and alpha values. This should contain the same number of colors as vertices.
@@ -6810,7 +8766,7 @@ class CustomGraphicsCoordinates(core.Base):
     @colors.setter
     def colors(self, value: list[int]):
         """
-        Gets and sets the colors assoicated with the coordinate data. This is used when a mesh is
+        Gets and sets the colors associated with the coordinate data. This is used when a mesh is
         displayed using per-vertex coloring.
         The color at each vertex is represented by four values where they are the red, green, blue,
         and alpha values. This should contain the same number of colors as vertices.
@@ -7055,6 +9011,20 @@ class CustomGraphicsEntity(core.Base):
         in view space (pixels) instead of model space (centimeters).
         """
         pass
+    @property
+    def name(self) -> str:
+        """
+        Gets and sets the name displayed when this entity is selected. If no name has been set,
+        "Custom Graphics" will be displayed.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Gets and sets the name displayed when this entity is selected. If no name has been set,
+        "Custom Graphics" will be displayed.
+        """
+        pass
 
 class CustomGraphicsGroups(core.Base):
     """
@@ -7066,6 +9036,12 @@ class CustomGraphicsGroups(core.Base):
     @staticmethod
     def cast(arg) -> CustomGraphicsGroups:
         return CustomGraphicsGroups()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CustomGraphicsGroup:
+        return None
+    def __iter__(self) -> Iterator[CustomGraphicsGroup]:
+        return None
     def item(self, index: int) -> CustomGraphicsGroup:
         """
         Function that returns the specified graphics group using an index into the collection.
@@ -7241,6 +9217,10 @@ class CustomGraphicsViewScale(core.Base):
 
 class CustomNamedValues(core.Base):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     A collection of named values. The values are strings that Fusion stores but can be
     anything you choose. If you have several things you need to save you can choose to
     combine the data into a JSON or XML representation and save it as a single custom value
@@ -7252,6 +9232,8 @@ class CustomNamedValues(core.Base):
     @staticmethod
     def cast(arg) -> CustomNamedValues:
         return CustomNamedValues()
+    def __len__(self) -> int:
+        return 0
     def addOrSetValue(self, id: str, value: str) -> bool:
         """
         Adds or updates a value. If the specified ID does not exist, a new named value is
@@ -7308,6 +9290,12 @@ class CutPasteBodies(core.Base):
     @staticmethod
     def cast(arg) -> CutPasteBodies:
         return CutPasteBodies()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CutPasteBody:
+        return None
+    def __iter__(self) -> Iterator[CutPasteBody]:
+        return None
     def item(self, index: int) -> CutPasteBody:
         """
         Function that returns the specified Cut/Paste Body feature using an index into the collection.
@@ -7346,6 +9334,12 @@ class CylinderFeatures(core.Base):
     @staticmethod
     def cast(arg) -> CylinderFeatures:
         return CylinderFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CylinderFeature:
+        return None
+    def __iter__(self) -> Iterator[CylinderFeature]:
+        return None
     def item(self, index: int) -> CylinderFeature:
         """
         Function that returns the specified cylinder feature using an index into the collection.
@@ -7384,6 +9378,12 @@ class DeleteFaceFeatures(core.Base):
     @staticmethod
     def cast(arg) -> DeleteFaceFeatures:
         return DeleteFaceFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> DeleteFaceFeature:
+        return None
+    def __iter__(self) -> Iterator[DeleteFaceFeature]:
+        return None
     def item(self, index: int) -> DeleteFaceFeature:
         """
         Function that returns the specified DeleteFaceFeature object using an index into the collection.
@@ -7412,6 +9412,44 @@ class DeleteFaceFeatures(core.Base):
     def count(self) -> int:
         """
         The number of DeleteFaceFeature objects in the collection.
+        """
+        return int()
+
+class DraftAnalyses(core.Base):
+    """
+    Provides access to any draft analyses results in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> DraftAnalyses:
+        return DraftAnalyses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> DraftAnalysis:
+        return None
+    def __iter__(self) -> Iterator[DraftAnalysis]:
+        return None
+    def item(self, index: int) -> DraftAnalysis:
+        """
+        A method that returns the specified DraftAnalysis object using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection
+        has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return DraftAnalysis()
+    def itemByName(self, name: str) -> DraftAnalysis:
+        """
+        A method that returns the specified DraftAnalysis object using the name of the analysis
+        as displayed in the browser.
+        name : The name of the DraftAnalysis object as displayed in the browser.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return DraftAnalysis()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of DraftAnalysis objects in the collection.
         """
         return int()
 
@@ -7554,6 +9592,12 @@ class DraftFeatures(core.Base):
     @staticmethod
     def cast(arg) -> DraftFeatures:
         return DraftFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> DraftFeature:
+        return None
+    def __iter__(self) -> Iterator[DraftFeature]:
+        return None
     def item(self, index: int) -> DraftFeature:
         """
         Function that returns the specified draft feature using an index into the collection.
@@ -7561,7 +9605,7 @@ class DraftFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return DraftFeature()
-    def createInput(self, inputFaces: list[BRepFace], plane: core.Base, isTangentChain: bool) -> DraftFeatureInput:
+    def createInput(self, inputFaces: list[BRepFace], plane: core.Base, isTangentChain: bool = True) -> DraftFeatureInput:
         """
         Creates a DraftFeatureInput object. Use properties and methods on this object
         to define the draft you want to create and then use the Add method, passing in
@@ -7606,7 +9650,7 @@ class ExportManager(core.Base):
     @staticmethod
     def cast(arg) -> ExportManager:
         return ExportManager()
-    def createIGESExportOptions(self, filename: str, geometry: core.Base) -> IGESExportOptions:
+    def createIGESExportOptions(self, filename: str, geometry: core.Base = None) -> IGESExportOptions:
         """
         Creates an IGESExportOptions object that's used to export a design in IGES format. Creation
         of the IGESExportOptions object does not perform the export. You must pass this object to the
@@ -7618,7 +9662,7 @@ class ExportManager(core.Base):
         The created IGESExportOptions object or null if the creation failed.
         """
         return IGESExportOptions()
-    def createSTEPExportOptions(self, filename: str, geometry: core.Base) -> STEPExportOptions:
+    def createSTEPExportOptions(self, filename: str, geometry: core.Base = None) -> STEPExportOptions:
         """
         Creates an STEPExportOptions object that's used to export a design in STEP format. Creation
         of the STEPExportOptions object does not perform the export. You must pass this object to the
@@ -7630,7 +9674,7 @@ class ExportManager(core.Base):
         The created STEPExportOptions object or null if the creation failed.
         """
         return STEPExportOptions()
-    def createSATExportOptions(self, filename: str, geometry: core.Base) -> SATExportOptions:
+    def createSATExportOptions(self, filename: str, geometry: core.Base = None) -> SATExportOptions:
         """
         Creates an SATExportOptions object that's used to export a design in SAT format. Creation
         of the SATExportOptions object does not perform the export. You must pass this object to the
@@ -7642,7 +9686,7 @@ class ExportManager(core.Base):
         The created SATExportOptions object or null if the creation failed.
         """
         return SATExportOptions()
-    def createSMTExportOptions(self, filename: str, geometry: core.Base) -> SMTExportOptions:
+    def createSMTExportOptions(self, filename: str, geometry: core.Base = None) -> SMTExportOptions:
         """
         Creates an SMTExportOptions object that's used to export a design in SMT format. Creation
         of the SMTExportOptions object does not perform the export. You must pass this object to the
@@ -7654,7 +9698,7 @@ class ExportManager(core.Base):
         The created SMTExportOptions object or null if the creation failed.
         """
         return SMTExportOptions()
-    def createFusionArchiveExportOptions(self, filename: str, geometry: core.Base) -> FusionArchiveExportOptions:
+    def createFusionArchiveExportOptions(self, filename: str, geometry: core.Base = None) -> FusionArchiveExportOptions:
         """
         Creates an FusionArchiveExportOptions object that's used to export a design in Fusion 360 archive format. Creation
         of the FusionArchiveExportOptions object does not perform the export. You must pass this object to the
@@ -7666,7 +9710,7 @@ class ExportManager(core.Base):
         The created FusionArchiveExportOptions object or null if the creation failed.
         """
         return FusionArchiveExportOptions()
-    def createSTLExportOptions(self, geometry: core.Base, filename: str) -> STLExportOptions:
+    def createSTLExportOptions(self, geometry: core.Base, filename: str = "") -> STLExportOptions:
         """
         Creates an STLExportOptions object that's used to export a design in STL format. Creation
         of the STLExportOptions object does not perform the export. You must pass this object to the
@@ -7678,22 +9722,55 @@ class ExportManager(core.Base):
         return STLExportOptions()
     def execute(self, exportOptions: ExportOptions) -> bool:
         """
-        Executes the export operation to create the file in the format specified by the input ExportOptions object.
+        Executes the export operation to create the file in the format specified by the provided ExportOptions object.
         exportOptions : An ExportOptions object that is created using one of the create methods on the ExportManager object. This
         defines the type of file and any available options supported for that file type.
         Returns true if the export was successful.
         """
         return bool()
-    def createC3MFExportOptions(self, geometry: core.Base, filename: str) -> C3MFExportOptions:
+    def createC3MFExportOptions(self, geometry: core.Base, filename: str = "") -> C3MFExportOptions:
         """
-        Creates a C3MFExportOptions object that's used to export a design in 3MF format.  Creation
-        of the C3MFExportOptions object does not perform the export.  You must pass this object to the
+        Creates a C3MFExportOptions object that's used to export a design in 3MF format. Creation
+        of the C3MFExportOptions object does not perform the export. You must pass this object to the
         ExportManager.execute method to perform the export.
-        geometry : The geometry to export.  This can be a BRepBody, Occurrence, or Component object.
-        filename : The filename of the 3MF file to be created.  This is optional and can be left out if the mesh will be opened in a mesh editor.
+        geometry : The geometry to export. This can be a BRepBody, Occurrence, or Component object.
+        filename : The filename of the 3MF file to be created. This is optional and can be left out if the mesh will be opened in a mesh editor.
         The created createC3MFExportOptions object or null if the creation failed.
         """
         return C3MFExportOptions()
+    def createUSDExportOptions(self, filename: str, geometry: core.Base = None) -> USDExportOptions:
+        """
+        Creates an USDExportOptions object that's used to export a design in USD format. Creation
+        of the USDExportOptions object does not perform the export. You must pass this object to the
+        ExportManager.execute method to perform the export. The USDExportOptions supports any available
+        options when exporting to USD format.
+        filename : The filename of the USD file to be created.
+        geometry : The geometry to export. Valid geometry for this is currently a Component object. This argument is optional
+        and if not specified, it results in the root component and it entire contents being exported.
+        The created USDExportOptions object or null if the creation failed.
+        """
+        return USDExportOptions()
+    def createOBJExportOptions(self, geometry: core.Base, filename: str = "") -> OBJExportOptions:
+        """
+        Creates an OBJExportOptions object that's used to export a design in OBJ format. Creation
+        of the OBJExportOptions object does not perform the export. You must pass this object to the
+        ExportManager.execute method to perform the export.
+        geometry : The geometry to export. This can be a BRepBody, Occurrence, or Component object.
+        filename : The filename of the OBJ file to be created. This is optional and can be left out if the mesh will be opened in a mesh editor.
+        The created createOBJExportOptions object or null if the creation failed.
+        """
+        return OBJExportOptions()
+    def createDXFFlatPatternExportOptions(self, filename: str, flatPattern: FlatPattern) -> DXFFlatPatternExportOptions:
+        """
+        Creates a DXFFlatPatternExport object that's used to export a flat pattern in DXF format. Creation
+        of the DXFFlatPatternExport object does not perform the export. You must call the execute method.
+        You can change any additional settings by setting properties on the returned object before calling
+        the execute method.
+        filename : The filename of the DXF file to be created.
+        flatPattern : The FlatPattern object to export.
+        The created DXFFlatPatternExport object or null if the creation failed.
+        """
+        return DXFFlatPatternExportOptions()
 
 class ExportOptions(core.Base):
     """
@@ -7724,14 +9801,14 @@ class ExportOptions(core.Base):
     def geometry(self) -> core.Base:
         """
         Specifies the geometry to export. This can be an Occurrence, or the root Component.
-        For STL export, it can also be a BRepBody. For DXF export, it can be a sketch of flat pattern.
+        For STL, OBJ, and 3MF export, it can be a BRepBody. For DXF export, it can be a sketch of flat pattern.
         """
         return core.Base()
     @geometry.setter
     def geometry(self, value: core.Base):
         """
         Specifies the geometry to export. This can be an Occurrence, or the root Component.
-        For STL export, it can also be a BRepBody. For DXF export, it can be a sketch of flat pattern.
+        For STL, OBJ, and 3MF export, it can be a BRepBody. For DXF export, it can be a sketch of flat pattern.
         """
         pass
 
@@ -7843,6 +9920,12 @@ class ExtendFeatures(core.Base):
     @staticmethod
     def cast(arg) -> ExtendFeatures:
         return ExtendFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ExtendFeature:
+        return None
+    def __iter__(self) -> Iterator[ExtendFeature]:
+        return None
     def item(self, index: int) -> ExtendFeature:
         """
         Function that returns the specified extend feature using an index into the collection.
@@ -7850,7 +9933,7 @@ class ExtendFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return ExtendFeature()
-    def createInput(self, edges: core.ObjectCollection, distance: core.ValueInput, extendType: SurfaceExtendTypes, isChainingEnabled: bool) -> ExtendFeatureInput:
+    def createInput(self, edges: core.ObjectCollection, distance: core.ValueInput, extendType: SurfaceExtendTypes, isChainingEnabled: bool = True) -> ExtendFeatureInput:
         """
         Creates a ExtendFeatureInput object. Use properties and methods on this object
         to define the extend feature you want to create and then use the Add method, passing in
@@ -7926,62 +10009,7 @@ class ExtrudeFeatureInput(core.Base):
     @staticmethod
     def cast(arg) -> ExtrudeFeatureInput:
         return ExtrudeFeatureInput()
-    def setDistanceExtent(self, isSymmetric: bool, distance: core.ValueInput) -> bool:
-        """
-        Sets the extrusion extents option to 'Distance'.
-        isSymmetric : Set to 'true' for an extrusion symmetrical about the profile plane
-        distance : ValueInput object that defines the extrude distance.
-        If the isSymmetric argument is 'false', a positive or negative distance can be used to control the direction.
-        Returns true if successful
-        """
-        return bool()
-    def setTwoSidesDistanceExtent(self, distanceOne: core.ValueInput, distanceTwo: core.ValueInput) -> bool:
-        """
-        Sets the extrusion extents option to 'Two Side'.
-        This method will fail in the case of a non-parametric extrusion.
-        distanceOne : ValueInput object that defines the extrude distance for the first side.
-        distanceTwo : ValueInput object that defines the extrude distance for the second side.
-        Returns true if successful
-        """
-        return bool()
-    def setAllExtent(self, direction: ExtentDirections) -> bool:
-        """
-        Sets the extrusion extents option to 'All' (i.e. the extrusion is through-all, in both directions.)
-        This method will fail in the case of a non-parametric extrusion.
-        direction : The direction can be either positive, negative, or symmetric.
-        Returns true if successful
-        """
-        return bool()
-    def setOneSideToExtent(self, toEntity: core.Base, matchShape: bool, directionHint: core.Vector3D) -> bool:
-        """
-        Sets the extrusion Direction option to 'One Side' and the Extents option to 'To' (a specified face)
-        toEntity : The entity that defines the "to" extent. The valid types of entities can vary depending on
-        the type of feature this is being used with. For an extrude it can be a BRepBody, BRepFace,
-        BRepVertex, ConstructionPlane, or ConstructionPoint.
-        matchShape : If the matchShape argument is 'true', the toEntity is extended to fully intersect the extrusion.
-        directionHint : Specifies the direction of the extrusion. This is only used in the case where there are two possible solutions and the extrusion can
-        hit the toEntity in either direction. An example is if the profile of the extrusion is within a hole.
-        The extrusion will intersect the cylinder of the hole in either direction.
-        
-        Typically there is only a single solution and the direction is determined automatically.
-        Returns true if successful.
-        """
-        return bool()
-    def setTwoSidesToExtent(self, toEntityOne: core.Base, toEntityTwo: core.Base, matchShape: bool) -> bool:
-        """
-        Set the extrusion Direction option to 'Two Side'
-        This method will fail in the case of a non-parametric extrusion.
-        toEntityOne : The first entity that defines the "to" extent. The valid types of entities can vary depending on
-        the type of feature this is being used with. For an extrude it can be a BRepBody, BRepFace,
-        BRepVertex, ConstructionPlane, or ConstructionPoint.
-        toEntityTwo : The second entity that defines the "to" extent. The valid types of entities can vary depending on
-        the type of feature this is being used with. For an extrude it can be a BRepBody, BRepFace,
-        BRepVertex, ConstructionPlane, or ConstructionPoint.
-        matchShape : If the matchShape argument is 'true', the toEntity is extended to fully intersect the extrusion.
-        Returns true if successful.
-        """
-        return bool()
-    def setOneSideExtent(self, extent: ExtentDefinition, direction: ExtentDirections, taperAngle: core.ValueInput) -> bool:
+    def setOneSideExtent(self, extent: ExtentDefinition, direction: ExtentDirections, taperAngle: core.ValueInput = None) -> bool:
         """
         Defines the extrusion to go in one direction from the profile. The extent of the extrusion is
         defined by the extent argument.
@@ -7995,7 +10023,7 @@ class ExtrudeFeatureInput(core.Base):
         Returns true is setting the input to a one sided extent was successful.
         """
         return bool()
-    def setTwoSidesExtent(self, sideOneExtent: ExtentDefinition, sideTwoExtent: ExtentDefinition, sideOneTaperAngle: core.ValueInput, sideTwoTaperAngle: core.ValueInput) -> bool:
+    def setTwoSidesExtent(self, sideOneExtent: ExtentDefinition, sideTwoExtent: ExtentDefinition, sideOneTaperAngle: core.ValueInput = None, sideTwoTaperAngle: core.ValueInput = None) -> bool:
         """
         Defines the extrusion to go in both directions from the profile. The extent is defined independently
         for each direction using the input arguments.
@@ -8010,7 +10038,7 @@ class ExtrudeFeatureInput(core.Base):
         Returns true is setting the extent was successful.
         """
         return bool()
-    def setSymmetricExtent(self, distance: core.ValueInput, isFullLength: bool, taperAngle: core.ValueInput) -> bool:
+    def setSymmetricExtent(self, distance: core.ValueInput, isFullLength: bool, taperAngle: core.ValueInput = None) -> bool:
         """
         Defines the extrusion to go symmetrically in both directions from the profile.
         distance : The distance of the extrusions. This is either the full length of half of the length of the final extrusion
@@ -8022,7 +10050,7 @@ class ExtrudeFeatureInput(core.Base):
         Returns true is setting the extent was successful.
         """
         return bool()
-    def setThinExtrude(self, thinExtrudeWallLocationOne: ThinExtrudeWallLocation, thinExtrudeWallThicknessOne: core.ValueInput, thinExtrudeWallLocationTwo: ThinExtrudeWallLocation, thinExtrudeWallThicknessTwo: core.ValueInput) -> bool:
+    def setThinExtrude(self, thinExtrudeWallLocationOne: ThinExtrudeWallLocation, thinExtrudeWallThicknessOne: core.ValueInput, thinExtrudeWallLocationTwo: ThinExtrudeWallLocation = ThinExtrudeWallLocation.Side1, thinExtrudeWallThicknessTwo: core.ValueInput = None) -> bool:
         """
         Changes the extrude feature to be a thin extrude. This is only valid if the isThinExtrude property
         is False. If the extrusion is already a thin extrude, you can use the properties on the ExtrudeFeature
@@ -8074,26 +10102,6 @@ class ExtrudeFeatureInput(core.Base):
     def operation(self, value: FeatureOperations):
         """
         Gets and sets the type of operation performed by the extrusion.
-        """
-        pass
-    @property
-    def taperAngle(self) -> core.ValueInput:
-        """
-        Gets and sets the taper angle of the extrusion. This is used to define the
-        taper angle for a single sided and symmetric and defines the angle for side one
-        of a two sided extrusion. This property is initialized with a taper angle of zero.
-        A negative angle will taper the extrusion inward while a positive value will taper
-        the extrusion outward. This property is valid for both parametric and non-parametric extrusions.
-        """
-        return core.ValueInput()
-    @taperAngle.setter
-    def taperAngle(self, value: core.ValueInput):
-        """
-        Gets and sets the taper angle of the extrusion. This is used to define the
-        taper angle for a single sided and symmetric and defines the angle for side one
-        of a two sided extrusion. This property is initialized with a taper angle of zero.
-        A negative angle will taper the extrusion inward while a positive value will taper
-        the extrusion outward. This property is valid for both parametric and non-parametric extrusions.
         """
         pass
     @property
@@ -8310,6 +10318,12 @@ class ExtrudeFeatures(core.Base):
     @staticmethod
     def cast(arg) -> ExtrudeFeatures:
         return ExtrudeFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ExtrudeFeature:
+        return None
+    def __iter__(self) -> Iterator[ExtrudeFeature]:
+        return None
     def item(self, index: int) -> ExtrudeFeature:
         """
         Function that returns the specified extrude feature using an index into the collection.
@@ -8357,9 +10371,8 @@ class ExtrudeFeatures(core.Base):
         or an ObjectCollection consisting of multiple profiles, planar faces, and sketch texts.
         When an ObjectCollection is used all of the profiles, faces, and sketch texts must be co-planar.
         
-        To create a surface (non-solid) extrusion, you can use the createOpenProfile and createBRepEdgeProfile
-        methods of the Component object to create an open profile. You also need to set the isSolid property
-        of the returned ExtrudeFeatureInput property to False.
+        This method can only be used to create solid extrusions. To create a surface extrusion you need
+        to use the add method.
         distance : ValueInput object that defines the extrude distance. A positive value extrudes in the positive direction
         of the sketch plane and negative value is in the opposite direction.
         operation : The feature operation to perform.
@@ -8541,6 +10554,12 @@ class FeatureList(core.Base):
     @staticmethod
     def cast(arg) -> FeatureList:
         return FeatureList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Feature:
+        return None
+    def __iter__(self) -> Iterator[Feature]:
+        return None
     def item(self, index: int) -> Feature:
         """
         Returns the specified folder.
@@ -8567,6 +10586,12 @@ class Features(core.Base):
     @staticmethod
     def cast(arg) -> Features:
         return Features()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Feature:
+        return None
+    def __iter__(self) -> Iterator[Feature]:
+        return None
     def item(self, index: int) -> Feature:
         """
         Function that returns the specified feature using an index into the collection.
@@ -8574,7 +10599,7 @@ class Features(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return Feature()
-    def createPath(self, curve: core.Base, isChain: bool) -> Path:
+    def createPath(self, curve: core.Base, isChain: bool = True) -> Path:
         """
         Method that creates a Path used to define the shape of a Sweep feature. A Path is a contiguous
         set of curves that can be a combination of sketch curves and model edges.
@@ -8950,6 +10975,10 @@ class Features(core.Base):
     @property
     def customFeatures(self) -> CustomFeatures:
         """
+        !!!!! Warning !!!!!
+        ! This is in preview state; please see the help for more info
+        !!!!! Warning !!!!!
+        
         Returns the collection that provides access to the custom features within the component
         and supports the creation of new custom features.
         """
@@ -8961,6 +10990,19 @@ class Features(core.Base):
         and supports the creation of new Untrim features.
         """
         return UntrimFeatures()
+    @property
+    def bossFeatures(self) -> BossFeatures:
+        """
+        Returns the collection that provides access to the boss features within the component
+        and supports the creation of new boss features.
+        """
+        return BossFeatures()
+    @property
+    def ripFeatures(self) -> RipFeatures:
+        """
+        Returns the collection that provides access to the existing Rip features.
+        """
+        return RipFeatures()
 
 class FilletEdgeSet(core.Base):
     """
@@ -8971,6 +11013,15 @@ class FilletEdgeSet(core.Base):
     @staticmethod
     def cast(arg) -> FilletEdgeSet:
         return FilletEdgeSet()
+    def deleteMe(self) -> bool:
+        """
+        Deletes the fillet edge set from the fillet.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        Returns true if the operation was successful.
+        """
+        return bool()
     @property
     def isTangentChain(self) -> bool:
         """
@@ -8983,6 +11034,176 @@ class FilletEdgeSet(core.Base):
         Gets and sets the Tangent chain for fillet. This enables tangent chain option for fillet.
         """
         pass
+    @property
+    def continuity(self) -> SurfaceContinuityTypes:
+        """
+        Gets and sets the continuity of the fillet edge set. Valid values are
+        TangentSurfaceContinuityType and CurvatureSurfaceContinuityType.
+        """
+        return SurfaceContinuityTypes()
+    @continuity.setter
+    def continuity(self, value: SurfaceContinuityTypes):
+        """
+        Gets and sets the continuity of the fillet edge set. Valid values are
+        TangentSurfaceContinuityType and CurvatureSurfaceContinuityType.
+        """
+        pass
+    @property
+    def tangencyWeight(self) -> ModelParameter:
+        """
+        Returns the model parameter that controls the G1 or G2 tangency weight of the fillet.
+        It must be a real value between 0.1 and 2.0 inclusive. You can edit the tangency weight
+        by using the properties on the returned ModelParameter object.
+        """
+        return ModelParameter()
+
+class FilletEdgeSetInput(core.Base):
+    """
+    Represents the input to define a fillet edge set.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> FilletEdgeSetInput:
+        return FilletEdgeSetInput()
+    @property
+    def entities(self) -> core.ObjectCollection:
+        """
+        Gets and sets the entities associated with this fillet edge set. For constant radius and chord length
+        edge sets, this can be edges, faces, and features. For variable radius edges sets, this must be edges.
+        """
+        return core.ObjectCollection()
+    @entities.setter
+    def entities(self, value: core.ObjectCollection):
+        """
+        Gets and sets the entities associated with this fillet edge set. For constant radius and chord length
+        edge sets, this can be edges, faces, and features. For variable radius edges sets, this must be edges.
+        """
+        pass
+    @property
+    def continuity(self) -> SurfaceContinuityTypes:
+        """
+        Gets and sets the continuity of the fillet edge set. Valid values are
+        TangentSurfaceContinuityType and CurvatureSurfaceContinuityType. The default
+        is TangentSurfaceContinuityType.
+        """
+        return SurfaceContinuityTypes()
+    @continuity.setter
+    def continuity(self, value: SurfaceContinuityTypes):
+        """
+        Gets and sets the continuity of the fillet edge set. Valid values are
+        TangentSurfaceContinuityType and CurvatureSurfaceContinuityType. The default
+        is TangentSurfaceContinuityType.
+        """
+        pass
+    @property
+    def tangencyWeight(self) -> core.ValueInput:
+        """
+        Gets and sets the tangency weight for the given edge set. The tangency weight controls the influence
+        of the continuity (G1 or G2) on the fillet. The ValueInput must be a real value between 0.1 and 2.0 inclusive,
+        with no units. The default value is 1.0.
+        """
+        return core.ValueInput()
+    @tangencyWeight.setter
+    def tangencyWeight(self, value: core.ValueInput):
+        """
+        Gets and sets the tangency weight for the given edge set. The tangency weight controls the influence
+        of the continuity (G1 or G2) on the fillet. The ValueInput must be a real value between 0.1 and 2.0 inclusive,
+        with no units. The default value is 1.0.
+        """
+        pass
+
+class FilletEdgeSetInputs(core.Base):
+    """
+    Collection of edge sets associated with the input object that will be used
+    to create the new fillet feature. Use the various add methods on this object
+    to add new edge sets to the input object.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> FilletEdgeSetInputs:
+        return FilletEdgeSetInputs()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> FilletEdgeSetInput:
+        return None
+    def __iter__(self) -> Iterator[FilletEdgeSetInput]:
+        return None
+    def item(self, index: int) -> FilletEdgeSetInput:
+        """
+        Function that returns the specified fillet edge set input using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
+        The edge sets are returned in the same order they were created in.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return FilletEdgeSetInput()
+    def addConstantRadiusEdgeSet(self, entities: core.ObjectCollection, radius: core.ValueInput, isTangentChain: bool) -> ConstantRadiusFilletEdgeSetInput:
+        """
+        Adds a constant radius fillet edge set to the fillet feature input. Some settings are initialized
+        with a default value and can be set by modifying properties on the returned ConstantRadiusFilletEdgeSetInput object.
+        entities : An ObjectCollection containing the BRepEdge, BRepFace, and Feature objects to be filleted. If the isTangentChain argument is true
+        additional edges or faces may also get filleted if they are tangentially connected to any of the
+        input edges or faces.
+        radius : A ValueInput object that defines the radius of the fillet. If the ValueInput uses
+        a real then it is interpreted as centimeters. If it is a string then the units
+        can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current default units for length.
+        isTangentChain : A boolean value for setting whether or not edges that are tangentially connected to
+        the input edges (if any) will also be filleted.
+        Returns the newly created ConstantRadiusFilletEdgeSetInput. This object provides access to additional settings.
+        """
+        return ConstantRadiusFilletEdgeSetInput()
+    def addVariableRadiusEdgeSet(self, tangentEdges: core.ObjectCollection, startRadius: core.ValueInput, endRadius: core.ValueInput, isTangentChain: bool) -> VariableRadiusFilletEdgeSetInput:
+        """
+        Adds a single edge or set of tangent edges to the fillet feature input. Some settings are initialized
+        with a default value and can be set by modifying properties on the returned VariableRadiusFilletEdgeSetInput object.
+        tangentEdges : An object collection containing a single edge or multiple edges. Multiple edges
+        must be tangentially connected and added to the collection in their connected order. If a single edge
+        is input, you can use the isTangentChain argument to automatically find any tangentially connected edges.
+        startRadius : A ValueInput object that defines the starting radius of the fillet. If a single edge is
+        being filleted, the start radius is at the start end of the edge. If multiple tangent
+        edges are being filleted the start radius is the start end of the first edge in the
+        collection.
+        
+        If the ValueInput uses a real then it is interpreted as centimeters. If it is a string then
+        the units can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current default units for length.
+        endRadius : A ValueInput object that defines the ending radius of the fillet. If a single edge is
+        being filleted, the end radius is at the end of the edge. If multiple tangent
+        edges are being filleted the end radius is the open end of the last edge in the
+        collection.
+        
+        If the ValueInput uses a real then it is interpreted as centimeters. If it is a string then
+        the units can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current default units for length.
+        isTangentChain : A boolean value for setting whether or not edges that are tangentially connected to the single
+        input edge will also be filleted.
+        Returns the newly created VariableRadiusFilletEdgeSetInput. This object provides access to additional settings.
+        """
+        return VariableRadiusFilletEdgeSetInput()
+    def addChordLengthEdgeSet(self, entities: core.ObjectCollection, chordLength: core.ValueInput, isTangentChain: bool) -> ChordLengthFilletEdgeSetInput:
+        """
+        Adds a set of edges to be filleted with a chord length fillet to the fillet feature input. Some settings are
+        initialized with a default value and can be set by modifying properties on the returned ChordLengthFilletEdgeSetInput object.
+        entities : An ObjectCollection containing the BRepEdge, BRepFace, and Feature objects to be filleted. If the isTangentChain argument is true
+        additional edges or faces may also get filleted if they are tangentially connected to any of the
+        input edges or faces.
+        chordLength : A ValueInput object that defines the chord length of the fillet. If the ValueInput uses
+        a real value then it is interpreted as centimeters. If it is a string then the units
+        can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current document units for length.
+        isTangentChain : A boolean value for setting whether or not edges or faces that are tangentially connected to
+        the input edges or faces (if any) will also be filleted.
+        Returns the newly created ChordLengthFilletEdgeSetInput. This object provides access to additional settings.
+        """
+        return ChordLengthFilletEdgeSetInput()
+    @property
+    def count(self) -> int:
+        """
+        The number of fillet edge set input objects in the collection.
+        """
+        return int()
 
 class FilletEdgeSets(core.Base):
     """
@@ -8993,6 +11214,12 @@ class FilletEdgeSets(core.Base):
     @staticmethod
     def cast(arg) -> FilletEdgeSets:
         return FilletEdgeSets()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> FilletEdgeSet:
+        return None
+    def __iter__(self) -> Iterator[FilletEdgeSet]:
+        return None
     def item(self, index: int) -> FilletEdgeSet:
         """
         Function that returns the specified fillet edge set using an index into the collection.
@@ -9000,43 +11227,33 @@ class FilletEdgeSets(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return FilletEdgeSet()
-    @property
-    def count(self) -> int:
+    def addConstantRadiusEdgeSet(self, entities: core.ObjectCollection, radius: core.ValueInput, isTangentChain: bool) -> ConstantRadiusFilletEdgeSet:
         """
-        The number of fillet edge sets in the collection.
-        """
-        return int()
-
-class FilletFeatureInput(core.Base):
-    """
-    This class defines the methods and properties that pertain to the definition of a fillet
-    feature.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> FilletFeatureInput:
-        return FilletFeatureInput()
-    def addConstantRadiusEdgeSet(self, edges: core.ObjectCollection, radius: core.ValueInput, isTangentChain: bool) -> bool:
-        """
-        Adds a set of edges with a constant radius to this input.
-        edges : An ObjectCollection containing the edges to be filleted. If the isTangentChain argument is true
-        additional edges may also get filleted if they are tangentially connected to any of the
-        input edges.
+        Adds a set of edges with a constant radius to this fillet feature.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        entities : An ObjectCollection containing the BRepEdge, BRepFace, and Feature objects to be filleted. If the isTangentChain argument is true
+        additional edges or faces may also get filleted if they are tangentially connected to any of the
+        input edges or faces.
         radius : A ValueInput object that defines the radius of the fillet. If the ValueInput uses
         a real then it is interpreted as centimeters. If it is a string then the units
         can be defined as part of the string (i.e. "2 in") or if no units are specified
         it is interpreted using the current default units for length.
         isTangentChain : A boolean value for setting whether or not edges that are tangentially connected to
         the input edges (if any) will also be filleted.
-        Returns true if the set of edges was successfully added to the FilletFeatureInput.
+        Returns the newly created FilletEdgeSet.
         """
-        return bool()
-    def addVariableRadiusEdgeSet(self, tangentEdges: core.ObjectCollection, startRadius: core.ValueInput, endRadius: core.ValueInput, positions: list[core.ValueInput], radii: list[core.ValueInput]) -> bool:
+        return ConstantRadiusFilletEdgeSet()
+    def addVariableRadiusEdgeSet(self, tangentEdges: core.ObjectCollection, startRadius: core.ValueInput, endRadius: core.ValueInput, positions: list[core.ValueInput], radii: list[core.ValueInput], isTangentChain: bool) -> VariableRadiusFilletEdgeSet:
         """
-        Adds a single edge or set of tangent edges along with variable radius information to this input.
+        Adds a single edge or set of tangent edges along with variable radius information to this fillet feature.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
         tangentEdges : An object collection containing a single edge or multiple edges. Multiple edges
-        must be tangentially connected and added to the collection in order.
+        must be tangentially connected and added to the collection in their connected order. If a single edge
+        is input, you can use the isTangentChain argument to automatically find any tangentially connected edges.
         startRadius : A ValueInput object that defines the starting radius of the fillet. If a single edge is
         being filleted, the start radius is at the start end of the edge. If multiple tangent
         edges are being filleted the start radius is the open end of the first edge in the
@@ -9061,36 +11278,46 @@ class FilletFeatureInput(core.Base):
         the positions argument. If the ValueInput uses a real then it is interpreted as centimeters.
         If it is a string then the units can be defined as part of the string (i.e. "2 in").
         If no units are specified it will be interpreted using the current default units for length.
-        Returns true if the edge set was successfully added to the FilletFeatureInput.
+        isTangentChain : A boolean value for setting whether or not edges that are tangentially connected to the single
+        input edge will also be filleted.
+        Returns the newly created FilletEdgeSet.
         """
-        return bool()
-    def addChordLengthEdgeSet(self, edges: core.ObjectCollection, chordLength: core.ValueInput, isTangentChain: bool) -> bool:
+        return VariableRadiusFilletEdgeSet()
+    def addChordLengthEdgeSet(self, entities: core.ObjectCollection, chordLength: core.ValueInput, isTangentChain: bool) -> ChordLengthFilletEdgeSet:
         """
-        Adds a set of edges with a chord length to this input.
-        edges : An ObjectCollection containing the edges to be filleted. If the isTangentChain argument is true
-        additional edges may also get filleted if they are tangentially connected to any of the
-        input edges.
+        Adds a set of edges with a chord length to this fillet feature.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        entities : An ObjectCollection containing the BRepEdge, BRepFace, and Feature objects to be filleted. If the isTangentChain argument is true
+        additional edges or faces may also get filleted if they are tangentially connected to any of the
+        input edges or faces.
         chordLength : A ValueInput object that defines the chord length of the fillet. If the ValueInput uses
         a real then it is interpreted as centimeters. If it is a string then the units
         can be defined as part of the string (i.e. "2 in") or if no units are specified
         it is interpreted using the current default units for length.
         isTangentChain : A boolean value for setting whether or not edges that are tangentially connected to
         the input edges (if any) will also be filleted.
-        Returns true if the set of edges was successfully added to the FilletFeatureInput.
+        Returns the newly created FilletEdgeSet.
         """
-        return bool()
+        return ChordLengthFilletEdgeSet()
     @property
-    def isG2(self) -> bool:
+    def count(self) -> int:
         """
-        Gets and sets if the fillet uses the G2 (curvature-continuity) surface quality option .
+        The number of fillet edge sets in the collection.
         """
-        return bool()
-    @isG2.setter
-    def isG2(self, value: bool):
-        """
-        Gets and sets if the fillet uses the G2 (curvature-continuity) surface quality option .
-        """
+        return int()
+
+class FilletFeatureInput(core.Base):
+    """
+    This class defines the methods and properties that pertain to the definition of a fillet
+    feature.
+    """
+    def __init__(self):
         pass
+    @staticmethod
+    def cast(arg) -> FilletFeatureInput:
+        return FilletFeatureInput()
     @property
     def isRollingBallCorner(self) -> bool:
         """
@@ -9101,20 +11328,6 @@ class FilletFeatureInput(core.Base):
     def isRollingBallCorner(self, value: bool):
         """
         Gets and sets if a rolling ball or setback solution is to be used in any corners.
-        """
-        pass
-    @property
-    def isTangentChain(self) -> bool:
-        """
-        Gets and sets if any edges that are tangentially connected to any of filleted
-        edges will also be included in the fillet.
-        """
-        return bool()
-    @isTangentChain.setter
-    def isTangentChain(self, value: bool):
-        """
-        Gets and sets if any edges that are tangentially connected to any of filleted
-        edges will also be included in the fillet.
         """
         pass
     @property
@@ -9143,6 +11356,13 @@ class FilletFeatureInput(core.Base):
         feature must be in an "edit" state to be able to add any additional items to it.
         """
         pass
+    @property
+    def edgeSetInputs(self) -> FilletEdgeSetInputs:
+        """
+        Gets the FilletEdgeSetInputs object that provides support to create the various types of edge
+        sets that will be used to create the fillet.
+        """
+        return FilletEdgeSetInputs()
 
 class FilletFeatures(core.Base):
     """
@@ -9154,6 +11374,12 @@ class FilletFeatures(core.Base):
     @staticmethod
     def cast(arg) -> FilletFeatures:
         return FilletFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> FilletFeature:
+        return None
+    def __iter__(self) -> Iterator[FilletFeature]:
+        return None
     def item(self, index: int) -> FilletFeature:
         """
         Function that returns the specified fillet feature using an index into the collection.
@@ -9201,6 +11427,12 @@ class FlangeFeatures(core.Base):
     @staticmethod
     def cast(arg) -> FlangeFeatures:
         return FlangeFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> FlangeFeature:
+        return None
+    def __iter__(self) -> Iterator[FlangeFeature]:
+        return None
     def item(self, index: int) -> FlangeFeature:
         """
         Function that returns the specified flange feature using an index into the collection.
@@ -9231,6 +11463,12 @@ class FormFeatures(core.Base):
     @staticmethod
     def cast(arg) -> FormFeatures:
         return FormFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> FormFeature:
+        return None
+    def __iter__(self) -> Iterator[FormFeature]:
+        return None
     def item(self, index: int) -> FormFeature:
         """
         Function that returns the specified Form feature using an index into the collection.
@@ -9325,6 +11563,12 @@ class GeometricConstraintList(core.Base):
     @staticmethod
     def cast(arg) -> GeometricConstraintList:
         return GeometricConstraintList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> GeometricConstraint:
+        return None
+    def __iter__(self) -> Iterator[GeometricConstraint]:
+        return None
     def item(self, index: int) -> GeometricConstraint:
         """
         Function that returns the specified geometry constraint using an index into the collection.
@@ -9349,6 +11593,12 @@ class GeometricConstraints(core.Base):
     @staticmethod
     def cast(arg) -> GeometricConstraints:
         return GeometricConstraints()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> GeometricConstraint:
+        return None
+    def __iter__(self) -> Iterator[GeometricConstraint]:
+        return None
     def item(self, index: int) -> GeometricConstraint:
         """
         Function that returns the specified sketch constraint using an index into the collection.
@@ -9446,7 +11696,7 @@ class GeometricConstraints(core.Base):
     def addSmooth(self, curveOne: SketchCurve, curveTwo: SketchCurve) -> SmoothConstraint:
         """
         Creates a new smooth constraint between two curves. One of the curves
-        must be a spline. The other curve can be a spline or an arc.
+        must be a spline. The other curve can be a spline or any other type of curve.
         curveOne : The first curve to be constrained to be smooth to the second curve.
         curveTwo : The second curve to be constrained to be smooth to the first curve.
         Returns the newly created SmoothConstraint object or null if the creation failed.
@@ -9469,6 +11719,101 @@ class GeometricConstraints(core.Base):
         Returns the newly created SymmetryConstraint object or null if the creation failed.
         """
         return SymmetryConstraint()
+    def addOffset(self, curves: list[SketchCurve], offset: core.ValueInput, basePoint: core.Point3D) -> OffsetConstraint:
+        """
+        Creates an offset constraint, which results in creating a new set of curves that are an offset of
+        the input curves. The returned offset constraint provides access to the created curves and the
+        parameter controlling the offset.
+        
+        The offset direction is implied by the flow direction of the provided curves. For example, if
+        two connected lines are offset, the flow direction is from line 1 to line 2. A positive offset
+        value creates the offset curve to the "right" of the lines and a negative offset goes to the "left".
+        Left and right are evaluated with respect to the geometry. If you are standing on line 1 looking
+        towards line 2 your left and right are the offset left and right. For closed single curves like
+        circles and ellipses their flow direction is always counterclockwise so a positive offset is
+        always to the outsides.
+        curves : A set of end connected curves. The Sketch.FindConnectedCurves method is a convenient way to get
+        this set of curves.
+        offset : The value that defines the offset. This is a ValueInput object so it can be a float value to define
+        the offset in centimeters or it can be a string defining an expression that will be used by the
+        dimension that controls the offset.
+        basePoint : The location on one of the curves where the offset dimension will be created.
+        The created OffsetConstraint. You can use properties on the constraint to get information about the offset.
+        """
+        return OffsetConstraint()
+    def createRectangularPatternInput(self, entities: list[SketchEntity], distanceType: PatternDistanceType) -> RectangularPatternConstraintInput:
+        """
+        Creates a new RectangularPatternConstraintInput object. Use this object to define the various settings
+        associated with a rectangular pattern in a sketch. Once the pattern is defined you can call the addRectangularPattern
+        method and pass in the input object to create the sketch rectangular pattern.
+        entities : An array of sketch entities to pattern. These can be sketch points and curves.
+        distanceType : Specifies if the distances defined for the pattern define the overall size of the pattern or the distance between the rows and columns.
+        Returns the created RectangularPatternsConstraintInput object or null in the case of failure.
+        """
+        return RectangularPatternConstraintInput()
+    def addRectangularPattern(self, input: RectangularPatternConstraintInput) -> RectangularPatternConstraint:
+        """
+        Creates a new rectangular pattern in the sketch.
+        input : A RectangularPatternConstraintInput object that defines all of inputs required to create
+        the desired rectangular pattern. Use the createRectangularPatternInput method to create the
+        input object.
+        
+        """
+        return RectangularPatternConstraint()
+    def createCircularPatternInput(self, inputEntities: list[SketchEntity], centerPoint: SketchPoint) -> CircularPatternConstraintInput:
+        """
+        Creates a CircularPatternConstraintInput object. Use properties and methods on this object
+        to define the circular pattern you want to create and then use the Add method, passing in
+        the CircularPatternConstraintInput object.
+        inputEntities : An array of sketch entities to be patterned.
+        All of the entities must be from the current sketch.
+        centerPoint : A SketchPoint from the same sketch that defines the center of the pattern.
+        Returns the newly created CircularPatternConstraintInput object or null if the creation failed.
+        """
+        return CircularPatternConstraintInput()
+    def addCircularPattern(self, input: CircularPatternConstraintInput) -> CircularPatternConstraint:
+        """
+        Creates a new circular pattern in the sketch.
+        input : A CircularPatternConstraintInput object that defines the desired circular pattern. Use the
+        createCircularPatternInput method to create a new CircularPatternConstraintInput
+        object and then use methods on it to define the circular pattern.
+        Returns the newly created CircularPatternConstraint object or null if the creation failed.
+        """
+        return CircularPatternConstraint()
+    def addCoincidentToSurface(self, point: SketchPoint, surface: core.Base) -> CoincidentToSurfaceConstraint:
+        """
+        Creates a new coincident constraint between the sketch point and surface. This forces the point to
+        lie on the surface.
+        point : The SketchPoint to constrain to the surface.
+        surface : The BRepFace or ConstructionPlane the point will be coincident to.
+        Returns the newly created CoincidentToSurfaceConstraint object or null if the creation failed.
+        """
+        return CoincidentToSurfaceConstraint()
+    def addLineParallelToPlanarSurface(self, line: SketchLine, planarSurface: core.Base) -> LineParallelToPlanarSurfaceConstraint:
+        """
+        Creates a new parallel constraint between a sketch line and a planar surface that will constrain
+        the line to lie on a plane parallel to the specified surface.
+        line : The SketchLine to constrain to the surface.
+        planarSurface : The planar BRepFace or CosntructionPlane the sketch line will be parallel to.
+        Returns the newly created LineParallelToPlanarSurfaceConstraint object or null if the creation failed.
+        """
+        return LineParallelToPlanarSurfaceConstraint()
+    def addLineOnPlanarSurface(self, line: SketchLine, planarSurface: core.Base) -> LineOnPlanarSurfaceConstraint:
+        """
+        Creates a new constraint that forces the sketch line to lie on a planar surface.
+        line : The SketchLine to constrain to the surface.
+        planarSurface : The planar BRepFace or CosntructionPlane the sketch line will lie on.
+        Returns the newly created LineOnPlanarSurfaceConstraint object or null if the creation failed.
+        """
+        return LineOnPlanarSurfaceConstraint()
+    def addPerpendicularToSurface(self, curve: SketchCurve, surface: core.Base) -> PerpendicularToSurfaceConstraint:
+        """
+        Creates a new perpendicular constraint that forces the sketch curve to be perpendicular to the specified surface. Line and spline curves are supported.
+        curve : The SketchCurve to constrain to the surface.
+        surface : The BRepFace or ConstructionPlane the line will be perpendicular to.
+        Returns the newly created PerpendicularToSurfaceConstraint object or null if the creation failed.
+        """
+        return PerpendicularToSurfaceConstraint()
     @property
     def count(self) -> int:
         """
@@ -9519,7 +11864,7 @@ class HoleFeatureInput(core.Base):
         Returns true if successful.
         """
         return bool()
-    def setPositionByPlaneAndOffsets(self, planarEntity: core.Base, point: core.Point3D, edgeOne: BRepEdge, offsetOne: core.ValueInput, edgeTwo: BRepEdge, offsetTwo: core.ValueInput) -> bool:
+    def setPositionByPlaneAndOffsets(self, planarEntity: core.Base, point: core.Point3D, edgeOne: BRepEdge, offsetOne: core.ValueInput, edgeTwo: BRepEdge = None, offsetTwo: core.ValueInput = None) -> bool:
         """
         Defines the orientation of the hole using a planar face or construction plane.
         The position of the hole is defined by the distance from one or two edges.
@@ -9529,6 +11874,10 @@ class HoleFeatureInput(core.Base):
         projected onto the plane. This point should be close to the final position of the hole and
         is used to determine which solution out of several possible solutions should be chosen
         for the hole location.
+        
+        This point is defined in the coordinate system of the native entity used for the planarEntity
+        argument. For example, if the planarEntity argument is a proxy to a BRepFace, the point argument
+        must be in the coordinate system of the component of the native face, not the proxy.
         edgeOne : A linear BRepEdge object that the position of the hole will be measured from. The position
         of the hole will be measured along a perpendicular from this edge.
         offsetOne : A ValueInput object that defines the offset distance from edgeOne. If the ValueInput uses
@@ -9574,7 +11923,7 @@ class HoleFeatureInput(core.Base):
         Returns true if successful.
         """
         return bool()
-    def setOneSideToExtent(self, toEntity: core.Base, matchShape: bool, directionHint: core.Vector3D) -> bool:
+    def setOneSideToExtent(self, toEntity: core.Base, matchShape: bool, directionHint: core.Vector3D = None) -> bool:
         """
         Sets the extent of the hole to be from the sketch plane to the specified "to" face.
         toEntity : The entity that defines the "to" extent. The valid types of entities can vary depending on
@@ -9706,6 +12055,12 @@ class HoleFeatures(core.Base):
     @staticmethod
     def cast(arg) -> HoleFeatures:
         return HoleFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> HoleFeature:
+        return None
+    def __iter__(self) -> Iterator[HoleFeature]:
+        return None
     def item(self, index: int) -> HoleFeature:
         """
         Function that returns the specified hole feature using an index into the collection.
@@ -9801,6 +12156,147 @@ class HolePositionDefinition(core.Base):
     @staticmethod
     def cast(arg) -> HolePositionDefinition:
         return HolePositionDefinition()
+
+class InCanvasRendering(core.Base):
+    """
+    Provides access to the in-canvas rendering capabilities of Fusion. This
+    uses the active viewport and the user will see the rendering as it takes place.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> InCanvasRendering:
+        return InCanvasRendering()
+    def start(self, renderQuality: float) -> bool:
+        """
+        Starts the process of in-canvas rendering. There are two modes
+        when doing in-canvas rendering; advanced and fast. This is specified in the
+        API using the isAdvanced property. When using advanced rendering, you can
+        specify the desired quality and the rendering will stop once that quality has
+        been reached. When using fast rendering, the rendering never stops but continues
+        until you stop it.
+        
+        When using the API, it's generally best to use advanced rendering so you
+        can easily control the final quality and  get notified by the renderComplete
+        event when it has finished. When using fast rendering, the renderComplete event
+        is not fired and you have to use some other criteria like the number of iterations
+        complete or the time taken to determine when to stop the rendering process.
+        renderQuality : Specifies the desired quality of the rendering. The quality is specified using a
+        value between 0 and 1, where 0.75 is the equivalent of "Excellent" and 1.0 is
+        the same as "Final" in the user interface.
+        
+        This is ignored when using fast rendering (the isAdvanced property is False).
+        Returns true if the rendering was successfully started.
+        """
+        return bool()
+    def stop(self) -> bool:
+        """
+        Stops the current rendering process.
+        Returns true if successful.
+        """
+        return bool()
+    def saveImage(self, filename: str) -> bool:
+        """
+        Saves the image as it currently exists in the active viewport. To get the
+        best quality, this should be called after the renderComplete event has fired.
+        filename : The filename to save the image to. This must be the full path.
+        The file extension can be .png, .jpg, .jpeg, or .tiff and the
+        file will be saved as that type.
+        
+        The size of the image is dependent on the size of the viewport and
+        the current specified aspect ratio.
+        Returns true if the save was successful.
+        """
+        return bool()
+    @property
+    def lockView(self) -> bool:
+        """
+        Gets and sets if the view should be locked during the in-canvas render. This prohibits
+        the user from interacting with the view, which will cause the rendering to restart.
+        """
+        return bool()
+    @lockView.setter
+    def lockView(self, value: bool):
+        """
+        Gets and sets if the view should be locked during the in-canvas render. This prohibits
+        the user from interacting with the view, which will cause the rendering to restart.
+        """
+        pass
+    @property
+    def limitResolution(self) -> float:
+        """
+        Sets the percentage of the full resolution to render the image. Valid
+        values are between 20 and 100 inclusive. 100 is full resolution (100%).
+        """
+        return float()
+    @limitResolution.setter
+    def limitResolution(self, value: float):
+        """
+        Sets the percentage of the full resolution to render the image. Valid
+        values are between 20 and 100 inclusive. 100 is full resolution (100%).
+        """
+        pass
+    @property
+    def elapsedTime(self) -> int:
+        """
+        Returns the seconds spent on the current render.
+        """
+        return int()
+    @property
+    def iterations(self) -> int:
+        """
+        Returns the current number of iterations the renderer has completed.
+        """
+        return int()
+    @property
+    def isAdvanced(self) -> bool:
+        """
+        Gets and sets if "Fast" or "Advanced" rendering should be used.
+        If false, "Fast" rendering is used, which uses simplified lighting
+        and materials.
+        
+        There are two modes when doing in-canvas rendering; advanced and fast. When
+        using advanced rendering, you can specify the desired quality and the rendering
+        will stop once that quality has been reached. When using fast rendering, the
+        rendering never stops but continues until you stop it.
+        
+        When using the API, it's generally best to use advanced rendering so you
+        can easily control the final quality and get notified by the renderComplete
+        event when it has finished. When using fast rendering, the renderComplete event
+        is not fired, and you have to use some other criteria like the number of iterations
+        complete, or the time taken to determine when to stop the rendering process.
+        """
+        return bool()
+    @isAdvanced.setter
+    def isAdvanced(self, value: bool):
+        """
+        Gets and sets if "Fast" or "Advanced" rendering should be used.
+        If false, "Fast" rendering is used, which uses simplified lighting
+        and materials.
+        
+        There are two modes when doing in-canvas rendering; advanced and fast. When
+        using advanced rendering, you can specify the desired quality and the rendering
+        will stop once that quality has been reached. When using fast rendering, the
+        rendering never stops but continues until you stop it.
+        
+        When using the API, it's generally best to use advanced rendering so you
+        can easily control the final quality and get notified by the renderComplete
+        event when it has finished. When using fast rendering, the renderComplete event
+        is not fired, and you have to use some other criteria like the number of iterations
+        complete, or the time taken to determine when to stop the rendering process.
+        """
+        pass
+    @property
+    def renderComplete(self) -> RenderEvent:
+        """
+        The RenderEvent event fires when the rendering has reached the
+        quality that was specified when the rendering started. This event is only fired
+        when using advanced rendering (the isAdvanced property is True). To save the
+        finished rendering, use the saveImage method.
+        
+        You can add or remove event handlers from the RenderEvent.
+        """
+        return RenderEvent()
 
 class InterferenceInput(core.Base):
     """
@@ -9898,6 +12394,12 @@ class InterferenceResults(core.Base):
     @staticmethod
     def cast(arg) -> InterferenceResults:
         return InterferenceResults()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> InterferenceResult:
+        return None
+    def __iter__(self) -> Iterator[InterferenceResult]:
+        return None
     def item(self, index: int) -> InterferenceResult:
         """
         Function that returns the specified interference result using an index into the collection.
@@ -9920,6 +12422,44 @@ class InterferenceResults(core.Base):
     def count(self) -> int:
         """
         Returns the number of interference results in the collection.
+        """
+        return int()
+
+class IsoCurveAnalyses(core.Base):
+    """
+    Provides access to any Iso Curve analyses results in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> IsoCurveAnalyses:
+        return IsoCurveAnalyses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> IsoCurveAnalysis:
+        return None
+    def __iter__(self) -> Iterator[IsoCurveAnalysis]:
+        return None
+    def item(self, index: int) -> IsoCurveAnalysis:
+        """
+        A method that returns the specified IsoCurveAnalysis object using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection
+        has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return IsoCurveAnalysis()
+    def itemByName(self, name: str) -> IsoCurveAnalysis:
+        """
+        A method that returns the specified IsoCurveAnalysis object using the name of the analysis
+        as displayed in the browser.
+        name : The name of the IsoCurveAnalysis object as displayed in the browser.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return IsoCurveAnalysis()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of CurvatureCombAnalysis objects in the collection.
         """
         return int()
 
@@ -9947,7 +12487,7 @@ class Joint(core.Base):
         Returns true if successful.
         """
         return bool()
-    def setAsRevoluteJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base) -> bool:
+    def setAsRevoluteJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a revolute joint.
         
@@ -9961,7 +12501,7 @@ class Joint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsSliderJointMotion(self, sliderDirection: JointDirections, customSliderDirectionEntity: core.Base) -> bool:
+    def setAsSliderJointMotion(self, sliderDirection: JointDirections, customSliderDirectionEntity: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a slider joint.
         
@@ -9974,7 +12514,7 @@ class Joint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsCylindricalJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base) -> bool:
+    def setAsCylindricalJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a cylindrical joint.
         
@@ -9988,7 +12528,7 @@ class Joint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsPinSlotJointMotion(self, rotationAxis: JointDirections, slideDirection: JointDirections, customRotationAxisEntity: core.Base, customSlideDirectionEntity: core.Base) -> bool:
+    def setAsPinSlotJointMotion(self, rotationAxis: JointDirections, slideDirection: JointDirections, customRotationAxisEntity: core.Base = None, customSlideDirectionEntity: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a pin-slot joint.
         
@@ -10005,7 +12545,7 @@ class Joint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsPlanarJointMotion(self, normalDirection: JointDirections, customNormalDirectionEntity: core.Base, customPrimarySlideDirection: core.Base) -> bool:
+    def setAsPlanarJointMotion(self, normalDirection: JointDirections, customNormalDirectionEntity: core.Base = None, customPrimarySlideDirection: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a planar joint.
         
@@ -10023,7 +12563,7 @@ class Joint(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsBallJointMotion(self, pitchDirection: JointDirections, yawDirection: JointDirections, customPitchDirection: core.Base, customYawDirection: core.Base) -> bool:
+    def setAsBallJointMotion(self, pitchDirection: JointDirections, yawDirection: JointDirections, customPitchDirection: core.Base = None, customYawDirection: core.Base = None) -> bool:
         """
         Redefines the relationship between the two joint geometries as a ball joint.
         
@@ -10268,6 +12808,20 @@ class Joint(core.Base):
         method to get the two entities identified by the tokens and then compare them.
         """
         return str()
+    @property
+    def offsetX(self) -> ModelParameter:
+        """
+        Returns the parameter controlling the offset along the primary axis (x axis) of the joint. To edit this
+        value, get the parameter and use one of its properties to edit the value.
+        """
+        return ModelParameter()
+    @property
+    def offsetY(self) -> ModelParameter:
+        """
+        Returns the parameter controlling the offset along the primary axis (y axis) of the joint. To edit this
+        value, get the parameter and use one of its properties to edit the value.
+        """
+        return ModelParameter()
 
 class JointGeometry(core.Base):
     """
@@ -10382,6 +12936,16 @@ class JointGeometry(core.Base):
         Returns the transient JointGeometry object that can be used to create a joint or joint origin or null in case of a failure.
         """
         return JointGeometry()
+    @staticmethod
+    def createByTwoEdgeIntersection(edgeOne: BRepEdge, edgeTwo: BRepEdge) -> JointGeometry:
+        """
+        Creates a new transient JointGeometry object that is positioned at the intersection of the two input linear BRepEdge objects.
+        edgeOne : The first linear BRepEdge object.
+        edgeTwo : The second linear BRepEdge object. This edge must exist either on the same body as edgeOne or on a body in the same component as edgeOne.
+        edgeOne and edgeTwo must also both lie on the same plane and must intersect, they cannot be parallel.
+        Returns the transient JointGeometry object that can be used to create a joint or joint origin or null in case of a failure.
+        """
+        return JointGeometry()
     @property
     def geometryType(self) -> JointGeometryTypes:
         """
@@ -10420,21 +12984,21 @@ class JointGeometry(core.Base):
     def primaryAxisVector(self) -> core.Vector3D:
         """
         Returns the direction of the primary axis that's been calculated for this joint geometry.
-        Conceptually, this is the X-axis of the computed coordinate system.
+        Conceptually, this is the Z-axis of the computed coordinate system.
         """
         return core.Vector3D()
     @property
     def secondaryAxisVector(self) -> core.Vector3D:
         """
         Returns the direction of the secondary axis that's been calculated for this joint geometry.
-        Conceptually, this is the Y-axis of the computed coordinate system.
+        Conceptually, this is the X-axis of the computed coordinate system.
         """
         return core.Vector3D()
     @property
     def thirdAxisVector(self) -> core.Vector3D:
         """
         Returns the direction of the third axis that's been calculated for this joint geometry.
-        Conceptually, this is the Z-axis of the computed coordinate system.
+        Conceptually, this is the Y-axis of the computed coordinate system.
         """
         return core.Vector3D()
     @property
@@ -10467,7 +13031,7 @@ class JointInput(core.Base):
         Returns true if successful.
         """
         return bool()
-    def setAsRevoluteJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base) -> bool:
+    def setAsRevoluteJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a revolute joint.
         rotationAxis : Specifies which axis the rotation is around. If this is set to CustomJointDirection then the
@@ -10478,7 +13042,7 @@ class JointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsSliderJointMotion(self, sliderDirection: JointDirections, customSliderDirectionEntity: core.Base) -> bool:
+    def setAsSliderJointMotion(self, sliderDirection: JointDirections, customSliderDirectionEntity: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a slider joint.
         sliderDirection : Specifies which axis the slide direction is along. If this is set to CustomJointDirection then the
@@ -10488,7 +13052,7 @@ class JointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsCylindricalJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base) -> bool:
+    def setAsCylindricalJointMotion(self, rotationAxis: JointDirections, customRotationAxisEntity: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a cylindrical joint.
         rotationAxis : Specifies which axis the rotation is around. If this is set to CustomJointDirection then the
@@ -10499,7 +13063,7 @@ class JointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsPinSlotJointMotion(self, rotationAxis: JointDirections, slideDirection: JointDirections, customRotationAxisEntity: core.Base, customSlideDirectionEntity: core.Base) -> bool:
+    def setAsPinSlotJointMotion(self, rotationAxis: JointDirections, slideDirection: JointDirections, customRotationAxisEntity: core.Base = None, customSlideDirectionEntity: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a pin-slot joint.
         rotationAxis : Specifies which axis the rotation is around. If this is set to CustomJointDirection then the
@@ -10513,7 +13077,7 @@ class JointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsPlanarJointMotion(self, normalDirection: JointDirections, customNormalDirectionEntity: core.Base, customPrimarySlideDirection: core.Base) -> bool:
+    def setAsPlanarJointMotion(self, normalDirection: JointDirections, customNormalDirectionEntity: core.Base = None, customPrimarySlideDirection: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a planar joint.
         normalDirection : Defines the direction of the normal of the single degree of rotation.
@@ -10528,7 +13092,7 @@ class JointInput(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setAsBallJointMotion(self, pitchDirection: JointDirections, yawDirection: JointDirections, customPitchDirection: core.Base, customYawDirection: core.Base) -> bool:
+    def setAsBallJointMotion(self, pitchDirection: JointDirections, yawDirection: JointDirections, customPitchDirection: core.Base = None, customYawDirection: core.Base = None) -> bool:
         """
         Defines the relationship between the two joint geometries as a ball joint.
         pitchDirection : Defines the direction the pitch angle is measured from. This can be ZAxisJointDirection or CustomJointDirection. If
@@ -10740,6 +13304,12 @@ class JointList(core.Base):
     @staticmethod
     def cast(arg) -> JointList:
         return JointList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Joint:
+        return None
+    def __iter__(self) -> Iterator[Joint]:
+        return None
     def item(self, index: int) -> Joint:
         """
         Function that returns the specified joint using an index into the list.
@@ -10929,19 +13499,22 @@ class JointOrigin(core.Base):
     @property
     def primaryAxisVector(self) -> core.Vector3D:
         """
-        Returns the direction of the primary axis that's been calculated for this joint origin.
+        Returns the direction of the primary axis that's been calculated for this joint origin. This
+        is conceptually the Z axis as shown by the triad representing the joint origin.
         """
         return core.Vector3D()
     @property
     def secondaryAxisVector(self) -> core.Vector3D:
         """
-        Returns the direction of the secondary axis that's been calculated for this joint origin.
+        Returns the direction of the secondary axis that's been calculated for this joint origin. This
+        is conceptually the X axis as shown by the triad representing the joint origin.
         """
         return core.Vector3D()
     @property
     def thirdAxisVector(self) -> core.Vector3D:
         """
-        Returns the direction of the third axis that's been calculated for this joint origin.
+        Returns the direction of the third axis that's been calculated for this joint origin. This
+        is conceptually the Y axis as shown by the triad representing the joint origin.
         """
         return core.Vector3D()
     @property
@@ -10988,6 +13561,26 @@ class JointOrigin(core.Base):
         method to get the two entities identified by the tokens and then compare them.
         """
         return str()
+    @property
+    def isLightBulbOn(self) -> bool:
+        """
+        Gets and sets if the light bulb of this jointOrigin as displayed in the browser is on or off.
+        A joint origin will only be visible if the light bulb is switched on. However,
+        the light bulb can be on and the joint origin still invisible if a higher level occurrence
+        in the assembly context is not visible because its light bulb is off or the joint origins folder
+        light bulb is off.
+        """
+        return bool()
+    @isLightBulbOn.setter
+    def isLightBulbOn(self, value: bool):
+        """
+        Gets and sets if the light bulb of this jointOrigin as displayed in the browser is on or off.
+        A joint origin will only be visible if the light bulb is switched on. However,
+        the light bulb can be on and the joint origin still invisible if a higher level occurrence
+        in the assembly context is not visible because its light bulb is off or the joint origins folder
+        light bulb is off.
+        """
+        pass
 
 class JointOriginInput(core.Base):
     """
@@ -11121,19 +13714,22 @@ class JointOriginInput(core.Base):
     @property
     def primaryAxisVector(self) -> core.Vector3D:
         """
-        Returns the direction of the primary axis that's been calculated for this joint origin.
+        Returns the direction of the primary axis that's been calculated for this joint origin. This
+        is conceptually the Z axis as shown by the triad representing the joint origin.
         """
         return core.Vector3D()
     @property
     def secondaryAxisVector(self) -> core.Vector3D:
         """
-        Returns the direction of the secondary axis that's been calculated for this joint origin.
+        Returns the direction of the secondary axis that's been calculated for this joint origin. This
+        is conceptually the X axis as shown by the triad representing the joint origin.
         """
         return core.Vector3D()
     @property
     def thirdAxisVector(self) -> core.Vector3D:
         """
-        Returns the direction of the third axis that's been calculated for this joint origin.
+        Returns the direction of the third axis that's been calculated for this joint origin. This
+        is conceptually the Y axis as shown by the triad representing the joint origin.
         """
         return core.Vector3D()
 
@@ -11146,6 +13742,12 @@ class JointOriginList(core.Base):
     @staticmethod
     def cast(arg) -> JointOriginList:
         return JointOriginList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> JointOrigin:
+        return None
+    def __iter__(self) -> Iterator[JointOrigin]:
+        return None
     def item(self, index: int) -> JointOrigin:
         """
         Function that returns the specified joint origin using an index into the list.
@@ -11177,6 +13779,12 @@ class JointOrigins(core.Base):
     @staticmethod
     def cast(arg) -> JointOrigins:
         return JointOrigins()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> JointOrigin:
+        return None
+    def __iter__(self) -> Iterator[JointOrigin]:
+        return None
     def item(self, index: int) -> JointOrigin:
         """
         Function that returns the specified joint origin using an index into the collection.
@@ -11227,6 +13835,12 @@ class Joints(core.Base):
     @staticmethod
     def cast(arg) -> Joints:
         return Joints()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Joint:
+        return None
+    def __iter__(self) -> Iterator[Joint]:
+        return None
     def item(self, index: int) -> Joint:
         """
         Function that returns the specified joint using an index into the collection.
@@ -11315,6 +13929,30 @@ class LoftCenterLineOrRail(core.Base):
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
         """
         pass
+    @property
+    def edgeCondition(self) -> LoftRailEdgeConditions:
+        """
+        Gets and sets the edge condition for this rail. This value is only
+        applicable when a BRepEdge is used as the rail entity. If sketch
+        geometry is used, this value is ignored. The property defaults
+        to G0LoftRailEdgeCondition.
+        
+        If this LoftCenterLineOrRail object is associated with a created feature, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return LoftRailEdgeConditions()
+    @edgeCondition.setter
+    def edgeCondition(self, value: LoftRailEdgeConditions):
+        """
+        Gets and sets the edge condition for this rail. This value is only
+        applicable when a BRepEdge is used as the rail entity. If sketch
+        geometry is used, this value is ignored. The property defaults
+        to G0LoftRailEdgeCondition.
+        
+        If this LoftCenterLineOrRail object is associated with a created feature, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
 
 class LoftCenterLineOrRails(core.Base):
     """
@@ -11325,6 +13963,12 @@ class LoftCenterLineOrRails(core.Base):
     @staticmethod
     def cast(arg) -> LoftCenterLineOrRails:
         return LoftCenterLineOrRails()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> LoftCenterLineOrRail:
+        return None
+    def __iter__(self) -> Iterator[LoftCenterLineOrRail]:
+        return None
     def item(self, index: int) -> LoftCenterLineOrRail:
         """
         Function that returns the specified LoftCenterLineOrRail using an index into the collection.
@@ -11545,6 +14189,12 @@ class LoftFeatures(core.Base):
     @staticmethod
     def cast(arg) -> LoftFeatures:
         return LoftFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> LoftFeature:
+        return None
+    def __iter__(self) -> Iterator[LoftFeature]:
+        return None
     def item(self, index: int) -> LoftFeature:
         """
         Function that returns the specified loft feature using an index into the collection.
@@ -11627,7 +14277,7 @@ class LoftSection(core.Base):
         Returns true if the operation was successful.
         """
         return bool()
-    def setDirectionEndCondition(self, angle: core.ValueInput, weight: core.ValueInput) -> bool:
+    def setDirectionEndCondition(self, angle: core.ValueInput = None, weight: core.ValueInput = None) -> bool:
         """
         Sets the end condition to be defined by a direction and weight.
         
@@ -11747,6 +14397,12 @@ class LoftSections(core.Base):
     @staticmethod
     def cast(arg) -> LoftSections:
         return LoftSections()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> LoftSection:
+        return None
+    def __iter__(self) -> Iterator[LoftSection]:
+        return None
     def item(self, index: int) -> LoftSection:
         """
         Function that returns the specified LoftSection using an index into the collection. They are returned
@@ -11785,7 +14441,13 @@ class MeshBodies(core.Base):
     @staticmethod
     def cast(arg) -> MeshBodies:
         return MeshBodies()
-    def add(self, fullFilename: str, units: MeshUnits, baseOrFormFeature: core.Base) -> MeshBodyList:
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> MeshBody:
+        return None
+    def __iter__(self) -> Iterator[MeshBody]:
+        return None
+    def add(self, fullFilename: str, units: MeshUnits, baseOrFormFeature: core.Base = None) -> MeshBodyList:
         """
         Creates a new mesh body by importing an STL, OBJ or 3MF file.
         
@@ -12047,6 +14709,15 @@ class MeshBody(core.Base):
         method to get the two entities identified by the tokens and then compare them.
         """
         return str()
+    @property
+    def textureMapControl(self) -> core.TextureMapControl:
+        """
+        Returns the TextureMapControl object associated with this body when there is an
+        appearance assigned to the body that has a texture associated with it. If there
+        isn't a texture, this property will return null. If there is a texture, you can
+        use the returned object to query and modify how the texture is applied to the body.
+        """
+        return core.TextureMapControl()
 
 class MeshBodyList(core.Base):
     """
@@ -12057,6 +14728,12 @@ class MeshBodyList(core.Base):
     @staticmethod
     def cast(arg) -> MeshBodyList:
         return MeshBodyList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> MeshBody:
+        return None
+    def __iter__(self) -> Iterator[MeshBody]:
+        return None
     def item(self, index: int) -> MeshBody:
         """
         Provides access to a mesh body within the collection.
@@ -12100,6 +14777,44 @@ class MeshManager(core.Base):
         Returns the parent BRepBody, BRepFace, BRepLump, BRepShell, SculptBody, or SculptFace object.
         """
         return core.Base()
+
+class MinimumRadiusAnalyses(core.Base):
+    """
+    Provides access to any minimum radius analyses results in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MinimumRadiusAnalyses:
+        return MinimumRadiusAnalyses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> MinimumRadiusAnalysis:
+        return None
+    def __iter__(self) -> Iterator[MinimumRadiusAnalysis]:
+        return None
+    def item(self, index: int) -> MinimumRadiusAnalysis:
+        """
+        A method that returns the specified MinimumRadiusAnalysis object using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection
+        has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return MinimumRadiusAnalysis()
+    def itemByName(self, name: str) -> MinimumRadiusAnalysis:
+        """
+        A method that returns the specified MinimumRadiusAnalysis object using the name of the analysis
+        as displayed in the browser.
+        name : The name of the MinimumRadiusAnalysis object as displayed in the browser.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return MinimumRadiusAnalysis()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of MinimumRadiusAnalysis objects in the collection.
+        """
+        return int()
 
 class MirrorFeatureInput(core.Base):
     """
@@ -12226,6 +14941,12 @@ class MirrorFeatures(core.Base):
     @staticmethod
     def cast(arg) -> MirrorFeatures:
         return MirrorFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> MirrorFeature:
+        return None
+    def __iter__(self) -> Iterator[MirrorFeature]:
+        return None
     def item(self, index: int) -> MirrorFeature:
         """
         Function that returns the specified mirror feature using an index into the collection.
@@ -12277,6 +14998,12 @@ class ModelParameters(core.Base):
     @staticmethod
     def cast(arg) -> ModelParameters:
         return ModelParameters()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ModelParameter:
+        return None
+    def __iter__(self) -> Iterator[ModelParameter]:
+        return None
     def item(self, index: int) -> ModelParameter:
         """
         Function that returns the specified Model Parameter using an index into the collection.
@@ -12306,6 +15033,22 @@ class ModelParameters(core.Base):
         """
         return Component()
 
+class MoveFeatureDefinition(core.Base):
+    """
+    A Base class to return the information used to define a Move feature.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MoveFeatureDefinition:
+        return MoveFeatureDefinition()
+    @property
+    def parentMoveFeature(self) -> MoveFeature:
+        """
+        Returns the parent MoveFeature object
+        """
+        return MoveFeature()
+
 class MoveFeatureInput(core.Base):
     """
     This class defines the methods and properties that pertain to the definition of a move feature.
@@ -12315,6 +15058,90 @@ class MoveFeatureInput(core.Base):
     @staticmethod
     def cast(arg) -> MoveFeatureInput:
         return MoveFeatureInput()
+    def defineAsFreeMove(self, transform: core.Matrix3D) -> bool:
+        """
+        This method will define a move feature whose translation and orientation
+        is defined using a transformation matrix. A matrix can define any translation and
+        orientation.
+        transform : The transformation matrix that defines the transform to apply. The matrix must
+        be an orthogonal matrix; that is the axes are perpendicular to each other
+        and there isn't any scaling or mirroring defined.
+        Returns true if defining the type of move is successful.
+        """
+        return bool()
+    def defineAsTranslateXYZ(self, xDistance: core.ValueInput, yDistance: core.ValueInput, zDistance: core.ValueInput, isDesignSpace: bool) -> bool:
+        """
+        This method will define a move feature that defines a translation in X, Y, and Z.
+        xDistance : A ValueInput object that defines the offset in the X direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units are used.
+        yDistance : A ValueInput object that defines the offset in the Y direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units are used.
+        zDistance : A ValueInput object that defines the offset in the Z direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units are used.
+        isDesignSpace : Defines if the translation is defined with respect to the design or component space.
+        Design space is the same as the root component space.
+        Returns true if defining the type of move is successful.
+        """
+        return bool()
+    def defineAsTranslateAlongEntity(self, linearEntity: core.Base, distance: core.ValueInput) -> bool:
+        """
+        This method will define a move feature that defines a translation along a specified entity.
+        linearEntity : A linear entity that defines the direction of the move. This can be a linear BRepEdge,
+        ConstructionAxis, or a SketchLine. The entity defines the direction, not the distance.
+        The natural direction of the entity defines the translation direction.
+        distance : A ValueInput object that defines the offset distance. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units are used.
+        Returns true if defining the type of move is successful.
+        """
+        return bool()
+    def defineAsRotate(self, axisEntity: core.Base, angle: core.ValueInput) -> bool:
+        """
+        This method defines a move feature that is described by an axis and rotation angle.
+        axisEntity : A linear entity that defines the axis of rotation. This can be a linear BRepEdge,
+        ConstructionAxis, or a SketchLine. The natural direction of the entity defines a
+        right-hand rule for the rotation direction.
+        angle : A ValueInput object that defines the rotation angle. If the ValueInput
+        is created using a real value, the angle is in radians. If it's defined using
+        a string, the default document units will be used.
+        Returns true if defining the type of move is successful.
+        """
+        return bool()
+    def defineAsPointToPoint(self, originPoint: core.Base, targetPoint: core.Base) -> bool:
+        """
+        This method defines a move feature described by a translation from one point to another.
+        originPoint : The first point that defines the start position of the move.
+        targetPoint : The second point that defines the direction and distance of the move.
+        Returns true if defining the type of move is successful.
+        """
+        return bool()
+    def defineAsPointToPosition(self, point: core.Base, xDistance: core.ValueInput, yDistance: core.ValueInput, zDistance: core.ValueInput, isDesignSpace: bool) -> bool:
+        """
+        This method defines a move feature described by a point and an offset. The distances
+        define offsets in the X, Y, and Z directions in either design or component space. To
+        not move the input entities at all the offset distances should be set to the current
+        location of the point in either design or component space. Adding or subtracting to
+        those values will then move the entities that distance. It's best to experiment with
+        the command interactively to understand the behavior.
+        point : An entity that defines a point in space. This can be a sketch point, a construction point,
+        or a BRepVertex.
+        xDistance : A ValueInput object that defines the offset in the X direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        yDistance : A ValueInput object that defines the offset in the Y direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        zDistance : A ValueInput object that defines the offset in the Z direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        isDesignSpace : Defines if the translation is defined with respect to the design or component space.
+        Design space is the same as the root component space.
+        Returns true if defining the type of move is successful.
+        """
+        return bool()
     @property
     def inputEntities(self) -> core.ObjectCollection:
         """
@@ -12327,22 +15154,6 @@ class MoveFeatureInput(core.Base):
         """
         An ObjectCollection containing the objects to move. The collection can contain
         BRepBody or BRepFace objects but not a mixture of the two types.
-        """
-        pass
-    @property
-    def transform(self) -> core.Matrix3D:
-        """
-        Gets and sets the transform to apply to the input entities. This can describe a move (translation)
-        or a rotation. The matrix must define an orthogonal transform. That is the axes remain
-        perpendicular to each other and there isn't any scale or mirror defined.
-        """
-        return core.Matrix3D()
-    @transform.setter
-    def transform(self, value: core.Matrix3D):
-        """
-        Gets and sets the transform to apply to the input entities. This can describe a move (translation)
-        or a rotation. The matrix must define an orthogonal transform. That is the axes remain
-        perpendicular to each other and there isn't any scale or mirror defined.
         """
         pass
     @property
@@ -12382,6 +15193,12 @@ class MoveFeatures(core.Base):
     @staticmethod
     def cast(arg) -> MoveFeatures:
         return MoveFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> MoveFeature:
+        return None
+    def __iter__(self) -> Iterator[MoveFeature]:
+        return None
     def item(self, index: int) -> MoveFeature:
         """
         Function that returns the specified move feature using an index into the collection.
@@ -12389,20 +15206,6 @@ class MoveFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return MoveFeature()
-    def createInput(self, inputEntities: core.ObjectCollection, transform: core.Matrix3D) -> MoveFeatureInput:
-        """
-        Creates a MoveFeatureInput object. Use properties and methods on this object
-        to define the move feature you want to create and then use the Add method, passing in
-        the MoveFeatureInput object.
-        inputEntities : An ObjectCollection containing the entities to move. This collection can only contain
-        BRepBody objects in parametric modeling. It can be BRep bodies, T-Spline bodies,
-        mesh bodies mixed or faces and features mixed in non-parametric modeling.
-        transform : The transform to apply to the input entities. This can describe a move (translation) or a rotation. The
-        matrix must define an orthogonal transform. That is the axes must be perpendicular to each other and there
-        can't be any scaling or mirroring defined.
-        Returns the newly created MoveFeatureInput object or null if the creation failed.
-        """
-        return MoveFeatureInput()
     def add(self, input: MoveFeatureInput) -> MoveFeature:
         """
         Creates a new move feature.
@@ -12420,6 +15223,16 @@ class MoveFeatures(core.Base):
         Returns the specified item or null if the specified name was not found.
         """
         return MoveFeature()
+    def createInput2(self, inputEntities: core.ObjectCollection) -> MoveFeatureInput:
+        """
+        Creates a MoveFeatureInput object. Use properties and methods on this object
+        to define how the move is defined and then use the MoveFeatues.add method, passing in
+        the MoveFeatureInput object to create a move feature.
+        inputEntities : An ObjectCollection containing the objects to move. For a parametric model, the collection can contain
+        BRepBody or BRepFace objects but not a combination of both.
+        Returns the newly created MoveFeatureInput object or null if the creation failed.
+        """
+        return MoveFeatureInput()
     @property
     def count(self) -> int:
         """
@@ -12471,7 +15284,7 @@ class Occurrence(core.Base):
         Returns the moved Occurrence or null in the case the move failed.
         """
         return Occurrence()
-    def getPhysicalProperties(self, accuracy: CalculationAccuracy) -> PhysicalProperties:
+    def getPhysicalProperties(self, accuracy: CalculationAccuracy = CalculationAccuracy.LowCalculationAccuracy) -> PhysicalProperties:
         """
         Returns the PhysicalProperties object that has properties for getting the area, density, mass, volume, moments, etc
         of this occurrence.
@@ -12488,6 +15301,18 @@ class Occurrence(core.Base):
         
         This method will fail if the occurrence is not referencing an external component.
         Returns true if the break link was successful.
+        """
+        return bool()
+    def replace(self, newFile: core.DataFile, replaceAll: bool) -> bool:
+        """
+        Replaces this occurrence or all occurrences that reference the same external component with a new component.
+        
+        This method will fail if the occurrence is not referencing an external component.
+        newFile : Specifies the DataFile you want to use as the replacement. The DataFile specified
+        must exist in the same hub as the parent assembly.
+        replaceAll : Indicates if you want to replace only this single occurrence or all occurrences that reference
+        the same external design.
+        Returns true if the replacement was successful.
         """
         return bool()
     @property
@@ -12570,20 +15395,6 @@ class Occurrence(core.Base):
         This property is affected by the assembly context.
         """
         return bool()
-    @property
-    def transform(self) -> core.Matrix3D:
-        """
-        Gets and sets the 3d matrix data that defines this occurrences orientation and
-        position in its assembly context
-        """
-        return core.Matrix3D()
-    @transform.setter
-    def transform(self, value: core.Matrix3D):
-        """
-        Gets and sets the 3d matrix data that defines this occurrences orientation and
-        position in its assembly context
-        """
-        pass
     @property
     def timelineObject(self) -> TimelineObject:
         """
@@ -12756,6 +15567,16 @@ class Occurrence(core.Base):
         position in its assembly context
         """
         pass
+    @property
+    def documentReference(self) -> core.DocumentReference:
+        """
+        When the component this occurrence references is an external reference (the isReferencedComponent property returns true),
+        this will return the object that represents that reference. Through the DocumentReference object you can modify
+        the version and get other information associated with the reference.
+        
+        This property will fail if the occurrence is not referencing an external component.
+        """
+        return core.DocumentReference()
 
 class OccurrenceList(core.Base):
     """
@@ -12766,6 +15587,12 @@ class OccurrenceList(core.Base):
     @staticmethod
     def cast(arg) -> OccurrenceList:
         return OccurrenceList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Occurrence:
+        return None
+    def __iter__(self) -> Iterator[Occurrence]:
+        return None
     def item(self, index: int) -> Occurrence:
         """
         Returns the specified occurrence using an index into the collection.
@@ -12797,6 +15624,12 @@ class Occurrences(core.Base):
     @staticmethod
     def cast(arg) -> Occurrences:
         return Occurrences()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Occurrence:
+        return None
+    def __iter__(self) -> Iterator[Occurrence]:
+        return None
     def item(self, index: int) -> Occurrence:
         """
         Function that returns the specified occurrence using an index into the collection.
@@ -12847,6 +15680,19 @@ class Occurrences(core.Base):
         Returns the current list of all occurrences.
         """
         return [Occurrence()]
+    def addNewComponentCopy(self, component: Component, transform: core.Matrix3D) -> Occurrence:
+        """
+        Method that creates a new occurrence by creating a new component that is a copy of an existing
+        component. This is the equivalent of copying and using the "Paste New" command in the user interface. This
+        is different from the addExistingComponent in that it's not a new instance to the existing component but a
+        new component is created that has it's own definition (sketches, features, etc.) and a new occurrence instance
+        is created to reference this new component.
+        component : The existing component to create a copy of.
+        transform : A transform that defines the location for the new occurrence
+        Returns the newly created occurrence or null if the creation failed. The newly created component can be
+        obtained by using the component property of the returned Occurrence.
+        """
+        return Occurrence()
     @property
     def count(self) -> int:
         """
@@ -12871,6 +15717,12 @@ class OffsetFacesFeatures(core.Base):
     @staticmethod
     def cast(arg) -> OffsetFacesFeatures:
         return OffsetFacesFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> OffsetFacesFeature:
+        return None
+    def __iter__(self) -> Iterator[OffsetFacesFeature]:
+        return None
     def item(self, index: int) -> OffsetFacesFeature:
         """
         Function that returns the specified Offset Face feature using an index into the collection.
@@ -12990,6 +15842,12 @@ class OffsetFeatures(core.Base):
     @staticmethod
     def cast(arg) -> OffsetFeatures:
         return OffsetFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> OffsetFeature:
+        return None
+    def __iter__(self) -> Iterator[OffsetFeature]:
+        return None
     def item(self, index: int) -> OffsetFeature:
         """
         Function that returns the specified offset feature using an index into the collection.
@@ -12997,7 +15855,7 @@ class OffsetFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return OffsetFeature()
-    def createInput(self, entities: core.ObjectCollection, distance: core.ValueInput, operation: FeatureOperations, isChainSelection: bool) -> OffsetFeatureInput:
+    def createInput(self, entities: core.ObjectCollection, distance: core.ValueInput, operation: FeatureOperations, isChainSelection: bool = True) -> OffsetFeatureInput:
         """
         Creates a OffsetFeatureInput object. Use properties and methods on this object
         to define the offset feature you want to create and then use the Add method, passing in
@@ -13153,6 +16011,12 @@ class Parameter(core.Base):
         method to get the two entities identified by the tokens and then compare them.
         """
         return str()
+    @property
+    def dependencyParameters(self) -> ParameterList:
+        """
+        Returns a list of parameters that this parameter is dependent on.
+        """
+        return ParameterList()
 
 class ParameterList(core.Base):
     """
@@ -13163,6 +16027,12 @@ class ParameterList(core.Base):
     @staticmethod
     def cast(arg) -> ParameterList:
         return ParameterList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Parameter:
+        return None
+    def __iter__(self) -> Iterator[Parameter]:
+        return None
     @staticmethod
     def create() -> ParameterList:
         """
@@ -13212,7 +16082,7 @@ class ParameterList(core.Base):
         Returns true if successful. This method will fail if the list is read-only
         """
         return bool()
-    def find(self, parameter: Parameter, startIndex: int) -> int:
+    def find(self, parameter: Parameter, startIndex: int = 0) -> int:
         """
         Finds the specified parameter in the list. The search can be started at a specified
         index rather than from the beginning of the list.
@@ -13253,30 +16123,74 @@ class PatchFeatureInput(core.Base):
     @staticmethod
     def cast(arg) -> PatchFeatureInput:
         return PatchFeatureInput()
+    def setContinuity(self, continuity: list[int], weight: list[float], isContinuityDirectionFlipped: list[bool]) -> bool:
+        """
+        Sets the continuity to use for each edge in the boundary. The arrays for the arguments correspond
+        to B-Rep edges in the boundary. You can use the getContinuity method to get the list of edges to
+        know their order. This order applies to the arrays provided for the arguments.
+        continuity : An array whose size of the number of B-Rep edges in the boundary. You can use the getContinuity
+        method to get the list of edges, so you know the number and order of the edges. The continuity array defines the
+        type of continuity to apply to the edge at the same index. The values are obtained from the SurfaceContinuityTypes
+        enum and passed in as an integer.
+        weight : An array whose size is the number of B-Rep edges in the boundary. You can use the getContinuity
+        method to get the list of edges, so you know the number and order of the edges. The weight array defines the
+        weight to apply to the edge at the same index. If the continuity of an edge is ConnectedSurfaceContinuityType,
+        the weight value is ignored.
+        isContinuityDirectionFlipped : An array whose size is the number of B-Rep edges in the boundary. You can use the getContinuity
+        method to get the list of edges, so you know the number and order of the edges. The isContinuityDirectionFlipped
+        array defines which of the two faces the edge connects to and is used in computing the continuity direction. If the
+        continuity is ConnectedSurfaceContinuityType, or the edge is an open edge and only connected to a single face,
+        the value is ignored.
+        
+        If false, the face associated with the first co-edge returned by the edge is used.
+        Returns true if successful.
+        """
+        return bool()
+    def getContinuity(self) -> tuple[bool, list[BRepEdge], list[int], list[float], list[bool]]:
+        """
+        Gets the continuity used for each edge in the boundary.
+        edges : Output array containing all of the BRepEdge objects in the boundary.
+        continuity : Output array the same size as the edges array that defines the continuity
+        to apply to the edge in the same index in the edges array. The values are obtained
+        from the SurfaceContinuityTypes enum and passed in as an integers.
+        weight : Output array the same size as the edges array that defines the weight applied
+        to the edge in the same index in the edges array. If the continuity
+        of an edge is ConnectedSurfaceContinuityType, the weight value should be ignored.
+        isContinuityDirectionFlipped : Output array the same size as the edges array that defines which of the two faces the
+        edge connects to is used in computing the continuity direction. If the continuity is
+        ConnectedSurfaceContinuityType or the edge is an open edge and only connected to a
+        single face, the value should be ignored.
+        
+        If false, the face associated with the first co-edge returned by the edge is used.
+        Returns true if successful.
+        """
+        return (bool(), [BRepEdge()], [int()], [float()], [bool()])
     @property
     def boundaryCurve(self) -> core.Base:
         """
-        Gets and set the input geometry that will be used to define the boundary. This can be a sketch profile,
-        a single sketch curve, a single B-Rep edge, or a Path object.
+        Gets and sets the input geometry that will be used to define the boundary. This can be a sketch profile,
+        a single sketch curve, a single B-Rep edge, an ObjectCollection, or a Path object.
         
-        If a single sketch curve or B-Rep edge is input, that is not closed, Fusion 360 will automatically find connected sketch curves
-        or B-Rep edges in order to define a closed loop. All sketch curves are valid as input. BRepEdges are valid if they are
-        an "open" edge, which means they are only used by one face.
+        If a single open sketch curve or B-Rep edge is input, Fusion will automatically find connected sketch curves
+        or B-Rep edges to define a closed loop.
         
-        If a Path is input it must define a closed shape and the B-Rep edges must be valid "open" edges.
+        If an ObjectCollection is used as input, it must be a set of curves that define a closed shape.
+        
+        If a Path is used as input, it must define a closed shape.
         """
         return core.Base()
     @boundaryCurve.setter
     def boundaryCurve(self, value: core.Base):
         """
-        Gets and set the input geometry that will be used to define the boundary. This can be a sketch profile,
-        a single sketch curve, a single B-Rep edge, or a Path object.
+        Gets and sets the input geometry that will be used to define the boundary. This can be a sketch profile,
+        a single sketch curve, a single B-Rep edge, an ObjectCollection, or a Path object.
         
-        If a single sketch curve or B-Rep edge is input, that is not closed, Fusion 360 will automatically find connected sketch curves
-        or B-Rep edges in order to define a closed loop. All sketch curves are valid as input. BRepEdges are valid if they are
-        an "open" edge, which means they are only used by one face.
+        If a single open sketch curve or B-Rep edge is input, Fusion will automatically find connected sketch curves
+        or B-Rep edges to define a closed loop.
         
-        If a Path is input it must define a closed shape and the B-Rep edges must be valid "open" edges.
+        If an ObjectCollection is used as input, it must be a set of curves that define a closed shape.
+        
+        If a Path is used as input, it must define a closed shape.
         """
         pass
     @property
@@ -13291,20 +16205,6 @@ class PatchFeatureInput(core.Base):
         """
         Gets and sets the type of operation performed by the patch feature. Only 'NewBodyFeatureOperation' and 'NewComponentFeatureOperation' are
         valid operations for patch features.
-        """
-        pass
-    @property
-    def continuity(self) -> SurfaceContinuityTypes:
-        """
-        Gets and sets type of surface continuity to use when matching boundary edges to face edges. When a new PatchFeatureInput is
-        created, this is initialized to ConnectedSurfaceContinuityType. This value is ignored when creating a patch for sketch curves.
-        """
-        return SurfaceContinuityTypes()
-    @continuity.setter
-    def continuity(self, value: SurfaceContinuityTypes):
-        """
-        Gets and sets type of surface continuity to use when matching boundary edges to face edges. When a new PatchFeatureInput is
-        created, this is initialized to ConnectedSurfaceContinuityType. This value is ignored when creating a patch for sketch curves.
         """
         pass
     @property
@@ -13336,8 +16236,8 @@ class PatchFeatureInput(core.Base):
     @property
     def creationOccurrence(self) -> Occurrence:
         """
-        In order for geometry to be transformed correctly, an Occurrence for creation needs to be
-        specified when the Patch feature is created based on geometry (e.g. a profile, edges, faces)
+        For geometry to be transformed correctly, an Occurrence for creation needs to be
+        specified when the Patch feature is created based on geometry (e.g., a profile, edges, faces)
         in another component AND (the Patch feature) is not in the root component.
         The CreationOccurrence is analogous to the active occurrence in the UI
         """
@@ -13345,10 +16245,112 @@ class PatchFeatureInput(core.Base):
     @creationOccurrence.setter
     def creationOccurrence(self, value: Occurrence):
         """
-        In order for geometry to be transformed correctly, an Occurrence for creation needs to be
-        specified when the Patch feature is created based on geometry (e.g. a profile, edges, faces)
+        For geometry to be transformed correctly, an Occurrence for creation needs to be
+        specified when the Patch feature is created based on geometry (e.g., a profile, edges, faces)
         in another component AND (the Patch feature) is not in the root component.
         The CreationOccurrence is analogous to the active occurrence in the UI
+        """
+        pass
+    @property
+    def interiorRailsAndPoints(self) -> core.ObjectCollection:
+        """
+        Gets and sets any interior curves or points the patch should fit
+        through. Valid entities include object collections of connected curves, paths, sketch curves,
+        sketch points, B-Rep edges, and construction points.
+        
+        When getting this property, the returned ObjectCollection can contain individual edges, sketch curves,
+        sketch points, construction points, vertices, and ObjectCollection objects that represent a group
+        of the curves and points listed above.
+        
+        Can be set to null to remove any interior rails and points from the patch.
+        """
+        return core.ObjectCollection()
+    @interiorRailsAndPoints.setter
+    def interiorRailsAndPoints(self, value: core.ObjectCollection):
+        """
+        Gets and sets any interior curves or points the patch should fit
+        through. Valid entities include object collections of connected curves, paths, sketch curves,
+        sketch points, B-Rep edges, and construction points.
+        
+        When getting this property, the returned ObjectCollection can contain individual edges, sketch curves,
+        sketch points, construction points, vertices, and ObjectCollection objects that represent a group
+        of the curves and points listed above.
+        
+        Can be set to null to remove any interior rails and points from the patch.
+        """
+        pass
+    @property
+    def isGroupEdges(self) -> bool:
+        """
+        Gets and sets if the edges in the boundary curve are treated as a group,
+        and they all use the same continuity. If this property is True (which is the default),
+        the continuity property controls the continuity for all edges. If
+        this property is false; the continuity is set for each edge using the
+        setContinuity method.
+        
+        When this property is set to true, the continuity and weight of the first edge
+        will be used for all edges. When set to false, each edge will initially have
+        the same continuity and weight. This is typically set to false as a side-effect
+        of calling the setContinuity method.
+        """
+        return bool()
+    @isGroupEdges.setter
+    def isGroupEdges(self, value: bool):
+        """
+        Gets and sets if the edges in the boundary curve are treated as a group,
+        and they all use the same continuity. If this property is True (which is the default),
+        the continuity property controls the continuity for all edges. If
+        this property is false; the continuity is set for each edge using the
+        setContinuity method.
+        
+        When this property is set to true, the continuity and weight of the first edge
+        will be used for all edges. When set to false, each edge will initially have
+        the same continuity and weight. This is typically set to false as a side-effect
+        of calling the setContinuity method.
+        """
+        pass
+    @property
+    def groupContinuity(self) -> SurfaceContinuityTypes:
+        """
+        Gets and sets the type of surface continuity to use for all edges when the isGroupEdges property is true. The continuity
+        is used to determine how the patch connects to any B-Rep edges in the boundary. It is ignored for any sketch curves in the
+        boundary. The property defaults to ConnectedSurfaceContinuityType. The value of this property is ignored if the isGroupEdges property is false.
+        """
+        return SurfaceContinuityTypes()
+    @groupContinuity.setter
+    def groupContinuity(self, value: SurfaceContinuityTypes):
+        """
+        Gets and sets the type of surface continuity to use for all edges when the isGroupEdges property is true. The continuity
+        is used to determine how the patch connects to any B-Rep edges in the boundary. It is ignored for any sketch curves in the
+        boundary. The property defaults to ConnectedSurfaceContinuityType. The value of this property is ignored if the isGroupEdges property is false.
+        """
+        pass
+    @property
+    def groupWeight(self) -> float:
+        """
+        Gets and sets the weight to use for all edges when the isGroupEdges property is true. It is ignored for any sketch curves
+        in the boundary. The property defaults to 0.5. The value of this property is ignored if the isGroupEdges property is false.
+        """
+        return float()
+    @groupWeight.setter
+    def groupWeight(self, value: float):
+        """
+        Gets and sets the weight to use for all edges when the isGroupEdges property is true. It is ignored for any sketch curves
+        in the boundary. The property defaults to 0.5. The value of this property is ignored if the isGroupEdges property is false.
+        """
+        pass
+    @property
+    def groupIsContinuityDirectionFlipped(self) -> bool:
+        """
+        Gets and sets the continuity direction for all edges when the isGroupEdges property is true. It is ignored for any sketch curves
+        in the boundary. The property defaults to false. The value of this property is ignored if the isGroupEdges property is false.
+        """
+        return bool()
+    @groupIsContinuityDirectionFlipped.setter
+    def groupIsContinuityDirectionFlipped(self, value: bool):
+        """
+        Gets and sets the continuity direction for all edges when the isGroupEdges property is true. It is ignored for any sketch curves
+        in the boundary. The property defaults to false. The value of this property is ignored if the isGroupEdges property is false.
         """
         pass
 
@@ -13362,6 +16364,12 @@ class PatchFeatures(core.Base):
     @staticmethod
     def cast(arg) -> PatchFeatures:
         return PatchFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> PatchFeature:
+        return None
+    def __iter__(self) -> Iterator[PatchFeature]:
+        return None
     def item(self, index: int) -> PatchFeature:
         """
         Function that returns the specified patch feature using an index into the collection.
@@ -13379,19 +16387,20 @@ class PatchFeatures(core.Base):
     def createInput(self, boundaryCurve: core.Base, operation: FeatureOperations) -> PatchFeatureInput:
         """
         Creates a PatchFeatureInput object. Use properties and methods on the returned PatchFeatureInput
-        object to set other settings. The PatchFeatureInput object can then be used as input to the
-        add method to create the patch feature.
+        object to set other settings. The PatchFeatureInput object is used as input to the add method
+        to create the patch feature.
         boundaryCurve : Defines the input geometry that will be used to define the boundary. This can be a sketch profile,
-        a single sketch curve, a single B-Rep edge, or a Path object.
+        a single sketch curve, a single B-Rep edge, an ObjectCollection, or a Path object.
         
-        If a single sketch curve or B-Rep edge is input, that is not closed, Fusion 360 will automatically find connected sketch curves
-        or B-Rep edges in order to define a closed loop. All sketch curves are valid as input. BRepEdges are valid if they are
-        an "open" edge, which means they are only used by one face.
+        If a single sketch curve or B-Rep edge is an input that is not closed; Fusion 360 will automatically find connected sketch curves
+        or B-Rep edges to define a closed loop.
         
-        If a Path is input it must define a closed shape and the B-Rep edges must be valid "open" edges.
+        If an ObjectCollection is an input, it must be a set of curves that define a closed shape.
+        
+        If a Path is an input, it must define a closed shape.
         operation : The feature operation to perform. Only 'NewBodyFeatureOperation' and 'NewComponentFeatureOperation' are
         valid operations for patch features.
-        Returns the newly created PatchFeatureInput object or null if the creation failed.
+        Returns the newly created PatchFeatureInput object or null if the creation fails.
         """
         return PatchFeatureInput()
     def add(self, input: PatchFeatureInput) -> PatchFeature:
@@ -13423,6 +16432,12 @@ class Path(core.Base):
     @staticmethod
     def cast(arg) -> Path:
         return Path()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> PathEntity:
+        return None
+    def __iter__(self) -> Iterator[PathEntity]:
+        return None
     @staticmethod
     def create(curves: core.Base, chainOptions: ChainedCurveOptions) -> Path:
         """
@@ -13740,6 +16755,12 @@ class PathPatternFeatures(core.Base):
     @staticmethod
     def cast(arg) -> PathPatternFeatures:
         return PathPatternFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> PathPatternFeature:
+        return None
+    def __iter__(self) -> Iterator[PathPatternFeature]:
+        return None
     def item(self, index: int) -> PathPatternFeature:
         """
         Function that returns the specified path pattern feature using an index into the collection.
@@ -13858,6 +16879,12 @@ class PatternElements(core.Base):
     @staticmethod
     def cast(arg) -> PatternElements:
         return PatternElements()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> PatternElement:
+        return None
+    def __iter__(self) -> Iterator[PatternElement]:
+        return None
     def item(self, index: int) -> PatternElement:
         """
         Function that returns the specified pattern element using an index into the collection.
@@ -13967,33 +16994,271 @@ class PhysicalProperties(core.Base):
         """
         return core.Point3D()
 
+class PipeFeatureInput(core.Base):
+    """
+    This class defines the methods and properties that pertain to the definition of a Pipe
+    feature.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PipeFeatureInput:
+        return PipeFeatureInput()
+    @property
+    def operation(self) -> FeatureOperations:
+        """
+        Gets and sets the type of operation performed by the Pipe.
+        """
+        return FeatureOperations()
+    @operation.setter
+    def operation(self, value: FeatureOperations):
+        """
+        Gets and sets the type of operation performed by the Pipe.
+        """
+        pass
+    @property
+    def path(self) -> Path:
+        """
+        Gets and sets the path to create the Pipe.
+        """
+        return Path()
+    @path.setter
+    def path(self, value: Path):
+        """
+        Gets and sets the path to create the Pipe.
+        """
+        pass
+    @property
+    def sectionType(self) -> PipeSectionTypes:
+        """
+        Gets and sets the section type of the Pipe.
+        The type can be: Circular, Square, Triangular.
+        """
+        return PipeSectionTypes()
+    @sectionType.setter
+    def sectionType(self, value: PipeSectionTypes):
+        """
+        Gets and sets the section type of the Pipe.
+        The type can be: Circular, Square, Triangular.
+        """
+        pass
+    @property
+    def sectionSize(self) -> core.ValueInput:
+        """
+        Gets and sets the section size of the Pipe.
+        """
+        return core.ValueInput()
+    @sectionSize.setter
+    def sectionSize(self, value: core.ValueInput):
+        """
+        Gets and sets the section size of the Pipe.
+        """
+        pass
+    @property
+    def isHollow(self) -> bool:
+        """
+        Specifies if the Pipe is hollow or not.
+        
+        Setting this to true will default the sectionThickness to 0.1 cm.
+        """
+        return bool()
+    @isHollow.setter
+    def isHollow(self, value: bool):
+        """
+        Specifies if the Pipe is hollow or not.
+        
+        Setting this to true will default the sectionThickness to 0.1 cm.
+        """
+        pass
+    @property
+    def sectionThickness(self) -> core.ValueInput:
+        """
+        Gets and sets the section thickness of the Pipe.
+        
+        Setting this will also set the isHollow setting to true.
+        """
+        return core.ValueInput()
+    @sectionThickness.setter
+    def sectionThickness(self, value: core.ValueInput):
+        """
+        Gets and sets the section thickness of the Pipe.
+        
+        Setting this will also set the isHollow setting to true.
+        """
+        pass
+    @property
+    def creationOccurrence(self) -> Occurrence:
+        """
+        In order for geometry to be transformed correctly, an Occurrence for creation needs to be
+        specified when the Pipe is created based on geometry (e.g. a path)
+        in another component AND (the Pipe) is not in the root component.
+        The CreationOccurrence is analogous to the active occurrence in the UI
+        """
+        return Occurrence()
+    @creationOccurrence.setter
+    def creationOccurrence(self, value: Occurrence):
+        """
+        In order for geometry to be transformed correctly, an Occurrence for creation needs to be
+        specified when the Pipe is created based on geometry (e.g. a path)
+        in another component AND (the Pipe) is not in the root component.
+        The CreationOccurrence is analogous to the active occurrence in the UI
+        """
+        pass
+    @property
+    def targetBaseFeature(self) -> BaseFeature:
+        """
+        When creating a feature that is owned by a base feature, set this property to the
+        base feature you want to associate the new feature with. By default, this is null,
+        meaning it will not be associated with a base feature.
+        
+        Because of a current limitation, if you want to create a feature associated with a base
+        feature, you must set this property AND call the startEdit method of the base feature,
+        create the feature, and then call the finishEdit method of the base feature. The base
+        feature must be in an "edit" state to be able to add any additional items to it.
+        """
+        return BaseFeature()
+    @targetBaseFeature.setter
+    def targetBaseFeature(self, value: BaseFeature):
+        """
+        When creating a feature that is owned by a base feature, set this property to the
+        base feature you want to associate the new feature with. By default, this is null,
+        meaning it will not be associated with a base feature.
+        
+        Because of a current limitation, if you want to create a feature associated with a base
+        feature, you must set this property AND call the startEdit method of the base feature,
+        create the feature, and then call the finishEdit method of the base feature. The base
+        feature must be in an "edit" state to be able to add any additional items to it.
+        """
+        pass
+    @property
+    def distanceOne(self) -> core.ValueInput:
+        """
+        Gets and sets the distance for the pipe created while following the path given as input, in the same order.
+        This value defaults to 1.0 if not set.
+        
+        If the path is open, setting this to a value between 0.0 and 1.0 decides the length of the created Pipe.
+        If the path is closed, setting this value should not be higher than 1.0 - distanceTwo.
+        Ex: Path is made of curves A-B-C-A. The distanceOne returns and sets the length of the pipe going from A-B-C-A.
+        
+        This property returns null in the case where the feature is non-parametric.
+        """
+        return core.ValueInput()
+    @distanceOne.setter
+    def distanceOne(self, value: core.ValueInput):
+        """
+        Gets and sets the distance for the pipe created while following the path given as input, in the same order.
+        This value defaults to 1.0 if not set.
+        
+        If the path is open, setting this to a value between 0.0 and 1.0 decides the length of the created Pipe.
+        If the path is closed, setting this value should not be higher than 1.0 - distanceTwo.
+        Ex: Path is made of curves A-B-C-A. The distanceOne returns and sets the length of the pipe going from A-B-C-A.
+        
+        This property returns null in the case where the feature is non-parametric.
+        """
+        pass
+    @property
+    def distanceTwo(self) -> core.ValueInput:
+        """
+        Gets and sets the distance for the pipe created while following the reversed path given as input.
+        Before setting this value, distanceOne must be set.
+        
+        If the path is open, getting this value returns null, and setting the value is ignored.
+        If the path is closed, setting this value should not be higher than 1.0 - distanceOne.
+        Ex: Path is made of curves A-B-C-A. The distanceTwo returns and sets the length of the pipe going from A-C-B-A.
+        
+        This property returns null in the case where the feature is non-parametric.
+        """
+        return core.ValueInput()
+    @distanceTwo.setter
+    def distanceTwo(self, value: core.ValueInput):
+        """
+        Gets and sets the distance for the pipe created while following the reversed path given as input.
+        Before setting this value, distanceOne must be set.
+        
+        If the path is open, getting this value returns null, and setting the value is ignored.
+        If the path is closed, setting this value should not be higher than 1.0 - distanceOne.
+        Ex: Path is made of curves A-B-C-A. The distanceTwo returns and sets the length of the pipe going from A-C-B-A.
+        
+        This property returns null in the case where the feature is non-parametric.
+        """
+        pass
+    @property
+    def participantBodies(self) -> list[BRepBody]:
+        """
+        Gets and sets the list of bodies that will participate in the feature when the operation is a cut or intersection.
+        
+        If this property has not been set, the default behavior is that all bodies that are intersected by the
+        feature will participate.
+        
+        This property can return null in the case where the feature has not been fully defined so that
+        possible intersecting bodies can be computed.
+        """
+        return [BRepBody()]
+    @participantBodies.setter
+    def participantBodies(self, value: list[BRepBody]):
+        """
+        Gets and sets the list of bodies that will participate in the feature when the operation is a cut or intersection.
+        
+        If this property has not been set, the default behavior is that all bodies that are intersected by the
+        feature will participate.
+        
+        This property can return null in the case where the feature has not been fully defined so that
+        possible intersecting bodies can be computed.
+        """
+        pass
+
 class PipeFeatures(core.Base):
     """
-    Collection that provides access to all of the existing pipe features in a design.
+    Collection that provides access to all of the existing Pipe features in a design.
     """
     def __init__(self):
         pass
     @staticmethod
     def cast(arg) -> PipeFeatures:
         return PipeFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> PipeFeature:
+        return None
+    def __iter__(self) -> Iterator[PipeFeature]:
+        return None
     def item(self, index: int) -> PipeFeature:
         """
-        Function that returns the specified pipe feature using an index into the collection.
+        Function that returns the specified Pipe feature using an index into the collection.
         index : The index of the item within the collection to return. The first item in the collection has an index of 0.
         Returns the specified item or null if an invalid index was specified.
         """
         return PipeFeature()
     def itemByName(self, name: str) -> PipeFeature:
         """
-        Function that returns the specified pipe feature using the name of the feature.
+        Function that returns the specified Pipe feature using the name of the feature.
         name : The name of the feature within the collection to return. This is the name seen in the timeline.
         Returns the specified item or null if the specified name was not found.
+        """
+        return PipeFeature()
+    def createInput(self, path: Path, operation: FeatureOperations) -> PipeFeatureInput:
+        """
+        Creates a PipeFeatureInput object for defining a simple Pipe feature with only a path.
+        Use properties and methods on this object to define the Pipe you want to create and then use the Add method,
+        passing in the PipeFeatureInput object.
+        path : The path to create the Pipe.
+        operation : The feature operation to perform.
+        Returns the newly created PipeFeatureInput object or null if the creation failed.
+        """
+        return PipeFeatureInput()
+    def add(self, input: PipeFeatureInput) -> PipeFeature:
+        """
+        Creates a new Pipe feature.
+        input : A PipeFeatureInput object that defines the desired Pipe. Use the createInput
+        method to create a new PipeFeatureInput object and then use methods on it
+        (the PipeFeatureInput object) to define the Pipe.
+        Returns the newly created PipeFeature object or null if the creation failed.
         """
         return PipeFeature()
     @property
     def count(self) -> int:
         """
-        The number of pipe features in the collection.
+        The number of Pipe features in the collection.
         """
         return int()
 
@@ -14122,7 +17387,7 @@ class Profile(core.Base):
         Returns the proxy object or null if this isn't the NativeObject.
         """
         return Profile()
-    def areaProperties(self, accuracy: CalculationAccuracy) -> AreaProperties:
+    def areaProperties(self, accuracy: CalculationAccuracy = CalculationAccuracy.LowCalculationAccuracy) -> AreaProperties:
         """
         Calculates the area properties for the profile.
         accuracy : Specifies the desired level of computational accuracy of the property calculations.
@@ -14280,6 +17545,12 @@ class ProfileCurves(core.Base):
     @staticmethod
     def cast(arg) -> ProfileCurves:
         return ProfileCurves()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ProfileCurve:
+        return None
+    def __iter__(self) -> Iterator[ProfileCurve]:
+        return None
     def item(self, index: int) -> ProfileCurve:
         """
         Function that returns the specified profile curve using an index into the collection.
@@ -14360,6 +17631,12 @@ class ProfileLoops(core.Base):
     @staticmethod
     def cast(arg) -> ProfileLoops:
         return ProfileLoops()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ProfileLoop:
+        return None
+    def __iter__(self) -> Iterator[ProfileLoop]:
+        return None
     def item(self, index: int) -> ProfileLoop:
         """
         Function that returns the specified profile loop using an index into the collection.
@@ -14388,6 +17665,12 @@ class Profiles(core.Base):
     @staticmethod
     def cast(arg) -> Profiles:
         return Profiles()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Profile:
+        return None
+    def __iter__(self) -> Iterator[Profile]:
+        return None
     def item(self, index: int) -> Profile:
         """
         Function that returns the specified closed profile using an index into the collection.
@@ -14402,6 +17685,218 @@ class Profiles(core.Base):
         Returns the number of closed profiles in the sketch. Open and text based profiles are not included.
         """
         return int()
+
+class RectangularPatternConstraintInput(core.Base):
+    """
+    Used to define the inputs need to create a rectangular pattern in a sketch.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RectangularPatternConstraintInput:
+        return RectangularPatternConstraintInput()
+    def setDirectionOne(self, directionOneEntity: SketchLine, quantityOne: core.ValueInput, distanceOne: core.ValueInput) -> bool:
+        """
+        Sets all of the input required to define the pattern in the first direction.
+        directionOneEntity : Specifies the SketchLine object used to define the first direction entity.
+        
+        This argument can be null to indicate that the default first direction is to be used, which is along the X axis of the sketch.
+        quantityOne : Specifies the number of instances in the first direction.
+        distanceOne : Specifies the distance in the first direction. How this value is used depends on the value of the PatternDistanceType property.
+        If the value is ExtentPatternDistanceType then it defines the total distance of the pattern.
+        If the value is SpacingPatternDistanceType then it defines the distance between each element.
+        Returns true if it was successful.
+        """
+        return bool()
+    def setDirectionTwo(self, directionTwoEntity: SketchLine, quantityTwo: core.ValueInput, distanceTwo: core.ValueInput) -> bool:
+        """
+        Sets all of the input required to define the pattern in the second direction.
+        directionTwoEntity : Specifies the SketchLine object used to define the second direction entity.
+        
+        This argument can be null to indicate that the default second direction is to be used, which is 90 degrees to the first direction.
+        quantityTwo : Specifies the number of instances in the second direction.
+        distanceTwo : Specifies the distance in the second direction. How this value is used depends on the value of the PatternDistanceType property.
+        If the value is ExtentPatternDistanceType then it defines the total distance of the pattern.
+        If the value is SpacingPatternDistanceType then it defines the distance between each element.
+        Returns true if it was successful.
+        """
+        return bool()
+    @property
+    def entities(self) -> list[SketchEntity]:
+        """
+        Gets and sets the entities to pattern. Sketch points and curves are valid
+        entities to pattern.
+        """
+        return [SketchEntity()]
+    @entities.setter
+    def entities(self, value: list[SketchEntity]):
+        """
+        Gets and sets the entities to pattern. Sketch points and curves are valid
+        entities to pattern.
+        """
+        pass
+    @property
+    def directionOneEntity(self) -> SketchLine:
+        """
+        Defines the first direction of the pattern. This can be null which indicates
+        to use the default which is the X-axis of the sketch. Setting this property
+        to null will automatically clear directionTwoEntity, if it has been set.
+        """
+        return SketchLine()
+    @directionOneEntity.setter
+    def directionOneEntity(self, value: SketchLine):
+        """
+        Defines the first direction of the pattern. This can be null which indicates
+        to use the default which is the X-axis of the sketch. Setting this property
+        to null will automatically clear directionTwoEntity, if it has been set.
+        """
+        pass
+    @property
+    def directionTwoEntity(self) -> SketchLine:
+        """
+        Defines the second direction of the pattern. This can be null which indicates
+        to use the default which is perpendicular to direction one. The directionOneEntity
+        property must be set before setting this property.
+        """
+        return SketchLine()
+    @directionTwoEntity.setter
+    def directionTwoEntity(self, value: SketchLine):
+        """
+        Defines the second direction of the pattern. This can be null which indicates
+        to use the default which is perpendicular to direction one. The directionOneEntity
+        property must be set before setting this property.
+        """
+        pass
+    @property
+    def quantityOne(self) -> core.ValueInput:
+        """
+        Gets and sets the number of instances in the first direction.
+        """
+        return core.ValueInput()
+    @quantityOne.setter
+    def quantityOne(self, value: core.ValueInput):
+        """
+        Gets and sets the number of instances in the first direction.
+        """
+        pass
+    @property
+    def quantityTwo(self) -> core.ValueInput:
+        """
+        Gets and sets the number of instances in the second direction.
+        """
+        return core.ValueInput()
+    @quantityTwo.setter
+    def quantityTwo(self, value: core.ValueInput):
+        """
+        Gets and sets the number of instances in the second direction.
+        """
+        pass
+    @property
+    def distanceOne(self) -> core.ValueInput:
+        """
+        Gets and sets the distance in the first direction.
+        """
+        return core.ValueInput()
+    @distanceOne.setter
+    def distanceOne(self, value: core.ValueInput):
+        """
+        Gets and sets the distance in the first direction.
+        """
+        pass
+    @property
+    def distanceTwo(self) -> core.ValueInput:
+        """
+        Gets and sets the distance in the second direction.
+        """
+        return core.ValueInput()
+    @distanceTwo.setter
+    def distanceTwo(self, value: core.ValueInput):
+        """
+        Gets and sets the distance in the second direction.
+        """
+        pass
+    @property
+    def isSymmetricInDirectionOne(self) -> bool:
+        """
+        Gets and sets if the pattern in direction one is in one direction or is symmetric.
+        """
+        return bool()
+    @isSymmetricInDirectionOne.setter
+    def isSymmetricInDirectionOne(self, value: bool):
+        """
+        Gets and sets if the pattern in direction one is in one direction or is symmetric.
+        """
+        pass
+    @property
+    def isSymmetricInDirectionTwo(self) -> bool:
+        """
+        Gets and sets if the pattern in direction two is in one direction or is symmetric.
+        """
+        return bool()
+    @isSymmetricInDirectionTwo.setter
+    def isSymmetricInDirectionTwo(self, value: bool):
+        """
+        Gets and sets if the pattern in direction two is in one direction or is symmetric.
+        """
+        pass
+    @property
+    def distanceType(self) -> PatternDistanceType:
+        """
+        Gets and sets how the distance between elements is computed.
+        """
+        return PatternDistanceType()
+    @distanceType.setter
+    def distanceType(self, value: PatternDistanceType):
+        """
+        Gets and sets how the distance between elements is computed.
+        """
+        pass
+    @property
+    def isSuppressed(self) -> list[bool]:
+        """
+        Specifies which, if any, instances of the pattern are suppressed. This
+        defaults to all instances being visible. This returns an array of Booleans
+        that indicates if a particular instance in the pattern is suppressed or
+        not. A value of true will result in the associated instance being
+        suppressed.
+        
+        Both the quantityOne and quantityTwo properties must be set with valid
+        values before using the isSuppressed property is valid. A quantity of
+        one is a valid value.
+        
+        The indices represent the pattern instances in a row-column order, with the
+        initial geometry not counting. For example, if you have a 4x4 pattern, the
+        array will have 15 elements rather than 16 because the original geometry
+        cannot be suppressed as part of the pattern. The first element in the array
+        is the one next to the original in the first direction. The second element is
+        the next one on the first row, and the third is the next one. The fourth element
+        will be the first element in the row next to the first row that contains the
+        original geometry.
+        """
+        return [bool()]
+    @isSuppressed.setter
+    def isSuppressed(self, value: list[bool]):
+        """
+        Specifies which, if any, instances of the pattern are suppressed. This
+        defaults to all instances being visible. This returns an array of Booleans
+        that indicates if a particular instance in the pattern is suppressed or
+        not. A value of true will result in the associated instance being
+        suppressed.
+        
+        Both the quantityOne and quantityTwo properties must be set with valid
+        values before using the isSuppressed property is valid. A quantity of
+        one is a valid value.
+        
+        The indices represent the pattern instances in a row-column order, with the
+        initial geometry not counting. For example, if you have a 4x4 pattern, the
+        array will have 15 elements rather than 16 because the original geometry
+        cannot be suppressed as part of the pattern. The first element in the array
+        is the one next to the original in the first direction. The second element is
+        the next one on the first row, and the third is the next one. The fourth element
+        will be the first element in the row next to the first row that contains the
+        original geometry.
+        """
+        pass
 
 class RectangularPatternFeatureInput(core.Base):
     """
@@ -14622,6 +18117,12 @@ class RectangularPatternFeatures(core.Base):
     @staticmethod
     def cast(arg) -> RectangularPatternFeatures:
         return RectangularPatternFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RectangularPatternFeature:
+        return None
+    def __iter__(self) -> Iterator[RectangularPatternFeature]:
+        return None
     def item(self, index: int) -> RectangularPatternFeature:
         """
         Function that returns the specified rectangular pattern feature using an index into the collection.
@@ -14680,6 +18181,12 @@ class RefoldFeatures(core.Base):
     @staticmethod
     def cast(arg) -> RefoldFeatures:
         return RefoldFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RefoldFeature:
+        return None
+    def __iter__(self) -> Iterator[RefoldFeature]:
+        return None
     def item(self, index: int) -> RefoldFeature:
         """
         Function that returns the specified refold feature using an index into the collection.
@@ -14711,6 +18218,12 @@ class RemoveFeatures(core.Base):
     @staticmethod
     def cast(arg) -> RemoveFeatures:
         return RemoveFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RemoveFeature:
+        return None
+    def __iter__(self) -> Iterator[RemoveFeature]:
+        return None
     def item(self, index: int) -> RemoveFeature:
         """
         Function that returns the specified Remove feature using an index into the collection.
@@ -14738,6 +18251,342 @@ class RemoveFeatures(core.Base):
         The number of Remove features in the collection.
         """
         return int()
+
+class RenderEnvironment(core.Base):
+    """
+    A render environment that is used when defining the scene for rendering. You see these
+    in the user interface in the "Environment Library" tab of the "Scene Settings" dialog.
+    Use this with the backgroundEnvironment property of the SceneSettings object to set
+    a render environment. For a custom render environment, use the loadCustomEnvironment
+    method to statically create a custom environment and assign it to the backgroundEnvironment
+    property.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RenderEnvironment:
+        return RenderEnvironment()
+    @staticmethod
+    def loadCustomEnvironment(fullFilename: str) -> RenderEnvironment:
+        """
+        Statically creates a RenderEnvironment which can be used to set the environment for
+        a scene using the SceneSettings.backgroundEnvironment property.
+        fullFilename : 
+        
+        """
+        return RenderEnvironment()
+    @property
+    def isCustomEnvironment(self) -> bool:
+        """
+        Returns true if this environment is a custom environment.
+        """
+        return bool()
+    @property
+    def name(self) -> str:
+        """
+        The name of the environment.
+        """
+        return str()
+    @property
+    def id(self) -> str:
+        """
+        The internal ID of the environment.
+        """
+        return str()
+
+class RenderEnvironments(core.Base):
+    """
+    The list of available render environments. This represents the list of environments
+    shown in the "Scene Settings" dialog as being in the "Fusion 360 Library". It does not
+    include a custom environment, if one has been loaded.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RenderEnvironments:
+        return RenderEnvironments()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RenderEnvironment:
+        return None
+    def __iter__(self) -> Iterator[RenderEnvironment]:
+        return None
+    def item(self, index: int) -> RenderEnvironment:
+        """
+        Method that returns the specified render environment using an index into the collection.
+        index : The index of the item within the collection. The first item has an index of 0.
+        Returns the specified render environment or null if an invalid index was specified.
+        """
+        return RenderEnvironment()
+    def itemByName(self, name: str) -> RenderEnvironment:
+        """
+        Returns the specified render environment using the name as seen in the user interface.
+        name : The name of the render environment to return.
+        Returns the specified render environment or null if there's no match on the name.
+        """
+        return RenderEnvironment()
+    def itemById(self, id: str) -> RenderEnvironment:
+        """
+        Returns the render environment with the specified ID.
+        id : The ID of the render environment to return.
+        Returns the specified render environment or null if the ID does not match a render environment.
+        """
+        return RenderEnvironment()
+    @property
+    def count(self) -> int:
+        """
+        The number of render environments in the collection.
+        """
+        return int()
+
+class RenderEventHandler(core.EventHandler):
+    """
+    The RenderEventHandler is a client implemented class that can be added as a handler to a
+    RenderEvent.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RenderEventHandler:
+        return RenderEventHandler()
+    def notify(self, eventArgs: RenderEventArgs) -> None:
+        """
+        The function called by Fusion 360 when the associated event is fired.
+        eventArgs : Returns an object that provides access to additional information associated with the event.
+        """
+        pass
+
+class RenderFuture(core.Base):
+    """
+    Used to check the state of a local or in canvas rendering.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RenderFuture:
+        return RenderFuture()
+    @property
+    def progress(self) -> float:
+        """
+        Returns the progress of this rendering expressed as a percentage
+        where 0.0 is no progress and 1.0 is complete.
+        """
+        return float()
+    @property
+    def renderState(self) -> LocalRenderStates:
+        """
+        Returns the current state of the rendering.
+        """
+        return LocalRenderStates()
+    @property
+    def imageWidth(self) -> int:
+        """
+        Returns the width of the image. The width was specified when the
+        rendering was started.
+        """
+        return int()
+    @property
+    def imageHeight(self) -> int:
+        """
+        Returns the height of the image. The height was specified when the
+        rendering was started.
+        """
+        return int()
+    @property
+    def filename(self) -> str:
+        """
+        The filename that the finished rendering will be saved to. If being
+        saved to the cloud, this is the name Fusion will use for the completed
+        rendering.
+        """
+        return str()
+
+class Rendering(core.Base):
+    """
+    Provides access to the ability to render in a background process on the local machine.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> Rendering:
+        return Rendering()
+    def startLocalRender(self, filename: str = "", camera: core.Camera = None) -> RenderFuture:
+        """
+        Starts a local rendering process using either the active viewport or a specified camera to define
+        the camera information. This starts a background process on the local machine to generate the rendering.
+        Even though this is a background process, it is tied to the running Fusion process and will be terminated
+        if Fusion is shut down. If multiple local renders are started, they are queued and only one runs at a time.
+        filename : Optional argument that is the full path and filename of the file to write the resulting rendering
+        to. The file extension can be .png, .jpg, .jpeg, or .tiff and the file will be saved as that type.
+        If not provided or is an empty string, the rendering will be saved to the cloud as a PNG file.
+        camera : Optional argument that specifies the camera to use for the rendering. The default value is null, which
+        will use the camera associated with the active viewport.
+        Returns a RenderFuture that allows you to check the current state of this rendering job.
+        """
+        return RenderFuture()
+    @property
+    def aspectRatio(self) -> RenderAspectRatios:
+        """
+        Gets and sets the aspect ratio of the rendered image. This is not the resolution, but
+        only the aspect ratio. To define a custom aspect ratio set this property to CustomAspectRatio
+        and use the resolutionHeight and resolutionWidth properties to define the resolution and aspect ratio.
+        The default value is the aspect ratio defined in the scene settings.
+        The width and height must be between 108 and 4000 pixels.
+        """
+        return RenderAspectRatios()
+    @aspectRatio.setter
+    def aspectRatio(self, value: RenderAspectRatios):
+        """
+        Gets and sets the aspect ratio of the rendered image. This is not the resolution, but
+        only the aspect ratio. To define a custom aspect ratio set this property to CustomAspectRatio
+        and use the resolutionHeight and resolutionWidth properties to define the resolution and aspect ratio.
+        The default value is the aspect ratio defined in the scene settings.
+        The width and height must be between 108 and 4000 pixels.
+        """
+        pass
+    @property
+    def renderQuality(self) -> int:
+        """
+        Gets and sets the desired quality of the rendering. The quality is specified using a
+        value between 25 and 100, where 75 is the equivalent of "Final" and 100 is
+        the same as "Excellent" in the user interface. The default value is 75
+        """
+        return int()
+    @renderQuality.setter
+    def renderQuality(self, value: int):
+        """
+        Gets and sets the desired quality of the rendering. The quality is specified using a
+        value between 25 and 100, where 75 is the equivalent of "Final" and 100 is
+        the same as "Excellent" in the user interface. The default value is 75
+        """
+        pass
+    @property
+    def isBackgroundTransparent(self) -> bool:
+        """
+        Specifies if the background of the rendering should be transparent. The default
+        is false, which means it will not be transparent.
+        """
+        return bool()
+    @isBackgroundTransparent.setter
+    def isBackgroundTransparent(self, value: bool):
+        """
+        Specifies if the background of the rendering should be transparent. The default
+        is false, which means it will not be transparent.
+        """
+        pass
+    @property
+    def resolution(self) -> RenderResolutions:
+        """
+        Gets and sets the resolution of the rendered image. This is the final width and height of the
+        image in pixels. To define a custom aspect ratio, use the resolutionHeight and resolutionWidth
+        properties to define any resolution. Using those has the side effect of setting this property
+        to CustomRenderResolution. Setting this to anything except CustomRenderResolution, will also have
+        the side effect of setting the aspect ratio.
+        """
+        return RenderResolutions()
+    @resolution.setter
+    def resolution(self, value: RenderResolutions):
+        """
+        Gets and sets the resolution of the rendered image. This is the final width and height of the
+        image in pixels. To define a custom aspect ratio, use the resolutionHeight and resolutionWidth
+        properties to define any resolution. Using those has the side effect of setting this property
+        to CustomRenderResolution. Setting this to anything except CustomRenderResolution, will also have
+        the side effect of setting the aspect ratio.
+        """
+        pass
+    @property
+    def resolutionHeight(self) -> int:
+        """
+        Gets and sets the height of the image in pixels. If anything but CustomRenderAspectRatio is defined as the
+        aspect ratio, the resolution width will be modified to maintain the specified aspect ratio.
+        The height must be between 108 and 4000 pixels.
+        """
+        return int()
+    @resolutionHeight.setter
+    def resolutionHeight(self, value: int):
+        """
+        Gets and sets the height of the image in pixels. If anything but CustomRenderAspectRatio is defined as the
+        aspect ratio, the resolution width will be modified to maintain the specified aspect ratio.
+        The height must be between 108 and 4000 pixels.
+        """
+        pass
+    @property
+    def resolutionWidth(self) -> int:
+        """
+        Gets and sets the width of the image in pixels. If anything but CustomRenderAspectRatio is defined as the
+        aspect ratio, the resolution height will be modified to maintain the specified aspect ratio.
+        The width must be between 108 and 4000 pixels.
+        """
+        return int()
+    @resolutionWidth.setter
+    def resolutionWidth(self, value: int):
+        """
+        Gets and sets the width of the image in pixels. If anything but CustomRenderAspectRatio is defined as the
+        aspect ratio, the resolution height will be modified to maintain the specified aspect ratio.
+        The width must be between 108 and 4000 pixels.
+        """
+        pass
+
+class RenderManager(core.Base):
+    """
+    Provides access to the Rendering functionality in Fusion and is accessed from the Design object.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RenderManager:
+        return RenderManager()
+    def activateRenderWorkspace(self) -> bool:
+        """
+        Activates the Render workspace for this design. If the workspace is already
+        active, nothing happens and it remains active.
+        Returns true if the activation was successful or if the Render workspace was already active.
+        """
+        return bool()
+    @property
+    def parentDesign(self) -> core.Product:
+        """
+        Returns the parent Design this RenderManager was obtained from.
+        """
+        return core.Product()
+    @property
+    def sceneSettings(self) -> SceneSettings:
+        """
+        Returns the SceneSettings object that provides access to all of the
+        settings that control how the scene is rendered. This provides equivalent
+        functionality as the "Settings" tab in the "SCENE SETTINGS" dialog.
+        """
+        return SceneSettings()
+    @property
+    def renderEnvironments(self) -> RenderEnvironments:
+        """
+        Provides access to the provided environments and supports specifying
+        a custom environment. This provides access to the same list of environments
+        that you see in the "Environment Library" tab of the "SCENE SETTINGS" dialog.
+        """
+        return RenderEnvironments()
+    @property
+    def rendering(self) -> Rendering:
+        """
+        Provides access to the local and cloud rendering capabilities of Fusion. In both
+        cases, the rendering is done in a process external to Fusion, either a local or
+        cloud rendering process.
+        """
+        return Rendering()
+    @property
+    def isRenderWorkspaceActive(self) -> bool:
+        """
+        Returns if the Render workspace for this Design is active or not. Returns
+        true if the workspace is active.
+        """
+        return bool()
+    @property
+    def inCanvasRendering(self) -> InCanvasRendering:
+        """
+        Provides access to the in-canvas rendering capabilities of Fusion. This
+        uses the active viewport and the user will see the rendering as it takes place.
+        """
+        return InCanvasRendering()
 
 class ReplaceFaceFeatureInput(core.Base):
     """
@@ -14827,6 +18676,12 @@ class ReplaceFaceFeatures(core.Base):
     @staticmethod
     def cast(arg) -> ReplaceFaceFeatures:
         return ReplaceFaceFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ReplaceFaceFeature:
+        return None
+    def __iter__(self) -> Iterator[ReplaceFaceFeature]:
+        return None
     def item(self, index: int) -> ReplaceFaceFeature:
         """
         Function that returns the specified replace face feature using an index into the collection.
@@ -14882,6 +18737,12 @@ class ReverseNormalFeatures(core.Base):
     @staticmethod
     def cast(arg) -> ReverseNormalFeatures:
         return ReverseNormalFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ReverseNormalFeature:
+        return None
+    def __iter__(self) -> Iterator[ReverseNormalFeature]:
+        return None
     def item(self, index: int) -> ReverseNormalFeature:
         """
         Function that returns the specified Reverse Normal feature using an index into the collection.
@@ -14943,7 +18804,7 @@ class RevolveFeatureInput(core.Base):
         Returns true if successful
         """
         return bool()
-    def setOneSideToExtent(self, toEntity: core.Base, directionHint: core.Vector3D) -> bool:
+    def setOneSideToExtent(self, toEntity: core.Base, directionHint: core.Vector3D = None) -> bool:
         """
         Defines the extent of the revolve to be from the sketch or profile plane to the
         specified "To" face.
@@ -15108,6 +18969,24 @@ class RevolveFeatureInput(core.Base):
         possible intersecting bodies can be computed.
         """
         pass
+    @property
+    def isProjectAxis(self) -> bool:
+        """
+        Specifies if the axis should be projected on the same plane as the profile sketch plane or not.
+        
+        Setting this to true will use a projected axis, while setting it to false will keep it in its original location.
+        This is initialized to false so the selected axis will be used in the feature.
+        """
+        return bool()
+    @isProjectAxis.setter
+    def isProjectAxis(self, value: bool):
+        """
+        Specifies if the axis should be projected on the same plane as the profile sketch plane or not.
+        
+        Setting this to true will use a projected axis, while setting it to false will keep it in its original location.
+        This is initialized to false so the selected axis will be used in the feature.
+        """
+        pass
 
 class RevolveFeatures(core.Base):
     """
@@ -15119,6 +18998,12 @@ class RevolveFeatures(core.Base):
     @staticmethod
     def cast(arg) -> RevolveFeatures:
         return RevolveFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RevolveFeature:
+        return None
+    def __iter__(self) -> Iterator[RevolveFeature]:
+        return None
     def item(self, index: int) -> RevolveFeature:
         """
         Function that returns the specified revolve feature using an index into the collection.
@@ -15178,6 +19063,12 @@ class RibFeatures(core.Base):
     @staticmethod
     def cast(arg) -> RibFeatures:
         return RibFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RibFeature:
+        return None
+    def __iter__(self) -> Iterator[RibFeature]:
+        return None
     def item(self, index: int) -> RibFeature:
         """
         Function that returns the specified Rib feature using an index into the collection.
@@ -15314,6 +19205,18 @@ class RigidGroup(core.Base):
         method to get the two entities identified by the tokens and then compare them.
         """
         return str()
+    @property
+    def isVisible(self) -> bool:
+        """
+        Gets and sets whether the occurrences that are part of this rigid group are visible or not.
+        """
+        return bool()
+    @isVisible.setter
+    def isVisible(self, value: bool):
+        """
+        Gets and sets whether the occurrences that are part of this rigid group are visible or not.
+        """
+        pass
 
 class RigidGroupList(core.Base):
     """
@@ -15324,6 +19227,12 @@ class RigidGroupList(core.Base):
     @staticmethod
     def cast(arg) -> RigidGroupList:
         return RigidGroupList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RigidGroup:
+        return None
+    def __iter__(self) -> Iterator[RigidGroup]:
+        return None
     def item(self, index: int) -> RigidGroup:
         """
         Function that returns the specified rigid group using an index into the list.
@@ -15355,6 +19264,12 @@ class RigidGroups(core.Base):
     @staticmethod
     def cast(arg) -> RigidGroups:
         return RigidGroups()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RigidGroup:
+        return None
+    def __iter__(self) -> Iterator[RigidGroup]:
+        return None
     def item(self, index: int) -> RigidGroup:
         """
         Function that returns the specified rigid group using an index into the collection.
@@ -15381,6 +19296,112 @@ class RigidGroups(core.Base):
     def count(self) -> int:
         """
         Returns number of joint origins in the collection.
+        """
+        return int()
+
+class RipFeatureDefinition(core.Base):
+    """
+    A Base class to return the information used to define the RipFeature.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RipFeatureDefinition:
+        return RipFeatureDefinition()
+
+class RipFeatureInput(core.Base):
+    """
+    This class defines the methods and properties that pertain to the definition of a Rip feature.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RipFeatureInput:
+        return RipFeatureInput()
+    def setByFace(self, face: BRepFace) -> bool:
+        """
+        Specifies the rip feature will be defined by a face..
+        face : The sheet metal face that defines the rip.
+        Returns true if the defining the rip is successful.
+        """
+        return bool()
+    def setAlongEdge(self, edge: BRepEdge, gapDistance: core.ValueInput) -> bool:
+        """
+        Specifies the rip feature will be along an edge.
+        edge : The BRepEdge that defines the location of the rip.
+        gapDistance : The gap distance of the rip.
+        Returns true if the defining the rip is successful.
+        """
+        return bool()
+    def setBetweenPoints(self, pointOneEntity: core.Base, pointTwoEntity: core.Base, gapDistance: core.ValueInput, pointOneOffset: core.ValueInput = None, pointTwoOffset: core.ValueInput = None) -> bool:
+        """
+        This input method is for creating a rip between two points. Each point can be either a BRepVertex
+        or a BRepEdge and an associated offset along the edge.
+        pointOneEntity : The first point of the rip. This can be defined using a BrepVertex or a BRepEdge and offset to define
+        where the point is along the edge. If an edge is specified, the pointOneOffset parameter must be specified.
+        pointTwoEntity : The second point of the rip and must lie on the same face as point 1. This can be defined using a
+        BrepVertex or a BRepEdge and an offset to define where the point is along the edge.
+        If an edge is specified, the pointTwoOffset parameter must be specified.
+        gapDistance : The gap distance of the rip.
+        pointOneOffset : If the first point lies on an edge, then this is the offset along the edge which defines the point.
+        This is the physical distance from the topological start of the edge.
+        If the offset is negative or exceeds the edge length, the corresponding vertex of the edge will be used.
+        pointTwoOffset : If the second point lies on an edge, then this is the offset along the edge which defines the point.
+        This is the physical distance from the topological start of the edge.
+        If the offset is negative or exceeds the edge length, the corresponding vertex of the edge will be used.
+        Returns true if the rip definition is successful.
+        """
+        return bool()
+
+class RipFeatures(core.Base):
+    """
+    Collection that provides access to all of the existing Rip features in a design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RipFeatures:
+        return RipFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RipFeature:
+        return None
+    def __iter__(self) -> Iterator[RipFeature]:
+        return None
+    def item(self, index: int) -> RipFeature:
+        """
+        Function that returns the specified Rip feature using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return RipFeature()
+    def itemByName(self, name: str) -> RipFeature:
+        """
+        Function that returns the specified Rip feature using the name of the feature.
+        name : The name of the feature within the collection to return. This is the name seen in the timeline.
+        Returns the specified item or null if the specified name was not found.
+        """
+        return RipFeature()
+    def createRipFeatureInput(self) -> RipFeatureInput:
+        """
+        Creates a RipFeatureInput object. Use methods on this object to define the rip you want
+        to create and then use the add method, passing in the RipFeatureInput object.
+        Returns the newly created RipFeatureInput object or null if the creation failed.
+        """
+        return RipFeatureInput()
+    def add(self, input: RipFeatureInput) -> RipFeature:
+        """
+        Creates a new Rip feature.
+        input : A RipFeatureInput object that defines the desired rip. Use the createInput
+        method to create a new RipFeatureInput object and then use methods on it
+        (the RipFeatureInput object) to define the rip.
+        Returns the newly created RipFeature object or null if the creation failed.
+        """
+        return RipFeature()
+    @property
+    def count(self) -> int:
+        """
+        The number of Rip features in the collection.
         """
         return int()
 
@@ -15578,6 +19599,12 @@ class RuledSurfaceFeatures(core.Base):
     @staticmethod
     def cast(arg) -> RuledSurfaceFeatures:
         return RuledSurfaceFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RuledSurfaceFeature:
+        return None
+    def __iter__(self) -> Iterator[RuledSurfaceFeature]:
+        return None
     def item(self, index: int) -> RuledSurfaceFeature:
         """
         Function that returns the specified ruled surface feature using an index into the collection.
@@ -15585,7 +19612,7 @@ class RuledSurfaceFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return RuledSurfaceFeature()
-    def createInput(self, profile: core.Base, distance: core.ValueInput, angle: core.ValueInput, ruledSurfaceType: RuledSurfaceTypes, direction: core.Base) -> RuledSurfaceFeatureInput:
+    def createInput(self, profile: core.Base, distance: core.ValueInput, angle: core.ValueInput, ruledSurfaceType: RuledSurfaceTypes, direction: core.Base = None) -> RuledSurfaceFeatureInput:
         """
         Creates a RuledSurfaceFeatureInput object that defines the input needed to create a ruled surface feature. Use the input
         object to define the input to create the desired feature and then use the Add method, passing in the RuledSurfaceFeatureInput object.
@@ -15631,6 +19658,12 @@ class RuleFilletFeatures(core.Base):
     @staticmethod
     def cast(arg) -> RuleFilletFeatures:
         return RuleFilletFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> RuleFilletFeature:
+        return None
+    def __iter__(self) -> Iterator[RuleFilletFeature]:
+        return None
     def item(self, index: int) -> RuleFilletFeature:
         """
         Function that returns the specified rule fillet feature using an index into the collection.
@@ -15778,6 +19811,12 @@ class ScaleFeatures(core.Base):
     @staticmethod
     def cast(arg) -> ScaleFeatures:
         return ScaleFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ScaleFeature:
+        return None
+    def __iter__(self) -> Iterator[ScaleFeature]:
+        return None
     def item(self, index: int) -> ScaleFeature:
         """
         Function that returns the specified scale feature using an index into the collection.
@@ -15820,6 +19859,845 @@ class ScaleFeatures(core.Base):
         The number of scale features in the collection.
         """
         return int()
+
+class SceneSettings(core.Base):
+    """
+    Provides access to all the settings that control how the scene is rendered.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SceneSettings:
+        return SceneSettings()
+    def saveAsDefaults(self) -> bool:
+        """
+        Saves all of the scene settings as the default settings for this Design.
+        Returns true if saving the defaults was successful.
+        """
+        return bool()
+    def restoreDefaults(self) -> bool:
+        """
+        Changes all of the scene settings to the default values.
+        Returns true if setting to the default settings was successful.
+        """
+        return bool()
+    @property
+    def brightness(self) -> float:
+        """
+        Gets and sets the brightness or luminance of the scene. This must be a value between
+        0 and 100,000 and is in lux units.
+        """
+        return float()
+    @brightness.setter
+    def brightness(self, value: float):
+        """
+        Gets and sets the brightness or luminance of the scene. This must be a value between
+        0 and 100,000 and is in lux units.
+        """
+        pass
+    @property
+    def groundPosition(self) -> core.Point3D:
+        """
+        Gets and sets the origin of the projection of the environment onto the textured
+        ground plane. This lets you position the environment relative to the model. This
+        is only used when the isGroundFlattened property is true.
+        
+        If the isGroundFlattened property is true, and a texture is being applied to
+        the ground, the groundPosition property can be used to change both
+        the offset and location of the texture on the ground. The lightAngle
+        property controls the orientation of the texture.
+        """
+        return core.Point3D()
+    @groundPosition.setter
+    def groundPosition(self, value: core.Point3D):
+        """
+        Gets and sets the origin of the projection of the environment onto the textured
+        ground plane. This lets you position the environment relative to the model. This
+        is only used when the isGroundFlattened property is true.
+        
+        If the isGroundFlattened property is true, and a texture is being applied to
+        the ground, the groundPosition property can be used to change both
+        the offset and location of the texture on the ground. The lightAngle
+        property controls the orientation of the texture.
+        """
+        pass
+    @property
+    def groundOffset(self) -> float:
+        """
+        Gets and sets the distance of the ground from the bottom of the model.
+        A value of 0 is at the bottom of the model and a positive value moves
+        the plane up and negative down. The value is in centimeters.
+        
+        If the isGroundFlattened property is true, and a texture is being applied to
+        the ground, the groundPosition property can be used to change both
+        the offset and location of the texture on the ground. The lightAngle
+        property controls the orientation of the texture.
+        """
+        return float()
+    @groundOffset.setter
+    def groundOffset(self, value: float):
+        """
+        Gets and sets the distance of the ground from the bottom of the model.
+        A value of 0 is at the bottom of the model and a positive value moves
+        the plane up and negative down. The value is in centimeters.
+        
+        If the isGroundFlattened property is true, and a texture is being applied to
+        the ground, the groundPosition property can be used to change both
+        the offset and location of the texture on the ground. The lightAngle
+        property controls the orientation of the texture.
+        """
+        pass
+    @property
+    def lightAngle(self) -> float:
+        """
+        Specifies the rotation of the lighting. The angle is specified in Radians.
+        
+        When the isGroundFlattened property is true, this also controls the angle
+        of the texture that is applied to the ground. When the background is an
+        environment, this controls the rotation of the environment relative to
+        the model.
+        """
+        return float()
+    @lightAngle.setter
+    def lightAngle(self, value: float):
+        """
+        Specifies the rotation of the lighting. The angle is specified in Radians.
+        
+        When the isGroundFlattened property is true, this also controls the angle
+        of the texture that is applied to the ground. When the background is an
+        environment, this controls the rotation of the environment relative to
+        the model.
+        """
+        pass
+    @property
+    def backgroundSolidColor(self) -> core.Color:
+        """
+        Gets and sets the background color. When this property is set, it defines
+        the background to be a solid color. The opacity component of the color is ignored.
+        
+        Getting this property is only valid when the backgroundType property returns
+        SolidColorRenderSceneBackgroundType. Setting this property will automatically
+        set the background type to SolidColorRenderSceneBackgroundType.
+        """
+        return core.Color()
+    @backgroundSolidColor.setter
+    def backgroundSolidColor(self, value: core.Color):
+        """
+        Gets and sets the background color. When this property is set, it defines
+        the background to be a solid color. The opacity component of the color is ignored.
+        
+        Getting this property is only valid when the backgroundType property returns
+        SolidColorRenderSceneBackgroundType. Setting this property will automatically
+        set the background type to SolidColorRenderSceneBackgroundType.
+        """
+        pass
+    @property
+    def backgroundEnvironment(self) -> RenderEnvironment:
+        """
+        Gets and sets the environment to use for the background. The available environments
+        can be accessed through the RenderManager.renderEnvironments property.
+        
+        Getting this property is only valid when the backgroundType property returns
+        EnvironmentRenderSceneBackgroundType. Setting this property will automatically
+        set the background type to EnvironmentRenderSceneBackgroundType.
+        """
+        return RenderEnvironment()
+    @backgroundEnvironment.setter
+    def backgroundEnvironment(self, value: RenderEnvironment):
+        """
+        Gets and sets the environment to use for the background. The available environments
+        can be accessed through the RenderManager.renderEnvironments property.
+        
+        Getting this property is only valid when the backgroundType property returns
+        EnvironmentRenderSceneBackgroundType. Setting this property will automatically
+        set the background type to EnvironmentRenderSceneBackgroundType.
+        """
+        pass
+    @property
+    def backgroundType(self) -> RenderSceneBackgroundTypes:
+        """
+        Specifies the current type of background being used to render the scene.
+        To change the background type use either the backgroundEnvironment
+        or the backgroundSolidColor to set the environment or color.
+        """
+        return RenderSceneBackgroundTypes()
+    @property
+    def isGroundDisplayed(self) -> bool:
+        """
+        Gets and sets if the ground plane is displayed. The plane allows shadows
+        on the ground and reflections if the isGroundReflections property is true.
+        """
+        return bool()
+    @isGroundDisplayed.setter
+    def isGroundDisplayed(self, value: bool):
+        """
+        Gets and sets if the ground plane is displayed. The plane allows shadows
+        on the ground and reflections if the isGroundReflections property is true.
+        """
+        pass
+    @property
+    def isGroundFlattened(self) -> bool:
+        """
+        Gets and sets if the ground plane is "textured" where the environment
+        image is mapped as a texture.
+        """
+        return bool()
+    @isGroundFlattened.setter
+    def isGroundFlattened(self, value: bool):
+        """
+        Gets and sets if the ground plane is "textured" where the environment
+        image is mapped as a texture.
+        """
+        pass
+    @property
+    def isGroundReflections(self) -> bool:
+        """
+        Gets and sets if objects are reflected on the ground plane.
+        """
+        return bool()
+    @isGroundReflections.setter
+    def isGroundReflections(self, value: bool):
+        """
+        Gets and sets if objects are reflected on the ground plane.
+        """
+        pass
+    @property
+    def groundRoughness(self) -> float:
+        """
+        Gets and sets the roughness of the ground which controls the sharpness
+        of the reflection. This is only used when the isGroundReflections property
+        is true. This is a value between 0 and 1, where 0 is smooth and 1 is rough.
+        """
+        return float()
+    @groundRoughness.setter
+    def groundRoughness(self, value: float):
+        """
+        Gets and sets the roughness of the ground which controls the sharpness
+        of the reflection. This is only used when the isGroundReflections property
+        is true. This is a value between 0 and 1, where 0 is smooth and 1 is rough.
+        """
+        pass
+    @property
+    def cameraType(self) -> core.CameraTypes:
+        """
+        Gets and sets the type of camera to use when rendering the scene.
+        """
+        return core.CameraTypes()
+    @cameraType.setter
+    def cameraType(self, value: core.CameraTypes):
+        """
+        Gets and sets the type of camera to use when rendering the scene.
+        """
+        pass
+    @property
+    def cameraFocalLength(self) -> float:
+        """
+        Gets and sets the focal length of the camera, specified in millimeters.
+        Changing the perspective angle of the camera associated with the active
+        viewport will also change the focal length. Focal length and perspective
+        angle are two different ways to control the same setting.
+        """
+        return float()
+    @cameraFocalLength.setter
+    def cameraFocalLength(self, value: float):
+        """
+        Gets and sets the focal length of the camera, specified in millimeters.
+        Changing the perspective angle of the camera associated with the active
+        viewport will also change the focal length. Focal length and perspective
+        angle are two different ways to control the same setting.
+        """
+        pass
+    @property
+    def cameraExposure(self) -> float:
+        """
+        Gets and sets if the exposure of the camera as specified using the "Exposure Value" (EV). Valid
+        values are between -15.0 and 25.0, inclusive.
+        """
+        return float()
+    @cameraExposure.setter
+    def cameraExposure(self, value: float):
+        """
+        Gets and sets if the exposure of the camera as specified using the "Exposure Value" (EV). Valid
+        values are between -15.0 and 25.0, inclusive.
+        """
+        pass
+    @property
+    def isDepthOfFieldEnabled(self) -> bool:
+        """
+        Gets and sets if the depth of field option is enabled. When setting this to true, use the
+        centerOfFocus and depthOfFieldBlur properties to specify how the depth of field is defined.
+        """
+        return bool()
+    @isDepthOfFieldEnabled.setter
+    def isDepthOfFieldEnabled(self, value: bool):
+        """
+        Gets and sets if the depth of field option is enabled. When setting this to true, use the
+        centerOfFocus and depthOfFieldBlur properties to specify how the depth of field is defined.
+        """
+        pass
+    @property
+    def centerOfFocus(self) -> core.Point3D:
+        """
+        When the isDepthofFieldEnabled property is true, this point is used as the center of focus.
+        All objects that are the same distance from the camera as this point will be in focus.
+        Any geometry that is closer or further away from the camera than this point will appear more out of focus.
+        
+        Setting this property has the side effect of setting the isDepthOfField property to true. If the
+        isDepthOfFieldEnabled property is false, the value of this property is ignored.
+        """
+        return core.Point3D()
+    @centerOfFocus.setter
+    def centerOfFocus(self, value: core.Point3D):
+        """
+        When the isDepthofFieldEnabled property is true, this point is used as the center of focus.
+        All objects that are the same distance from the camera as this point will be in focus.
+        Any geometry that is closer or further away from the camera than this point will appear more out of focus.
+        
+        Setting this property has the side effect of setting the isDepthOfField property to true. If the
+        isDepthOfFieldEnabled property is false, the value of this property is ignored.
+        """
+        pass
+    @property
+    def depthOfFieldBlur(self) -> float:
+        """
+        Specify the amount of blur to apply to objects outside the center of focus. This must be a value
+        between 0.001 and 2.000 inclusive. The depth of field is defined by using the centerOfFocus
+        property to set the depth where the model is in focus.
+        
+        Setting this property has the side effect of setting the isDepthOfField property to true. If the
+        isDepthOfFieldEnabled property is false, the value of this property is ignored.
+        """
+        return float()
+    @depthOfFieldBlur.setter
+    def depthOfFieldBlur(self, value: float):
+        """
+        Specify the amount of blur to apply to objects outside the center of focus. This must be a value
+        between 0.001 and 2.000 inclusive. The depth of field is defined by using the centerOfFocus
+        property to set the depth where the model is in focus.
+        
+        Setting this property has the side effect of setting the isDepthOfField property to true. If the
+        isDepthOfFieldEnabled property is false, the value of this property is ignored.
+        """
+        pass
+    @property
+    def aspectRatio(self) -> RenderAspectRatios:
+        """
+        Gets and sets the aspect ratio of the rendered image. This is not the resolution, but
+        only the aspect ratio. To define a custom aspect ratio set this property to CustomRenderAspectRatio
+        and use the aspectRatioHeight and aspectRatioWidth properties to define any aspect ratio.
+        
+        This is used for in-canvas render to allow you to use a different aspect ratio than what
+        is implicitly defined by the size of the active viewport.
+        
+        If this is set to CustomRenderAspectRatio, use the aspectRatioHeight and aspectRatioWidth to
+        define the aspect ratio.
+        """
+        return RenderAspectRatios()
+    @aspectRatio.setter
+    def aspectRatio(self, value: RenderAspectRatios):
+        """
+        Gets and sets the aspect ratio of the rendered image. This is not the resolution, but
+        only the aspect ratio. To define a custom aspect ratio set this property to CustomRenderAspectRatio
+        and use the aspectRatioHeight and aspectRatioWidth properties to define any aspect ratio.
+        
+        This is used for in-canvas render to allow you to use a different aspect ratio than what
+        is implicitly defined by the size of the active viewport.
+        
+        If this is set to CustomRenderAspectRatio, use the aspectRatioHeight and aspectRatioWidth to
+        define the aspect ratio.
+        """
+        pass
+    @property
+    def aspectRatioHeight(self) -> int:
+        """
+        Gets and sets the height of the aspect ratio of the rendered image. This is not the resolution, but
+        only the aspect ratio. For example specifying the width and height of 4:3 is equivalent to setting
+        20:15. It's only the ratio of the numbers that matters.
+        
+        The resolution is determined by the screen resolution when rendering in-canvas or is specified when
+        rendering locally or using the cloud. When setting this property the aspectRatio property is
+        automatically set to CustomRenderAspectRatio.
+        """
+        return int()
+    @aspectRatioHeight.setter
+    def aspectRatioHeight(self, value: int):
+        """
+        Gets and sets the height of the aspect ratio of the rendered image. This is not the resolution, but
+        only the aspect ratio. For example specifying the width and height of 4:3 is equivalent to setting
+        20:15. It's only the ratio of the numbers that matters.
+        
+        The resolution is determined by the screen resolution when rendering in-canvas or is specified when
+        rendering locally or using the cloud. When setting this property the aspectRatio property is
+        automatically set to CustomRenderAspectRatio.
+        """
+        pass
+    @property
+    def aspectRatioWidth(self) -> int:
+        """
+        Gets and sets the width of the aspect ratio of the rendered image. This is not the resolution, but
+        only the aspect ratio. For example specifying the width and height of 4:3 is equivalent to setting
+        20:15. It's only the ratio of the numbers that matters.
+        
+        The resolution is determined by the screen resolution when rendering in-canvas or is specified when
+        rendering locally or using the cloud. When setting this property the aspectRatio property is
+        automatically set to CustomRenderAspectRatio.
+        """
+        return int()
+    @aspectRatioWidth.setter
+    def aspectRatioWidth(self, value: int):
+        """
+        Gets and sets the width of the aspect ratio of the rendered image. This is not the resolution, but
+        only the aspect ratio. For example specifying the width and height of 4:3 is equivalent to setting
+        20:15. It's only the ratio of the numbers that matters.
+        
+        The resolution is determined by the screen resolution when rendering in-canvas or is specified when
+        rendering locally or using the cloud. When setting this property the aspectRatio property is
+        automatically set to CustomRenderAspectRatio.
+        """
+        pass
+
+class SectionAnalyses(core.Base):
+    """
+    Provides access to any section analyses results in the design and supports
+    the ability to create new sections.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SectionAnalyses:
+        return SectionAnalyses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SectionAnalysis:
+        return None
+    def __iter__(self) -> Iterator[SectionAnalysis]:
+        return None
+    def item(self, index: int) -> SectionAnalysis:
+        """
+        A method that returns the specified SectionAnalysis object using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection
+        has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return SectionAnalysis()
+    def itemByName(self, name: str) -> SectionAnalysis:
+        """
+        A method that returns the specified SectionAnalysis object using the name of the analysis
+        as displayed in the browser.
+        name : The name of the SectionAnalysis object as displayed in the browser.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return SectionAnalysis()
+    def createInput(self, cutPlaneEntity: core.Base, distance: float) -> SectionAnalysisInput:
+        """
+        Creates a new SectionAnalysisInput object to use when creating a new Section Analysis.
+        A SectionAnalysisInput object is the API equivalent of the command dialog that
+        contains the inputs to create a section analysis. Use this object to define the
+        settings you need and then pass this into the add method to create the section analysis.
+        cutPlaneEntity : The planar entity used to define the cut plane and can be either a
+        planar BRepFace or a ConstructionPlane object.
+        distance : The offset distance of the section from the cut plane. A positive value will offset
+        in the positive normal direction of the cut plane entity. The value is in centimeters.
+        This value is used to create a transformation matrix that defines the specified offset.
+        Returns a SectionAnalysisInput object if successful.
+        """
+        return SectionAnalysisInput()
+    def add(self, input: SectionAnalysisInput) -> SectionAnalysis:
+        """
+        Creates a new Section Analysis.
+        input : A SectionAnalysisInput object that defines how the section analysis should be created.
+        Use the createInput method to create a new SectionAnalysisInput object.
+        Returns the new SectionAnalysis object if successful.
+        """
+        return SectionAnalysis()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of SectionAnalysis objects in the collection.
+        """
+        return int()
+
+class SectionAnalysisInput(core.Base):
+    """
+    Provides access the all of the settings available when creating a section analysis.
+    This object is the API equivalent of the command dialog that contains the inputs
+    to create a section analysis. Use this object to define the settings you need and
+    then pass this into the add method to create the section analysis.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SectionAnalysisInput:
+        return SectionAnalysisInput()
+    def flip(self) -> bool:
+        """
+        A property that flips which side of the part is cut away by the section. This is a
+        convenience method that results in flipping the Z axis of the transform while maintaining
+        a valid rectangular coordinate system. You can directly manipulate the transform matrix
+        to have the same effect.
+        """
+        return bool()
+    @property
+    def cutPlaneEntity(self) -> core.Base:
+        """
+        A property that gets and sets the planar entity used to define the cut plane and can be either
+        a planar BRepFace or a ConstructionPlane object.
+        """
+        return core.Base()
+    @cutPlaneEntity.setter
+    def cutPlaneEntity(self, value: core.Base):
+        """
+        A property that gets and sets the planar entity used to define the cut plane and can be either
+        a planar BRepFace or a ConstructionPlane object.
+        """
+        pass
+    @property
+    def initialPosition(self) -> core.Matrix3D:
+        """
+        Returns the matrix that describes the initial position and orientation of the
+        specified cut plane entity. Any additional offsets or rotations are defined
+        by a transformation matrix that is applied to this initial position matrix.
+        That matrix is obtained and set using the transform property.
+        """
+        return core.Matrix3D()
+    @property
+    def transform(self) -> core.Matrix3D:
+        """
+        The initial position of the section plane is defined by the specified cut plane
+        entity. Any offsets or rotations are defined by a transformation matrix that is
+        applied to the initial position. This property allows you to get and set the
+        transformation matrix.
+        """
+        return core.Matrix3D()
+    @transform.setter
+    def transform(self, value: core.Matrix3D):
+        """
+        The initial position of the section plane is defined by the specified cut plane
+        entity. Any offsets or rotations are defined by a transformation matrix that is
+        applied to the initial position. This property allows you to get and set the
+        transformation matrix.
+        """
+        pass
+    @property
+    def sectionColor(self) -> core.Color:
+        """
+        A property that gets and sets the color of the section. This property defaults to null,
+        indicating that the component color should be used. The opacity value of the color is ignored.
+        """
+        return core.Color()
+    @sectionColor.setter
+    def sectionColor(self, value: core.Color):
+        """
+        A property that gets and sets the color of the section. This property defaults to null,
+        indicating that the component color should be used. The opacity value of the color is ignored.
+        """
+        pass
+    @property
+    def isHatchShown(self) -> bool:
+        """
+        A property that gets and sets if a hatch pattern should be shown on the section. This
+        property defaults to true when the input is created.
+        """
+        return bool()
+    @isHatchShown.setter
+    def isHatchShown(self, value: bool):
+        """
+        A property that gets and sets if a hatch pattern should be shown on the section. This
+        property defaults to true when the input is created.
+        """
+        pass
+
+class SheetMetalRule(core.Base):
+    """
+    A sheet metal rule.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SheetMetalRule:
+        return SheetMetalRule()
+    def deleteMe(self) -> bool:
+        """
+        Deletes the rule from the design or library. If the rule is in the
+        library and set as the default rule, you cannot delete it. If the
+        rule is in a design and is used by a component you cannot use it.
+        Returns true if the delete was successful.
+        """
+        return bool()
+    @property
+    def name(self) -> str:
+        """
+        The name of the sheet metal rule. When setting the name, it should be
+        unique with respect to other sheet metal rules in the design or library.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        The name of the sheet metal rule. When setting the name, it should be
+        unique with respect to other sheet metal rules in the design or library.
+        """
+        pass
+    @property
+    def thickness(self) -> SheetMetalRuleValue:
+        """
+        The thickness of the part. Use the returned SheetMetalRuleValue
+        object to get and set the current value of the thickness.
+        """
+        return SheetMetalRuleValue()
+    @property
+    def kFactor(self) -> float:
+        """
+        The K Factor value that is used when calculating the flat pattern. It must be
+        a value between 0 and 1.
+        """
+        return float()
+    @kFactor.setter
+    def kFactor(self, value: float):
+        """
+        The K Factor value that is used when calculating the flat pattern. It must be
+        a value between 0 and 1.
+        """
+        pass
+    @property
+    def gap(self) -> SheetMetalRuleValue:
+        """
+        The value used for miter, rip, and seam, gaps. Use the returned SheetMetalRuleValue
+        object to get and set the current value of the gap.
+        """
+        return SheetMetalRuleValue()
+    @property
+    def bendRadius(self) -> SheetMetalRuleValue:
+        """
+        The interior radius of the bends. Use the returned SheetMetalRuleValue
+        object to get and set the current value of the radius.
+        """
+        return SheetMetalRuleValue()
+    @property
+    def reliefWidth(self) -> SheetMetalRuleValue:
+        """
+        The relief width used in the flat pattern. Use the returned SheetMetalRuleValue
+        object to get and set the current value of the relief width.
+        """
+        return SheetMetalRuleValue()
+    @property
+    def reliefDepth(self) -> SheetMetalRuleValue:
+        """
+        The relief depth used in the flat pattern. Use the returned SheetMetalRuleValue
+        object to get and set the current value of the relief depth.
+        """
+        return SheetMetalRuleValue()
+    @property
+    def reliefRemnant(self) -> SheetMetalRuleValue:
+        """
+        The relief remnant used in the flat pattern. Use the returned SheetMetalRuleValue
+        object to get and set the current value of the relief remnant.
+        """
+        return SheetMetalRuleValue()
+    @property
+    def reliefShape(self) -> BendReliefShapes:
+        """
+        Gets and sets the bend relief shape to use.
+        """
+        return BendReliefShapes()
+    @reliefShape.setter
+    def reliefShape(self, value: BendReliefShapes):
+        """
+        Gets and sets the bend relief shape to use.
+        """
+        pass
+    @property
+    def twoBendReliefShape(self) -> TwoBendReliefShapes:
+        """
+        Gets and sets the relief shape to use when two bends intersect.
+        
+        When set to square or round relief shape, the value of the twoBendReliefPlacement
+        property will be set to IntersectionTwoBendReliefPlacement. For a round relief
+        shape you can change the twoBendReliefPlacment property to TangentTwoBendReliefPlacement.
+        """
+        return TwoBendReliefShapes()
+    @twoBendReliefShape.setter
+    def twoBendReliefShape(self, value: TwoBendReliefShapes):
+        """
+        Gets and sets the relief shape to use when two bends intersect.
+        
+        When set to square or round relief shape, the value of the twoBendReliefPlacement
+        property will be set to IntersectionTwoBendReliefPlacement. For a round relief
+        shape you can change the twoBendReliefPlacment property to TangentTwoBendReliefPlacement.
+        """
+        pass
+    @property
+    def twoBendReliefSize(self) -> SheetMetalRuleValue:
+        """
+        The relief size used when two bends meet in the flat pattern and the relief
+        shape is round or square. Use the returned SheetMetalRuleValue object to
+        get and set the current value of the relief size.
+        """
+        return SheetMetalRuleValue()
+    @property
+    def twoBendReliefPlacement(self) -> TwoBendReliefPlacements:
+        """
+        Gets and sets the relief placement for a two bend relief shape. When the relief shape
+        is round, both intersection and tangent are valid placements. For square shape, only
+        intersection is valid. For all other shapes, this property will return NoTwoBendReliefPlacement
+        because the placement option is not used.
+        """
+        return TwoBendReliefPlacements()
+    @twoBendReliefPlacement.setter
+    def twoBendReliefPlacement(self, value: TwoBendReliefPlacements):
+        """
+        Gets and sets the relief placement for a two bend relief shape. When the relief shape
+        is round, both intersection and tangent are valid placements. For square shape, only
+        intersection is valid. For all other shapes, this property will return NoTwoBendReliefPlacement
+        because the placement option is not used.
+        """
+        pass
+    @property
+    def threeBendReliefShape(self) -> ThreeBendReliefShapes:
+        """
+        Gets and sets the relief shape to use when three bends intersect.
+        """
+        return ThreeBendReliefShapes()
+    @threeBendReliefShape.setter
+    def threeBendReliefShape(self, value: ThreeBendReliefShapes):
+        """
+        Gets and sets the relief shape to use when three bends intersect.
+        """
+        pass
+    @property
+    def threeBendReliefRadius(self) -> SheetMetalRuleValue:
+        """
+        The relief size used when three bends meet in the flat pattern and the relief shape
+        is "round with radius". Use the returned SheetMetalRuleValue object to get and set
+        the current value of the relief size.
+        """
+        return SheetMetalRuleValue()
+    @property
+    def parentDesign(self) -> Design:
+        """
+        Returns the parent design for a sheet metal rule in a design or it
+        returns null if the sheet metal rule is in the library.
+        """
+        return Design()
+    @property
+    def isDefault(self) -> bool:
+        """
+        This gets and sets which rule in a library is the default rule. This is only
+        valid for rules in a library and will fail for rules in a design.
+        """
+        return bool()
+    @isDefault.setter
+    def isDefault(self, value: bool):
+        """
+        This gets and sets which rule in a library is the default rule. This is only
+        valid for rules in a library and will fail for rules in a design.
+        """
+        pass
+    @property
+    def isUsed(self) -> bool:
+        """
+        Indicates if this rule is currently being used by a component. This is only
+        valid for rules in a design.
+        """
+        return bool()
+
+class SheetMetalRules(core.Base):
+    """
+    A collection of sheet metal rules.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SheetMetalRules:
+        return SheetMetalRules()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SheetMetalRule:
+        return None
+    def __iter__(self) -> Iterator[SheetMetalRule]:
+        return None
+    def item(self, index: int) -> SheetMetalRule:
+        """
+        Function that returns the specified sheet metal rule using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return SheetMetalRule()
+    def itemByName(self, name: str) -> SheetMetalRule:
+        """
+        Function that returns the specified sheet metal rule using the name of the rule.
+        name : The name of the rule within the collection to return. This is the name seen in the Sheet Metal Rules dialog.
+        Returns the specified item or null if the specified name was not found.
+        """
+        return SheetMetalRule()
+    def addByCopy(self, existingSheetMetalRule: SheetMetalRule, name: str) -> SheetMetalRule:
+        """
+        Creates a new sheet metal rule by copying an existing rule. The new rule
+        can then be edited to define the rule characteristics you want.
+        existingSheetMetalRule : The existing SheetMetalRule object you want to copy. This can be a rule from the
+        library or the design.
+        name : The name to assign to the new sheet metal rule. This name must be unique with respect to other
+        sheet metal rules in the design or library it's created in.
+        Returns the new SheetMetalRule object or will assert in the case where it fails.
+        """
+        return SheetMetalRule()
+    @property
+    def count(self) -> int:
+        """
+        The number of sheet metal rules in the collection.
+        """
+        return int()
+
+class SheetMetalRuleValue(core.Base):
+    """
+    Used to get and set the current value of a value associated with a sheet metal rule. A value
+    can be gotten or set using a string or a double. A string can contain equations and unit specifiers
+    whereas a double defines the size in centimeters. In the user-interface, the user is always
+    setting the string expression. However, when programming it is typically more convenient to set
+    it using an explicit value. When the value is set using a double, Fusion creates an equivalent
+    expression.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SheetMetalRuleValue:
+        return SheetMetalRuleValue()
+    @property
+    def expression(self) -> str:
+        """
+        Gets and sets the expression of the sheet metal rule value. This can be an
+        equation that includes the name "Thickness" and can also include length unit
+        specifiers. For example, a valid expression is "Thickness / 2 + 1 mm". If no
+        units are specified, the document default units are implied. For example an
+        expression of "3" will be 3 inches if the document units are inches or 3 mm if
+        the document units are millimeters.
+        """
+        return str()
+    @expression.setter
+    def expression(self, value: str):
+        """
+        Gets and sets the expression of the sheet metal rule value. This can be an
+        equation that includes the name "Thickness" and can also include length unit
+        specifiers. For example, a valid expression is "Thickness / 2 + 1 mm". If no
+        units are specified, the document default units are implied. For example an
+        expression of "3" will be 3 inches if the document units are inches or 3 mm if
+        the document units are millimeters.
+        """
+        pass
+    @property
+    def value(self) -> float:
+        """
+        Gets and sets the value of the sheet metal rule value in centimeters. Setting
+        this value will create a new expression that is equivalent to the new value.
+        """
+        return float()
+    @value.setter
+    def value(self, value: float):
+        """
+        Gets and sets the value of the sheet metal rule value in centimeters. Setting
+        this value will create a new expression that is equivalent to the new value.
+        """
+        pass
 
 class ShellFeatureInput(core.Base):
     """
@@ -15940,6 +20818,12 @@ class ShellFeatures(core.Base):
     @staticmethod
     def cast(arg) -> ShellFeatures:
         return ShellFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ShellFeature:
+        return None
+    def __iter__(self) -> Iterator[ShellFeature]:
+        return None
     def item(self, index: int) -> ShellFeature:
         """
         Function that returns the specified shell feature using an index into the collection.
@@ -15947,7 +20831,7 @@ class ShellFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return ShellFeature()
-    def createInput(self, inputEntities: core.ObjectCollection, isTangentChain: bool) -> ShellFeatureInput:
+    def createInput(self, inputEntities: core.ObjectCollection, isTangentChain: bool = True) -> ShellFeatureInput:
         """
         Creates a ShellFeatureInput object. Use properties and methods on this object
         to define the shell you want to create and then use the Add method, passing in
@@ -16066,6 +20950,12 @@ class SilhouetteSplitFeatures(core.Base):
     @staticmethod
     def cast(arg) -> SilhouetteSplitFeatures:
         return SilhouetteSplitFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SilhouetteSplitFeature:
+        return None
+    def __iter__(self) -> Iterator[SilhouetteSplitFeature]:
+        return None
     def item(self, index: int) -> SilhouetteSplitFeature:
         """
         Function that returns the specified silhouette split feature using an index into the collection.
@@ -16119,11 +21009,17 @@ class Sketch(core.Base):
         return Sketch()
     def project(self, entity: core.Base) -> core.ObjectCollection:
         """
-        Projects the specified entity onto the x-y plane of the sketch
-        and returns the created sketch entity(s).
-        entity : The entity to project. This can be a sketch entity, an edge, a face to get all
-        of its edges, a vertex, a construction axis, a construction point, or a
-        construction plane that is perpendicular to the sketch to create a line.
+        Projects the specified entity or entities onto the x-y plane of the sketch
+        and returns the created sketch entity(s). You can provide either a single
+        entity or an ObjectCollection of multiple entities, which will be projected simultaneously.
+        entity : The entity to project. This can be a single entity of the following types:
+        sketch entity, an edge, a face (which will get all of its edges), a vertex,
+        a construction axis, a construction point, or a construction plane that is
+        perpendicular to the sketch to create a line.
+        
+        This can also be an ObjectCollection that contains multiple entities and will be
+        projected simultaneously. The entities that can be projected must be the types
+        and have the same restrictions as described above.
         Returns a collection of the sketch entities that were created as a result of the
         projection.
         """
@@ -16159,7 +21055,7 @@ class Sketch(core.Base):
         the original input curve being one of the curves.
         """
         return core.ObjectCollection()
-    def offset(self, curves: core.ObjectCollection, directionPoint: core.Point3D, offset: float) -> core.ObjectCollection:
+    def offset(self, curves: core.ObjectCollection, directionPoint: core.Point3D, offset: float = 0) -> core.ObjectCollection:
         """
         Creates offset curves for the set of input curves. If the offset distance is not
         provided, the offset distance is defined by the direction point.
@@ -16195,7 +21091,7 @@ class Sketch(core.Base):
         Returns true if the move was successful.
         """
         return bool()
-    def copy(self, sketchEntities: core.ObjectCollection, transform: core.Matrix3D, targetSketch: Sketch) -> core.ObjectCollection:
+    def copy(self, sketchEntities: core.ObjectCollection, transform: core.Matrix3D, targetSketch: Sketch = None) -> core.ObjectCollection:
         """
         Copies the specified sketch entities, applying the specified transform.
         Any geometric or dimension constraints associated with the entities will
@@ -16261,7 +21157,7 @@ class Sketch(core.Base):
         entities don't intersect the sketch plane.
         """
         return [SketchEntity()]
-    def projectToSurface(self, faces: list[BRepFace], curves: list[core.Base], projectType: SurfaceProjectTypes, directionEntity: core.Base) -> list[SketchEntity]:
+    def projectToSurface(self, faces: list[BRepFace], curves: list[core.Base], projectType: SurfaceProjectTypes, directionEntity: core.Base = None) -> list[SketchEntity]:
         """
         Projects the specified set of curves onto the specified set of faces using the specified method of projection.
         if the projection type is along a vector, then the directionEntity argument must be supplied. if the projectionType
@@ -16630,6 +21526,12 @@ class SketchArcs(core.Base):
     @staticmethod
     def cast(arg) -> SketchArcs:
         return SketchArcs()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchArc:
+        return None
+    def __iter__(self) -> Iterator[SketchArc]:
+        return None
     def item(self, index: int) -> SketchArc:
         """
         Function that returns the specified sketch arc using an index into the collection.
@@ -16687,6 +21589,12 @@ class SketchCircles(core.Base):
     @staticmethod
     def cast(arg) -> SketchCircles:
         return SketchCircles()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchCircle:
+        return None
+    def __iter__(self) -> Iterator[SketchCircle]:
+        return None
     def item(self, index: int) -> SketchCircle:
         """
         Function that returns the specified sketch circle using an index into the collection.
@@ -16779,6 +21687,12 @@ class SketchConicCurves(core.Base):
     @staticmethod
     def cast(arg) -> SketchConicCurves:
         return SketchConicCurves()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchConicCurve:
+        return None
+    def __iter__(self) -> Iterator[SketchConicCurve]:
+        return None
     def item(self, index: int) -> SketchConicCurve:
         """
         Function that returns the specified conic curve using an index into the collection.
@@ -16786,10 +21700,59 @@ class SketchConicCurves(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return SketchConicCurve()
+    def add(self, startPoint: core.Base, endPoint: core.Base, apexPoint: core.Base, rhoValue: float) -> SketchConicCurve:
+        """
+        Creates a new conic curve.
+        startPoint : The start point of the conic curve. This can be either an existing SketchPoint or a Point3D object.
+        endPoint : The end point of the conic curve. This can be either an existing SketchPoint or a Point3D object.
+        apexPoint : The apex point of the conic curve. This can be either an existing SketchPoint or a Point3D object.
+        rhoValue : Double that specifies the rho value for the conic. This value must be greater than zero and less
+        than one.
+        Returns the new conic curve or null if the creation failed.
+        """
+        return SketchConicCurve()
     @property
     def count(self) -> int:
         """
         Returns the number of conic curves in the sketch.
+        """
+        return int()
+
+class SketchControlPointSplines(core.Base):
+    """
+    The collection of control point splines in a sketch.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SketchControlPointSplines:
+        return SketchControlPointSplines()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchControlPointSpline:
+        return None
+    def __iter__(self) -> Iterator[SketchControlPointSpline]:
+        return None
+    def item(self, index: int) -> SketchControlPointSpline:
+        """
+        Function that returns the specified sketch control point spline using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return SketchControlPointSpline()
+    def add(self, controlPoints: list[core.Base], degree: SplineDegrees) -> SketchControlPointSpline:
+        """
+        Creates a new control point spline.
+        controlPoints : An array of points that define the control points of the curve's polygon. They
+        can be any combination of existing SketchPoint or Point3D objects.
+        degree : Specifies the degree of the spline.
+        Returns the newly created SketchControlPointSpline object if the creation was successful or null if it failed.
+        """
+        return SketchControlPointSpline()
+    @property
+    def count(self) -> int:
+        """
+        Returns the number of control point splines in the sketch.
         """
         return int()
 
@@ -16804,6 +21767,12 @@ class SketchCurves(core.Base):
     @staticmethod
     def cast(arg) -> SketchCurves:
         return SketchCurves()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchCurve:
+        return None
+    def __iter__(self) -> Iterator[SketchCurve]:
+        return None
     def item(self, index: int) -> SketchCurve:
         """
         Function that returns the specified sketch curve using an index into the collection.
@@ -16877,10 +21846,18 @@ class SketchCurves(core.Base):
     def sketchConicCurves(self) -> SketchConicCurves:
         """
         Returns the conic curves collection associated with this sketch.
-        This provides access to the existing conic curves and support the
+        This provides access to the existing conic curves and supports the
         creation of new conic curves.
         """
         return SketchConicCurves()
+    @property
+    def sketchControlPointSplines(self) -> SketchControlPointSplines:
+        """
+        Returns the control point splines collection associated with this sketch.
+        This provides access to the existing control point splines and supports the
+        creation of new control point splines.
+        """
+        return SketchControlPointSplines()
 
 class SketchDimension(core.Base):
     """
@@ -16970,6 +21947,38 @@ class SketchDimension(core.Base):
         method to get the two entities identified by the tokens and then compare them.
         """
         return str()
+    @property
+    def value(self) -> float:
+        """
+        Gets and sets the current value of the sketch dimension.
+        
+        In a design where the design history is being captured (parametric) and the isDriving property is True, this is exactly
+        equivalent to getting the parameter associated with the dimension and editing its value. Editing this property will result
+        in the parameter value being changed. If isDriving is False, this acts as a read-only property and attempting to set it will fail.
+        
+        In a design where the design history is NOT being captured (direct edit) the parameter property will return null and this
+        property can be used to get and set the value of the dimension because in this case, there isn't an associated parameter.
+        
+        The value is always in internal units which means that for dimensions that represent a distance, the value is in
+        Centimeters and for dimensions representing an angle the value is in Radians.
+        """
+        return float()
+    @value.setter
+    def value(self, value: float):
+        """
+        Gets and sets the current value of the sketch dimension.
+        
+        In a design where the design history is being captured (parametric) and the isDriving property is True, this is exactly
+        equivalent to getting the parameter associated with the dimension and editing its value. Editing this property will result
+        in the parameter value being changed. If isDriving is False, this acts as a read-only property and attempting to set it will fail.
+        
+        In a design where the design history is NOT being captured (direct edit) the parameter property will return null and this
+        property can be used to get and set the value of the dimension because in this case, there isn't an associated parameter.
+        
+        The value is always in internal units which means that for dimensions that represent a distance, the value is in
+        Centimeters and for dimensions representing an angle the value is in Radians.
+        """
+        pass
 
 class SketchDimensionList(core.Base):
     """
@@ -16980,6 +21989,12 @@ class SketchDimensionList(core.Base):
     @staticmethod
     def cast(arg) -> SketchDimensionList:
         return SketchDimensionList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchDimension:
+        return None
+    def __iter__(self) -> Iterator[SketchDimension]:
+        return None
     def item(self, index: int) -> SketchDimension:
         """
         Function that returns the specified sketch dimension using an index into the collection.
@@ -17005,6 +22020,12 @@ class SketchDimensions(core.Base):
     @staticmethod
     def cast(arg) -> SketchDimensions:
         return SketchDimensions()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchDimension:
+        return None
+    def __iter__(self) -> Iterator[SketchDimension]:
+        return None
     def item(self, index: int) -> SketchDimension:
         """
         Function that returns the specified sketch dimension using an index into the
@@ -17014,7 +22035,7 @@ class SketchDimensions(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return SketchDimension()
-    def addDistanceDimension(self, pointOne: SketchPoint, pointTwo: SketchPoint, orientation: DimensionOrientations, textPoint: core.Point3D, isDriving: bool) -> SketchLinearDimension:
+    def addDistanceDimension(self, pointOne: SketchPoint, pointTwo: SketchPoint, orientation: DimensionOrientations, textPoint: core.Point3D, isDriving: bool = True) -> SketchLinearDimension:
         """
         Creates a new linear dimension constraint between the two input entities.
         pointOne : The first SketchPoint to dimension to.
@@ -17027,7 +22048,7 @@ class SketchDimensions(core.Base):
         Returns the newly created dimension or null if the creation failed.
         """
         return SketchLinearDimension()
-    def addOffsetDimension(self, line: SketchLine, entityTwo: SketchEntity, textPoint: core.Point3D, isDriving: bool) -> SketchOffsetDimension:
+    def addOffsetDimension(self, line: SketchLine, entityTwo: SketchEntity, textPoint: core.Point3D, isDriving: bool = True) -> SketchOffsetDimension:
         """
         Creates a new linear dimension constraint between the two input entities. The first input
         entity must be a sketch line. The second entity can be a point or a line that is parallel
@@ -17043,7 +22064,7 @@ class SketchDimensions(core.Base):
         Returns the newly created dimension or null if the creation failed.
         """
         return SketchOffsetDimension()
-    def addAngularDimension(self, lineOne: SketchLine, lineTwo: SketchLine, textPoint: core.Point3D, isDriving: bool) -> SketchAngularDimension:
+    def addAngularDimension(self, lineOne: SketchLine, lineTwo: SketchLine, textPoint: core.Point3D, isDriving: bool = True) -> SketchAngularDimension:
         """
         Creates a new angular dimension constraint between the two input lines.
         The position of the text controls which of the four quadrants will be dimensioned.
@@ -17057,7 +22078,7 @@ class SketchDimensions(core.Base):
         Returns the newly created dimension or null if the creation failed.
         """
         return SketchAngularDimension()
-    def addDiameterDimension(self, entity: SketchCurve, textPoint: core.Point3D, isDriving: bool) -> SketchDiameterDimension:
+    def addDiameterDimension(self, entity: SketchCurve, textPoint: core.Point3D, isDriving: bool = True) -> SketchDiameterDimension:
         """
         Creates a new diameter dimension constraint on the arc or circle.
         entity : The SketchCircle or SketchArc to dimension.
@@ -17068,7 +22089,7 @@ class SketchDimensions(core.Base):
         Returns the newly created dimension or null if the creation failed.
         """
         return SketchDiameterDimension()
-    def addRadialDimension(self, entity: SketchCurve, textPoint: core.Point3D, isDriving: bool) -> SketchRadialDimension:
+    def addRadialDimension(self, entity: SketchCurve, textPoint: core.Point3D, isDriving: bool = True) -> SketchRadialDimension:
         """
         Creates a new radial dimension constraint on the arc or circle.
         entity : The SketchCircle or SketchArc to dimension.
@@ -17079,7 +22100,7 @@ class SketchDimensions(core.Base):
         Returns the newly created dimension or null if the creation failed.
         """
         return SketchRadialDimension()
-    def addEllipseMajorRadiusDimension(self, ellipse: SketchCurve, textPoint: core.Point3D, isDriving: bool) -> SketchEllipseMajorRadiusDimension:
+    def addEllipseMajorRadiusDimension(self, ellipse: SketchCurve, textPoint: core.Point3D, isDriving: bool = True) -> SketchEllipseMajorRadiusDimension:
         """
         Creates a new dimension constraint on the major radius of an ellipse.
         ellipse : The SketchEllipse to dimension.
@@ -17090,7 +22111,7 @@ class SketchDimensions(core.Base):
         Returns the newly created dimension or null if the creation failed.
         """
         return SketchEllipseMajorRadiusDimension()
-    def addEllipseMinorRadiusDimension(self, ellipse: SketchCurve, textPoint: core.Point3D, isDriving: bool) -> SketchEllipseMinorRadiusDimension:
+    def addEllipseMinorRadiusDimension(self, ellipse: SketchCurve, textPoint: core.Point3D, isDriving: bool = True) -> SketchEllipseMinorRadiusDimension:
         """
         Creates a new dimension constraint on the minor radius of an ellipse.
         ellipse : The SketchEllipse to dimension.
@@ -17101,7 +22122,7 @@ class SketchDimensions(core.Base):
         Returns the newly created dimension or null if the creation failed.
         """
         return SketchEllipseMinorRadiusDimension()
-    def addConcentricCircleDimension(self, circleOne: SketchCurve, circleTwo: SketchCurve, textPoint: core.Point3D, isDriving: bool) -> SketchConcentricCircleDimension:
+    def addConcentricCircleDimension(self, circleOne: SketchCurve, circleTwo: SketchCurve, textPoint: core.Point3D, isDriving: bool = True) -> SketchConcentricCircleDimension:
         """
         Creates a new dimension constraint between to concentric circles or arcs.
         circleOne : The first SketchCircle or SketchArc to dimension.
@@ -17113,6 +22134,69 @@ class SketchDimensions(core.Base):
         Returns the newly created dimension or null if the creation failed.
         """
         return SketchConcentricCircleDimension()
+    def addTangentDistanceDimension(self, entityOne: SketchEntity, isCloseToEnityTwo: bool, entityTwo: SketchCurve, isCloseToEnityOne: bool, textPoint: core.Point3D, isDriving: bool = True) -> SketchTangentDistanceDimension:
+        """
+        Creates a new linear dimension from between a line and circle or arc and a second circle or arc where
+        the dimension is to the tangent on the edge of the circle or arc.
+        entityOne : The first entity to dimension to. This can be a SketchPoint, SketchLine, SketchCircle or SketchArc.
+        If a circle or arc is provided then the tangentSideOne argument must be specified.
+        isCloseToEnityTwo : If entityOne is a circle or arc this specifies which side of the circle or arc the dimension will be tangent to.
+        If true, it will be on the side that is closer to entityTwo. If a SketchLine or SketchPoint was input for the
+        entityOne argument this argument is ignored and any value can be used.
+        entityTwo : A SketchCircle or SketchArc entity that you will dimension to.
+        isCloseToEnityOne : Specifies which side of the circle or arc input as the entityTwo argument the dimension will be tangent to.
+        If true, it will be on the side that is closer to entityOne.
+        textPoint : A Point3D object that defines the position of the dimension text.
+        isDriving : Optional argument that specifies if a driving (the dimension controls the geometry)
+        or a driven (the geometry controls the dimension) dimension is created. If not provided
+        a driving dimension will be created.
+        Returns the newly created dimension or null if the creation failed.
+        """
+        return SketchTangentDistanceDimension()
+    def addLinearDiameterDimension(self, centerLine: SketchLine, entityTwo: SketchEntity, textPoint: core.Point3D, isDriving: bool = True) -> SketchLinearDiameterDimension:
+        """
+        Creates a new linear dimension showing the diameter where the first line acts as the center line
+        and the second entity defines the size. The first input entity must be a sketch line. The second entity
+        can be a point or a line that is parallel to the first. The dimension controls the distance as measured
+        perpendicular to the first input line.
+        centerLine : The SketchLine to dimension to which acts as the center line.
+        entityTwo : The parallel SketchLine or SketchPoint to dimension to. If a SketchLine is used it must be
+        parallel to the first line.
+        textPoint : A Point3D object that defines the position of the dimension text.
+        isDriving : Optional argument that specifies if a driving (the dimension controls the geometry)
+        or a driven (the geometry controls the dimension) dimension is created. If not provided
+        a driving dimension will be created.
+        Returns the newly created dimension or null if the creation failed.
+        """
+        return SketchLinearDiameterDimension()
+    def addDistanceBetweenPointAndSurfaceDimension(self, point: SketchPoint, surface: core.Base, isDriving: bool = True) -> SketchDistanceBetweenPointAndSurfaceDimension:
+        """
+        Creates a new linear dimension controlling the distance between a sketch point and the specified surface or point. The text position is
+        automatically chosen and is positioned so it is midway between the point and surface and the extension lines are a minimum length. You
+        can modify the position by using functionality on the returned SketchDistanceBetweenPointAndSurfaceDimension object.
+        point : The SketchPoint being constrained by the dimension.
+        surface : The BRepFace or ConstructionPlane to which the dimension will anchor. Planar, cylindrical, and spherical faces are supported.
+        If a cylindrical or spherical face is used, the dimension is from the point to the nearest point on the surface.
+        isDriving : Optional argument that specifies if a driving (the dimension controls the geometry)
+        or a driven (the geometry controls the dimension) dimension is created. If not provided
+        a driving dimension will be created.
+        Returns the newly created dimension or null if the creation failed.
+        """
+        return SketchDistanceBetweenPointAndSurfaceDimension()
+    def addDistanceBetweenLineAndPlanarSurfaceDimension(self, line: SketchLine, planarSurface: core.Base, isDriving: bool = True) -> SketchDistanceBetweenLineAndPlanarSurfaceDimension:
+        """
+        Creates a new linear dimension controlling the distance between a sketch line and the specified planar face or construction plane. The sketch line
+        must lie on a plane that is parallel to the planar surface. The text position is automatically chosen and is positioned so it is midway between
+        the line and surface and the extension lines are a minimum length. You can modify the position by using functionality on the returned
+        SketchDistanceBetweenLineAndPlanarSurfaceDimension object.
+        line : The SketchLine being constrained by the dimension.
+        planarSurface : The planar BRepFace or ConstructionPlane that the dimension will anchor to.
+        isDriving : Optional argument that specifies if a driving (the dimension controls the geometry)
+        or a driven (the geometry controls the dimension) dimension is created. If not provided
+        a driving dimension will be created.
+        Returns the newly created dimension or null if the creation failed.
+        """
+        return SketchDistanceBetweenLineAndPlanarSurfaceDimension()
     @property
     def count(self) -> int:
         """
@@ -17130,6 +22214,12 @@ class SketchEllipses(core.Base):
     @staticmethod
     def cast(arg) -> SketchEllipses:
         return SketchEllipses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchEllipse:
+        return None
+    def __iter__(self) -> Iterator[SketchEllipse]:
+        return None
     def item(self, index: int) -> SketchEllipse:
         """
         Function that returns the specified sketch ellipse using an index into the collection.
@@ -17165,11 +22255,44 @@ class SketchEllipticalArcs(core.Base):
     @staticmethod
     def cast(arg) -> SketchEllipticalArcs:
         return SketchEllipticalArcs()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchEllipticalArc:
+        return None
+    def __iter__(self) -> Iterator[SketchEllipticalArc]:
+        return None
     def item(self, index: int) -> SketchEllipticalArc:
         """
         Function that returns the specified sketch elliptical arc using an index into the collection.
         index : The index of the item within the collection to return. The first item in the collection has an index of 0.
         Returns the specified item or null if an invalid index was specified.
+        """
+        return SketchEllipticalArc()
+    def addByAngle(self, centerPoint: core.Base, majorAxis: core.Vector3D, minorAxis: core.Vector3D, startAngle: float, sweepAngle: float) -> SketchEllipticalArc:
+        """
+        Creates an elliptical sketch arc where the sweep of the arc is defined by the start and sweep angles.
+        centerPoint : The center point of the ellipse. This can be either an existing SketchPoint or a Point3D object.
+        majorAxis : The direction of the major axis. The magnitude of this vector defines the major radius.
+        minorAxis : The direction of the minor axis. The magnitude of this vector defines the minor radius.
+        This vector should be perpendicular to the major axis.
+        startAngle : The start angle of the elliptical arc in radians, where 0 is along the major axis.
+        sweepAngle : The sweep angle of the elliptical arc in radians, where a positive value is counterclockwise.
+        Returns the newly created SketchEllipticalArc or null if the creation failed.
+        """
+        return SketchEllipticalArc()
+    def addByEndPoints(self, centerPoint: core.Base, majorAxis: core.Vector3D, minorAxis: core.Vector3D, startPoint: core.Base, endPoint: core.Base) -> SketchEllipticalArc:
+        """
+        Creates an elliptical sketch arc where the sweep of the arc is defined by two points.
+        centerPoint : The center point of the ellipse. This can be either an existing SketchPoint or a Point3D object.
+        majorAxis : The direction of the major axis. The magnitude of this vector defines the major radius.
+        minorAxis : The direction of the minor axis. The magnitude of this vector defines the minor radius.
+        This vector should be perpendicular to the major axis.
+        startPoint : The start point of the elliptical arc. This can be either an existing SketchPoint or a Point3D object.
+        The point should lie on the defined ellipse.
+        endPoint : The end point of the elliptical arc. This can be either an existing SketchPoint or a Point3D object.
+        The point should lie on the defined ellipse and the elliptical arc is defined by a counterclockwise
+        sweep from the start point to the end point.
+        Returns the newly created SketchEllipticalArc or null if the creation failed.
         """
         return SketchEllipticalArc()
     @property
@@ -17181,8 +22304,8 @@ class SketchEllipticalArcs(core.Base):
 
 class SketchEntity(core.Base):
     """
-    This object represents all geometry in a sketch, including
-    points and lines and the various curves.
+    This object represents all geometry in a sketch, including all
+    the various curves, points, and text.
     """
     def __init__(self):
         pass
@@ -17336,6 +22459,12 @@ class SketchEntityList(core.Base):
     @staticmethod
     def cast(arg) -> SketchEntityList:
         return SketchEntityList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchEntity:
+        return None
+    def __iter__(self) -> Iterator[SketchEntity]:
+        return None
     def item(self, index: int) -> SketchEntity:
         """
         Function that returns the specified sketch entity using an index into the collection.
@@ -17360,6 +22489,12 @@ class Sketches(core.Base):
     @staticmethod
     def cast(arg) -> Sketches:
         return Sketches()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Sketch:
+        return None
+    def __iter__(self) -> Iterator[Sketch]:
+        return None
     def item(self, index: int) -> Sketch:
         """
         Function that returns the specified sketch using an index into the collection.
@@ -17375,7 +22510,7 @@ class Sketches(core.Base):
         Returns the sketch or null if there isn't a sketch with that name.
         """
         return Sketch()
-    def add(self, planarEntity: core.Base, occurrenceForCreation: Occurrence) -> Sketch:
+    def add(self, planarEntity: core.Base, occurrenceForCreation: Occurrence = None) -> Sketch:
         """
         Creates a new sketch on the specified planar entity.
         planarEntity : A construction plane or planar face that defines the sketch plane
@@ -17400,7 +22535,7 @@ class Sketches(core.Base):
         Returns the newly created Sketch or null if the creation failed.
         """
         return Sketch()
-    def addWithoutEdges(self, planarEntity: core.Base, occurrenceForCreation: Occurrence) -> Sketch:
+    def addWithoutEdges(self, planarEntity: core.Base, occurrenceForCreation: Occurrence = None) -> Sketch:
         """
         Creates a new sketch on the specified planar entity. If a BRepFace is provided, the edges of the face
         are not projected into the sketch so the result of creating a new sketch with this method will
@@ -17429,6 +22564,12 @@ class SketchFittedSplines(core.Base):
     @staticmethod
     def cast(arg) -> SketchFittedSplines:
         return SketchFittedSplines()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchFittedSpline:
+        return None
+    def __iter__(self) -> Iterator[SketchFittedSpline]:
+        return None
     def item(self, index: int) -> SketchFittedSpline:
         """
         Function that returns the specified sketch fitted spline using an index into the collection.
@@ -17441,14 +22582,6 @@ class SketchFittedSplines(core.Base):
         Creates a new fitted spline through the specified points.
         fitPoints : A collection of points that the curve will fit through. They
         can be any combination of existing SketchPoint or Point3D objects.
-        Returns the newly created SketchFittedSpline object if the creation was successful or null if it failed.
-        """
-        return SketchFittedSpline()
-    def addByNurbsCurve(self, nurbsCurve: core.NurbsCurve3D) -> SketchFittedSpline:
-        """
-        Creates a new fitted spline using the input NurbsCurve3D to define the shape. Fit points are created
-        to create a curve that exactly matches the input curve.
-        nurbsCurve : A NurbsCurve3D object that defines a valid NURBS curve.
         Returns the newly created SketchFittedSpline object if the creation was successful or null if it failed.
         """
         return SketchFittedSpline()
@@ -17469,6 +22602,12 @@ class SketchFixedSplines(core.Base):
     @staticmethod
     def cast(arg) -> SketchFixedSplines:
         return SketchFixedSplines()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchFixedSpline:
+        return None
+    def __iter__(self) -> Iterator[SketchFixedSpline]:
+        return None
     def item(self, index: int) -> SketchFixedSpline:
         """
         Function that returns the specified sketch fixed spline using an index into the collection.
@@ -17501,6 +22640,12 @@ class SketchLineList(core.Base):
     @staticmethod
     def cast(arg) -> SketchLineList:
         return SketchLineList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchLine:
+        return None
+    def __iter__(self) -> Iterator[SketchLine]:
+        return None
     def item(self, index: int) -> SketchLine:
         """
         Function that returns the specified sketch line using an index into the collection.
@@ -17525,6 +22670,12 @@ class SketchLines(core.Base):
     @staticmethod
     def cast(arg) -> SketchLines:
         return SketchLines()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchLine:
+        return None
+    def __iter__(self) -> Iterator[SketchLine]:
+        return None
     def item(self, index: int) -> SketchLine:
         """
         Function that returns the specified sketch line using an index into the collection.
@@ -17630,6 +22781,12 @@ class SketchPointList(core.Base):
     @staticmethod
     def cast(arg) -> SketchPointList:
         return SketchPointList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchPoint:
+        return None
+    def __iter__(self) -> Iterator[SketchPoint]:
+        return None
     def item(self, index: int) -> SketchPoint:
         """
         Function that returns the specified sketch point using an index into the collection.
@@ -17653,6 +22810,12 @@ class SketchPoints(core.Base):
     @staticmethod
     def cast(arg) -> SketchPoints:
         return SketchPoints()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchPoint:
+        return None
+    def __iter__(self) -> Iterator[SketchPoint]:
+        return None
     def item(self, index: int) -> SketchPoint:
         """
         Function that returns the specified sketch using an index into the collection.
@@ -17685,6 +22848,14 @@ class SketchTextDefinition(core.Base):
     @staticmethod
     def cast(arg) -> SketchTextDefinition:
         return SketchTextDefinition()
+    @property
+    def parentSketchText(self) -> SketchText:
+        """
+        Returns the SketchText object this definition is associated with. This property will
+        return null in the case the definition object was obtained from a SketchTextInput object
+        because the SketchText object does not yet exist.
+        """
+        return SketchText()
 
 class SketchTextInput(core.Base):
     """
@@ -17760,20 +22931,6 @@ class SketchTextInput(core.Base):
         """
         pass
     @property
-    def position(self) -> core.Point3D:
-        """
-        Gets and sets the position of the text on the x-y plane of the sketch. The text must lie on the x-y plane so the Z component
-        of the point is ignored and always treated as zero.
-        """
-        return core.Point3D()
-    @position.setter
-    def position(self, value: core.Point3D):
-        """
-        Gets and sets the position of the text on the x-y plane of the sketch. The text must lie on the x-y plane so the Z component
-        of the point is ignored and always treated as zero.
-        """
-        pass
-    @property
     def fontName(self) -> str:
         """
         Gets and sets the name of the font to use.
@@ -17783,18 +22940,6 @@ class SketchTextInput(core.Base):
     def fontName(self, value: str):
         """
         Gets and sets the name of the font to use.
-        """
-        pass
-    @property
-    def angle(self) -> float:
-        """
-        Gets and sets the angle of the text relative to the x-axis of the x-y plane of the sketch.
-        """
-        return float()
-    @angle.setter
-    def angle(self, value: float):
-        """
-        Gets and sets the angle of the text relative to the x-axis of the x-y plane of the sketch.
         """
         pass
     @property
@@ -17854,6 +22999,12 @@ class SketchTexts(core.Base):
     @staticmethod
     def cast(arg) -> SketchTexts:
         return SketchTexts()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SketchText:
+        return None
+    def __iter__(self) -> Iterator[SketchText]:
+        return None
     def item(self, index: int) -> SketchText:
         """
         Function that returns the specified sketch text using an index into the collection.
@@ -17861,19 +23012,6 @@ class SketchTexts(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return SketchText()
-    def createInput(self, formattedText: str, height: float, position: core.Point3D) -> SketchTextInput:
-        """
-        Creates a SketchTextInput object that can be used to define additional settings when creating sketch text. The
-        SketchTextInput object is equivalent to the Sketch Text dialog in that it collects all of the input required
-        to create sketch text. Once the properties of the SketchTextInput object have been defined, use the add method
-        to create the sketch text.
-        formattedText : The text used for the sketch text. This is a simple string as no additional formatting is currently supported.
-        height : The height of the text in centimeters.
-        position : The position of the text on the x-y plane of the sketch. The text must lie on the x-y plane so the Z component
-        of the point is ignored and always treated as zero.
-        Returns a SketchTextInput object that can be used to set additional formatting and is used as input to the add method.
-        """
-        return SketchTextInput()
     def add(self, input: SketchTextInput) -> SketchText:
         """
         Creates a sketch text.
@@ -17945,6 +23083,12 @@ class Snapshots(core.Base):
     @staticmethod
     def cast(arg) -> Snapshots:
         return Snapshots()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> Snapshot:
+        return None
+    def __iter__(self) -> Iterator[Snapshot]:
+        return None
     def add(self) -> Snapshot:
         """
         Creates a new snapshot. Creating a snapshot is only valid when the HasPendingTransforms property returns true.
@@ -17988,6 +23132,12 @@ class SphereFeatures(core.Base):
     @staticmethod
     def cast(arg) -> SphereFeatures:
         return SphereFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SphereFeature:
+        return None
+    def __iter__(self) -> Iterator[SphereFeature]:
+        return None
     def item(self, index: int) -> SphereFeature:
         """
         Function that returns the specified sphere feature using an index into the collection.
@@ -18097,6 +23247,12 @@ class SplitBodyFeatures(core.Base):
     @staticmethod
     def cast(arg) -> SplitBodyFeatures:
         return SplitBodyFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SplitBodyFeature:
+        return None
+    def __iter__(self) -> Iterator[SplitBodyFeature]:
+        return None
     def item(self, index: int) -> SplitBodyFeature:
         """
         Function that returns the specified split body feature using an index into the collection.
@@ -18263,6 +23419,12 @@ class SplitFaceFeatures(core.Base):
     @staticmethod
     def cast(arg) -> SplitFaceFeatures:
         return SplitFaceFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SplitFaceFeature:
+        return None
+    def __iter__(self) -> Iterator[SplitFaceFeature]:
+        return None
     def item(self, index: int) -> SplitFaceFeature:
         """
         Function that returns the specified split face feature using an index into the collection.
@@ -18397,6 +23559,12 @@ class StitchFeatures(core.Base):
     @staticmethod
     def cast(arg) -> StitchFeatures:
         return StitchFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> StitchFeature:
+        return None
+    def __iter__(self) -> Iterator[StitchFeature]:
+        return None
     def item(self, index: int) -> StitchFeature:
         """
         Function that returns the specified stitch feature using an index into the collection.
@@ -18404,7 +23572,7 @@ class StitchFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return StitchFeature()
-    def createInput(self, stitchSurfaces: core.ObjectCollection, tolerance: core.ValueInput, operation: FeatureOperations) -> StitchFeatureInput:
+    def createInput(self, stitchSurfaces: core.ObjectCollection, tolerance: core.ValueInput, operation: FeatureOperations = FeatureOperations.NewBodyFeatureOperation) -> StitchFeatureInput:
         """
         Creates a StitchFeatureInput object. Use properties and methods on this object
         to define the stitch feature you want to create and then use the Add method, passing in
@@ -18459,6 +23627,12 @@ class SurfaceDeleteFaceFeatures(core.Base):
     @staticmethod
     def cast(arg) -> SurfaceDeleteFaceFeatures:
         return SurfaceDeleteFaceFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SurfaceDeleteFaceFeature:
+        return None
+    def __iter__(self) -> Iterator[SurfaceDeleteFaceFeature]:
+        return None
     def item(self, index: int) -> SurfaceDeleteFaceFeature:
         """
         Function that returns the specified SurfaceDeleteFaceFeature object using an index into the collection.
@@ -18738,17 +23912,15 @@ class SweepFeatureInput(core.Base):
     @property
     def twistAngle(self) -> core.ValueInput:
         """
-        Gets and sets the taper angle of the sweep. This property is initialized with a taper angle of zero.
-        A negative angle will taper the sweep inward while a positive value will taper
-        the sweep outward. This property is valid for both parametric and non-parametric extrusions.
+        Gets and sets the twist angle of the sweep. This property is initialized with a twist angle of zero.
+        This property is valid for both parametric and non-parametric extrusions.
         """
         return core.ValueInput()
     @twistAngle.setter
     def twistAngle(self, value: core.ValueInput):
         """
-        Gets and sets the taper angle of the sweep. This property is initialized with a taper angle of zero.
-        A negative angle will taper the sweep inward while a positive value will taper
-        the sweep outward. This property is valid for both parametric and non-parametric extrusions.
+        Gets and sets the twist angle of the sweep. This property is initialized with a twist angle of zero.
+        This property is valid for both parametric and non-parametric extrusions.
         """
         pass
     @property
@@ -18776,6 +23948,12 @@ class SweepFeatures(core.Base):
     @staticmethod
     def cast(arg) -> SweepFeatures:
         return SweepFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> SweepFeature:
+        return None
+    def __iter__(self) -> Iterator[SweepFeature]:
+        return None
     def item(self, index: int) -> SweepFeature:
         """
         Function that returns the specified sweep feature using an index into the collection.
@@ -18816,6 +23994,269 @@ class SweepFeatures(core.Base):
     def count(self) -> int:
         """
         The number of sweep features in the collection.
+        """
+        return int()
+
+class TangentRelationship(core.Base):
+    """
+    A tangent relationship in a design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> TangentRelationship:
+        return TangentRelationship()
+    def deleteMe(self) -> bool:
+        """
+        Deletes this tangent relationship.
+        Returns true if the delete is successful.
+        """
+        return bool()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> TangentRelationship:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return TangentRelationship()
+    @property
+    def parentComponent(self) -> Component:
+        """
+        Returns the parent component that owns this tangent relationship.
+        """
+        return Component()
+    @property
+    def name(self) -> str:
+        """
+        Gets and sets the name of the tangent relationship.
+        """
+        return str()
+    @name.setter
+    def name(self, value: str):
+        """
+        Gets and sets the name of the tangent relationship.
+        """
+        pass
+    @property
+    def faceOne(self) -> core.Base:
+        """
+        Gets and sets the first BRepFace object that will remain tangent to the set of specified tangent faces.
+        
+        To set this property, you need to position the timeline marker to immediately before this
+        tangent relationship. This can be accomplished using the following code:
+        thisTangentRelationship.timelineObject.rollTo(True)
+        """
+        return core.Base()
+    @faceOne.setter
+    def faceOne(self, value: core.Base):
+        """
+        Gets and sets the first BRepFace object that will remain tangent to the set of specified tangent faces.
+        
+        To set this property, you need to position the timeline marker to immediately before this
+        tangent relationship. This can be accomplished using the following code:
+        thisTangentRelationship.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def tangentFaces(self) -> core.Base:
+        """
+        Gets and sets a single BRepFace object that is part of the body that faceOne will remain
+        tangent to. All of the faces of the body will be used when computing the tangent relationship.
+        
+        To set this property, you need to position the timeline marker to immediately before this
+        tangent relationship. This can be accomplished using the following code:
+        thisTangentRelationship.timelineObject.rollTo(True)
+        """
+        return core.Base()
+    @tangentFaces.setter
+    def tangentFaces(self, value: core.Base):
+        """
+        Gets and sets a single BRepFace object that is part of the body that faceOne will remain
+        tangent to. All of the faces of the body will be used when computing the tangent relationship.
+        
+        To set this property, you need to position the timeline marker to immediately before this
+        tangent relationship. This can be accomplished using the following code:
+        thisTangentRelationship.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def timelineObject(self) -> TimelineObject:
+        """
+        Returns the timeline object associated with this tangent relationship.
+        """
+        return TimelineObject()
+    @property
+    def nativeObject(self) -> TangentRelationship:
+        """
+        The native object is the tangent relationship in the context of the
+        component it was created within.
+        
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return TangentRelationship()
+    @property
+    def assemblyContext(self) -> Occurrence:
+        """
+        Returns the assembly occurrence (i.e. the occurrence) of this object
+        in an assembly. This is only valid in the case where this is acting
+        as a proxy in an assembly. Returns null in the case where the object
+        is not in the context of an assembly but is already the native object.
+        """
+        return Occurrence()
+    @property
+    def isSuppressed(self) -> bool:
+        """
+        Gets and sets if this tangent relationship is suppressed.
+        """
+        return bool()
+    @isSuppressed.setter
+    def isSuppressed(self, value: bool):
+        """
+        Gets and sets if this tangent relationship is suppressed.
+        """
+        pass
+    @property
+    def attributes(self) -> core.Attributes:
+        """
+        Returns the collection of attributes associated with this tangent relationship.
+        """
+        return core.Attributes()
+    @property
+    def healthState(self) -> FeatureHealthStates:
+        """
+        Returns the current health state of the tangent relationship.
+        """
+        return FeatureHealthStates()
+    @property
+    def errorOrWarningMessage(self) -> str:
+        """
+        Returns the error or warning message in the case where the healthState property returns either
+        WarningFeatureHealthState or ErrorFeatureHealthState. Otherwise this property returns an empty string.
+        """
+        return str()
+    @property
+    def occurrenceOne(self) -> Occurrence:
+        """
+        Returns the first of two occurrences that this tangent relationship defines a relationship between.
+        """
+        return Occurrence()
+    @property
+    def occurrenceTwo(self) -> Occurrence:
+        """
+        Returns the second of two occurrences that this tangent relationship defines a relationship between.
+        """
+        return Occurrence()
+    @property
+    def entityToken(self) -> str:
+        """
+        Returns a token for the TangentRelationship object. This can be saved and used at a later
+        time with the Design.findEntityByToken method to get back the same tangent relationship.
+        
+        When using entity tokens it's important to understand that the token string returned for a
+        specific entity can be different over time. However, even if you have two different token
+        strings that were obtained from the same entity, when you use findEntityByToken they
+        will both return the same entity. Because of that you should never compare entity tokens
+        as way to determine what the token represents. Instead, you need to use the findEntityByToken
+        method to get the two entities identified by the tokens and then compare them.
+        """
+        return str()
+
+class TangentRelationshipInput(core.Base):
+    """
+    Defines all of the information required to create a new tangent relationship. This object provides
+    equivalent functionality to the Tangent Relationship command dialog in that it gathers the required
+    information to create a tangent relationship.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> TangentRelationshipInput:
+        return TangentRelationshipInput()
+    @property
+    def faceOne(self) -> BRepFace:
+        """
+        Gets and sets the first BRepFace object that will remain tangent to the set of specified tangent faces.
+        """
+        return BRepFace()
+    @faceOne.setter
+    def faceOne(self, value: BRepFace):
+        """
+        Gets and sets the first BRepFace object that will remain tangent to the set of specified tangent faces.
+        """
+        pass
+    @property
+    def tangentFaces(self) -> core.Base:
+        """
+        Gets and sets a single BRepFace object that is part of the body that faceOne will remain tangent to. All
+        of the faces of the body will be used when computing the tangent relationship.
+        """
+        return core.Base()
+    @tangentFaces.setter
+    def tangentFaces(self, value: core.Base):
+        """
+        Gets and sets a single BRepFace object that is part of the body that faceOne will remain tangent to. All
+        of the faces of the body will be used when computing the tangent relationship.
+        """
+        pass
+
+class TangentRelationships(core.Base):
+    """
+    The collection of Tangent Relationships in this component. This provides access to all existing tangent relationships
+    and supports the ability to create new tangent relationships.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> TangentRelationships:
+        return TangentRelationships()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> TangentRelationship:
+        return None
+    def __iter__(self) -> Iterator[TangentRelationship]:
+        return None
+    def item(self, index: int) -> TangentRelationship:
+        """
+        Function that returns the specified tangent relationship using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return TangentRelationship()
+    def createInput(self, faceOne: BRepFace, tangentFaces: core.Base) -> TangentRelationshipInput:
+        """
+        Creates a TangentRelationshipInput object, which is the API equivalent to the Tangent Relationship
+        command dialog. You use methods and properties on the returned class to set the desired options,
+        similar to providing input in the Tangent Relationship command dialog. Once the settings are defined
+        you call the TangentRelationships.add method passing in the TangentRelationshipInput object to create
+        the actual TangentRelationship.
+        faceOne : A BRepFace object that will remain tangent to the set of specified tangent faces.
+        tangentFaces : A single BRepFace object that is part of the body that faceOne will remain tangent to. All
+        of the faces of the body will be used when computing the tangent relationship.
+        Returns the TangentRelationshipInput object or null if the creation failed.
+        """
+        return TangentRelationshipInput()
+    def add(self, input: TangentRelationshipInput) -> TangentRelationship:
+        """
+        Creates a new tangent relationship between two components.
+        input : The TangentRelationshipInput object that defines the geometry and various inputs that fully define a tangent
+        relationship. A TangentRelationshipInput object is created using the TangentRelationships.createInput method.
+        Returns the newly created TangentRelationship or null in the case of failure.
+        """
+        return TangentRelationship()
+    def itemByName(self, name: str) -> TangentRelationship:
+        """
+        Function that returns the specified tangent relationship using a name.
+        name : The name of the item within the collection to return.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return TangentRelationship()
+    @property
+    def count(self) -> int:
+        """
+        Returns number of TangentRelationship objects in the collection.
         """
         return int()
 
@@ -18993,29 +24434,22 @@ class TemporaryBRepManager(core.Base):
         Returns a BRepBody containing the created BRepFace object or null in the case of failure.
         """
         return BRepBody()
-    def imprintOverlapBodies(self, bodyOne: BRepBody, bodyTwo: BRepBody, imprintCoincidentEdges: bool, tolerance: float) -> tuple[bool, BRepBody, BRepBody, list[BRepFace], list[BRepFace], list[BRepEdge], list[BRepEdge]]:
+    def imprintOverlapBodies(self, bodyOne: BRepBody, bodyTwo: BRepBody, imprintCoincidentEdges: bool, tolerance: float = 0.0) -> tuple[bool, BRepBody, BRepBody, list[BRepFace], list[BRepFace], list[BRepEdge], list[BRepEdge]]:
         """
-        <p>Method that finds regions of faces on two bodies which overlap and creates new bodies where the faces
+        Method that finds regions of faces on two bodies which overlap and creates new bodies where the faces
         are split at the edges of the overlaps. This does not modify the original bodies but creates new
-        temporary bodies that contain the imprints.</p>
-        
-        <p>The picture below shows an example of imprinting. The picture on the left shows the initial two bodies
-        that are positioned so there are coincident faces. The picture on the right shows the two bodies individually
-        so you can see the result of the imprint and how the coincident faces were split. </p>
-        <br/><br/><center><img src="../Images/ImprintBodies.png"></center><br/>
-        
-        <p>The ability to imprint solids can be important to applications that need to mesh models. By creating edges
-        at the points where solids connect, it guarantees that there will be mesh nodes along those boundaries.</p>
+        temporary bodies that contain the imprints.
         bodyOne : Input BRepBody that will participate in the imprint operation. This body can be either a parametric
         or temporary body.
         bodyTwo : Input BRepBody that will participate in the imprint operation. This body can be either a parametric
         or temporary body.
-        imprintCoincidentEdges : <p>Input Boolean that indicates if overlapping edges should be included in the result. The picture below
+        imprintCoincidentEdges : Input Boolean that indicates if overlapping edges should be included in the result. The picture below
         shows an example of when this argument will make a difference. The two bodies have overlapping faces
         and there is also an overlapping edge. If this argument is true, then the edge shown in red below
         will be included in the output as an overlapping edge. If False it will not be included and only
-        the edges of the overlapping faces will be in the overlapping faces collections.</p>
+        the edges of the overlapping faces will be in the overlapping faces collections.
         <br/><br/><center><img src="../Images/ImprintOverlappingEdges.png"></center>
+        
         resultBodyOne : Output temporary BRepBody that contains the imprinted body that corresponds to the body provided through the bodyOne argument.
         resultBodyTwo : Output temporary BRepBody that contains the imprinted body that corresponds to the body provided through the bodyTwo argument.
         bodyOneOverlappingFaces : Output array of BRepFace objects that represent the overlapping faces that are part of resultBodyOne. Faces at the same index within the
@@ -19031,7 +24465,7 @@ class TemporaryBRepManager(core.Base):
         Returns true if the imprint calculation was successful.
         """
         return (bool(), BRepBody(), BRepBody(), [BRepFace()], [BRepFace()], [BRepEdge()], [BRepEdge()])
-    def createWireFromCurves(self, curves: list[core.Curve3D], allowSelfIntersections: bool) -> tuple[BRepBody, list[BRepEdge]]:
+    def createWireFromCurves(self, curves: list[core.Curve3D], allowSelfIntersections: bool = False) -> tuple[BRepBody, list[BRepEdge]]:
         """
         Give an array of curve geometry objects, this method creates a new wire body.
         curves : An array containing the input Curve3D objects. These can be Arc3D, Circle3D, Ellipse3D, EllipticalArc3D or Line3D objects.
@@ -19056,22 +24490,6 @@ class TemporaryBRepManager(core.Base):
         specified helix. Return null if the creation failed.
         """
         return BRepBody()
-
-class TextureImage(core.Base):
-    """
-    Provides access to the image data associated with a texture map.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> TextureImage:
-        return TextureImage()
-    @property
-    def transform(self) -> core.Matrix2D:
-        """
-        The transform of the texture image in parametric space.
-        """
-        return core.Matrix2D()
 
 class ThickenFeatureInput(core.Base):
     """
@@ -19168,6 +24586,24 @@ class ThickenFeatureInput(core.Base):
         feature must be in an "edit" state to be able to add any additional items to it.
         """
         pass
+    @property
+    def creationOccurrence(self) -> Occurrence:
+        """
+        In order for geometry to be transformed correctly, an Occurrence for creation needs to be
+        specified when the Thicken feature is created based on geometry (e.g. a profile and/or face(s))
+        in another component AND (the Thicken feature) is not in the root component.
+        The CreationOccurrence is analogous to the active occurrence in the UI
+        """
+        return Occurrence()
+    @creationOccurrence.setter
+    def creationOccurrence(self, value: Occurrence):
+        """
+        In order for geometry to be transformed correctly, an Occurrence for creation needs to be
+        specified when the Thicken feature is created based on geometry (e.g. a profile and/or face(s))
+        in another component AND (the Thicken feature) is not in the root component.
+        The CreationOccurrence is analogous to the active occurrence in the UI
+        """
+        pass
 
 class ThickenFeatures(core.Base):
     """
@@ -19179,6 +24615,12 @@ class ThickenFeatures(core.Base):
     @staticmethod
     def cast(arg) -> ThickenFeatures:
         return ThickenFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ThickenFeature:
+        return None
+    def __iter__(self) -> Iterator[ThickenFeature]:
+        return None
     def item(self, index: int) -> ThickenFeature:
         """
         Function that returns the specified Thicken feature using an index into the collection.
@@ -19186,7 +24628,7 @@ class ThickenFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return ThickenFeature()
-    def createInput(self, inputFaces: core.ObjectCollection, thickness: core.ValueInput, isSymmetric: bool, operation: FeatureOperations, isChainSelection: bool) -> ThickenFeatureInput:
+    def createInput(self, inputFaces: core.ObjectCollection, thickness: core.ValueInput, isSymmetric: bool, operation: FeatureOperations, isChainSelection: bool = True) -> ThickenFeatureInput:
         """
         Creates a ThickenFeatureInput object. Use properties and methods on this object
         to define the Thicken feature you want to create and then use the Add method, passing in
@@ -19482,6 +24924,12 @@ class ThreadFeatures(core.Base):
     @staticmethod
     def cast(arg) -> ThreadFeatures:
         return ThreadFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ThreadFeature:
+        return None
+    def __iter__(self) -> Iterator[ThreadFeature]:
+        return None
     def item(self, index: int) -> ThreadFeature:
         """
         Function that returns the specified thread feature using an index into the collection.
@@ -19661,6 +25109,12 @@ class Timeline(core.Base):
     @staticmethod
     def cast(arg) -> Timeline:
         return Timeline()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> TimelineObject:
+        return None
+    def __iter__(self) -> Iterator[TimelineObject]:
+        return None
     def moveToBeginning(self) -> bool:
         """
         Moves the marker to the beginning of the timeline.
@@ -19697,7 +25151,10 @@ class Timeline(core.Base):
         The items are returned in the order they appear in the timeline.
         index : The index of the item within the collection to return. The first item in the collection
         has an index of 0.
-        Returns the specified item or null if an invalid index was specified.
+        Returns the specified TimeLineObject or null if an invalid index was specified. A TimeLineObject
+        represents both a simple timeline object like a feature or sketch, but is also the base class
+        for the TimelineGroup object. This means the this method can return a TimelineObject or a
+        TimelineGroup.
         """
         return TimelineObject()
     def deleteAllAfterMarker(self) -> bool:
@@ -19745,6 +25202,12 @@ class TimelineGroups(core.Base):
     @staticmethod
     def cast(arg) -> TimelineGroups:
         return TimelineGroups()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> TimelineGroup:
+        return None
+    def __iter__(self) -> Iterator[TimelineGroup]:
+        return None
     def add(self, startIndex: int, endIndex: int) -> TimelineGroup:
         """
         Creates a new group within the timeline. The sequential set of items defined
@@ -19787,7 +25250,7 @@ class TimelineObject(core.Base):
         Returns true if the move was successful
         """
         return bool()
-    def canReorder(self, beforeIndex: int) -> bool:
+    def canReorder(self, beforeIndex: int = -1) -> bool:
         """
         Checks to see if this object can be reordered to the specified position.
         The default value of -1 indicates the end of the timeline.
@@ -19797,10 +25260,11 @@ class TimelineObject(core.Base):
         Returns true if the object can be reordered to the specified position
         """
         return bool()
-    def reorder(self, beforeIndex: int) -> bool:
+    def reorder(self, beforeIndex: int = -1) -> bool:
         """
         Reorders this object to the position specified.
         The default value of -1 indicates the end of the timeline.
+        
         beforeIndex : The index number of the position in the timeline to place this object before
         Returns true if the reorder operation was successful
         This method will fail and return false if this is a timelineGroup object and the
@@ -19834,7 +25298,9 @@ class TimelineObject(core.Base):
         
         This property can return -1 in the two cases where this object
         is not currently represented in the timeline. The two cases are:
+        
         1. When this is a TimelineGroup object and the group is expanded.
+        
         2. When this object is part of a group and the group is collapsed.
         """
         return int()
@@ -19856,7 +25322,8 @@ class TimelineObject(core.Base):
         representing the associated entity and using the methods
         and properties on that entity to make changes.
         
-        Returns null if this is a TimelineGroup object
+        Returns null if this TimelineObject represents a TimelineGroup object,
+        since it does not have an associated entity.
         """
         return core.Base()
     @property
@@ -19909,6 +25376,12 @@ class TorusFeatures(core.Base):
     @staticmethod
     def cast(arg) -> TorusFeatures:
         return TorusFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> TorusFeature:
+        return None
+    def __iter__(self) -> Iterator[TorusFeature]:
+        return None
     def item(self, index: int) -> TorusFeature:
         """
         Function that returns the specified torus feature using an index into the collection.
@@ -20059,9 +25532,10 @@ class TriangleMeshCalculator(core.Base):
         box diameter. Then the surface tolerance is calculated as shown below where the meshLOD is the "Level of Detail" and
         is described in more detail below. The diameter is the bounding box diameter.
         
-        double nodeApproximateSize = std::pow(2.0, meshLOD);
-        double fracTol = 1.0 / nodeApproximateSize;
-        surfaceTolerance = fracTol * diameter;
+          double nodeApproximateSize = std::pow(2.0, meshLOD);
+          double fracTol = 1.0 / nodeApproximateSize;
+          surfaceTolerance = fracTol * diameter;
+        
         triangleMeshQuality : The mesh quality is specified by using an item from the enum list where the following items result
         in a corresponding mesh LOD that's used in the equation above.
         
@@ -20156,6 +25630,12 @@ class TriangleMeshList(core.Base):
     @staticmethod
     def cast(arg) -> TriangleMeshList:
         return TriangleMeshList()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> TriangleMesh:
+        return None
+    def __iter__(self) -> Iterator[TriangleMesh]:
+        return None
     def item(self, index: int) -> TriangleMesh:
         """
         Returns the specified triangle meshes.
@@ -20167,7 +25647,7 @@ class TriangleMeshList(core.Base):
     def bestMesh(self) -> TriangleMesh:
         """
         Returns the mesh with the tightest surface tolerance. This can return null
-        in the case the list is empty, ie. Count is 0.
+        in the case the list is empty, i.e. Count is 0.
         """
         return TriangleMesh()
     @property
@@ -20253,6 +25733,12 @@ class TrimFeatures(core.Base):
     @staticmethod
     def cast(arg) -> TrimFeatures:
         return TrimFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> TrimFeature:
+        return None
+    def __iter__(self) -> Iterator[TrimFeature]:
+        return None
     def item(self, index: int) -> TrimFeature:
         """
         Function that returns the specified trim feature using an index into the collection.
@@ -20309,6 +25795,12 @@ class TSplineBodies(core.Base):
     @staticmethod
     def cast(arg) -> TSplineBodies:
         return TSplineBodies()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> TSplineBody:
+        return None
+    def __iter__(self) -> Iterator[TSplineBody]:
+        return None
     def item(self, index: int) -> TSplineBody:
         """
         Function that returns the specified T-Spline body using an index into the collection.
@@ -20402,6 +25894,15 @@ class TSplineBody(core.Base):
         method to get the two entities identified by the tokens and then compare them.
         """
         return str()
+    @property
+    def textureMapControl(self) -> core.TextureMapControl:
+        """
+        Returns the TextureMapControl object associated with this body when there is an
+        appearance assigned to the body that has a texture associated with it. If there
+        isn't a texture, this property will return null. If there is a texture, you can
+        use the returned object to query and modify how the texture is applied to the body.
+        """
+        return core.TextureMapControl()
 
 class UnfoldFeatures(core.Base):
     """
@@ -20412,6 +25913,12 @@ class UnfoldFeatures(core.Base):
     @staticmethod
     def cast(arg) -> UnfoldFeatures:
         return UnfoldFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> UnfoldFeature:
+        return None
+    def __iter__(self) -> Iterator[UnfoldFeature]:
+        return None
     def item(self, index: int) -> UnfoldFeature:
         """
         Function that returns the specified unfold feature using an index into the collection.
@@ -20443,6 +25950,12 @@ class UnstitchFeatures(core.Base):
     @staticmethod
     def cast(arg) -> UnstitchFeatures:
         return UnstitchFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> UnstitchFeature:
+        return None
+    def __iter__(self) -> Iterator[UnstitchFeature]:
+        return None
     def item(self, index: int) -> UnstitchFeature:
         """
         Function that returns the specified Unstitch feature using an index into the collection.
@@ -20450,7 +25963,7 @@ class UnstitchFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return UnstitchFeature()
-    def add(self, faces: core.ObjectCollection, isChainSelection: bool) -> UnstitchFeature:
+    def add(self, faces: core.ObjectCollection, isChainSelection: bool = True) -> UnstitchFeature:
         """
         Creates a new Unstitch feature.
         faces : The faces and/or bodies to Unstitch. Individual faces can be unstitched from solid and/or patch bodies. The faces being unstitched
@@ -20547,6 +26060,12 @@ class UntrimFeatures(core.Base):
     @staticmethod
     def cast(arg) -> UntrimFeatures:
         return UntrimFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> UntrimFeature:
+        return None
+    def __iter__(self) -> Iterator[UntrimFeature]:
+        return None
     def item(self, index: int) -> UntrimFeature:
         """
         Function that returns the specified Untrim feature using an index into the collection.
@@ -20554,7 +26073,7 @@ class UntrimFeatures(core.Base):
         Returns the specified item or null if an invalid index was specified.
         """
         return UntrimFeature()
-    def createInputFromFaces(self, faces: list[BRepFace], untrimLoopType: UntrimLoopTypes, extensionDistance: core.ValueInput) -> UntrimFeatureInput:
+    def createInputFromFaces(self, faces: list[BRepFace], untrimLoopType: UntrimLoopTypes, extensionDistance: core.ValueInput = None) -> UntrimFeatureInput:
         """
         Creates a UntrimFeatureInput object that defines the input needed to create a untrim feature. Use the input
         object to define the input to create the desired feature and then use the Add method, passing in the UntrimFeatureInput object.
@@ -20566,7 +26085,7 @@ class UntrimFeatures(core.Base):
         Returns the newly created UntrimFeatureInput object or null if the creation failed.
         """
         return UntrimFeatureInput()
-    def createInputFromLoops(self, loops: list[BRepLoop], extensionDistance: core.ValueInput) -> UntrimFeatureInput:
+    def createInputFromLoops(self, loops: list[BRepLoop], extensionDistance: core.ValueInput = None) -> UntrimFeatureInput:
         """
         Creates a UntrimFeatureInput object that defines the input needed to create a untrim feature. Use the input
         object to define the input to create the desired feature and then use the Add method, passing in the UntrimFeatureInput object.
@@ -20610,6 +26129,12 @@ class UserParameters(core.Base):
     @staticmethod
     def cast(arg) -> UserParameters:
         return UserParameters()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> UserParameter:
+        return None
+    def __iter__(self) -> Iterator[UserParameter]:
+        return None
     def item(self, index: int) -> UserParameter:
         """
         Function that returns the specified User Parameter using an index into the collection.
@@ -20677,6 +26202,12 @@ class WebFeatures(core.Base):
     @staticmethod
     def cast(arg) -> WebFeatures:
         return WebFeatures()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> WebFeature:
+        return None
+    def __iter__(self) -> Iterator[WebFeature]:
+        return None
     def item(self, index: int) -> WebFeature:
         """
         Function that returns the specified web feature using an index into the collection.
@@ -20698,30 +26229,82 @@ class WebFeatures(core.Base):
         """
         return int()
 
-class AllExtentDefinition(ExtentDefinition):
+class ZebraAnalyses(core.Base):
     """
-    Defines the inputs for a AllExtentDefinition object.
-    This defines a feature extent where the direction can be positive, negative, or symmetric.
-    Setting the direction to Symmetric specifies that the extrusion is through-all,
-    and goes in both directions.
+    Provides access to any zebra analyses results in the design.
     """
     def __init__(self):
         pass
     @staticmethod
-    def cast(arg) -> AllExtentDefinition:
-        return AllExtentDefinition()
+    def cast(arg) -> ZebraAnalyses:
+        return ZebraAnalyses()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> ZebraAnalysis:
+        return None
+    def __iter__(self) -> Iterator[ZebraAnalysis]:
+        return None
+    def item(self, index: int) -> ZebraAnalysis:
+        """
+        A method that returns the specified ZebraAnalysis object using an index into the collection.
+        index : The index of the item within the collection to return. The first item in the collection
+        has an index of 0.
+        Returns the specified item or null if an invalid index was specified.
+        """
+        return ZebraAnalysis()
+    def itemByName(self, name: str) -> ZebraAnalysis:
+        """
+        A method that returns the specified ZebraAnalysis object using the name of the analysis
+        as it is displayed in the browser.
+        name : The name of the ZebraAnalysis object as it is displayed in the browser.
+        Returns the specified item or null if an invalid name was specified.
+        """
+        return ZebraAnalysis()
     @property
-    def direction(self) -> ExtentDirections:
+    def count(self) -> int:
         """
-        Gets and sets the direction of the extent.
+        Returns the number of ZebraAnalysis objects in the collection.
         """
-        return ExtentDirections()
-    @direction.setter
-    def direction(self, value: ExtentDirections):
+        return int()
+
+class AccessibilityAnalysis(Analysis):
+    """
+    Represents any existing Accessibility Analysis that exist in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> AccessibilityAnalysis:
+        return AccessibilityAnalysis()
+
+class AlongEdgeRipFeatureDefinition(RipFeatureDefinition):
+    """
+    The definition for an along edge rip.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> AlongEdgeRipFeatureDefinition:
+        return AlongEdgeRipFeatureDefinition()
+    @property
+    def ripEdge(self) -> BRepEdge:
         """
-        Gets and sets the direction of the extent.
+        Gets and sets the input edge for an along edge rip.
+        """
+        return BRepEdge()
+    @ripEdge.setter
+    def ripEdge(self, value: BRepEdge):
+        """
+        Gets and sets the input edge for an along edge rip.
         """
         pass
+    @property
+    def gapDistance(self) -> ModelParameter:
+        """
+        Gets the ModelParameter that defines the gap distance of the rip.
+        The value can be edited by using the properties of the returned ModelParameter object.
+        """
+        return ModelParameter()
 
 class AlongPathTextDefinition(SketchTextDefinition):
     """
@@ -21109,11 +26692,454 @@ class BaseFeature(Feature):
     def nativeObject(self) -> BaseFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
         return BaseFeature()
+    @property
+    def sourceBodies(self) -> list[BRepBody]:
+        """
+        Returns the B-Rep bodies owned by the base feature.
+        
+        When a body is added to a base feature, that body is owned by the base feature
+        and is only seen in the UI when the base feature is active. This body is referred
+        to as a "source body". Fusion creates a parametric copy of the body when you
+        exit the base feature. This copy is referred to as the "result body," and it
+        is used for subsequent modeling operations. The result bodies can be obtained by
+        using the bodies property of the BaseFeature object.
+        
+        You can map between the source and result bodies by using their position
+        within the bodies returned. To get a valid list of result bodies, you should
+        roll the timeline to immediately after the base feature node in the timeline.
+        Otherwise, subsequent operations could have done something to cause one or
+        more bodies to no longer be available.
+        """
+        return [BRepBody()]
+
+class BetweenPointsRipFeatureDefinition(RipFeatureDefinition):
+    """
+    The definition for an along edge rip.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> BetweenPointsRipFeatureDefinition:
+        return BetweenPointsRipFeatureDefinition()
+    @property
+    def pointOneEntity(self) -> core.Base:
+        """
+        Gets and sets the BRepEdge or BRepVertex that defines the first point for a between points rip.
+        If a BRepEdge is returned the pointOneOffset property will control the position of the point along the edge.
+        """
+        return core.Base()
+    @pointOneEntity.setter
+    def pointOneEntity(self, value: core.Base):
+        """
+        Gets and sets the BRepEdge or BRepVertex that defines the first point for a between points rip.
+        If a BRepEdge is returned the pointOneOffset property will control the position of the point along the edge.
+        """
+        pass
+    @property
+    def pointTwoEntity(self) -> core.Base:
+        """
+        Gets and sets the BRepEdge or BRepVertex that defines the second point for a between points rip.
+        If a BRepEdge is returned the pointTwoOffset property will control the position of the point along the edge.
+        """
+        return core.Base()
+    @pointTwoEntity.setter
+    def pointTwoEntity(self, value: core.Base):
+        """
+        Gets and sets the BRepEdge or BRepVertex that defines the second point for a between points rip.
+        If a BRepEdge is returned the pointTwoOffset property will control the position of the point along the edge.
+        """
+        pass
+    @property
+    def pointOneOffset(self) -> ModelParameter:
+        """
+        Gets the ModelParameter that defines the offset for the first point of a between points rip.
+        This is the physical distance from the topological start of the edge.
+        If the offset is either negative, or exceeds the edge length,
+        then the point will be taken as the corresponding vertex of the edge.
+        Returns null if the first point is defined by a vertex.
+        The value can be edited by using the properties of the returned ModelParameter object.
+        """
+        return ModelParameter()
+    @property
+    def pointTwoOffset(self) -> ModelParameter:
+        """
+        Gets the ModelParameter that defines the offset for the second point of a between points rip.
+        This is the physical distance from the topological start of the edge.
+        If the offset is either negative, or exceeds the edge length,
+        then the point will be taken as the corresponding vertex of the edge.
+        Returns null if the first point is defined by a vertex.
+        The value can be edited by using the properties of the returned ModelParameter object.
+        """
+        return ModelParameter()
+    @property
+    def gapDistance(self) -> ModelParameter:
+        """
+        Gets the ModelParameter that defines the gap distance of the rip.
+        The value can be edited by using the properties of the returned ModelParameter object.
+        """
+        return ModelParameter()
+
+class BossFeature(Feature):
+    """
+    Object that represents an existing boss feature in a design.
+    For history free model this interface has limited functionality.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> BossFeature:
+        return BossFeature()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> BossFeature:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return BossFeature()
+    def createInput(self) -> BossFeatureInput:
+        """
+        Creates object with inputs this feature represents.
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True).
+        Returns BossFeatureInput this feature represent if successful.
+        """
+        return BossFeatureInput()
+    def update(self, input: BossFeatureInput) -> bool:
+        """
+        Changes the boss feature (or boss connection) to the input provided.
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True).
+        input : The object defines inputs the feature will be set to.
+        Returns true if successful.
+        """
+        return bool()
+    @property
+    def nativeObject(self) -> BossFeature:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of its parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return BossFeature()
+    @property
+    def direction(self) -> core.Vector3D:
+        """
+        Returns the direction of the boss feature with respect to selected position point.
+        For selected sketch point this direction represents a Z-axis of the sketch.
+        """
+        return core.Vector3D()
+    @property
+    def isDirectionFlipped(self) -> bool:
+        """
+        Gets and sets if the direction of the boss (or boss connection) is flipped.
+        """
+        return bool()
+    @isDirectionFlipped.setter
+    def isDirectionFlipped(self, value: bool):
+        """
+        Gets and sets if the direction of the boss (or boss connection) is flipped.
+        """
+        pass
+    @property
+    def isGeometryOpposite(self) -> bool:
+        """
+        Gets if this boss feature instance represents a bottom side where screw thread engages with the part.
+        If this feature instance represents a geometry where screw head engages it returns false.
+        """
+        return bool()
+    @property
+    def shapeType(self) -> BossShapeTypes:
+        """
+        Returns the current boss shape this feature represents.
+        """
+        return BossShapeTypes()
+    @property
+    def alignmentType(self) -> BossAlignmentTypes:
+        """
+        Returns the current boss alignment shape this feature represents.
+        """
+        return BossAlignmentTypes()
+    @property
+    def holeType(self) -> HoleTypes:
+        """
+        Returns the current type of hole this feature represents.
+        """
+        return HoleTypes()
+    @property
+    def holeExtentType(self) -> BossHoleExtentTypes:
+        """
+        Returns the current type of hole extent this feature represents.
+        """
+        return BossHoleExtentTypes()
+    @property
+    def ribType(self) -> BossRibShapeTypes:
+        """
+        Returns the current type of ribs shape this feature represents.
+        """
+        return BossRibShapeTypes()
+    @property
+    def positionDefinition(self) -> BossPositionDefinition:
+        """
+        Returns a BossPositionDefinition object that provides access to the information used
+        to define the position of the boss feature.
+        """
+        return BossPositionDefinition()
+    @property
+    def thickness(self) -> ModelParameter:
+        """
+        Returns the model parameter for thickness - plastic part rule reference.
+        """
+        return ModelParameter()
+    @property
+    def taperAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter for taper angle - plastic part rule reference.
+        """
+        return ModelParameter()
+    @property
+    def innerRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter for inner radius - reference for parametric expressions.
+        """
+        return ModelParameter()
+    @property
+    def screwDiameter(self) -> ModelParameter:
+        """
+        Returns the model parameter for screw diameter - reference for parametric expressions.
+        """
+        return ModelParameter()
+    @property
+    def screwHeadDiameter(self) -> ModelParameter:
+        """
+        Returns the model parameter for screw head diameter - reference for parametric expressions.
+        """
+        return ModelParameter()
+    @property
+    def screwHeadAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter for countersink head angle - reference for parametric expressions.
+        """
+        return ModelParameter()
+    @property
+    def offset(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling the offset from the selected parting plane.
+        """
+        return ModelParameter()
+    @property
+    def offsetClearance(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling the offset clearance from the selected parting plane and offset.
+        """
+        return ModelParameter()
+    @property
+    def diameter(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling the shank diameter.
+        """
+        return ModelParameter()
+    @property
+    def draftAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling the shank draft angle.
+        """
+        return ModelParameter()
+    @property
+    def alignmentDiameter(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling the step diameter used for alignment of its counterparts.
+        """
+        return ModelParameter()
+    @property
+    def alignmentDepth(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling the step depth used for alignment of its counterparts.
+        """
+        return ModelParameter()
+    @property
+    def alignmentDraftAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling the step draft angle.
+        """
+        return ModelParameter()
+    @property
+    def holeDiameter(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling the hole diameter.
+        """
+        return ModelParameter()
+    @property
+    def holeDraftAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling hole draft angle.
+        """
+        return ModelParameter()
+    @property
+    def holeDepth(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling the hole depth with respect to hole extent type.
+        If hole extent type is set to BossHoleThrough parameter not used. If hole extent type is BossBlindFull
+        the parameter is a distance from farthest face. If hole extent type is set to BossBlindDepth the parameter
+        is a distance from start face of the hole.
+        """
+        return ModelParameter()
+    @property
+    def holeMajorDiameter(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling major hole diameter for counterbore and countersink hole.
+        If hole type is set to simple hole or boss shape is to BossBlank this parameter is unused.
+        """
+        return ModelParameter()
+    @property
+    def holeMajorDepth(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling major hole depth for counterbore and countersink hole.
+        If hole type is set to simple hole or boss shape is to BossBlank this parameter is unused.
+        """
+        return ModelParameter()
+    @property
+    def holeMajorDraftAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling major hole draft angle for counterbore and countersink hole.
+        If hole type is set to simple hole or boss shape is to BossBlank this parameter is unused.
+        """
+        return ModelParameter()
+    @property
+    def holeCountersinkAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling countersink angle for countersink hole.
+        If hole type is not set to countersink hole or boss shape is to BossBlank this parameter is unused.
+        """
+        return ModelParameter()
+    @property
+    def rootRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling blend radius of the boss shank.
+        """
+        return ModelParameter()
+    @property
+    def tipRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling blend radius of the boss shank top face.
+        """
+        return ModelParameter()
+    @property
+    def alignmentTipRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling blend radius of the boss alignment top face.
+        """
+        return ModelParameter()
+    @property
+    def alignmentRootRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling blend radius of the boss alignment root.
+        """
+        return ModelParameter()
+    @property
+    def holeStartRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling blend radius of the hole start.
+        """
+        return ModelParameter()
+    @property
+    def holeEndRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling blend radius of the hole end.
+        """
+        return ModelParameter()
+    @property
+    def holeMajorTipRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling blend radius of major hole counterbore.
+        """
+        return ModelParameter()
+    @property
+    def holeMajorRootRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling blend radius of major hole counterbore root.
+        """
+        return ModelParameter()
+    @property
+    def ribLength(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling ribs length measured from the shank axis.
+        """
+        return ModelParameter()
+    @property
+    def ribOffset(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling ribs offset from the top face or alignment face.
+        """
+        return ModelParameter()
+    @property
+    def ribThickness(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling ribs thickness.
+        """
+        return ModelParameter()
+    @property
+    def ribDraftAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling ribs draft angle.
+        """
+        return ModelParameter()
+    @property
+    def ribOuterDraftAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling size of rib outer draft angle.
+        """
+        return ModelParameter()
+    @property
+    def ribCutSize(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling size of rib chamfer or fillet.
+        """
+        return ModelParameter()
+    @property
+    def ribChamferAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling size of rib chamfer angle.
+        """
+        return ModelParameter()
+    @property
+    def ribTipRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling size of rib tip blend radius.
+        """
+        return ModelParameter()
+    @property
+    def ribBlendRadius(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling size of rib root blend radius.
+        """
+        return ModelParameter()
+    @property
+    def ribRotation(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling rotation angle of the first rib from the reference vector.
+        For selected sketch point(s) the direction of reference vector is X-axis of the parent sketch.
+        """
+        return ModelParameter()
+    @property
+    def ribTotalAngle(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling total angle for ribs distribution.
+        """
+        return ModelParameter()
+    @property
+    def ribCount(self) -> ModelParameter:
+        """
+        Returns the model parameter controlling number of ribs.
+        """
+        return ModelParameter()
 
 class BoundaryFillFeature(Feature):
     """
@@ -21190,11 +27216,29 @@ class BoundaryFillFeature(Feature):
     def nativeObject(self) -> BoundaryFillFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
         return BoundaryFillFeature()
+    @property
+    def isRemoveTools(self) -> bool:
+        """
+        Gets and sets whether any BRepBodys that were used as tools should be removed as part of the feature creation.
+        
+        To set this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return bool()
+    @isRemoveTools.setter
+    def isRemoveTools(self, value: bool):
+        """
+        Gets and sets whether any BRepBodys that were used as tools should be removed as part of the feature creation.
+        
+        To set this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
 
 class BoxFeature(Feature):
     """
@@ -21220,7 +27264,7 @@ class C3MFExportOptions(ExportOptions):
         """
         If the input is an Occurrence or the root Component, this specifies if a single file should be created containing
         all of the bodies within that occurrence or component or if multiple files should be created; one for each body.
-        If multiple files are created, the body name is appended to the filename.  The default is false.
+        If multiple files are created, the body name is appended to the filename. The default is false.
         """
         return bool()
     @isOneFilePerBody.setter
@@ -21228,31 +27272,31 @@ class C3MFExportOptions(ExportOptions):
         """
         If the input is an Occurrence or the root Component, this specifies if a single file should be created containing
         all of the bodies within that occurrence or component or if multiple files should be created; one for each body.
-        If multiple files are created, the body name is appended to the filename.  The default is false.
+        If multiple files are created, the body name is appended to the filename. The default is false.
         """
         pass
     @property
     def meshRefinement(self) -> MeshRefinementSettings:
         """
-        Gets and sets the current simple mesh refinement settings.  Setting this property
+        Gets and sets the current simple mesh refinement settings. Setting this property
         will reset the surfaceDeviation, normalDeviation, maximumEdgeLength, and aspectRatio
-        to values that correspond to the specified mesh refinement.  The default is MeshRefinementMedium
+        to values that correspond to the specified mesh refinement. The default is MeshRefinementMedium.
         """
         return MeshRefinementSettings()
     @meshRefinement.setter
     def meshRefinement(self, value: MeshRefinementSettings):
         """
-        Gets and sets the current simple mesh refinement settings.  Setting this property
+        Gets and sets the current simple mesh refinement settings. Setting this property
         will reset the surfaceDeviation, normalDeviation, maximumEdgeLength, and aspectRatio
-        to values that correspond to the specified mesh refinement.  The default is MeshRefinementMedium
+        to values that correspond to the specified mesh refinement. The default is MeshRefinementMedium.
         """
         pass
     @property
     def surfaceDeviation(self) -> float:
         """
         Gets and sets the current surface deviation, or the distance the mesh can deviate
-        from the actual surface.  This is defined in centimeter.  Setting this property
-        will automatically set the meshRefinement to MeshRefinementCustom.  The default is the value
+        from the actual surface. This is defined in centimeter. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
         associated with medium mesh refinement.
         """
         return float()
@@ -21260,8 +27304,8 @@ class C3MFExportOptions(ExportOptions):
     def surfaceDeviation(self, value: float):
         """
         Gets and sets the current surface deviation, or the distance the mesh can deviate
-        from the actual surface.  This is defined in centimeter.  Setting this property
-        will automatically set the meshRefinement to MeshRefinementCustom.  The default is the value
+        from the actual surface. This is defined in centimeter. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
         associated with medium mesh refinement.
         """
         pass
@@ -21269,8 +27313,8 @@ class C3MFExportOptions(ExportOptions):
     def normalDeviation(self) -> float:
         """
         Gets and sets the current normal deviation, or the angle the mesh normals at the vertices can deviate
-        from the actual surface normals.  This is defined in radians.  Setting this property
-        will automatically set the meshRefinement to MeshRefinementCustom.  The default is the value
+        from the actual surface normals. This is defined in radians. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
         associated with medium mesh refinement.
         """
         return float()
@@ -21278,47 +27322,47 @@ class C3MFExportOptions(ExportOptions):
     def normalDeviation(self, value: float):
         """
         Gets and sets the current normal deviation, or the angle the mesh normals at the vertices can deviate
-        from the actual surface normals.  This is defined in radians.  Setting this property
-        will automatically set the meshRefinement to MeshRefinementCustom.  The default is the value
+        from the actual surface normals. This is defined in radians. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
         associated with medium mesh refinement.
         """
         pass
     @property
     def maximumEdgeLength(self) -> float:
         """
-        Gets and sets the maximum length of any mesh edge.  This is defined in centimeter.  Setting this property
-        will automatically set the meshRefinement to MeshRefinementCustom.  The default is the value
+        Gets and sets the maximum length of any mesh edge. This is defined in centimeter. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
         associated with medium mesh refinement.
         """
         return float()
     @maximumEdgeLength.setter
     def maximumEdgeLength(self, value: float):
         """
-        Gets and sets the maximum length of any mesh edge.  This is defined in centimeter.  Setting this property
-        will automatically set the meshRefinement to MeshRefinementCustom.  The default is the value
+        Gets and sets the maximum length of any mesh edge. This is defined in centimeter. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
         associated with medium mesh refinement.
         """
         pass
     @property
     def aspectRatio(self) -> float:
         """
-        Gets and sets the minimum aspect ratio for that triangles that are generated for the mesh.  Setting this property
-        will automatically set the meshRefinement to MeshRefinementCustom.  The default is the value
+        Gets and sets the minimum aspect ratio for that triangles that are generated for the mesh. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
         associated with medium mesh refinement.
         """
         return float()
     @aspectRatio.setter
     def aspectRatio(self, value: float):
         """
-        Gets and sets the minimum aspect ratio for that triangles that are generated for the mesh.  Setting this property
-        will automatically set the meshRefinement to MeshRefinementCustom.  The default is the value
+        Gets and sets the minimum aspect ratio for that triangles that are generated for the mesh. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
         associated with medium mesh refinement.
         """
         pass
     @property
     def availablePrintUtilities(self) -> list[str]:
         """
-        Returns a list of the known available print utilities.  These strings can be used to set the PrintUtility
+        Returns a list of the known available print utilities. These strings can be used to set the PrintUtility
         property to specify which print utility to open the 3MF file in.
         """
         return [str()]
@@ -21345,14 +27389,14 @@ class C3MFExportOptions(ExportOptions):
     @property
     def sendToPrintUtility(self) -> bool:
         """
-        Gets and sets whether the created 3MF file will be sent to the print utility specified by the printUtility property.  If this
+        Gets and sets whether the created 3MF file will be sent to the print utility specified by the printUtility property. If this
         is false a filename must be defined.
         """
         return bool()
     @sendToPrintUtility.setter
     def sendToPrintUtility(self, value: bool):
         """
-        Gets and sets whether the created 3MF file will be sent to the print utility specified by the printUtility property.  If this
+        Gets and sets whether the created 3MF file will be sent to the print utility specified by the printUtility property. If this
         is false a filename must be defined.
         """
         pass
@@ -21366,50 +27410,6 @@ class ChamferFeature(Feature):
     @staticmethod
     def cast(arg) -> ChamferFeature:
         return ChamferFeature()
-    def setEqualDistance(self, distance: core.ValueInput) -> bool:
-        """
-        Changes the type of chamfer to be an equal distance chamfer.
-        distance : A ValueInput object that defines the distance of the chamfer. If the ValueInput uses
-        a real then it is interpreted as centimeters. If it is a string then the units
-        can be defined as part of the string (i.e. "2 in"). If no units are specified
-        it is interpreted using the current default units for length.
-        Returns true if the feature is successfully changed
-        """
-        return bool()
-    def setTwoDistances(self, distanceOne: core.ValueInput, distanceTwo: core.ValueInput) -> bool:
-        """
-        Changes the type of chamfer to be a two distances chamfer.
-        distanceOne : A ValueInput object that defines the distanceOne of the chamfer. This distance
-        is along the face which is on the left of the selected edge.
-        If the ValueInput uses a real then it is interpreted as centimeters.
-        If it is a string then the units can be defined as part of the string (i.e. "2 in").
-        If no units are specified it is interpreted using the current default units for length.
-        distanceTwo : A ValueInput object that defines the distanceTwo of the chamfer. This distance
-        is along the face which is on the right of the selected edge.
-        If the ValueInput uses a real then it is interpreted as centimeters.
-        If it is a string then the units can be defined as part of the string (i.e. "2 in").
-        If no units are specified it is interpreted using the current default units for length.
-        Returns true if the feature is successfully changed
-        """
-        return bool()
-    def setDistanceAndAngle(self, distance: core.ValueInput, angle: core.ValueInput) -> bool:
-        """
-        Changes the type of chamfer to be a distance and angle chamfer.
-        distance : A ValueInput object that defines the distance of the chamfer. This distance
-        is along the face which is on the right of the selected edge.
-        If the ValueInput uses a real then it is interpreted as centimeters.
-        If it is a string then the units can be defined as part of the string (i.e. "2 in").
-        If no units are specified it is interpreted using the current default units for length.
-        angle : A valueInput object that defines the angle. The direction will be towards to the face
-        which is on the left of the selected edge. This can be a string or a value.
-        If it's a string it is interpreted using the current document units and can include
-        equations. For example all of the following are valid as long as they result in
-        angle units; "45", "45 deg", "a1 / 2". If a value is input it is interpreted
-        as radians.
-        It cannot be negative.
-        Returns true if the feature is successfully changed
-        """
-        return bool()
     def createForAssemblyContext(self, occurrence: Occurrence) -> ChamferFeature:
         """
         Creates or returns a proxy for the native object
@@ -21420,74 +27420,10 @@ class ChamferFeature(Feature):
         """
         return ChamferFeature()
     @property
-    def edges(self) -> core.ObjectCollection:
-        """
-        Gets and sets the edges being chamfered. Specific edges can be defined using one or more BRepEdge
-        objects or BRepFace objects can be used to chamfer all edges of the face or Feature objects can
-        be used to chamfer all edges associated with the input features. If BRepEdge objects are provided
-        and the isTangentChain argument is true additional edges may also get chamfered if they are
-        tangentially connected to any of the input edges. When getting the property, your
-        code should check for the different types in the returned collection and handle it appropriately.
-        
-        To use this property, you need to position the timeline marker to immediately before this feature.
-        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
-        
-        This property returns nothing in the case where the feature is non-parametric.
-        """
-        return core.ObjectCollection()
-    @edges.setter
-    def edges(self, value: core.ObjectCollection):
-        """
-        Gets and sets the edges being chamfered. Specific edges can be defined using one or more BRepEdge
-        objects or BRepFace objects can be used to chamfer all edges of the face or Feature objects can
-        be used to chamfer all edges associated with the input features. If BRepEdge objects are provided
-        and the isTangentChain argument is true additional edges may also get chamfered if they are
-        tangentially connected to any of the input edges. When getting the property, your
-        code should check for the different types in the returned collection and handle it appropriately.
-        
-        To use this property, you need to position the timeline marker to immediately before this feature.
-        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
-        
-        This property returns nothing in the case where the feature is non-parametric.
-        """
-        pass
-    @property
-    def isTangentChain(self) -> bool:
-        """
-        Gets and sets whether or not edges that are tangentially connected to
-        the input edges (if any) will also be chamfered.
-        """
-        return bool()
-    @isTangentChain.setter
-    def isTangentChain(self, value: bool):
-        """
-        Gets and sets whether or not edges that are tangentially connected to
-        the input edges (if any) will also be chamfered.
-        """
-        pass
-    @property
-    def chamferType(self) -> ChamferTypes:
-        """
-        Gets an enum indicating how the chamfer was defined. The valid return values are
-        EqualDistanceType, TwoDistancesType and DistanceAndAngleType.
-        This property returns nothing in the case where the feature is non-parametric.
-        """
-        return ChamferTypes()
-    @property
-    def chamferTypeDefinition(self) -> ChamferTypeDefinition:
-        """
-        Gets the definition object that is defining the type of chamfer. Modifying the
-        definition object will cause the chamfer to recompute. Various types of definition objects can
-        be returned depending on how the chamfer is defined. The ChamferType property can
-        be used to determine which type of definition will be returned.
-        This property returns nothing in the case where the feature is non-parametric.
-        """
-        return ChamferTypeDefinition()
-    @property
     def nativeObject(self) -> ChamferFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -21523,7 +27459,9 @@ class ChordLengthFilletEdgeSet(FilletEdgeSet):
     @property
     def edges(self) -> core.ObjectCollection:
         """
-        Gets and sets the edges that will be filleted.
+        Gets and sets an ObjectCollection containing the BRepEdge, BRepFace, and Feature that are filleted.
+        If the isTangentChain argument is true additional edges or faces may also get filleted if they are tangentially
+        connected to any of the input edges or faces.
         
         To use this property, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
@@ -21532,7 +27470,9 @@ class ChordLengthFilletEdgeSet(FilletEdgeSet):
     @edges.setter
     def edges(self, value: core.ObjectCollection):
         """
-        Gets and sets the edges that will be filleted.
+        Gets and sets an ObjectCollection containing the BRepEdge, BRepFace, and Feature that are filleted.
+        If the isTangentChain argument is true additional edges or faces may also get filleted if they are tangentially
+        connected to any of the input edges or faces.
         
         To use this property, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
@@ -21546,6 +27486,34 @@ class ChordLengthFilletEdgeSet(FilletEdgeSet):
         """
         return ModelParameter()
 
+class ChordLengthFilletEdgeSetInput(FilletEdgeSetInput):
+    """
+    Provides access to the edges and the parameter associated with a chord length fillet.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ChordLengthFilletEdgeSetInput:
+        return ChordLengthFilletEdgeSetInput()
+    @property
+    def chordLength(self) -> core.ValueInput:
+        """
+        Gets and sets a ValueInput object that defines the chord length of the fillet. If the
+        ValueInput uses a real value then it is interpreted as centimeters. If it is a string
+        then the units can be defined as part of the string (i.e. "2 in") or if no units are
+        specified it is interpreted using the current document units for length.
+        """
+        return core.ValueInput()
+    @chordLength.setter
+    def chordLength(self, value: core.ValueInput):
+        """
+        Gets and sets a ValueInput object that defines the chord length of the fillet. If the
+        ValueInput uses a real value then it is interpreted as centimeters. If it is a string
+        then the units can be defined as part of the string (i.e. "2 in") or if no units are
+        specified it is interpreted using the current document units for length.
+        """
+        pass
+
 class CircularPatternConstraint(GeometricConstraint):
     """
     A circular pattern constraint in a sketch.
@@ -21554,6 +27522,101 @@ class CircularPatternConstraint(GeometricConstraint):
         pass
     @staticmethod
     def cast(arg) -> CircularPatternConstraint:
+        return CircularPatternConstraint()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> CircularPatternConstraint:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return CircularPatternConstraint()
+    @property
+    def entities(self) -> list[SketchEntity]:
+        """
+        Gets and sets the entities to pattern. Sketch points and curves are valid
+        entities to pattern.
+        """
+        return [SketchEntity()]
+    @entities.setter
+    def entities(self, value: list[SketchEntity]):
+        """
+        Gets and sets the entities to pattern. Sketch points and curves are valid
+        entities to pattern.
+        """
+        pass
+    @property
+    def createdEntities(self) -> list[SketchEntity]:
+        """
+        Returns an array that contains all of the sketch entities that were created as a result
+        of the pattern. This does not contain the original entities that were used as input to
+        the pattern. The input entities can be obtained by using the entities property.
+        """
+        return [SketchEntity()]
+    @property
+    def centerPoint(self) -> SketchPoint:
+        """
+        Gets and sets the sketch point that defines the center of the pattern.
+        """
+        return SketchPoint()
+    @centerPoint.setter
+    def centerPoint(self, value: SketchPoint):
+        """
+        Gets and sets the sketch point that defines the center of the pattern.
+        """
+        pass
+    @property
+    def quantity(self) -> ModelParameter:
+        """
+        Returns the parameter that controls the number of instances in the pattern. To change
+        the value, use the properties on the returned ModelParameter object.
+        """
+        return ModelParameter()
+    @property
+    def totalAngle(self) -> ModelParameter:
+        """
+        Returns the parameter that controls the number of instances in the pattern. A positive
+        angle is a counter-clockwise direction and a negative angle can be used to reverse the direction.
+        An angle of 360 degrees or 2 pi radians will create a full circular pattern.
+        """
+        return ModelParameter()
+    @property
+    def isSymmetric(self) -> bool:
+        """
+        Gets and sets if the angle extent is in one direction or is symmetric.
+        """
+        return bool()
+    @isSymmetric.setter
+    def isSymmetric(self, value: bool):
+        """
+        Gets and sets if the angle extent is in one direction or is symmetric.
+        """
+        pass
+    @property
+    def isSuppressed(self) -> list[bool]:
+        """
+        Specifies which, if any, instances of the pattern are suppressed. This returns an
+        array of Boolean values that indicates if a particular instance in the pattern is
+        suppressed or not. A value of true will result in the associated instance being suppressed.
+        """
+        return [bool()]
+    @isSuppressed.setter
+    def isSuppressed(self, value: list[bool]):
+        """
+        Specifies which, if any, instances of the pattern are suppressed. This returns an
+        array of Boolean values that indicates if a particular instance in the pattern is
+        suppressed or not. A value of true will result in the associated instance being suppressed.
+        """
+        pass
+    @property
+    def nativeObject(self) -> CircularPatternConstraint:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
         return CircularPatternConstraint()
 
 class CircularPatternFeature(Feature):
@@ -21687,7 +27750,7 @@ class CircularPatternFeature(Feature):
     def nativeObject(self) -> CircularPatternFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -21769,6 +27832,46 @@ class CoincidentConstraint(GeometricConstraint):
         an assembly but is already the native object.
         """
         return CoincidentConstraint()
+
+class CoincidentToSurfaceConstraint(GeometricConstraint):
+    """
+    A sketch constraint defining that a point is coincident to a surface.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CoincidentToSurfaceConstraint:
+        return CoincidentToSurfaceConstraint()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> CoincidentToSurfaceConstraint:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return CoincidentToSurfaceConstraint()
+    @property
+    def point(self) -> SketchPoint:
+        """
+        Returns the sketch point that is constrained.
+        """
+        return SketchPoint()
+    @property
+    def surface(self) -> core.Base:
+        """
+        Returns the BRepFace or ConstructionPlane the point is constrained to.
+        """
+        return core.Base()
+    @property
+    def nativeObject(self) -> CoincidentToSurfaceConstraint:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return CoincidentToSurfaceConstraint()
 
 class CollinearConstraint(GeometricConstraint):
     """
@@ -21913,7 +28016,7 @@ class CombineFeature(Feature):
     def nativeObject(self) -> CombineFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -21930,7 +28033,7 @@ class Component(BaseComponent):
     @staticmethod
     def cast(arg) -> Component:
         return Component()
-    def createOpenProfile(self, curves: core.Base, chainCurves: bool) -> Profile:
+    def createOpenProfile(self, curves: core.Base, chainCurves: bool = True) -> Profile:
         """
         Creates an open profile based on the input curve(s).
         curves : A SketchCurve or an ObjectCollection containing multiple sketch entities. If a single sketch curve
@@ -21946,7 +28049,7 @@ class Component(BaseComponent):
         Returns the new Profile object or null in the case of a failure.
         """
         return Profile()
-    def createBRepEdgeProfile(self, edges: core.Base, chainEdges: bool) -> Profile:
+    def createBRepEdgeProfile(self, edges: core.Base, chainEdges: bool = True) -> Profile:
         """
         Creates a profile based on the outside open edges of a BRepFace.
         edges : A single BRepEdge object or an ObjectCollection containing multiple BRepEdge objects, or a BRepLoop object. If a single edge
@@ -21974,7 +28077,7 @@ class Component(BaseComponent):
         resulting DataFile once it's available on A360.
         """
         return core.DataFileFuture()
-    def getPhysicalProperties(self, accuracy: CalculationAccuracy) -> PhysicalProperties:
+    def getPhysicalProperties(self, accuracy: CalculationAccuracy = CalculationAccuracy.LowCalculationAccuracy) -> PhysicalProperties:
         """
         Returns the PhysicalProperties object that has properties for getting the area, density, mass, volume, moments, etc
         of this component.
@@ -21998,6 +28101,18 @@ class Component(BaseComponent):
         Returns true if the transform was successful.
         """
         return bool()
+    def createFlatPattern(self, stationaryFace: BRepFace) -> FlatPattern:
+        """
+        Creates a flat pattern of the sheet metal folded body. The isSheetMetal property of the BRepBody object can be
+        used to determine if a particular body can be flattened. Creating a flat pattern will fail if a flat pattern already exists in the
+        component. You can determine if a flat pattern already exists by checking if the flatPattern property returns a FlatPattern object
+        or null.
+        stationaryFace : A planar face in the sheet metal body that is on the top or bottom of the part and not an edge face. This face will
+        be positioned on the X-Y plane of the flat pattern and the rest of the model will be flattened relative to this face.
+        The face must exist on a body that is owned by this component.
+        Returns the newly created flat pattern.
+        """
+        return FlatPattern()
     @property
     def sketches(self) -> Sketches:
         """
@@ -22143,14 +28258,6 @@ class Component(BaseComponent):
         Returns the collection of joints associated with this component.
         """
         return Joints()
-    @property
-    def jointOrgins(self) -> JointOrigins:
-        """
-        This property was incorrectly spelled and has been replaced with the JointOrigins property.
-        However, this needs to remain in the implementation to continue to support programs that
-        already used it, but it will be hidden in the documentation.
-        """
-        return JointOrigins()
     @property
     def asBuiltJoints(self) -> AsBuiltJoints:
         """
@@ -22345,6 +28452,55 @@ class Component(BaseComponent):
         The ID is also the same ID used by PIM (Product Information Model).
         """
         return str()
+    @property
+    def allTangentRelationships(self) -> list[TangentRelationship]:
+        """
+        Returns all tangent relationships in this component and any sub components. The tangent relationships returned are all
+        in the context of this component so any tangent relationships in sub components will be proxies. This is primarily useful when used
+        from the root component because Fusion 360 flattens the assembly structure, including tangent relationships, when manipulating
+        an assembly.
+        """
+        return [TangentRelationship()]
+    @property
+    def tangentRelationships(self) -> TangentRelationships:
+        """
+        Returns the collection of tangent relationships associated with this component.
+        """
+        return TangentRelationships()
+    @property
+    def flatPattern(self) -> FlatPattern:
+        """
+        Gets the existing flat pattern or returns null in the case where a flat pattern doesn't exist in this component.
+        """
+        return FlatPattern()
+    @property
+    def activeSheetMetalRule(self) -> SheetMetalRule:
+        """
+        Gets and sets the active sheet metal rule. This can return null in the case where
+        the component has never contained any sheet metal related data.
+        """
+        return SheetMetalRule()
+    @activeSheetMetalRule.setter
+    def activeSheetMetalRule(self, value: SheetMetalRule):
+        """
+        Gets and sets the active sheet metal rule. This can return null in the case where
+        the component has never contained any sheet metal related data.
+        """
+        pass
+    @property
+    def isCanvasFolderLightBulbOn(self) -> bool:
+        """
+        Gets and sets if the light bulb of the canvas folder as seen in the browser is on or off.
+        This controls the visibility of all the canvases in the component.
+        """
+        return bool()
+    @isCanvasFolderLightBulbOn.setter
+    def isCanvasFolderLightBulbOn(self, value: bool):
+        """
+        Gets and sets if the light bulb of the canvas folder as seen in the browser is on or off.
+        This controls the visibility of all the canvases in the component.
+        """
+        pass
 
 class ConcentricConstraint(GeometricConstraint):
     """
@@ -22398,7 +28554,9 @@ class ConstantRadiusFilletEdgeSet(FilletEdgeSet):
     @property
     def edges(self) -> core.ObjectCollection:
         """
-        Gets and sets the edges that will be filleted.
+        Gets and sets an ObjectCollection containing the BRepEdge, BRepFace, and Feature that are filleted.
+        If the isTangentChain argument is true additional edges or faces may also get filleted if they are tangentially
+        connected to any of the input edges or faces.
         
         To use this property, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
@@ -22407,7 +28565,9 @@ class ConstantRadiusFilletEdgeSet(FilletEdgeSet):
     @edges.setter
     def edges(self, value: core.ObjectCollection):
         """
-        Gets and sets the edges that will be filleted.
+        Gets and sets an ObjectCollection containing the BRepEdge, BRepFace, and Feature that are filleted.
+        If the isTangentChain argument is true additional edges or faces may also get filleted if they are tangentially
+        connected to any of the input edges or faces.
         
         To use this property, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
@@ -22420,6 +28580,34 @@ class ConstantRadiusFilletEdgeSet(FilletEdgeSet):
         the radius by using the properties on the returned ModelParameter object.
         """
         return ModelParameter()
+
+class ConstantRadiusFilletEdgeSetInput(FilletEdgeSetInput):
+    """
+    Provides access to the edges and the parameter associated with a constant radius fillet.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ConstantRadiusFilletEdgeSetInput:
+        return ConstantRadiusFilletEdgeSetInput()
+    @property
+    def radius(self) -> core.ValueInput:
+        """
+        Gets and sets ValueInput object that defines the radius of the fillet. If the ValueInput uses
+        a real then it is interpreted as centimeters. If it is a string then the units
+        can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current default units for length.
+        """
+        return core.ValueInput()
+    @radius.setter
+    def radius(self, value: core.ValueInput):
+        """
+        Gets and sets ValueInput object that defines the radius of the fillet. If the ValueInput uses
+        a real then it is interpreted as centimeters. If it is a string then the units
+        can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current default units for length.
+        """
+        pass
 
 class ConstructionAxisByLineDefinition(ConstructionAxisDefinition):
     """
@@ -23094,8 +29282,32 @@ class CopyPasteBody(Feature):
         """
         return core.ObjectCollection()
 
+class CurvatureCombAnalysis(Analysis):
+    """
+    Represents any existing Curvature Comb Analysis that exist in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CurvatureCombAnalysis:
+        return CurvatureCombAnalysis()
+
+class CurvatureMapAnalysis(Analysis):
+    """
+    Represents any existing Curvature Map Analysis that exist in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> CurvatureMapAnalysis:
+        return CurvatureMapAnalysis()
+
 class CustomFeature(Feature):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     Object that represents an existing CustomFeature feature in a design.
     """
     def __init__(self):
@@ -23177,7 +29389,7 @@ class CustomFeature(Feature):
     def nativeObject(self) -> CustomFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -23185,6 +29397,10 @@ class CustomFeature(Feature):
 
 class CustomFeatureEvent(core.Event):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     A CustomFeature event is an event associated with handling changes to a custom feature.
     """
     def __init__(self):
@@ -23209,6 +29425,10 @@ class CustomFeatureEvent(core.Event):
 
 class CustomFeatureEventArgs(core.EventArgs):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     The CustomFeatureEventArgs provides information associated with a custom feature event.
     """
     def __init__(self):
@@ -23247,9 +29467,9 @@ class CustomGraphicsAppearanceColorEffect(CustomGraphicsColorEffect):
         """
         Statically creates a new CustomGraphicsAppearanceColorEffect object. This can be used when
         setting the color property of the various custom graphics objects. With this coloring
-        effect, an existing appearance is used. The appearance must be avaialable in the
+        effect, an existing appearance is used. The appearance must be available in the
         design where the graphics will be drawn.
-        appearance : The appearance to use. The appearance must be avaialable in the design where the
+        appearance : The appearance to use. The appearance must be available in the design where the
         graphics will be drawn.
         Returns the created CustomGraphicsAppearanceColorEffect or null in case of a failure.
         """
@@ -23272,7 +29492,7 @@ class CustomGraphicsAppearanceColorEffect(CustomGraphicsColorEffect):
 class CustomGraphicsBasicMaterialColorEffect(CustomGraphicsColorEffect):
     """
     One of the types of color effects that can be applied to a custom graphics entity. With this type
-    of effect, basic phong shading and lighting techniques are used so give the entity a 3-dimensional
+    of effect, basic Phong shading and lighting techniques are used so give the entity a 3-dimensional
     appearance.
     """
     def __init__(self):
@@ -23281,14 +29501,14 @@ class CustomGraphicsBasicMaterialColorEffect(CustomGraphicsColorEffect):
     def cast(arg) -> CustomGraphicsBasicMaterialColorEffect:
         return CustomGraphicsBasicMaterialColorEffect()
     @staticmethod
-    def create(diffuseColor: core.Color, ambientColor: core.Color, specularColor: core.Color, emissiveColor: core.Color, glossiness: float, opacity: float) -> CustomGraphicsBasicMaterialColorEffect:
+    def create(diffuseColor: core.Color, ambientColor: core.Color = None, specularColor: core.Color = None, emissiveColor: core.Color = None, glossiness: float = 5.0, opacity: float = 1.0) -> CustomGraphicsBasicMaterialColorEffect:
         """
         Statically creates a new basic CustomGraphicsBasicMaterialColorEffect object. This can be used to
-        color custom graphics entities. With this type of effect you define the basic phong shading
+        color custom graphics entities. With this type of effect you define the basic Phong shading
         properties so that the entity can be rendered with basic shading and lighting effects applied
         so that it appears 3-dimensional.
         
-        If only the emmissive coloris provided, the API will automatically create values for the
+        If only the emissive color is provided, the API will automatically create values for the
         other colors to render the object as a single color.
         diffuseColor : The diffuse color is the color of reflected light as it scatters off of a rough surface and is
         the primary color of the entity. This color is always required.
@@ -23299,8 +29519,8 @@ class CustomGraphicsBasicMaterialColorEffect(CustomGraphicsColorEffect):
         emissiveColor : The emissive color is the color of light that entity emits, such as in a light bulb. If not specified,
         black for no emissive light is used.
         glossiness : This specifies how glossy the entity is. The glossiness determines the size of highlights, and thus
-        the apparent shininess of the material. A value of 0.0 will result in very large hightlights like you
-        would see with a rough surface. A maximum valaue of 128.0 will result in very small highlight as
+        the apparent shininess of the material. A value of 0.0 will result in very large highlights like you
+        would see with a rough surface. A maximum value of 128.0 will result in very small highlight as
         from a smooth surface.
         opacity : Specifies the opacity of the entity where a value of 1.0 is completely opaque and 0.0 is completely transparent.
         Returns the created CustomGraphicsBasicMaterialColorEffect or null in case of a failure.
@@ -23369,8 +29589,8 @@ class CustomGraphicsBasicMaterialColorEffect(CustomGraphicsColorEffect):
         """
         Gets and sets the glossiness associated with this CustomGraphicsBasicMaterialColorEffect object.
         The glossiness determines the size of highlights, and thus the apparent shininess of the material.
-        A value of 0.0 will result in very large hightlights like you would see with a rough surface.
-        A maximum valaue of 128.0 will result in very small highlight as from a smooth surface.
+        A value of 0.0 will result in very large highlights like you would see with a rough surface.
+        A maximum value of 128.0 will result in very small highlight as from a smooth surface.
         """
         return float()
     @glossiness.setter
@@ -23378,8 +29598,8 @@ class CustomGraphicsBasicMaterialColorEffect(CustomGraphicsColorEffect):
         """
         Gets and sets the glossiness associated with this CustomGraphicsBasicMaterialColorEffect object.
         The glossiness determines the size of highlights, and thus the apparent shininess of the material.
-        A value of 0.0 will result in very large hightlights like you would see with a rough surface.
-        A maximum valaue of 128.0 will result in very small highlight as from a smooth surface.
+        A value of 0.0 will result in very large highlights like you would see with a rough surface.
+        A maximum value of 128.0 will result in very small highlight as from a smooth surface.
         """
         pass
     @property
@@ -23469,6 +29689,32 @@ class CustomGraphicsCurve(CustomGraphicsEntity):
         Defines the thickness of the curve in pixels.
         """
         pass
+    @property
+    def lineStylePattern(self) -> LineStylePatterns:
+        """
+        The line style to apply to the curve. The default is to draw the curve using continuous line style.
+        """
+        return LineStylePatterns()
+    @lineStylePattern.setter
+    def lineStylePattern(self, value: LineStylePatterns):
+        """
+        The line style to apply to the curve. The default is to draw the curve using continuous line style.
+        """
+        pass
+    @property
+    def lineStyleScale(self) -> float:
+        """
+        Defines the scale as it relates to how the line style is applied. The effect is to
+        shrink or expand the line style as it is applied to the line. This does not affect the line width.
+        """
+        return float()
+    @lineStyleScale.setter
+    def lineStyleScale(self, value: float):
+        """
+        Defines the scale as it relates to how the line style is applied. The effect is to
+        shrink or expand the line style as it is applied to the line. This does not affect the line width.
+        """
+        pass
 
 class CustomGraphicsGroup(CustomGraphicsEntity):
     """
@@ -23479,6 +29725,12 @@ class CustomGraphicsGroup(CustomGraphicsEntity):
     @staticmethod
     def cast(arg) -> CustomGraphicsGroup:
         return CustomGraphicsGroup()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> CustomGraphicsEntity:
+        return None
+    def __iter__(self) -> Iterator[CustomGraphicsEntity]:
+        return None
     def item(self, index: int) -> CustomGraphicsEntity:
         """
         Function that returns the specified custom graphics entity within this group. This also includes
@@ -23510,7 +29762,7 @@ class CustomGraphicsGroup(CustomGraphicsEntity):
         Returns the new CustomGraphicsMesh object or null in the case of a failure.
         """
         return CustomGraphicsMesh()
-    def addLines(self, coordinates: CustomGraphicsCoordinates, indexList: list[int], isLineStrip: bool, lineStripLengths: list[int]) -> CustomGraphicsLines:
+    def addLines(self, coordinates: CustomGraphicsCoordinates, indexList: list[int], isLineStrip: bool, lineStripLengths: list[int] = None) -> CustomGraphicsLines:
         """
         Adds a new CustomGraphicsLines entity to this group.
         coordinates : The CustomGraphicsCoordinates object that defines the coordinates of the vertices of the lines.
@@ -23551,10 +29803,10 @@ class CustomGraphicsGroup(CustomGraphicsEntity):
         pointType : Specifies the type of point to display. Currently there are two choices; UserDefinedCustomGraphicsPointType and
         PointCloudCustomGraphicsPointType. When set to PointCloudCustomGraphicsPointType, each point displays as a single pixel and is
         the most efficient point display type for displaying sets that contain very large quantities of points. When
-        set to UserDefinedCustomGraphicsPointType, you specify the image to display as the point. This can be any png image and is
+        set to UserDefinedCustomGraphicsPointType, you specify the image to display as the point. This can be any PNG image and is
         centered on the point.
         pointImage : If the pointType is PointCloudCustomGraphicsPointType this argument is ignored and can be an empty string. This argument
-        must be specified if the pointType is UserDefinedCustomGraphicsPointType. This is the path to the png image file that will be
+        must be specified if the pointType is UserDefinedCustomGraphicsPointType. This is the path to the PNG image file that will be
         displayed as the point. It can be either a full path to the file or a relative path that is respect to the .py, dll, or dylib
         file being run. There is no restriction on the size of the image, but generally very small images would be used for points.
         Returns the newly created CustomGraphicsPointSet object or null in the case of failure.
@@ -23565,7 +29817,7 @@ class CustomGraphicsGroup(CustomGraphicsEntity):
         Adds a new CustomGraphicsText entity to this group. This will be displayed as a single line of text.
         It is placed so that the upper-left corner is at the point defined and the text will be parallel
         to the X-Y plane of the world coordinate system and in the X direction. To change it's position relative
-        to the input point you can change the horizontal and vertical justification on the returnsed CustomGrahicsText
+        to the input point you can change the horizontal and vertical justification on the returned CustomGrahicsText
         object. You can also reorient the text by changing the transform of the returned CustomGraphicsText object.
         formattedText : The text string to be displayed. Overall formatting can be defined using properties on the returned
         CustomGraphicsText object. Formatting overrides can be defined within the string using formatting codes.
@@ -23768,7 +30020,7 @@ class CustomGraphicsMesh(CustomGraphicsEntity):
         """
         Gets and sets an array of indices that define which coordinate in the
         coordinate list is used for each vertex in the mesh. Each set of three
-        indices defines a triagle. For example:
+        indices defines a triangle. For example:
         Indices 0, 1, and 2 define the coordinates to use for the first triangle and
         indices 3, 4, and 5 define the coordinates for the second triangle, and so on.
         """
@@ -23778,7 +30030,7 @@ class CustomGraphicsMesh(CustomGraphicsEntity):
         """
         Gets and sets an array of indices that define which coordinate in the
         coordinate list is used for each vertex in the mesh. Each set of three
-        indices defines a triagle. For example:
+        indices defines a triangle. For example:
         Indices 0, 1, and 2 define the coordinates to use for the first triangle and
         indices 3, 4, and 5 define the coordinates for the second triangle, and so on.
         """
@@ -23859,8 +30111,8 @@ class CustomGraphicsPointSet(CustomGraphicsEntity):
     def pointImage(self) -> str:
         """
         Gets and sets the image that will be used to display the point if the point type
-        is a custom image. The image will always be be billboarded. The file should be
-        a png image and can use transparency. The filename can be a full path or a
+        is a custom image. The image will always be billboarded. The file should be
+        a PNG image and can use transparency. The filename can be a full path or a
         relative path that is relative to your runtime file. Setting this will automatically
         set the pointType to UserDefinedCustomGraphicsPointType. This property can also
         return an empty string in the case where a user defined image point is not being used.
@@ -23870,8 +30122,8 @@ class CustomGraphicsPointSet(CustomGraphicsEntity):
     def pointImage(self, value: str):
         """
         Gets and sets the image that will be used to display the point if the point type
-        is a custom image. The image will always be be billboarded. The file should be
-        a png image and can use transparency. The filename can be a full path or a
+        is a custom image. The image will always be billboarded. The file should be
+        a PNG image and can use transparency. The filename can be a full path or a
         relative path that is relative to your runtime file. Setting this will automatically
         set the pointType to UserDefinedCustomGraphicsPointType. This property can also
         return an empty string in the case where a user defined image point is not being used.
@@ -23880,7 +30132,7 @@ class CustomGraphicsPointSet(CustomGraphicsEntity):
     @property
     def pointType(self) -> CustomGraphicsPointTypes:
         """
-        Specifies which of the pre-defined point images to use. Attempting to set this property
+        Specifies which of the predefined point images to use. Attempting to set this property
         to UserDefinedCustomGraphicsPointType will fail. To change to a user defined point type
         you must set use the pointImage property to specify the image to use and this will have
         the side-effect of changing the value of this property to UserDefinedCustomGraphicsPointType.
@@ -23889,7 +30141,7 @@ class CustomGraphicsPointSet(CustomGraphicsEntity):
     @pointType.setter
     def pointType(self, value: CustomGraphicsPointTypes):
         """
-        Specifies which of the pre-defined point images to use. Attempting to set this property
+        Specifies which of the predefined point images to use. Attempting to set this property
         to UserDefinedCustomGraphicsPointType will fail. To change to a user defined point type
         you must set use the pointImage property to specify the image to use and this will have
         the side-effect of changing the value of this property to UserDefinedCustomGraphicsPointType.
@@ -23913,7 +30165,7 @@ class CustomGraphicsShowThroughColorEffect(CustomGraphicsColorEffect):
         Creates a new CustomGraphicsShowThroughColorEffect object that can be assigned to a custom graphics entity
         using its showThrough property.
         color : The color that will be used to render the custom graphics object.
-        opacity : The level of opacity that will be applied when rendering the the custom graphics object. A value of 0 is fully translucent
+        opacity : The level of opacity that will be applied when rendering the custom graphics object. A value of 0 is fully translucent
         and will have the effect of the object being completely covered by objects in front of it. A value of 1 is fully opaque
         which will have the effect of the object completely covering all objects. Values in between will make objects in front of
         the graphics object appear translucent to varying degrees so you can see the custom graphics object through it.
@@ -23972,7 +30224,7 @@ class CustomGraphicsSolidColorEffect(CustomGraphicsColorEffect):
         colors the entity with a single color without any lighting effects. With this coloring
         effect, a sphere will display as a solid filled circle.
         color : The color to use for the solid color display. The opacity component of the color is ignored
-        because the opacity of custom graphics is controlled seperately using an opacity attribute.
+        because the opacity of custom graphics is controlled separately using an opacity attribute.
         Returns the created CustomGraphicsSolidColorEffect or null in case of a failure.
         """
         return CustomGraphicsSolidColorEffect()
@@ -23980,14 +30232,14 @@ class CustomGraphicsSolidColorEffect(CustomGraphicsColorEffect):
     def color(self) -> core.Color:
         """
         The color to use for the solid color display. The opacity component of the color is ignored
-        because the opacity of custom graphics is controlled seperately using an opacity attribute.
+        because the opacity of custom graphics is controlled separately using an opacity attribute.
         """
         return core.Color()
     @color.setter
     def color(self, value: core.Color):
         """
         The color to use for the solid color display. The opacity component of the color is ignored
-        because the opacity of custom graphics is controlled seperately using an opacity attribute.
+        because the opacity of custom graphics is controlled separately using an opacity attribute.
         """
         pass
 
@@ -24330,7 +30582,7 @@ class DeleteFaceFeature(Feature):
     def nativeObject(self) -> DeleteFaceFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -24374,7 +30626,7 @@ class Design(core.Product):
         Returns an InterferenceResults object that can be used to examine the interference results.
         """
         return InterferenceResults()
-    def areaProperties(self, inputs: core.ObjectCollection, accuracy: CalculationAccuracy) -> AreaProperties:
+    def areaProperties(self, inputs: core.ObjectCollection, accuracy: CalculationAccuracy = CalculationAccuracy.LowCalculationAccuracy) -> AreaProperties:
         """
         Returns the AreaProperties object that has properties for getting the area, perimeter, centroid, etc
         for a collection of 2D sketch profiles and/or planar surfaces that all lie on the same plane.
@@ -24386,7 +30638,7 @@ class Design(core.Product):
         Returns an AreaProperties object that can be used to examine the area results.
         """
         return AreaProperties()
-    def physicalProperties(self, inputs: core.ObjectCollection, accuracy: CalculationAccuracy) -> PhysicalProperties:
+    def physicalProperties(self, inputs: core.ObjectCollection, accuracy: CalculationAccuracy = CalculationAccuracy.LowCalculationAccuracy) -> PhysicalProperties:
         """
         Returns the PhysicalProperties object that has properties for getting the area, density, mass, volume, moments, etc
         for a collection of 3D solid objects.
@@ -24420,6 +30672,30 @@ class Design(core.Product):
         in the timeline to determine if everything successfully computed or not.
         """
         return bool()
+    def modifyParameters(self, parameters: list[Parameter], values: list[core.ValueInput]) -> bool:
+        """
+        Modifies the values of many parameters all at once. Changing them all at once is more efficient
+        than modifying them one at a time.
+        parameters : An array of UserParameter and ModelParameter objects that you want to change the value. The parameters
+        must all exist within the Design object you're calling this method from. They can be in any component
+        but must be local components owned by the Design.
+        values : An array of ValueInput objects that defines the new value for each parameter defined by the "parameters" argument.
+        This array must be the same size as the array used for the "parameters" argument, and the items in the arrays are
+        used in the order they exist within the arrays. For example, the parameter at index 0 will use the value at index 0.
+        
+        If you use the createByString method to create the ValueInput, the expression of the parameter will be edited, and
+        the effect is the same as interactively editing the expression.When you set the expression, you can include units,
+        references to other parameters, and math operators and functions.For example, "(Length / 3) * cos(Angle)" is a valid
+        expression for a distance parameter if the parameters "Length" and "Angle" already exist.
+        
+        If you use the createByReal method, the value is assigned directly and is always in the internal units for the unit
+        type associated with the parameter.For example, if the parameter is a length, the value will ALWAYS be used as
+        centimeters. If the parameter is an angle, the value will ALWAYS be used as radians.This is because the default design
+        unit types for length are ignored, and internal units are ALWAYS used.
+        Returns true if setting all of the parameters was successful. Setting multiple parameters is either all or none. If it
+        fails to set any parameters, none of them are updated, and the method will return false.
+        """
+        return bool()
     @property
     def designType(self) -> DesignTypes:
         """
@@ -24439,14 +30715,14 @@ class Design(core.Product):
     @property
     def rootComponent(self) -> Component:
         """
-        Returns the root Component
+        Returns the root Component.
         """
         return Component()
     @property
     def allComponents(self) -> Components:
         """
         Returns the Components collection that provides access to existing components
-        in a design
+        in a design.
         """
         return Components()
     @property
@@ -24579,6 +30855,31 @@ class Design(core.Product):
         isContactAnalysisEnabled is False then no contact analysis is performed.
         """
         pass
+    @property
+    def designSheetMetalRules(self) -> SheetMetalRules:
+        """
+        Gets the collection of sheet metal rules in the design.
+        """
+        return SheetMetalRules()
+    @property
+    def librarySheetMetalRules(self) -> SheetMetalRules:
+        """
+        Gets the collection of sheet metal rules in the sheet metal rule library.
+        """
+        return SheetMetalRules()
+    @property
+    def analyses(self) -> Analyses:
+        """
+        Gets the collection of design analyses associated with this design.
+        """
+        return Analyses()
+    @property
+    def renderManager(self) -> RenderManager:
+        """
+        Returns the RenderManager object associated with this design. Using the RenderManager you can access the
+        same functionality that is available in the Render workspace.
+        """
+        return RenderManager()
 
 class DistanceAndAngleChamferEdgeSet(ChamferEdgeSet):
     """
@@ -24644,30 +30945,6 @@ class DistanceAndAngleChamferEdgeSet(ChamferEdgeSet):
         """
         pass
 
-class DistanceAndAngleChamferTypeDefinition(ChamferTypeDefinition):
-    """
-    Provides information to create a chamfer that is defined by a distance from the edge and an angle.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> DistanceAndAngleChamferTypeDefinition:
-        return DistanceAndAngleChamferTypeDefinition()
-    @property
-    def distance(self) -> ModelParameter:
-        """
-        Returns the parameter controlling the distance. You can edit the distance
-        by editing the value of the parameter object.
-        """
-        return ModelParameter()
-    @property
-    def angle(self) -> ModelParameter:
-        """
-        Returns the parameter controlling the angle. You can edit the angle
-        by editing the value of the parameter object.
-        """
-        return ModelParameter()
-
 class DistanceExtentDefinition(ExtentDefinition):
     """
     Defines the inputs for a distance ExtentDefinition object.
@@ -24691,26 +30968,22 @@ class DistanceExtentDefinition(ExtentDefinition):
         """
         return DistanceExtentDefinition()
     @property
-    def isSymmetric(self) -> bool:
-        """
-        Gets and sets if the distance extent is symmetric or not
-        For a hole this property will always return false and setting it is ignored.
-        """
-        return bool()
-    @isSymmetric.setter
-    def isSymmetric(self, value: bool):
-        """
-        Gets and sets if the distance extent is symmetric or not
-        For a hole this property will always return false and setting it is ignored.
-        """
-        pass
-    @property
     def distance(self) -> ModelParameter:
         """
         Returns the parameter controlling the distance. You can edit the distance
         by editing the value of the parameter object.
         """
         return ModelParameter()
+
+class DraftAnalysis(Analysis):
+    """
+    Represents any existing Draft Analysis that exist in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> DraftAnalysis:
+        return DraftAnalysis()
 
 class DraftFeature(Feature):
     """
@@ -24847,11 +31120,51 @@ class DraftFeature(Feature):
     def nativeObject(self) -> DraftFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
         return DraftFeature()
+
+class DXFFlatPatternExportOptions(ExportOptions):
+    """
+    Defines that a DXF export of a flat pattern is to be done and specifies the various options.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> DXFFlatPatternExportOptions:
+        return DXFFlatPatternExportOptions()
+    @property
+    def isSplineConvertedToPolyline(self) -> bool:
+        """
+        Specifies if splines are converted to polylines. If true, the convertToPolylineTolerance
+        value is used to specify the accuracy of the conversion. Defaults to false.
+        """
+        return bool()
+    @isSplineConvertedToPolyline.setter
+    def isSplineConvertedToPolyline(self, value: bool):
+        """
+        Specifies if splines are converted to polylines. If true, the convertToPolylineTolerance
+        value is used to specify the accuracy of the conversion. Defaults to false.
+        """
+        pass
+    @property
+    def convertToPolylineTolerance(self) -> float:
+        """
+        Specifies the tolerance when converting a spline to polylines. This value is only used when
+        the isSplineConvertedToPolyline property is true and otherwise it is ignored. The units for
+        this value are centimeters. Defaults to 0.01 cm.
+        """
+        return float()
+    @convertToPolylineTolerance.setter
+    def convertToPolylineTolerance(self, value: float):
+        """
+        Specifies the tolerance when converting a spline to polylines. This value is only used when
+        the isSplineConvertedToPolyline property is true and otherwise it is ignored. The units for
+        this value are centimeters. Defaults to 0.01 cm.
+        """
+        pass
 
 class EqualConstraint(GeometricConstraint):
     """
@@ -24932,23 +31245,6 @@ class EqualDistanceChamferEdgeSet(ChamferEdgeSet):
         """
         return ModelParameter()
 
-class EqualDistanceChamferTypeDefinition(ChamferTypeDefinition):
-    """
-    Provides information to create a chamfer that is defined by a single distance and has an equal offset from the edge.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> EqualDistanceChamferTypeDefinition:
-        return EqualDistanceChamferTypeDefinition()
-    @property
-    def distance(self) -> ModelParameter:
-        """
-        Returns the parameter controlling the distance. You can edit the distance
-        by editing the value of the parameter object.
-        """
-        return ModelParameter()
-
 class ExtendFeature(Feature):
     """
     Object that represents an existing extend feature in a design.
@@ -24958,7 +31254,7 @@ class ExtendFeature(Feature):
     @staticmethod
     def cast(arg) -> ExtendFeature:
         return ExtendFeature()
-    def setInputEntities(self, edges: core.ObjectCollection, isChainingEnabled: bool) -> bool:
+    def setInputEntities(self, edges: core.ObjectCollection, isChainingEnabled: bool = True) -> bool:
         """
         Sets the edges for the extend feature.
         
@@ -25029,7 +31325,7 @@ class ExtendFeature(Feature):
     def nativeObject(self) -> ExtendFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -25062,61 +31358,6 @@ class ExtrudeFeature(Feature):
     @staticmethod
     def cast(arg) -> ExtrudeFeature:
         return ExtrudeFeature()
-    def setDistanceExtent(self, isSymmetric: bool, distance: core.ValueInput) -> bool:
-        """
-        Sets the extrusion extents option to 'Distance'.
-        isSymmetric : Set to 'true' for an extrusion symmetrical about the profile plane
-        distance : ValueInput object that defines the extrude distance.
-        If the isSymmetric argument is 'false', a positive or negative distance can be used to control the direction.
-        Returns true if successful
-        """
-        return bool()
-    def setTwoSidesDistanceExtent(self, distanceOne: core.ValueInput, distanceTwo: core.ValueInput) -> bool:
-        """
-        Sets the extrusion extents option to 'Two Side'.
-        This method will fail in the case of a non-parametric extrusion.
-        distanceOne : ValueInput object that defines the extrude distance for the first side.
-        distanceTwo : ValueInput object that defines the extrude distance for the second side.
-        Returns true if successful
-        """
-        return bool()
-    def setAllExtent(self, direction: ExtentDirections) -> bool:
-        """
-        Sets the extrusion extents option to 'All' (i.e. the extrusion is through-all, in both directions.)
-        This method will fail in the case of a non-parametric extrusion.
-        direction : The direction can be either positive, negative, or symmetric.
-        Returns true if successful
-        """
-        return bool()
-    def setOneSideToExtent(self, toEntity: core.Base, matchShape: bool, directionHint: core.Vector3D) -> bool:
-        """
-        Sets the extrusion Direction option to 'One Side' and the Extents option to 'To' (a specified face)
-        toEntity : The entity that defines the "to" extent. The valid types of entities can vary depending on
-        the type of feature this is being used with. For an extrude it can be a BRepBody, BRepFace,
-        BRepVertex, ConstructionPlane, or ConstructionPoint.
-        matchShape : If the matchShape argument is 'true', the toEntity is extended to fully intersect the extrusion.
-        directionHint : Specifies the direction of the extrusion. This is only used in the case where there are two possible solutions and the extrusion can
-        hit the toEntity in either direction. An example is if the profile of the extrusion is within a hole.
-        The extrusion will intersect the cylinder of the hole in either direction.
-        
-        Typically there is only a single solution and the direction is determined automatically.
-        Returns true if successful.
-        """
-        return bool()
-    def setTwoSidesToExtent(self, toEntityOne: core.Base, toEntityTwo: core.Base, matchShape: bool) -> bool:
-        """
-        Set the extrusion Direction option to 'Two Side'
-        This method will fail in the case of a non-parametric extrusion.
-        toEntityOne : The first entity that defines the "to" extent. The valid types of entities can vary depending on
-        the type of feature this is being used with. For an extrude it can be a BRepBody, BRepFace,
-        BRepVertex, ConstructionPlane, or ConstructionPoint.
-        toEntityTwo : The second entity that defines the "to" extent. The valid types of entities can vary depending on
-        the type of feature this is being used with. For an extrude it can be a BRepBody, BRepFace,
-        BRepVertex, ConstructionPlane, or ConstructionPoint.
-        matchShape : If the matchShape argument is 'true', the toEntity is extended to fully intersect the extrusion.
-        Returns true if successful.
-        """
-        return bool()
     def createForAssemblyContext(self, occurrence: Occurrence) -> ExtrudeFeature:
         """
         Creates or returns a proxy for the native object
@@ -25126,7 +31367,7 @@ class ExtrudeFeature(Feature):
         Returns the proxy object or null if this isn't the NativeObject.
         """
         return ExtrudeFeature()
-    def setOneSideExtent(self, extent: ExtentDefinition, direction: ExtentDirections, taperAngle: core.ValueInput) -> bool:
+    def setOneSideExtent(self, extent: ExtentDefinition, direction: ExtentDirections, taperAngle: core.ValueInput = None) -> bool:
         """
         Redefines the extrusion to go in one direction from the profile. The extent of the extrusion is
         defined by the extent argument.
@@ -25143,7 +31384,7 @@ class ExtrudeFeature(Feature):
         Returns true is setting the input to a one sided extent was successful.
         """
         return bool()
-    def setTwoSidesExtent(self, sideOneExtent: ExtentDefinition, sideTwoExtent: ExtentDefinition, sideOneTaperAngle: core.ValueInput, sideTwoTaperAngle: core.ValueInput) -> bool:
+    def setTwoSidesExtent(self, sideOneExtent: ExtentDefinition, sideTwoExtent: ExtentDefinition, sideOneTaperAngle: core.ValueInput = None, sideTwoTaperAngle: core.ValueInput = None) -> bool:
         """
         Redefines the extrusion to go in both directions from the profile. The extent is defined independently
         for each direction using the input arguments.
@@ -25161,7 +31402,7 @@ class ExtrudeFeature(Feature):
         Returns true, if the call was successful.
         """
         return bool()
-    def setSymmetricExtent(self, distance: core.ValueInput, isFullLength: bool, taperAngle: core.ValueInput) -> bool:
+    def setSymmetricExtent(self, distance: core.ValueInput, isFullLength: bool, taperAngle: core.ValueInput = None) -> bool:
         """
         Redefines the extrusion to go symmetrically in both directions from the profile.
         
@@ -25176,7 +31417,7 @@ class ExtrudeFeature(Feature):
         Returns true, if the call was successful.
         """
         return bool()
-    def setThinExtrude(self, thinExtrudeWallLocationOne: ThinExtrudeWallLocation, thinExtrudeWallThicknessOne: core.ValueInput, thinExtrudeWallLocationTwo: ThinExtrudeWallLocation, thinExtrudeWallThicknessTwo: core.ValueInput) -> bool:
+    def setThinExtrude(self, thinExtrudeWallLocationOne: ThinExtrudeWallLocation, thinExtrudeWallThicknessOne: core.ValueInput, thinExtrudeWallLocationTwo: ThinExtrudeWallLocation = ThinExtrudeWallLocation.Side1, thinExtrudeWallThicknessTwo: core.ValueInput = None) -> bool:
         """
         Changes the extrude feature to be a thin extrude. This is only valid if the isThinExtrude property
         is False. If the extrusion is already a thin extrude, you can use the properties on the ExtrudeFeature
@@ -25223,14 +31464,6 @@ class ExtrudeFeature(Feature):
         """
         pass
     @property
-    def taperAngle(self) -> ModelParameter:
-        """
-        Returns the parameter controlling the taper angle of the extrusion. To
-        edit the taper angle use properties on the parameter to edit its value.
-        This property returns nothing in the case where the feature is non-parametric.
-        """
-        return ModelParameter()
-    @property
     def operation(self) -> FeatureOperations:
         """
         Gets and sets the type of operation performed by the extrusion.
@@ -25242,15 +31475,6 @@ class ExtrudeFeature(Feature):
         Gets and sets the type of operation performed by the extrusion.
         """
         pass
-    @property
-    def extentDefinition(self) -> ExtentDefinition:
-        """
-        Gets the ExtentDefinition object that defines the extent of the extrude. Modifying the
-        properties of the returned extent definition object will cause the extrude to recompute.
-        Various types of objects can be returned depending on the type of extent currently defined for
-        the extrusion. This property returns nothing in the case where the feature is non-parametric.
-        """
-        return ExtentDefinition()
     @property
     def startFaces(self) -> BRepFaces:
         """
@@ -25278,7 +31502,7 @@ class ExtrudeFeature(Feature):
     def nativeObject(self) -> ExtrudeFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -25468,6 +31692,28 @@ class ExtrudeFeature(Feature):
         """
         return ModelParameter()
 
+class FaceRipFeatureDefinition(RipFeatureDefinition):
+    """
+    The definition for a face rip.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> FaceRipFeatureDefinition:
+        return FaceRipFeatureDefinition()
+    @property
+    def ripFace(self) -> BRepFace:
+        """
+        Gets and sets the input face for a face rip.
+        """
+        return BRepFace()
+    @ripFace.setter
+    def ripFace(self, value: BRepFace):
+        """
+        Gets and sets the input face for a face rip.
+        """
+        pass
+
 class FilletFeature(Feature):
     """
     Object that represents an existing fillet feature in a design.
@@ -25493,18 +31739,6 @@ class FilletFeature(Feature):
         """
         return FilletEdgeSets()
     @property
-    def isG2(self) -> bool:
-        """
-        Gets and sets if the fillet uses the G2 (curvature-continuity) surface quality option.
-        """
-        return bool()
-    @isG2.setter
-    def isG2(self, value: bool):
-        """
-        Gets and sets if the fillet uses the G2 (curvature-continuity) surface quality option.
-        """
-        pass
-    @property
     def isRollingBallCorner(self) -> bool:
         """
         Gets and sets if a rolling ball solution is to be used in any corners.
@@ -25520,20 +31754,6 @@ class FilletFeature(Feature):
         
         To set this property, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
-        """
-        pass
-    @property
-    def isTangentChain(self) -> bool:
-        """
-        Gets and sets whether or not edges that are tangentially connected to
-        the input edges (if any) will also be filleted.
-        """
-        return bool()
-    @isTangentChain.setter
-    def isTangentChain(self, value: bool):
-        """
-        Gets and sets whether or not edges that are tangentially connected to
-        the input edges (if any) will also be filleted.
         """
         pass
     @property
@@ -25589,6 +31809,75 @@ class FlangeFeature(Feature):
     @staticmethod
     def cast(arg) -> FlangeFeature:
         return FlangeFeature()
+
+class FlatPattern(Feature):
+    """
+    The FlatPattern object provides access to the flattened representation of a folded part.
+    This supports most of the functionality of a regular component like creating sketches,
+    construction geometry, and most features. Functionality that is not supported in a
+    flat pattern will fail if you attempt to use it. For example, the creation of occurrences
+    and new components is not supported. Also the creation of sheet metal features is
+    not supported.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> FlatPattern:
+        return FlatPattern()
+    def getBendInfo(self, bendEdge: BRepEdge) -> tuple[bool, bool, float]:
+        """
+        Returns bend information for the specified bend.
+        bendEdge : The wire BrepEdge that represents a bend line in the model. The edges are obtained from the wire
+        body returned by the bendLinesBody property.
+        isBendUp : Indicates if the bend is in the natural direction of the bend line or in the opposite direction. Returns true
+        if the bend is in the same direction as the input bend line.
+        bendAngle : Returns the bend angle of the bend in radians.
+        Returns true if the bend information was successfully returned.
+        """
+        return (bool(), bool(), float())
+    @property
+    def flatBody(self) -> BRepBody:
+        """
+        Returns the B-Rep body that represents the flattened sheet metal part.
+        """
+        return BRepBody()
+    @property
+    def bendLinesBody(self) -> BRepBody:
+        """
+        Returns the wire B-Rep body that represents the bend lines of the flattened sheet metal part.
+        """
+        return BRepBody()
+    @property
+    def extentLinesBody(self) -> BRepBody:
+        """
+        Returns the wire B-Rep body that represents the extent lines of the flattened sheet metal part.
+        """
+        return BRepBody()
+    @property
+    def topFace(self) -> BRepFace:
+        """
+        Returns the "top" face of the flat pattern B-Rep body.
+        """
+        return BRepFace()
+    @property
+    def bottomFace(self) -> BRepFace:
+        """
+        Returns the "bottom" face of the flat pattern B-Rep body.
+        """
+        return BRepFace()
+    @property
+    def sideFaces(self) -> BRepFaces:
+        """
+        Returns the "side" faces of the flat pattern B-Rep body. These are the faces around
+        the edge of the flat pattern that connect the top and bottom faces.
+        """
+        return BRepFaces()
+    @property
+    def foldedBody(self) -> BRepBody:
+        """
+        Returns the folded B-Rep body in the design that this flat pattern was created from.
+        """
+        return BRepBody()
 
 class FormFeature(Feature):
     """
@@ -25834,6 +32123,80 @@ class FusionProductPreferences(core.ProductPreferences):
         Gets and Sets if geometry, not in the active sketch plane, is to be automatically projected.
         """
         pass
+    @property
+    def isAutoProjectEdgesOnReference(self) -> bool:
+        """
+        Gets and sets if model edges should be automatically projected when creating
+        constraints and dimensions in the active sketch when the orientation is normal
+        to the active sketch plane.
+        """
+        return bool()
+    @isAutoProjectEdgesOnReference.setter
+    def isAutoProjectEdgesOnReference(self, value: bool):
+        """
+        Gets and sets if model edges should be automatically projected when creating
+        constraints and dimensions in the active sketch when the orientation is normal
+        to the active sketch plane.
+        """
+        pass
+    @property
+    def isAutoHideSketchOnFeatureCreation(self) -> bool:
+        """
+        Gets and sets if the sketch should be automatically hidden whenever
+        a feature is created from it.
+        """
+        return bool()
+    @isAutoHideSketchOnFeatureCreation.setter
+    def isAutoHideSketchOnFeatureCreation(self, value: bool):
+        """
+        Gets and sets if the sketch should be automatically hidden whenever
+        a feature is created from it.
+        """
+        pass
+    @property
+    def isSketchScaledWithFirstDimension(self) -> bool:
+        """
+        Gets and sets if the sketch geometry is automatically scaled when
+        the first dimension is added.
+        """
+        return bool()
+    @isSketchScaledWithFirstDimension.setter
+    def isSketchScaledWithFirstDimension(self, value: bool):
+        """
+        Gets and sets if the sketch geometry is automatically scaled when
+        the first dimension is added.
+        """
+        pass
+    @property
+    def isAllowReferencesDuringEditInPlace(self) -> bool:
+        """
+        Gets and sets if you can create associative references while editing
+        external components in context.
+        """
+        return bool()
+    @isAllowReferencesDuringEditInPlace.setter
+    def isAllowReferencesDuringEditInPlace(self, value: bool):
+        """
+        Gets and sets if you can create associative references while editing
+        external components in context.
+        """
+        pass
+    @property
+    def isEnableArrangeAndSimplifyTools(self) -> bool:
+        """
+        Gets and sets if the Arrange, Remove Features, Remove Faces, and
+        Replace with Primitives commands should be added to the Modify menu
+        in the Design workspace.
+        """
+        return bool()
+    @isEnableArrangeAndSimplifyTools.setter
+    def isEnableArrangeAndSimplifyTools(self, value: bool):
+        """
+        Gets and sets if the Arrange, Remove Features, Remove Faces, and
+        Replace with Primitives commands should be added to the Modify menu
+        in the Design workspace.
+        """
+        pass
 
 class FusionUnitsManager(core.UnitsManager):
     """
@@ -25939,7 +32302,7 @@ class HoleFeature(Feature):
         Returns true if successful.
         """
         return bool()
-    def setOneSideToExtent(self, toEntity: core.Base, matchShape: bool, directionHint: core.Vector3D) -> bool:
+    def setOneSideToExtent(self, toEntity: core.Base, matchShape: bool, directionHint: core.Vector3D = None) -> bool:
         """
         Sets the extent of the hole to be from the sketch plane to the specified "to" face.
         
@@ -26011,7 +32374,7 @@ class HoleFeature(Feature):
         Returns true if successful.
         """
         return bool()
-    def setPositionByPlaneAndOffsets(self, planarEntity: core.Base, point: core.Point3D, edgeOne: BRepEdge, offsetOne: core.ValueInput, edgeTwo: BRepEdge, offsetTwo: core.ValueInput) -> bool:
+    def setPositionByPlaneAndOffsets(self, planarEntity: core.Base, point: core.Point3D, edgeOne: BRepEdge, offsetOne: core.ValueInput, edgeTwo: BRepEdge = None, offsetTwo: core.ValueInput = None) -> bool:
         """
         Redefines the orientation of the hole using a planar face or construction plane.
         The position of the hole is defined by the distance from one or two edges.
@@ -26173,7 +32536,7 @@ class HoleFeature(Feature):
     def nativeObject(self) -> HoleFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -26280,6 +32643,96 @@ class IGESExportOptions(ExportOptions):
     @staticmethod
     def cast(arg) -> IGESExportOptions:
         return IGESExportOptions()
+
+class IsoCurveAnalysis(Analysis):
+    """
+    Represents any existing Iso Curve Analysis that exist in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> IsoCurveAnalysis:
+        return IsoCurveAnalysis()
+
+class LineOnPlanarSurfaceConstraint(GeometricConstraint):
+    """
+    A sketch constraint defining that a line that lies on a planar face or construction plane.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> LineOnPlanarSurfaceConstraint:
+        return LineOnPlanarSurfaceConstraint()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> LineOnPlanarSurfaceConstraint:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return LineOnPlanarSurfaceConstraint()
+    @property
+    def line(self) -> SketchLine:
+        """
+        Returns the SketchLine object that is constrained.
+        """
+        return SketchLine()
+    @property
+    def planarSurface(self) -> core.Base:
+        """
+        Returns the planar BRepFace or ConstructionPlane the line is constrained to lie on.
+        """
+        return core.Base()
+    @property
+    def nativeObject(self) -> LineOnPlanarSurfaceConstraint:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return LineOnPlanarSurfaceConstraint()
+
+class LineParallelToPlanarSurfaceConstraint(GeometricConstraint):
+    """
+    A sketch constraint defining that a line is parallel to a planar face or construction plane.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> LineParallelToPlanarSurfaceConstraint:
+        return LineParallelToPlanarSurfaceConstraint()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> LineParallelToPlanarSurfaceConstraint:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return LineParallelToPlanarSurfaceConstraint()
+    @property
+    def line(self) -> SketchLine:
+        """
+        Returns the SketchLine object that is constrained.
+        """
+        return SketchLine()
+    @property
+    def planarSurface(self) -> core.Base:
+        """
+        Returns the planar BRepFace or ConstructionPlane the line is parallel to.
+        """
+        return core.Base()
+    @property
+    def nativeObject(self) -> LineParallelToPlanarSurfaceConstraint:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return LineParallelToPlanarSurfaceConstraint()
 
 class LoftDirectionEndCondition(LoftEndCondition):
     """
@@ -26396,7 +32849,7 @@ class LoftFeature(Feature):
     def nativeObject(self) -> LoftFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -26570,6 +33023,16 @@ class MidPointConstraint(GeometricConstraint):
         """
         return MidPointConstraint()
 
+class MinimumRadiusAnalysis(Analysis):
+    """
+    Represents any existing Minimum Radius Analysis that exist in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MinimumRadiusAnalysis:
+        return MinimumRadiusAnalysis()
+
 class MirrorFeature(Feature):
     """
     Object that represents an existing mirror feature in a design.
@@ -26647,7 +33110,7 @@ class MirrorFeature(Feature):
     def nativeObject(self) -> MirrorFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -26759,6 +33222,107 @@ class MoveFeature(Feature):
         Returns the proxy object or null if this isn't the NativeObject.
         """
         return MoveFeature()
+    def redefineAsFreeMove(self, transform: core.Matrix3D) -> bool:
+        """
+        Redefines the move feature to be described by an arbitrary translation and orientation
+        which is defined using a transformation matrix.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        transform : The transformation matrix that defines the transform to apply. The matrix must
+        be an orthogonal matrix; that is the axes are perpendicular to each other
+        and there isn't any scaling or mirroring defined.
+        Returns true if the re-definition is successful.
+        """
+        return bool()
+    def redefineAsTranslateXYZ(self, xDistance: core.ValueInput, yDistance: core.ValueInput, zDistance: core.ValueInput, isDesignSpace: bool) -> bool:
+        """
+        Redefines the move feature to be described by a translation in X, Y, and Z.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        xDistance : A ValueInput object that defines the offset in the X direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        yDistance : A ValueInput object that defines the offset in the Y direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        zDistance : A ValueInput object that defines the offset in the Z direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        isDesignSpace : Defines if the translation is defined with respect to the design or component space.
+        Design space is the same as the root component space.
+        Returns true if the re-definition is successful.
+        """
+        return bool()
+    def redefineAsTranslateAlongEntity(self, linearEntity: core.Base, distance: core.ValueInput) -> bool:
+        """
+        Redefines the move feature to be a translation along a specified entity.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        linearEntity : A linear entity that defines the direction of the move. This can be a linear BRepEdge,
+        ConstructionAxis, or a SketchLine. The entity defines the direction, not the distance.
+        The natural direction of the entity defines the translation direction.
+        distance : A ValueInput object that defines the offset distance. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        Returns true if the redefinition is successful.
+        """
+        return bool()
+    def redefineAsRotate(self, axisEntity: core.Base, angle: core.ValueInput) -> bool:
+        """
+        Redefines the move feature to be described by an axis and rotation angle.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        axisEntity : A linear entity that defines the axis of rotation. This can be a linear BRepEdge,
+        ConstructionAxis, or a SketchLine. The natural direction of the entity defines a
+        right-hand rule for the rotation direction.
+        angle : A ValueInput object that defines the rotation angle. If the ValueInput
+        is created using a real value, the angle is in radians. If it's defined using
+        a string, the default document units will be used.
+        Returns true if the redefinition is successful.
+        """
+        return bool()
+    def redefineAsPointToPoint(self, originPoint: core.Base, targetPoint: core.Base) -> bool:
+        """
+        Redefines the move feature to be a translation from one point to another.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        originPoint : The first point that defines the start position of the move.
+        targetPoint : The second point that defines the direction and distance of the move.
+        Returns true if the redefinition is successful.
+        """
+        return bool()
+    def redefineAsPointToPosition(self, point: core.Base, xDistance: core.ValueInput, yDistance: core.ValueInput, zDistance: core.ValueInput, isDesignSpace: bool) -> bool:
+        """
+        Redefines a move feature to be described by a point and an offset. The distances
+        define offsets in the X, Y, and Z directions in either design or component space. To
+        not move the input entities at all the offset distances should be set to the current
+        location of the point in either design or component space. Adding or subtracting to
+        those values will then move the entities that distance. It's best to experiment with
+        the command interactively to understand the behavior.
+        
+        To use this method, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        point : An entity that defines a point in space. This can be a sketch point, a construction point,
+        or a BRepVertex.
+        xDistance : A ValueInput object that defines the offset in the X direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        yDistance : A ValueInput object that defines the offset in the Y direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        zDistance : A ValueInput object that defines the offset in the Z direction. If the ValueInput
+        is created using a real value, the distance is in centimeters. If it's defined using
+        a string, the default document units will be used.
+        isDesignSpace : Defines if the translation is defined with respect to the design or component space.
+        Design space is the same as the root component space.
+        Returns true if the redefinition is successful.
+        """
+        return bool()
     @property
     def inputEntities(self) -> core.ObjectCollection:
         """
@@ -26782,9 +33346,37 @@ class MoveFeature(Feature):
         """
         pass
     @property
+    def nativeObject(self) -> MoveFeature:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of its parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return MoveFeature()
+    @property
+    def definition(self) -> MoveFeatureDefinition:
+        """
+        Returns the MoveFeatureDefinition object which provides access to the information
+        that specifies how this MoveFeature is defined.
+        """
+        return MoveFeatureDefinition()
+
+class MoveFeatureFreeMoveDefinition(MoveFeatureDefinition):
+    """
+    The MoveFeatureFreeMoveDefinition object defines a move feature described by a transformation matrix.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MoveFeatureFreeMoveDefinition:
+        return MoveFeatureFreeMoveDefinition()
+    @property
     def transform(self) -> core.Matrix3D:
         """
-        Gets and sets the move transform of the input bodies.
+        Gets and sets the transform that's applied to the face or body.
+        The matrix must be an orthogonal matrix; that is the axes are
+        perpendicular to each other and there isn't any scaling or mirroring defined.
         
         To set this property, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
@@ -26793,21 +33385,266 @@ class MoveFeature(Feature):
     @transform.setter
     def transform(self, value: core.Matrix3D):
         """
-        Gets and sets the move transform of the input bodies.
+        Gets and sets the transform that's applied to the face or body.
+        The matrix must be an orthogonal matrix; that is the axes are
+        perpendicular to each other and there isn't any scaling or mirroring defined.
+        
+        To set this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+
+class MoveFeaturePointToPointDefinition(MoveFeatureDefinition):
+    """
+    The MoveFeaturePointToPointDefinition object defines a move feature described by the
+    translation from one point to another.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MoveFeaturePointToPointDefinition:
+        return MoveFeaturePointToPointDefinition()
+    @property
+    def originPoint(self) -> core.Base:
+        """
+        Gets and sets the first point that defines the start position of the move.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return core.Base()
+    @originPoint.setter
+    def originPoint(self, value: core.Base):
+        """
+        Gets and sets the first point that defines the start position of the move.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def targetPoint(self) -> core.Base:
+        """
+        Gets and sets the second point that defines the direction and distance of the move.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return core.Base()
+    @targetPoint.setter
+    def targetPoint(self, value: core.Base):
+        """
+        Gets and sets the second point that defines the direction and distance of the move.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+
+class MoveFeaturePointToPositionDefinition(MoveFeatureDefinition):
+    """
+    The MoveFeaturePointToPositionDefinition object defines a move feature described
+    by a point and an offset. The distances define offsets in the X, Y, and Z directions
+    in either design or component space. To not move the input entities at all the offset
+    distances should be set to the current location of the point in either design or component
+    space. Adding or subtracting to those values will then move the entities that distance.
+    It's best to experiment with the command interactively to understand the behavior.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MoveFeaturePointToPositionDefinition:
+        return MoveFeaturePointToPositionDefinition()
+    @property
+    def point(self) -> core.Base:
+        """
+        Gets and sets the entity that defines a point in space. This can be a sketch point,
+        a construction point, or a BRepVertex.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return core.Base()
+    @point.setter
+    def point(self, value: core.Base):
+        """
+        Gets and sets the entity that defines a point in space. This can be a sketch point,
+        a construction point, or a BRepVertex.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def xDistance(self) -> ModelParameter:
+        """
+        Gets the model parameter that controls the offset in the X direction. You can use properties
+        """
+        return ModelParameter()
+    @property
+    def yDistance(self) -> ModelParameter:
+        """
+        Gets the model parameter that controls the offset in the Y direction. You can use properties
+        """
+        return ModelParameter()
+    @property
+    def zDistance(self) -> ModelParameter:
+        """
+        Gets the model parameter that controls the offset in the Z direction. You can use properties
+        """
+        return ModelParameter()
+    @property
+    def isDesignSpace(self) -> bool:
+        """
+        Gets and sets if the translation is defined with respect to the design or component space.
+        Design space is the same as the root component space.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return bool()
+    @isDesignSpace.setter
+    def isDesignSpace(self, value: bool):
+        """
+        Gets and sets if the translation is defined with respect to the design or component space.
+        Design space is the same as the root component space.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+
+class MoveFeatureRotateDefinition(MoveFeatureDefinition):
+    """
+    The MoveFeatureRotateDefinition object defines a move feature described by a rotation
+    around a specified entity.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MoveFeatureRotateDefinition:
+        return MoveFeatureRotateDefinition()
+    @property
+    def axisEntity(self) -> core.Base:
+        """
+        Gets and sets the linear entity that defines the axis of rotation. This can be a linear BRepEdge,
+        ConstructionAxis, or a SketchLine. The natural direction of the entity defines a
+        right-hand rule for the rotation direction.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return core.Base()
+    @axisEntity.setter
+    def axisEntity(self, value: core.Base):
+        """
+        Gets and sets the linear entity that defines the axis of rotation. This can be a linear BRepEdge,
+        ConstructionAxis, or a SketchLine. The natural direction of the entity defines a
+        right-hand rule for the rotation direction.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def angle(self) -> ModelParameter:
+        """
+        Gets the model parameter that controls the rotation angle. You can use properties
+        on the returned ModelParameter object to edit the offset distance.
+        """
+        return ModelParameter()
+
+class MoveFeatureTranslateAlongEntityDefinition(MoveFeatureDefinition):
+    """
+    The MoveFeatureTranslateAlongEntityDefinition object defines a move feature described by a
+    translation in the direction defined by a specified entity.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MoveFeatureTranslateAlongEntityDefinition:
+        return MoveFeatureTranslateAlongEntityDefinition()
+    @property
+    def linearEntity(self) -> core.Base:
+        """
+        Gets and sets the linear entity that defines the direction of the move. This can be a linear BRepEdge,
+        ConstructionAxis, or a SketchLine. The entity defines the direction, not the distance.
+        The natural direction of the entity defines the translation direction.
+        
+        To set this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return core.Base()
+    @linearEntity.setter
+    def linearEntity(self, value: core.Base):
+        """
+        Gets and sets the linear entity that defines the direction of the move. This can be a linear BRepEdge,
+        ConstructionAxis, or a SketchLine. The entity defines the direction, not the distance.
+        The natural direction of the entity defines the translation direction.
         
         To set this property, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
         """
         pass
     @property
-    def nativeObject(self) -> MoveFeature:
+    def distance(self) -> ModelParameter:
         """
-        The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
-        Returns null in the case where this object is not in the context of
-        an assembly but is already the native object.
+        Gets the model parameter that controls the offset distance. You can use properties
+        on the returned ModelParameter object to edit the offset distance.
         """
-        return MoveFeature()
+        return ModelParameter()
+
+class MoveFeatureTranslateXYZDefinition(MoveFeatureDefinition):
+    """
+    The MoveFeatureTranslateXYZDefinition object defines a move feature described by
+    offsets in the X, Y, and Z directions.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> MoveFeatureTranslateXYZDefinition:
+        return MoveFeatureTranslateXYZDefinition()
+    @property
+    def xDistance(self) -> ModelParameter:
+        """
+        Gets the model parameter that controls the X distance of the translation. You
+        can use properties on the returned ModelParameter object to edit the offset distance.
+        """
+        return ModelParameter()
+    @property
+    def yDistance(self) -> ModelParameter:
+        """
+        Gets the model parameter that controls the Y distance of the translation. You
+        can use properties on the returned ModelParameter object to edit the offset distance.
+        """
+        return ModelParameter()
+    @property
+    def zDistance(self) -> ModelParameter:
+        """
+        Gets the model parameter that controls the Z distance of the translation. You
+        can use properties on the returned ModelParameter object to edit the offset distance.
+        """
+        return ModelParameter()
+    @property
+    def isDesignSpace(self) -> bool:
+        """
+        Gets and sets if the translation is defined with respect to the design or component space.
+        Design space is the same as the root component space.
+        
+        To set this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return bool()
+    @isDesignSpace.setter
+    def isDesignSpace(self, value: bool):
+        """
+        Gets and sets if the translation is defined with respect to the design or component space.
+        Design space is the same as the root component space.
+        
+        To set this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
 
 class MultiLineTextDefinition(SketchTextDefinition):
     """
@@ -26818,7 +33655,7 @@ class MultiLineTextDefinition(SketchTextDefinition):
     @staticmethod
     def cast(arg) -> MultiLineTextDefinition:
         return MultiLineTextDefinition()
-    def rotate(self, angle: float, keyPoint: TextBoxKeyPoints) -> bool:
+    def rotate(self, angle: float, keyPoint: TextBoxKeyPoints = TextBoxKeyPoints.MiddleTextBoxKeyPoint) -> bool:
         """
         Rotates the text box.
         angle : The angle to rotate the text, specified in radians.
@@ -26827,14 +33664,14 @@ class MultiLineTextDefinition(SketchTextDefinition):
         """
         return bool()
     @property
-    def rectangleLines(self) -> SketchLineList:
+    def rectangleLines(self) -> list[SketchLine]:
         """
         Returns the four sketch lines that define the boundary of the sketch text. By adding constraints to these lines
         you can associatively control the size, position and angle of the sketch text. If the MultiLineTextDefinition
         object is obtained from a SketchTextInput object, this property will return null because the text and it's
         associated lines have not been created yet.
         """
-        return SketchLineList()
+        return [SketchLine()]
     @property
     def horizontalAlignment(self) -> core.HorizontalAlignments:
         """
@@ -26873,6 +33710,169 @@ class MultiLineTextDefinition(SketchTextDefinition):
         Gets and sets the spacing between the characters. This is an additional spacing to apply
         that is defined as a percentage of the default spacing. A spacing of 0 indicates no
         additional spacing. A spacing of 50 indicates to use the default plus 50% of the default.
+        """
+        pass
+
+class OBJExportOptions(ExportOptions):
+    """
+    Defines that an OBJ export is to be done and specifies the various options.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> OBJExportOptions:
+        return OBJExportOptions()
+    @property
+    def isOneFilePerBody(self) -> bool:
+        """
+        If the input is an Occurrence or the root Component, this specifies if a single file should be created containing
+        all of the bodies within that occurrence or component or if multiple files should be created; one for each body.
+        If multiple files are created, the body name is appended to the filename. The default is false.
+        """
+        return bool()
+    @isOneFilePerBody.setter
+    def isOneFilePerBody(self, value: bool):
+        """
+        If the input is an Occurrence or the root Component, this specifies if a single file should be created containing
+        all of the bodies within that occurrence or component or if multiple files should be created; one for each body.
+        If multiple files are created, the body name is appended to the filename. The default is false.
+        """
+        pass
+    @property
+    def meshRefinement(self) -> MeshRefinementSettings:
+        """
+        Gets and sets the current simple mesh refinement settings. Setting this property
+        will reset the surfaceDeviation, normalDeviation, maximumEdgeLength, and aspectRatio
+        to values that correspond to the specified mesh refinement. The default is MeshRefinementMedium.
+        """
+        return MeshRefinementSettings()
+    @meshRefinement.setter
+    def meshRefinement(self, value: MeshRefinementSettings):
+        """
+        Gets and sets the current simple mesh refinement settings. Setting this property
+        will reset the surfaceDeviation, normalDeviation, maximumEdgeLength, and aspectRatio
+        to values that correspond to the specified mesh refinement. The default is MeshRefinementMedium.
+        """
+        pass
+    @property
+    def surfaceDeviation(self) -> float:
+        """
+        Gets and sets the current surface deviation, or the distance the mesh can deviate
+        from the actual surface. This is defined in centimeter. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
+        associated with medium mesh refinement.
+        """
+        return float()
+    @surfaceDeviation.setter
+    def surfaceDeviation(self, value: float):
+        """
+        Gets and sets the current surface deviation, or the distance the mesh can deviate
+        from the actual surface. This is defined in centimeter. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
+        associated with medium mesh refinement.
+        """
+        pass
+    @property
+    def normalDeviation(self) -> float:
+        """
+        Gets and sets the current normal deviation, or the angle the mesh normals at the vertices can deviate
+        from the actual surface normals. This is defined in radians. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
+        associated with medium mesh refinement.
+        """
+        return float()
+    @normalDeviation.setter
+    def normalDeviation(self, value: float):
+        """
+        Gets and sets the current normal deviation, or the angle the mesh normals at the vertices can deviate
+        from the actual surface normals. This is defined in radians. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
+        associated with medium mesh refinement.
+        """
+        pass
+    @property
+    def maximumEdgeLength(self) -> float:
+        """
+        Gets and sets the maximum length of any mesh edge. This is defined in centimeter. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
+        associated with medium mesh refinement.
+        """
+        return float()
+    @maximumEdgeLength.setter
+    def maximumEdgeLength(self, value: float):
+        """
+        Gets and sets the maximum length of any mesh edge. This is defined in centimeter. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
+        associated with medium mesh refinement.
+        """
+        pass
+    @property
+    def aspectRatio(self) -> float:
+        """
+        Gets and sets the minimum aspect ratio for that triangles that are generated for the mesh. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
+        associated with medium mesh refinement.
+        """
+        return float()
+    @aspectRatio.setter
+    def aspectRatio(self, value: float):
+        """
+        Gets and sets the minimum aspect ratio for that triangles that are generated for the mesh. Setting this property
+        will automatically set the meshRefinement to MeshRefinementCustom. The default is the value
+        associated with medium mesh refinement.
+        """
+        pass
+    @property
+    def availablePrintUtilities(self) -> list[str]:
+        """
+        Returns a list of the known available print utilities. These strings can be used to set the PrintUtility
+        property to specify which print utility to open the OBJ file in.
+        """
+        return [str()]
+    @property
+    def printUtility(self) -> str:
+        """
+        Specifies which print utility to use when opening the OBJ file if the sendToPrintUtility property is true.
+        The value of this property can be one of the strings returned by the availalbePrintUtilities property, which
+        will specify one of the known print utilities. You can also specify a custom print utility by specifying
+        the full path to the print utility executable. The default value of this property is the last setting specified
+        in the user-interface.
+        """
+        return str()
+    @printUtility.setter
+    def printUtility(self, value: str):
+        """
+        Specifies which print utility to use when opening the OBJ file if the sendToPrintUtility property is true.
+        The value of this property can be one of the strings returned by the availalbePrintUtilities property, which
+        will specify one of the known print utilities. You can also specify a custom print utility by specifying
+        the full path to the print utility executable. The default value of this property is the last setting specified
+        in the user-interface.
+        """
+        pass
+    @property
+    def sendToPrintUtility(self) -> bool:
+        """
+        Gets and sets whether the created OBJ file will be sent to the print utility specified by the printUtility property. If this
+        is false a filename must be defined. The default is false.
+        """
+        return bool()
+    @sendToPrintUtility.setter
+    def sendToPrintUtility(self, value: bool):
+        """
+        Gets and sets whether the created OBJ file will be sent to the print utility specified by the printUtility property. If this
+        is false a filename must be defined. The default is false.
+        """
+        pass
+    @property
+    def unitType(self) -> DistanceUnits:
+        """
+        Gets and sets the units to use for the created OBJ file. The default is Centimeters.
+        """
+        return DistanceUnits()
+    @unitType.setter
+    def unitType(self, value: DistanceUnits):
+        """
+        Gets and sets the units to use for the created OBJ file. The default is Centimeters.
         """
         pass
 
@@ -26957,7 +33957,7 @@ class OffsetFeature(Feature):
     @staticmethod
     def cast(arg) -> OffsetFeature:
         return OffsetFeature()
-    def setInputEntities(self, entities: core.ObjectCollection, isChainSelection: bool) -> bool:
+    def setInputEntities(self, entities: core.ObjectCollection, isChainSelection: bool = True) -> bool:
         """
         Sets the faces and sheet bodies to offset.
         
@@ -27023,7 +34023,7 @@ class OffsetFeature(Feature):
     def nativeObject(self) -> OffsetFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -27097,47 +34097,6 @@ class OnEdgeHolePositionDefinition(HolePositionDefinition):
         """
         return HoleEdgePositions()
 
-class OneSideToExtentDefinition(ExtentDefinition):
-    """
-    Defines the inputs for a OneSideToExtentDefinition object.
-    This defines a feature extent that goes up to a face or construction plane in one direction.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> OneSideToExtentDefinition:
-        return OneSideToExtentDefinition()
-    @property
-    def toEntity(self) -> core.Base:
-        """
-        Gets and sets the entity that defines the extent. The valid types of entities can vary depending on
-        the type of feature this is being used with.
-        """
-        return core.Base()
-    @toEntity.setter
-    def toEntity(self, value: core.Base):
-        """
-        Gets and sets the entity that defines the extent. The valid types of entities can vary depending on
-        the type of feature this is being used with.
-        """
-        pass
-    @property
-    def matchShape(self) -> bool:
-        """
-        Specifies if the face should be extended or use adjacent faces if necessary to define the termination
-        of the extrusion.
-        When used for a revolve feature this is ignored and is always treated as true.
-        """
-        return bool()
-    @matchShape.setter
-    def matchShape(self, value: bool):
-        """
-        Specifies if the face should be extended or use adjacent faces if necessary to define the termination
-        of the extrusion.
-        When used for a revolve feature this is ignored and is always treated as true.
-        """
-        pass
-
 class ParallelConstraint(GeometricConstraint):
     """
     A parallel constraint in a sketch.
@@ -27180,7 +34139,7 @@ class ParallelConstraint(GeometricConstraint):
 
 class PatchFeature(Feature):
     """
-    Object that represents an existing patch feature in a design.
+    An object that represents an existing patch feature in a design.
     """
     def __init__(self):
         pass
@@ -27190,29 +34149,72 @@ class PatchFeature(Feature):
     def createForAssemblyContext(self, occurrence: Occurrence) -> PatchFeature:
         """
         Creates or returns a proxy for the native object
-        - i.e. a new object that represents this object but adds the assembly context
+        - i.e., a new object that represents this object but adds the assembly context
         defined by the input occurrence.
-        occurrence : The occurrence that defines the context to create the proxy in.
+        occurrence : The occurrence that defines the context to create the proxy.
         Returns the proxy object or null if this is not the NativeObject.
         """
         return PatchFeature()
+    def setContinuity(self, continuity: list[int], weight: list[float], isContinuityDirectionFlipped: list[bool]) -> bool:
+        """
+        Sets the continuity to use for each edge in the boundary. The arrays for the arguments correspond
+        to B-Rep edges in the boundary. You can use the getContinuity method to get the list of edges to
+        know their order. This order applies to the arrays provided for the arguments.
+        continuity : An array whose size of the number of B-Rep edges in the boundary. You can use the getContinuity
+        method to get the list of edges, so you know the number and order of the edges. The continuity array defines the
+        type of continuity to apply to the edge at the same index. The values are obtained from the SurfaceContinuityTypes
+        enum and passed in as an integer.
+        weight : An array whose size is the number of B-Rep edges in the boundary. You can use the getContinuity
+        method to get the list of edges, so you know the number and order of the edges. The weight array defines the
+        weight to apply to the edge at the same index. If the continuity of an edge is ConnectedSurfaceContinuityType,
+        the weight value is ignored.
+        isContinuityDirectionFlipped : An array whose size is the number of B-Rep edges in the boundary. You can use the getContinuity
+        method to get the list of edges, so you know the number and order of the edges. The isContinuityDirectionFlipped
+        array defines which of the two faces the edge connects to and is used in computing the continuity direction. If the
+        continuity is ConnectedSurfaceContinuityType, or the edge is an open edge and only connected to a single face,
+        the value is ignored.
+        
+        If false, the face associated with the first co-edge returned by the edge is used.
+        Returns true if successful.
+        """
+        return bool()
+    def getContinuity(self) -> tuple[bool, list[BRepEdge], list[int], list[float], list[bool]]:
+        """
+        Gets the continuity used for each edge in the boundary.
+        
+        To call this method, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        edges : Output array containing all of the BRepEdge objects in the boundary.
+        continuity : Output array the same size as the edges array that defines the continuity
+        to apply to the edge in the same index in the edges array. The values are obtained
+        from the SurfaceContinuityTypes enum and passed in as an integers.
+        weight : Output array the same size as the edges array that defines the weight applied
+        to the edge in the same index in the edges array. If the continuity
+        of an edge is ConnectedSurfaceContinuityType, the weight value should be ignored.
+        isContinuityDirectionFlipped : Output array the same size as the edges array that defines which of the two faces the
+        edge connects to is used in computing the continuity direction. If the continuity is
+        ConnectedSurfaceContinuityType or the edge is an open edge and only connected to a
+        single face, the value should be ignored.
+        
+        If false, the face associated with the first co-edge returned by the edge is used.
+        Returns true if successful.
+        """
+        return (bool(), [BRepEdge()], [int()], [float()], [bool()])
     @property
     def boundaryCurve(self) -> core.Base:
         """
         Returns an ObjectCollection that contains all of the sketch curves or B-Rep edges
-        that define the closed outer boundary of the patch feature.
+        that defines the closed outer boundary of the patch feature.
         
         When setting this property, the input can be a sketch profile, a single sketch curve, a single B-Rep edge,
-        or an ObjectCollection of sketch curves or B-Rep edges.
+        or an ObjectCollection of sketch curves and B-Rep edges.
         
-        If a single sketch curve or B-Rep edge is input, that is not closed, Fusion 360 will automatically find connected sketch curves
-        or B-Rep edges in order to define a closed loop. All sketch curves are valid as input. BRepEdges are valid if they are
-        an "open" edge, which means they are only used by one face.
+        If a single open sketch curve or B-Rep edge is input, Fusion 360 will automatically find connected sketch curves
+        or B-Rep edges to define a closed loop.
         
-        If an ObjectCollection of sketch curves or B-Rep edges is input they must define a closed shape and the B-Rep
-        edges must be valid "open" edges.
+        If an ObjectCollection of sketch curves or B-Rep edges is input, they must define a closed shape.
         
-        To use this property, you need to position the timeline marker to immediately before this feature.
+        To get or set this property, you need to position the timeline marker immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
         """
         return core.Base()
@@ -27220,19 +34222,17 @@ class PatchFeature(Feature):
     def boundaryCurve(self, value: core.Base):
         """
         Returns an ObjectCollection that contains all of the sketch curves or B-Rep edges
-        that define the closed outer boundary of the patch feature.
+        that defines the closed outer boundary of the patch feature.
         
         When setting this property, the input can be a sketch profile, a single sketch curve, a single B-Rep edge,
-        or an ObjectCollection of sketch curves or B-Rep edges.
+        or an ObjectCollection of sketch curves and B-Rep edges.
         
-        If a single sketch curve or B-Rep edge is input, that is not closed, Fusion 360 will automatically find connected sketch curves
-        or B-Rep edges in order to define a closed loop. All sketch curves are valid as input. BRepEdges are valid if they are
-        an "open" edge, which means they are only used by one face.
+        If a single open sketch curve or B-Rep edge is input, Fusion 360 will automatically find connected sketch curves
+        or B-Rep edges to define a closed loop.
         
-        If an ObjectCollection of sketch curves or B-Rep edges is input they must define a closed shape and the B-Rep
-        edges must be valid "open" edges.
+        If an ObjectCollection of sketch curves or B-Rep edges is input, they must define a closed shape.
         
-        To use this property, you need to position the timeline marker to immediately before this feature.
+        To get or set this property, you need to position the timeline marker immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
         """
         pass
@@ -27243,34 +34243,148 @@ class PatchFeature(Feature):
         """
         return FeatureOperations()
     @property
-    def continuity(self) -> SurfaceContinuityTypes:
-        """
-        Gets and sets the type of surface continuity used when creating the patch face. This is only used when BRepEdges are input and
-        defines the continuity of how the patch face connects to the face adjacent to each of the input edges.
-        
-        To set this property, you need to position the timeline marker to immediately before this feature.
-        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
-        """
-        return SurfaceContinuityTypes()
-    @continuity.setter
-    def continuity(self, value: SurfaceContinuityTypes):
-        """
-        Gets and sets the type of surface continuity used when creating the patch face. This is only used when BRepEdges are input and
-        defines the continuity of how the patch face connects to the face adjacent to each of the input edges.
-        
-        To set this property, you need to position the timeline marker to immediately before this feature.
-        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
-        """
-        pass
-    @property
     def nativeObject(self) -> PatchFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
         return PatchFeature()
+    @property
+    def interiorRailsAndPoints(self) -> core.ObjectCollection:
+        """
+        Gets and sets any interior curves or points the patch should fit
+        through. Valid entities include object collections of connected curves, paths, sketch curves,
+        sketch points, B-Rep edges, and construction points.
+        
+        When getting this property, the returned ObjectCollection can contain individual edges, sketch curves,
+        sketch points, construction points, vertices, and ObjectCollection objects that represent a group
+        of the curves and points listed above.
+        
+        Can be set to null to remove any interior rails and points from the patch.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return core.ObjectCollection()
+    @interiorRailsAndPoints.setter
+    def interiorRailsAndPoints(self, value: core.ObjectCollection):
+        """
+        Gets and sets any interior curves or points the patch should fit
+        through. Valid entities include object collections of connected curves, paths, sketch curves,
+        sketch points, B-Rep edges, and construction points.
+        
+        When getting this property, the returned ObjectCollection can contain individual edges, sketch curves,
+        sketch points, construction points, vertices, and ObjectCollection objects that represent a group
+        of the curves and points listed above.
+        
+        Can be set to null to remove any interior rails and points from the patch.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def isGroupEdges(self) -> bool:
+        """
+        Gets and sets if the edges in the boundary curve are treated as a group
+        , and they all use the same continuity. If this property is True (which is the default),
+        the continuity for all edges is controlled by the continuity property. If
+        this property is false; the continuity is set for each edge using the
+        setContinuity method.
+        
+        When this property is set to true, the continuity and weight of the first edge
+        will be used for all edges. When set to false, each edge will initially have
+        the same continuity and weight. This property is typically set to false by calling the
+        setContinuity method, which has the side effect of changing this to false.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return bool()
+    @isGroupEdges.setter
+    def isGroupEdges(self, value: bool):
+        """
+        Gets and sets if the edges in the boundary curve are treated as a group
+        , and they all use the same continuity. If this property is True (which is the default),
+        the continuity for all edges is controlled by the continuity property. If
+        this property is false; the continuity is set for each edge using the
+        setContinuity method.
+        
+        When this property is set to true, the continuity and weight of the first edge
+        will be used for all edges. When set to false, each edge will initially have
+        the same continuity and weight. This property is typically set to false by calling the
+        setContinuity method, which has the side effect of changing this to false.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def groupContinuity(self) -> SurfaceContinuityTypes:
+        """
+        Gets and sets the type of surface continuity to use for all edges when the isGroupEdges property is true.
+        The continuity is used to determine how the patch connects to any B-Rep edges in the boundary. It is
+        ignored for any sketch curves in the boundary. The property defaults to ConnectedSurfaceContinuityType.
+        The value of this property is ignored if the isGroupEdges property is false.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return SurfaceContinuityTypes()
+    @groupContinuity.setter
+    def groupContinuity(self, value: SurfaceContinuityTypes):
+        """
+        Gets and sets the type of surface continuity to use for all edges when the isGroupEdges property is true.
+        The continuity is used to determine how the patch connects to any B-Rep edges in the boundary. It is
+        ignored for any sketch curves in the boundary. The property defaults to ConnectedSurfaceContinuityType.
+        The value of this property is ignored if the isGroupEdges property is false.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def groupWeight(self) -> float:
+        """
+        Gets and sets the weight to use for all edges when the isGroupEdges property is true. It is ignored for any sketch curves
+        in the boundary. The property defaults to 0.5. The value of this property is ignored if the isGroupEdges property is false.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return float()
+    @groupWeight.setter
+    def groupWeight(self, value: float):
+        """
+        Gets and sets the weight to use for all edges when the isGroupEdges property is true. It is ignored for any sketch curves
+        in the boundary. The property defaults to 0.5. The value of this property is ignored if the isGroupEdges property is false.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def groupIsContinuityDirectionFlipped(self) -> bool:
+        """
+        Gets and sets the continuity direction for all edges when the isGroupEdges property is true. It is ignored for any sketch curves
+        in the boundary. The property defaults to false. The value of this property is ignored if the isGroupEdges property is false.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return bool()
+    @groupIsContinuityDirectionFlipped.setter
+    def groupIsContinuityDirectionFlipped(self, value: bool):
+        """
+        Gets and sets the continuity direction for all edges when the isGroupEdges property is true. It is ignored for any sketch curves
+        in the boundary. The property defaults to false. The value of this property is ignored if the isGroupEdges property is false.
+        
+        To get or set this property, you need to position the timeline marker immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
 
 class PathPatternFeature(Feature):
     """
@@ -27475,7 +34589,7 @@ class PathPatternFeature(Feature):
     def nativeObject(self) -> PathPatternFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -27547,6 +34661,46 @@ class PerpendicularConstraint(GeometricConstraint):
         an assembly but is already the native object.
         """
         return PerpendicularConstraint()
+
+class PerpendicularToSurfaceConstraint(GeometricConstraint):
+    """
+    A sketch constraint defining that a curve is perpendicular to a face or construction plane. Line and spline curves are supported.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> PerpendicularToSurfaceConstraint:
+        return PerpendicularToSurfaceConstraint()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> PerpendicularToSurfaceConstraint:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return PerpendicularToSurfaceConstraint()
+    @property
+    def curve(self) -> SketchCurve:
+        """
+        Returns the SketchCurve object that is constrained.
+        """
+        return SketchCurve()
+    @property
+    def surface(self) -> core.Base:
+        """
+        Returns the BRepFace or ConstructionPlane the line is constrained to be perpendicular to.
+        """
+        return core.Base()
+    @property
+    def nativeObject(self) -> PerpendicularToSurfaceConstraint:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return PerpendicularToSurfaceConstraint()
 
 class PinSlotJointMotion(JointMotion):
     """
@@ -27725,6 +34879,179 @@ class PipeFeature(Feature):
     @staticmethod
     def cast(arg) -> PipeFeature:
         return PipeFeature()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> PipeFeature:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return PipeFeature()
+    def setThickness(self, value: core.ValueInput) -> bool:
+        """
+        Defines the section thickness of the Pipe.
+        
+        In case the pipe is not already hollow, this also sets the isHollow to true.
+        """
+        return bool()
+    @property
+    def nativeObject(self) -> PipeFeature:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of its parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return PipeFeature()
+    @property
+    def operation(self) -> FeatureOperations:
+        """
+        Gets and sets the type of operation performed by the Pipe.
+        """
+        return FeatureOperations()
+    @operation.setter
+    def operation(self, value: FeatureOperations):
+        """
+        Gets and sets the type of operation performed by the Pipe.
+        """
+        pass
+    @property
+    def path(self) -> Path:
+        """
+        Gets and sets the path to create the Pipe.
+        This property returns null in the case where the feature is non-parametric.
+        The path can be either closed (you can reach again the starting point by following the curves) or open (the starting point and end point are different in the path).
+        
+        The starting point of the Pipe will be the starting point of the first curve in the Path, regardless of it being open or closed.
+        When the desired Pipe has a section that includes the starting point and the path is closed, the curves should be shifted in a circular pattern.
+        
+        To set this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return Path()
+    @path.setter
+    def path(self, value: Path):
+        """
+        Gets and sets the path to create the Pipe.
+        This property returns null in the case where the feature is non-parametric.
+        The path can be either closed (you can reach again the starting point by following the curves) or open (the starting point and end point are different in the path).
+        
+        The starting point of the Pipe will be the starting point of the first curve in the Path, regardless of it being open or closed.
+        When the desired Pipe has a section that includes the starting point and the path is closed, the curves should be shifted in a circular pattern.
+        
+        To set this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
+    @property
+    def distanceOne(self) -> ModelParameter:
+        """
+        Gets the distance for the pipe created while following the path given as input, in the same order.
+        
+        If the path is open, this value returns the length of Pipe relative to the length of the path.
+        If the path is closed, this value returns the length of the Pipe from the start point going along the curves.
+        Ex: Path is made of curves A-B-C-A. The distanceOne returns the length of the pipe going from A-B-C-A.
+        
+        This property returns null in the case where the feature is non-parametric.
+        """
+        return ModelParameter()
+    @property
+    def distanceTwo(self) -> ModelParameter:
+        """
+        Gets the distance for the pipe created while following the reversed path given as input.
+        
+        If the path is open, getting this value returns null, and setting the value is ignored.
+        If the path is closed, this value returns the length of the Pipe from the start point going in the reverse order of the path.
+        Ex: Path is made of curves A-B-C-A. The distanceTwo returns the length of the pipe going from A-C-B-A.
+        
+        This property returns null in the case where the feature is non-parametric.
+        """
+        return ModelParameter()
+    @property
+    def sectionType(self) -> PipeSectionTypes:
+        """
+        Gets and sets the section type of the Pipe.
+        The type can be: Circular, Square, Triangular.
+        """
+        return PipeSectionTypes()
+    @sectionType.setter
+    def sectionType(self, value: PipeSectionTypes):
+        """
+        Gets and sets the section type of the Pipe.
+        The type can be: Circular, Square, Triangular.
+        """
+        pass
+    @property
+    def sectionSize(self) -> ModelParameter:
+        """
+        Gets and sets the section size of the Pipe.
+        """
+        return ModelParameter()
+    @property
+    def isHollow(self) -> bool:
+        """
+        Specifies if the Pipe is hollow or not.
+        
+        Setting this to true will default the sectionThickness to 0.1 cm.
+        """
+        return bool()
+    @isHollow.setter
+    def isHollow(self, value: bool):
+        """
+        Specifies if the Pipe is hollow or not.
+        
+        Setting this to true will default the sectionThickness to 0.1 cm.
+        """
+        pass
+    @property
+    def sectionThickness(self) -> ModelParameter:
+        """
+        Gets the section thickness of the Pipe.
+        
+        If the pipe is not hollow, this will return null.
+        """
+        return ModelParameter()
+    @property
+    def startFaces(self) -> BRepFaces:
+        """
+        Property that returns the set of faces that cap one end of the Pipe that are coincident with the sketch plane.
+        In the cases where there aren't any start faces this property will return null.
+        """
+        return BRepFaces()
+    @property
+    def endFaces(self) -> BRepFaces:
+        """
+        Property that returns the set of faces that cap one end of the Pipe that are coincident with the sketch plane.
+        The end faces are those not coincident to the sketch plane of the feature's profile.
+        In the case of a symmetric Pipe these faces are the ones on the negative normal side of the sketch plane.
+        In the cases where there aren't any end faces this property will return null.
+        """
+        return BRepFaces()
+    @property
+    def sideFaces(self) -> BRepFaces:
+        """
+        Property that returns a object that provides access to all of the faces created around the perimeter of the feature.
+        """
+        return BRepFaces()
+    @property
+    def participantBodies(self) -> list[BRepBody]:
+        """
+        Gets and sets the list of bodies that will participate in the feature when the operation is a cut or intersection.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        return [BRepBody()]
+    @participantBodies.setter
+    def participantBodies(self, value: list[BRepBody]):
+        """
+        Gets and sets the list of bodies that will participate in the feature when the operation is a cut or intersection.
+        
+        To use this property, you need to position the timeline marker to immediately before this feature.
+        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
+        """
+        pass
 
 class PlanarJointMotion(JointMotion):
     """
@@ -28028,6 +35355,206 @@ class RectangularPatternConstraint(GeometricConstraint):
     @staticmethod
     def cast(arg) -> RectangularPatternConstraint:
         return RectangularPatternConstraint()
+    def setDirectionOne(self, directionOneEntity: SketchLine, quantityOne: core.ValueInput, distanceOne: core.ValueInput) -> bool:
+        """
+        Sets all of the input required to define the pattern in the first direction.
+        directionOneEntity : Specifies the SketchLine object used to define the first direction entity.
+        
+        This argument can be null to indicate that the default first direction is to be used,
+        which is along the X axis of the sketch.
+        quantityOne : Specifies the number of instances in the first direction.
+        distanceOne : Specifies the distance in the first direction. How this value is used depends on the value
+        of the PatternDistanceType property. If the value is ExtentPatternDistanceType then it defines
+        the total distance of the pattern. If the value is SpacingPatternDistanceType then it defines
+        the distance between each element.
+        Returns true if it was successful.
+        """
+        return bool()
+    def setDirectionTwo(self, directionTwoEntity: SketchLine, quantityTwo: core.ValueInput, distanceTwo: core.ValueInput) -> bool:
+        """
+        Sets all of the input required to define the pattern in the second direction.
+        directionTwoEntity : Specifies the SketchLine object used to define the second direction entity.
+        
+        This argument can be null to indicate that the default second direction is to be used, which is 90
+        degrees to the first direction.
+        quantityTwo : Specifies the number of instances in the second direction.
+        distanceTwo : Specifies the distance in the second direction. How this value is used depends on the value of
+        the PatternDistanceType property. If the value is ExtentPatternDistanceType then it defines the
+        total distance of the pattern. If the value is SpacingPatternDistanceType then it defines the
+        distance between each element.
+        Returns true if it was successful.
+        """
+        return bool()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> RectangularPatternConstraint:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return RectangularPatternConstraint()
+    @property
+    def entities(self) -> list[SketchEntity]:
+        """
+        Gets and sets the entities that are patterned. Sketch points and curves are valid
+        entities to pattern.
+        """
+        return [SketchEntity()]
+    @entities.setter
+    def entities(self, value: list[SketchEntity]):
+        """
+        Gets and sets the entities that are patterned. Sketch points and curves are valid
+        entities to pattern.
+        """
+        pass
+    @property
+    def createdEntities(self) -> list[SketchEntity]:
+        """
+        Returns an array that contains all of the sketch entities that were created as a result
+        of the pattern. This does not contain the original entities that were used as input to
+        the pattern. The input entities can be obtained by using the entities property.
+        """
+        return [SketchEntity()]
+    @property
+    def directionOneEntity(self) -> SketchLine:
+        """
+        Gets and sets the entity that defined the first direction of the pattern. This can
+        be null which indicates to use the default which is the X-axis of the sketch. Setting
+        this property to null will automatically clear directionTwoEntity, if it has been set.
+        """
+        return SketchLine()
+    @directionOneEntity.setter
+    def directionOneEntity(self, value: SketchLine):
+        """
+        Gets and sets the entity that defined the first direction of the pattern. This can
+        be null which indicates to use the default which is the X-axis of the sketch. Setting
+        this property to null will automatically clear directionTwoEntity, if it has been set.
+        """
+        pass
+    @property
+    def directionTwoEntity(self) -> SketchLine:
+        """
+        Gets and sets the entity that defines the second direction of the pattern. This can
+        be null which indicates to use the default direction, which is perpendicular to direction
+        one. The directionOneEntity property must be set before setting this property.
+        """
+        return SketchLine()
+    @directionTwoEntity.setter
+    def directionTwoEntity(self, value: SketchLine):
+        """
+        Gets and sets the entity that defines the second direction of the pattern. This can
+        be null which indicates to use the default direction, which is perpendicular to direction
+        one. The directionOneEntity property must be set before setting this property.
+        """
+        pass
+    @property
+    def quantityOne(self) -> ModelParameter:
+        """
+        Returns the parameter that controls the number of instances in the first direction. To change
+        the value, use the properties on the returned ModelParameter.
+        """
+        return ModelParameter()
+    @property
+    def quantityTwo(self) -> ModelParameter:
+        """
+        Returns the parameter that controls the number of instances in the second direction. To change
+        the value, use the properties on the returned ModelParameter object.
+        """
+        return ModelParameter()
+    @property
+    def distanceOne(self) -> ModelParameter:
+        """
+        Returns the parameter that controls the distance in first direction. To change the
+        value, use the properties on the returned ModelParameter object.
+        """
+        return ModelParameter()
+    @property
+    def distanceTwo(self) -> ModelParameter:
+        """
+        Returns the parameter that controls the distance in second direction. To change the
+        value, use the properties on the returned ModelParameter object.
+        """
+        return ModelParameter()
+    @property
+    def isSymmetricInDirectionOne(self) -> bool:
+        """
+        Gets and sets if the pattern in direction one is in one direction or is symmetric.
+        """
+        return bool()
+    @isSymmetricInDirectionOne.setter
+    def isSymmetricInDirectionOne(self, value: bool):
+        """
+        Gets and sets if the pattern in direction one is in one direction or is symmetric.
+        """
+        pass
+    @property
+    def isSymmetricInDirectionTwo(self) -> bool:
+        """
+        Gets and sets if the pattern in direction two is in one direction or is symmetric.
+        """
+        return bool()
+    @isSymmetricInDirectionTwo.setter
+    def isSymmetricInDirectionTwo(self, value: bool):
+        """
+        Gets and sets if the pattern in direction two is in one direction or is symmetric.
+        """
+        pass
+    @property
+    def distanceType(self) -> PatternDistanceType:
+        """
+        Gets and sets how the distance between elements is computed.
+        """
+        return PatternDistanceType()
+    @distanceType.setter
+    def distanceType(self, value: PatternDistanceType):
+        """
+        Gets and sets how the distance between elements is computed.
+        """
+        pass
+    @property
+    def isSuppressed(self) -> list[bool]:
+        """
+        Specifies which, if any, instances of the pattern are suppressed. This returns an
+        array of Boolean values that indicates if a particular instance in the pattern is
+        suppressed or not. A value of true will result in the associated instance being suppressed.
+        
+        The indices represent the pattern instances in a row-column order, with the
+        initial geometry not counting. For example, if you have a 4x4 pattern, the
+        array will have 15 elements rather than 16 because the original geometry
+        cannot be suppressed as part of the pattern. The first element in the array
+        is the one next to the original in the first direction. The second element is
+        the next one on the first row, and the third is the next one. The fourth element
+        will be the first element in the row next to the first row that contains the
+        original geometry.
+        """
+        return [bool()]
+    @isSuppressed.setter
+    def isSuppressed(self, value: list[bool]):
+        """
+        Specifies which, if any, instances of the pattern are suppressed. This returns an
+        array of Boolean values that indicates if a particular instance in the pattern is
+        suppressed or not. A value of true will result in the associated instance being suppressed.
+        
+        The indices represent the pattern instances in a row-column order, with the
+        initial geometry not counting. For example, if you have a 4x4 pattern, the
+        array will have 15 elements rather than 16 because the original geometry
+        cannot be suppressed as part of the pattern. The first element in the array
+        is the one next to the original in the first direction. The second element is
+        the next one on the first row, and the third is the next one. The fourth element
+        will be the first element in the row next to the first row that contains the
+        original geometry.
+        """
+        pass
+    @property
+    def nativeObject(self) -> RectangularPatternConstraint:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return RectangularPatternConstraint()
 
 class RectangularPatternFeature(Feature):
     """
@@ -28252,7 +35779,7 @@ class RectangularPatternFeature(Feature):
     def nativeObject(self) -> RectangularPatternFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -28326,11 +35853,54 @@ class RemoveFeature(Feature):
     def nativeObject(self) -> RemoveFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
         return RemoveFeature()
+
+class RenderEvent(core.Event):
+    """
+    A RenderEvent represents an event that occurs in reaction to the
+    rendering process in the Render workspace.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RenderEvent:
+        return RenderEvent()
+    def add(self, handler: RenderEventHandler) -> bool:
+        """
+        Add a handler to be notified when the event occurs.
+        handler : The handler object to be called when this event is fired.
+        Returns true if the addition of the handler was successful.
+        """
+        return bool()
+    def remove(self, handler: RenderEventHandler) -> bool:
+        """
+        Removes a handler from the event.
+        handler : The handler object to be removed from the event.
+        Returns true if removal of the handler was successful.
+        """
+        return bool()
+
+class RenderEventArgs(core.EventArgs):
+    """
+    The RenderEventArgs provides information associated with the render process.
+    Render events happen when there's a change in state of the rendering process.
+    The most typical is when the rendering process has reached a predefined quality.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RenderEventArgs:
+        return RenderEventArgs()
+    @property
+    def viewport(self) -> core.Viewport:
+        """
+        Returns the viewport that the rendering was performed in when the render is an in-canvas rendering.
+        """
+        return core.Viewport()
 
 class ReplaceFaceFeature(Feature):
     """
@@ -28394,7 +35964,7 @@ class ReplaceFaceFeature(Feature):
     def nativeObject(self) -> ReplaceFaceFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -28442,7 +36012,7 @@ class ReverseNormalFeature(Feature):
     def nativeObject(self) -> ReverseNormalFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -28579,7 +36149,7 @@ class RevolveFeature(Feature):
         Returns true if successful
         """
         return bool()
-    def setOneSideToExtent(self, toEntity: core.Base, directionHint: core.Vector3D) -> bool:
+    def setOneSideToExtent(self, toEntity: core.Base, directionHint: core.Vector3D = None) -> bool:
         """
         Changes the extent of the revolve to be from the sketch plane to the specified "to" face.
         
@@ -28727,7 +36297,7 @@ class RevolveFeature(Feature):
     def nativeObject(self) -> RevolveFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -28756,6 +36326,24 @@ class RevolveFeature(Feature):
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
         """
         pass
+    @property
+    def isProjectAxis(self) -> bool:
+        """
+        Specifies if the axis should be projected on the same plane as the profile sketch plane or not.
+        
+        Setting this to true will use a projected axis, while setting it to false will keep it in its original location.
+        This is initialized to false so the selected axis will be used in the feature.
+        """
+        return bool()
+    @isProjectAxis.setter
+    def isProjectAxis(self, value: bool):
+        """
+        Specifies if the axis should be projected on the same plane as the profile sketch plane or not.
+        
+        Setting this to true will use a projected axis, while setting it to false will keep it in its original location.
+        This is initialized to false so the selected axis will be used in the feature.
+        """
+        pass
 
 class RibFeature(Feature):
     """
@@ -28778,6 +36366,80 @@ class RigidJointMotion(JointMotion):
     @staticmethod
     def cast(arg) -> RigidJointMotion:
         return RigidJointMotion()
+
+class RipFeature(Feature):
+    """
+    Object that represents an existing Rip feature in a design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> RipFeature:
+        return RipFeature()
+    def setByFace(self, face: BRepFace) -> bool:
+        """
+        This input method is for creating a rip from a face.
+        face : The sheet metal face that defines the rip.
+        Returns true if the rip definition is successful.
+        """
+        return bool()
+    def redefineToAlongEdge(self, edge: BRepEdge, gapDistance: core.ValueInput) -> bool:
+        """
+        Redefines the feature to be a rip along an edge.
+        edge : The BRepEdge that defines the rip.
+        gapDistance : The gap distance of the rip.
+        Returns true if the rip definition is successful.
+        """
+        return bool()
+    def redefineToBetweenPoints(self, pointOneEntity: core.Base, pointTwoEntity: core.Base, gapDistance: core.ValueInput, pointOneOffset: core.ValueInput = None, pointTwoOffset: core.ValueInput = None) -> bool:
+        """
+        Redefines the feature to be a rip between two points.
+        pointOneEntity : The first point of the rip. This can be defined using a BrepVertex or a BRepEdge and offset to define
+        where the point is along the edge. If an edge is specified, the pointOneOffset parameter must be specified.
+        pointTwoEntity : The second point of the rip and must lie on the same face as point 1. This can be defined using a
+        BrepVertex or a BRepEdge and an offset to define where the point is along the edge.
+        If an edge is specified, the pointTwoOffset parameter must be specified.
+        gapDistance : The gap distance of the rip.
+        pointOneOffset : If the first point lies on an edge, then this is the offset along the edge which defines the point.
+        This is the physical distance from the topological start of the edge.
+        If the offset is negative or exceeds the edge length, the corresponding vertex of the edge will be used.
+        pointTwoOffset : If the second point lies on an edge, then this is the offset along the edge which defines the point.
+        This is the physical distance from the topological start of the edge.
+        If the offset is negative or exceeds the edge length, the corresponding vertex of the edge will be used.
+        Returns true if the rip definition is successful.
+        """
+        return bool()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> RipFeature:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this is not the NativeObject.
+        """
+        return RipFeature()
+    @property
+    def definitionType(self) -> RipFeatureDefinitionTypes:
+        """
+        Gets the type of rip defined.
+        """
+        return RipFeatureDefinitionTypes()
+    @property
+    def definition(self) -> RipFeatureDefinition:
+        """
+        Returns the RipFeatureDefinition object which provides access to the information
+        defining this RipFeature and the ability to edit it.
+        """
+        return RipFeatureDefinition()
+    @property
+    def nativeObject(self) -> RipFeature:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return RipFeature()
 
 class RuledSurfaceFeature(Feature):
     """
@@ -28899,7 +36561,7 @@ class RuledSurfaceFeature(Feature):
     def nativeObject(self) -> RuledSurfaceFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -29066,11 +36728,96 @@ class ScaleFeature(Feature):
     def nativeObject(self) -> ScaleFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
         return ScaleFeature()
+
+class SectionAnalysis(Analysis):
+    """
+    Represents any existing Section Analysis that exist in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SectionAnalysis:
+        return SectionAnalysis()
+    def flip(self) -> bool:
+        """
+        A property that flips which side of the part is cut away by the section. This is a
+        convenience method that results in flipping the Z axis of the transform while maintaining
+        a valid rectangular coordinate system. You can directly manipulate the transform matrix
+        to have the same effect.
+        """
+        return bool()
+    @property
+    def cutPlane(self) -> core.Base:
+        """
+        A property that gets and sets the planar entity used to define the cut plane and can be either
+        a planar BRepFace or a ConstructionPlane object.
+        """
+        return core.Base()
+    @cutPlane.setter
+    def cutPlane(self, value: core.Base):
+        """
+        A property that gets and sets the planar entity used to define the cut plane and can be either
+        a planar BRepFace or a ConstructionPlane object.
+        """
+        pass
+    @property
+    def initialPosition(self) -> core.Matrix3D:
+        """
+        Returns the matrix that describes the initial position and orientation of the
+        specified cut plane entity. Any additional offsets or rotations are defined
+        by a transformation matrix that is applied to this initial position. That
+        matrix can be obtained and set using the transform property.
+        """
+        return core.Matrix3D()
+    @property
+    def transform(self) -> core.Matrix3D:
+        """
+        The initial position of the section plane is defined by the specified cut plane
+        entity. Any offsets or rotations are defined by a transformation matrix that is
+        applied to the initial position. This property allows you to get and set the
+        transformation matrix.
+        """
+        return core.Matrix3D()
+    @transform.setter
+    def transform(self, value: core.Matrix3D):
+        """
+        The initial position of the section plane is defined by the specified cut plane
+        entity. Any offsets or rotations are defined by a transformation matrix that is
+        applied to the initial position. This property allows you to get and set the
+        transformation matrix.
+        """
+        pass
+    @property
+    def sectionColor(self) -> core.Color:
+        """
+        A property that gets and sets the color of the section. A value of null indicates
+        the component color should be used. The opacity value of the color is ignored.
+        """
+        return core.Color()
+    @sectionColor.setter
+    def sectionColor(self, value: core.Color):
+        """
+        A property that gets and sets the color of the section. A value of null indicates
+        the component color should be used. The opacity value of the color is ignored.
+        """
+        pass
+    @property
+    def isHatchShown(self) -> bool:
+        """
+        A property that gets and sets if a hatch pattern should be shown on the section.
+        """
+        return bool()
+    @isHatchShown.setter
+    def isHatchShown(self, value: bool):
+        """
+        A property that gets and sets if a hatch pattern should be shown on the section.
+        """
+        pass
 
 class ShellFeature(Feature):
     """
@@ -29081,7 +36828,7 @@ class ShellFeature(Feature):
     @staticmethod
     def cast(arg) -> ShellFeature:
         return ShellFeature()
-    def setInputEntities(self, inputEntities: core.ObjectCollection, isTangentChain: bool) -> bool:
+    def setInputEntities(self, inputEntities: core.ObjectCollection, isTangentChain: bool = True) -> bool:
         """
         Method that sets faces to remove and bodies to preform shell. Return false if any faces are input, and the owning bodies of the faces are also input.
         
@@ -29147,7 +36894,7 @@ class ShellFeature(Feature):
     def nativeObject(self) -> ShellFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -29219,7 +36966,7 @@ class SilhouetteSplitFeature(Feature):
     def nativeObject(self) -> SilhouetteSplitFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -29314,7 +37061,7 @@ class SketchCurve(SketchEntity):
     @staticmethod
     def cast(arg) -> SketchCurve:
         return SketchCurve()
-    def split(self, splitPoint: core.Point3D, createConstraints: bool) -> core.ObjectCollection:
+    def split(self, splitPoint: core.Point3D, createConstraints: bool = True) -> core.ObjectCollection:
         """
         Split a curve at a position specified along the curve
         splitPoint : A position (transient Point3D) on the curve that defines the point at which to split the curve
@@ -29324,7 +37071,7 @@ class SketchCurve(SketchEntity):
         Empty collection returned if curve is closed.
         """
         return core.ObjectCollection()
-    def trim(self, segmentPoint: core.Point3D, createConstraints: bool) -> core.ObjectCollection:
+    def trim(self, segmentPoint: core.Point3D, createConstraints: bool = True) -> core.ObjectCollection:
         """
         Trim a curve by specifying a point that determines the segment of the curve to trim away
         segmentPoint : A point (transient Point3D) on or closest to the segment of the curve to remove. (start, end or middle)
@@ -29337,7 +37084,7 @@ class SketchCurve(SketchEntity):
         Trimming a curve having no intersections deletes the original and returns an empty collection
         """
         return core.ObjectCollection()
-    def breakCurve(self, segmentPoint: core.Point3D, createConstraints: bool) -> core.ObjectCollection:
+    def breakCurve(self, segmentPoint: core.Point3D, createConstraints: bool = True) -> core.ObjectCollection:
         """
         Breaks a curve into two or three pieces by finding intersections of this curve with all other curves in the
         sketch and splitting this curve at the nearest intersections to a specified point on the curve.
@@ -29349,7 +37096,7 @@ class SketchCurve(SketchEntity):
         are found and as a result the curve is not broken, an empty ObjectCollection is returned.
         """
         return core.ObjectCollection()
-    def extend(self, endPoint: core.Point3D, createConstraints: bool) -> core.ObjectCollection:
+    def extend(self, endPoint: core.Point3D, createConstraints: bool = True) -> core.ObjectCollection:
         """
         Extend a curve by specifying a point that determines the end of the curve to extend
         endPoint : A point (transient Point3D) on or closest to the end of the curve to extend. (start or end)
@@ -29424,6 +37171,86 @@ class SketchDiameterDimension(SketchDimension):
         """
         return SketchDiameterDimension()
 
+class SketchDistanceBetweenLineAndPlanarSurfaceDimension(SketchDimension):
+    """
+    A linear dimension in a sketch between a sketch line and a planar surface.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SketchDistanceBetweenLineAndPlanarSurfaceDimension:
+        return SketchDistanceBetweenLineAndPlanarSurfaceDimension()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> SketchDistanceBetweenLineAndPlanarSurfaceDimension:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return SketchDistanceBetweenLineAndPlanarSurfaceDimension()
+    @property
+    def line(self) -> SketchLine:
+        """
+        The sketch line being constrained.
+        """
+        return SketchLine()
+    @property
+    def planarSurface(self) -> core.Base:
+        """
+        The planar surface the dimension is anchored to. This can be a planar BRepFace or a ConstructionPlane.
+        """
+        return core.Base()
+    @property
+    def nativeObject(self) -> SketchDistanceBetweenLineAndPlanarSurfaceDimension:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return SketchDistanceBetweenLineAndPlanarSurfaceDimension()
+
+class SketchDistanceBetweenPointAndSurfaceDimension(SketchDimension):
+    """
+    A linear dimension in a sketch between a sketch point and a surface.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SketchDistanceBetweenPointAndSurfaceDimension:
+        return SketchDistanceBetweenPointAndSurfaceDimension()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> SketchDistanceBetweenPointAndSurfaceDimension:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return SketchDistanceBetweenPointAndSurfaceDimension()
+    @property
+    def point(self) -> SketchPoint:
+        """
+        The sketch point being constrained.
+        """
+        return SketchPoint()
+    @property
+    def surface(self) -> core.Base:
+        """
+        The BRepFace or ConstructionPlane to which the dimension is anchored. Planar, cylindrical, and spherical faces are supported.
+        """
+        return core.Base()
+    @property
+    def nativeObject(self) -> SketchDistanceBetweenPointAndSurfaceDimension:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return SketchDistanceBetweenPointAndSurfaceDimension()
+
 class SketchEllipseMajorRadiusDimension(SketchDimension):
     """
     An ellipse major radius dimension in a sketch.
@@ -29491,6 +37318,46 @@ class SketchEllipseMinorRadiusDimension(SketchDimension):
         an assembly but is already the native object.
         """
         return SketchEllipseMinorRadiusDimension()
+
+class SketchLinearDiameterDimension(SketchDimension):
+    """
+    A linear diameter dimension in a sketch.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SketchLinearDiameterDimension:
+        return SketchLinearDiameterDimension()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> SketchLinearDiameterDimension:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return SketchLinearDiameterDimension()
+    @property
+    def line(self) -> SketchLine:
+        """
+        The first line being constrained.
+        """
+        return SketchLine()
+    @property
+    def entityTwo(self) -> SketchEntity:
+        """
+        The second entity being constrained. (a parallel SketchLine or a SketchPoint)
+        """
+        return SketchEntity()
+    @property
+    def nativeObject(self) -> SketchLinearDiameterDimension:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return SketchLinearDiameterDimension()
 
 class SketchLinearDimension(SketchDimension):
     """
@@ -29703,6 +37570,22 @@ class SketchPointHolePositionDefinition(HolePositionDefinition):
         """
         return SketchPoint()
 
+class SketchPointsBossPositionDefinition(BossPositionDefinition):
+    """
+    Provides positioning information for a boss feature that is positioned by a sketch point(s).
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SketchPointsBossPositionDefinition:
+        return SketchPointsBossPositionDefinition()
+    @property
+    def sketchPoints(self) -> core.ObjectCollection:
+        """
+        Returns the sketch points that defines the position of the boss feature.
+        """
+        return core.ObjectCollection()
+
 class SketchPointsHolePositionDefinition(HolePositionDefinition):
     """
     Provides positioning information for a hole that is positioned by a sketch point.
@@ -29753,6 +37636,47 @@ class SketchRadialDimension(SketchDimension):
         """
         return SketchRadialDimension()
 
+class SketchTangentDistanceDimension(SketchDimension):
+    """
+    A distance dimension measuring to the tangent on one or two circles or arcs.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SketchTangentDistanceDimension:
+        return SketchTangentDistanceDimension()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> SketchTangentDistanceDimension:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return SketchTangentDistanceDimension()
+    @property
+    def entityOne(self) -> SketchEntity:
+        """
+        The first entity being constrained. This can be a SketchCircle, SketchArc,
+        SketchLine, or SketchPoint.
+        """
+        return SketchEntity()
+    @property
+    def circleOrArc(self) -> SketchCurve:
+        """
+        The second entity being constrained which is always a SketchCircle or SketchArc.
+        """
+        return SketchCurve()
+    @property
+    def nativeObject(self) -> SketchTangentDistanceDimension:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return SketchTangentDistanceDimension()
+
 class SketchText(SketchEntity):
     """
     Text in a sketch.
@@ -29797,6 +37721,14 @@ class SketchText(SketchEntity):
         Returns true if the setting the definition was successful.
         """
         return bool()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> SketchText:
+        """
+        Creates a proxy object for the SketchText object that represents the SketchText
+        object in the context of an assembly. The context is defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return SketchText()
     @property
     def height(self) -> float:
         """
@@ -29822,20 +37754,6 @@ class SketchText(SketchEntity):
         """
         pass
     @property
-    def position(self) -> core.Point3D:
-        """
-        Gets and sets the position of the text on the x-y plane of the sketch. The text must lie on the x-y plane so the Z component
-        of the point is ignored and always treated as zero.
-        """
-        return core.Point3D()
-    @position.setter
-    def position(self, value: core.Point3D):
-        """
-        Gets and sets the position of the text on the x-y plane of the sketch. The text must lie on the x-y plane so the Z component
-        of the point is ignored and always treated as zero.
-        """
-        pass
-    @property
     def fontName(self) -> str:
         """
         Gets and sets the name of the font to use.
@@ -29845,18 +37763,6 @@ class SketchText(SketchEntity):
     def fontName(self, value: str):
         """
         Gets and sets the name of the font to use.
-        """
-        pass
-    @property
-    def angle(self) -> float:
-        """
-        Gets and sets the angle of the text relative to the x-axis of the x-y plane of the sketch.
-        """
-        return float()
-    @angle.setter
-    def angle(self, value: float):
-        """
-        Gets and sets the angle of the text relative to the x-axis of the x-y plane of the sketch.
         """
         pass
     @property
@@ -29873,13 +37779,6 @@ class SketchText(SketchEntity):
         can be combined to apply multiple styles. For example you can apply bold and underline.
         """
         pass
-    @property
-    def boundaryLines(self) -> SketchLineList:
-        """
-        Returns the four sketch lines that define the boundary of the sketch text. By adding constraints to these lines
-        you can associatively control the size, position and angle of the sketch text.
-        """
-        return SketchLineList()
     @property
     def isHorizontalFlip(self) -> bool:
         """
@@ -29910,6 +37809,15 @@ class SketchText(SketchEntity):
         Gets the definition that is currently used to specify how the sketch text is defined.
         """
         return SketchTextDefinition()
+    @property
+    def nativeObject(self) -> SketchText:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return SketchText()
 
 class SliderJointMotion(JointMotion):
     """
@@ -30156,7 +38064,7 @@ class SplitBodyFeature(Feature):
     def nativeObject(self) -> SplitBodyFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -30171,21 +38079,6 @@ class SplitFaceFeature(Feature):
     @staticmethod
     def cast(arg) -> SplitFaceFeature:
         return SplitFaceFeature()
-    def setSplittingTool(self, splittingTool: core.Base, isSplittingToolExtended: bool) -> bool:
-        """
-        Sets the splitting tool used for the feature.
-        
-        To use this method, you need to position the timeline marker to immediately before this feature.
-        This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
-        splittingTool : Input entity that defines the splitting tool. The splitting tool is a single entity that can be either a solid body,
-        open body, construction plane, face, or sketch curve that partially or fully intersects the facesToSplit.
-        The input for this argument can be one of the valid types or an ObjectCollection in the case where multiple splitting
-        tools are being defined.
-        isSplittingToolExtended : A boolean value for setting whether or not the splittingTool is to be automatically extended (if possible) so as to
-        completely intersect the facesToSplit.
-        Returns true if successful.
-        """
-        return bool()
     def createForAssemblyContext(self, occurrence: Occurrence) -> SplitFaceFeature:
         """
         Creates or returns a proxy for the native object
@@ -30281,7 +38174,7 @@ class SplitFaceFeature(Feature):
     def nativeObject(self) -> SplitFaceFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -30312,6 +38205,22 @@ class STEPExportOptions(ExportOptions):
     @staticmethod
     def cast(arg) -> STEPExportOptions:
         return STEPExportOptions()
+    @property
+    def wantTempIds(self) -> bool:
+        """
+        Indicates if the STEP file should include the Fusion temporary IDs for faces and edges.
+        Outside services can use these IDs with the findByTempId method of the BRepBody,
+        which will return the given entity. The default is false.
+        """
+        return bool()
+    @wantTempIds.setter
+    def wantTempIds(self, value: bool):
+        """
+        Indicates if the STEP file should include the Fusion temporary IDs for faces and edges.
+        Outside services can use these IDs with the findByTempId method of the BRepBody,
+        which will return the given entity. The default is false.
+        """
+        pass
 
 class StitchFeature(Feature):
     """
@@ -30386,7 +38295,7 @@ class StitchFeature(Feature):
     def nativeObject(self) -> StitchFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -30434,7 +38343,7 @@ class STLExportOptions(ExportOptions):
         """
         Gets and sets the current simple mesh refinement settings. Setting this property
         will reset the surfaceDeviation, normalDeviation, maximumEdgeLength, and aspectRatio
-        to values that correspond to the specified mesh refinement. The default is MeshRefinementMedium
+        to values that correspond to the specified mesh refinement. The default is MeshRefinementMedium.
         """
         return MeshRefinementSettings()
     @meshRefinement.setter
@@ -30442,7 +38351,7 @@ class STLExportOptions(ExportOptions):
         """
         Gets and sets the current simple mesh refinement settings. Setting this property
         will reset the surfaceDeviation, normalDeviation, maximumEdgeLength, and aspectRatio
-        to values that correspond to the specified mesh refinement. The default is MeshRefinementMedium
+        to values that correspond to the specified mesh refinement. The default is MeshRefinementMedium.
         """
         pass
     @property
@@ -30602,7 +38511,7 @@ class SurfaceDeleteFaceFeature(Feature):
     def nativeObject(self) -> SurfaceDeleteFaceFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -30744,7 +38653,7 @@ class SweepFeature(Feature):
     def nativeObject(self) -> SweepFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -31012,7 +38921,7 @@ class ThickenFeature(Feature):
     @staticmethod
     def cast(arg) -> ThickenFeature:
         return ThickenFeature()
-    def setInputEntities(self, inputFaces: core.ObjectCollection, isChainSelection: bool) -> bool:
+    def setInputEntities(self, inputFaces: core.ObjectCollection, isChainSelection: bool = True) -> bool:
         """
         Sets the faces and patch bodies to thicken.
         
@@ -31105,7 +39014,7 @@ class ThickenFeature(Feature):
     def nativeObject(self) -> ThickenFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -31288,7 +39197,7 @@ class ThreadFeature(Feature):
     def nativeObject(self) -> ThreadFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -31359,6 +39268,12 @@ class TimelineGroup(TimelineObject):
     @staticmethod
     def cast(arg) -> TimelineGroup:
         return TimelineGroup()
+    def __len__(self) -> int:
+        return 0
+    def __getitem__(self, index: int) -> TimelineObject:
+        return None
+    def __iter__(self) -> Iterator[TimelineObject]:
+        return None
     def deleteMe(self, deleteGroupAndContents: bool) -> bool:
         """
         Deletes the group with the option of deleting or keeping the contents.
@@ -31405,7 +39320,7 @@ class ToEntityExtentDefinition(ExtentDefinition):
     def cast(arg) -> ToEntityExtentDefinition:
         return ToEntityExtentDefinition()
     @staticmethod
-    def create(entity: core.Base, isChained: bool, offset: core.ValueInput) -> ToEntityExtentDefinition:
+    def create(entity: core.Base, isChained: bool, offset: core.ValueInput = None) -> ToEntityExtentDefinition:
         """
         Statically creates a new ToEntityExtentDefinition object. This is used as input when
         defining the extents of a feature to be up to a construction plane or face.
@@ -31558,7 +39473,7 @@ class TrimFeature(Feature):
     def nativeObject(self) -> TrimFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -31628,30 +39543,6 @@ class TwoDistancesChamferEdgeSet(ChamferEdgeSet):
         """
         pass
 
-class TwoDistancesChamferTypeDefinition(ChamferTypeDefinition):
-    """
-    Provides information to create a chamfer that is defined by a two distances from the edge.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> TwoDistancesChamferTypeDefinition:
-        return TwoDistancesChamferTypeDefinition()
-    @property
-    def distanceOne(self) -> ModelParameter:
-        """
-        Returns the parameter controlling the first distance. You can edit the distance
-        by editing the value of the parameter object.
-        """
-        return ModelParameter()
-    @property
-    def distanceTwo(self) -> ModelParameter:
-        """
-        Returns the parameter controlling the second distance. You can edit the distance
-        by editing the value of the parameter object.
-        """
-        return ModelParameter()
-
 class TwoSidesAngleExtentDefinition(ExtentDefinition):
     """
     Defines the inputs for a TwoSidesAngleExtentDefinition object.
@@ -31677,80 +39568,6 @@ class TwoSidesAngleExtentDefinition(ExtentDefinition):
         """
         return ModelParameter()
 
-class TwoSidesDistanceExtentDefinition(ExtentDefinition):
-    """
-    Defines the inputs for a TwoSidesDistanceExtentDefinition object.
-    This defines a feature extent where the distance in each direction can be a different value.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> TwoSidesDistanceExtentDefinition:
-        return TwoSidesDistanceExtentDefinition()
-    @property
-    def distanceOne(self) -> ModelParameter:
-        """
-        Gets the ModelParameter that defines the first distance
-        """
-        return ModelParameter()
-    @property
-    def distanceTwo(self) -> ModelParameter:
-        """
-        Gets the ModelParameter that defines the second distance
-        """
-        return ModelParameter()
-
-class TwoSidesToExtentDefinition(ExtentDefinition):
-    """
-    Defines the inputs for a TwoSidesToExtentDefinition object
-    This defines a feature extent where the extents of feature go up to faces or construction planes in both directions.
-    """
-    def __init__(self):
-        pass
-    @staticmethod
-    def cast(arg) -> TwoSidesToExtentDefinition:
-        return TwoSidesToExtentDefinition()
-    @property
-    def toEntityOne(self) -> core.Base:
-        """
-        Gets and sets the entity that defines the extent on side one. The valid types of entities can vary depending on
-        the type of feature this is being used with.
-        """
-        return core.Base()
-    @toEntityOne.setter
-    def toEntityOne(self, value: core.Base):
-        """
-        Gets and sets the entity that defines the extent on side one. The valid types of entities can vary depending on
-        the type of feature this is being used with.
-        """
-        pass
-    @property
-    def toEntityTwo(self) -> core.Base:
-        """
-        Gets and sets the entity that defines the extent on side two. The valid types of entities can vary depending on
-        the type of feature this is being used with.
-        """
-        return core.Base()
-    @toEntityTwo.setter
-    def toEntityTwo(self, value: core.Base):
-        """
-        Gets and sets the entity that defines the extent on side two. The valid types of entities can vary depending on
-        the type of feature this is being used with.
-        """
-        pass
-    @property
-    def matchShape(self) -> bool:
-        """
-        Gets and sets whether the toEntity is extended to fully intersect the extrusion.
-        """
-        return bool()
-    @matchShape.setter
-    def matchShape(self, value: bool):
-        """
-        Gets and sets whether the toEntity is extended to fully intersect the extrusion.
-        """
-        pass
-
 class UnfoldFeature(Feature):
     """
     Object that represents an existing unfold feature in a design.
@@ -31770,9 +39587,9 @@ class UnstitchFeature(Feature):
     @staticmethod
     def cast(arg) -> UnstitchFeature:
         return UnstitchFeature()
-    def setInputFaces(self, faces: core.ObjectCollection, isChainSelection: bool) -> bool:
+    def setInputFaces(self, faces: core.ObjectCollection, isChainSelection: bool = True) -> bool:
         """
-        Sets the faces and/or bodies to be unstiched.
+        Sets the faces and/or bodies to be unstitched.
         
         To use this method, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
@@ -31812,7 +39629,7 @@ class UnstitchFeature(Feature):
     def nativeObject(self) -> UnstitchFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
@@ -31887,11 +39704,21 @@ class UntrimFeature(Feature):
     def nativeObject(self) -> UntrimFeature:
         """
         The NativeObject is the object outside the context of an assembly and
-        in the context of it's parent component.
+        in the context of its parent component.
         Returns null in the case where this object is not in the context of
         an assembly but is already the native object.
         """
         return UntrimFeature()
+
+class USDExportOptions(ExportOptions):
+    """
+    Defines that an USD export is to be done and specifies the various options.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> USDExportOptions:
+        return USDExportOptions()
 
 class UserParameter(Parameter):
     """
@@ -31965,7 +39792,7 @@ class VariableRadiusFilletEdgeSet(FilletEdgeSet):
     @property
     def edges(self) -> core.ObjectCollection:
         """
-        Gets and sets the edges that will be filleted.
+        Gets and sets an ObjectCollection containing the edges that are filleted.
         
         To use this property, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
@@ -31974,7 +39801,7 @@ class VariableRadiusFilletEdgeSet(FilletEdgeSet):
     @edges.setter
     def edges(self, value: core.ObjectCollection):
         """
-        Gets and sets the edges that will be filleted.
+        Gets and sets an ObjectCollection containing the edges that are filleted.
         
         To use this property, you need to position the timeline marker to immediately before this feature.
         This can be accomplished using the following code: thisFeature.timelineObject.rollTo(True)
@@ -32010,6 +39837,86 @@ class VariableRadiusFilletEdgeSet(FilletEdgeSet):
         using the properties on its returned ModelParameter object.
         """
         return ParameterList()
+
+class VariableRadiusFilletEdgeSetInput(FilletEdgeSetInput):
+    """
+    Provides access to the edges and the parameters associated with a variable radius fillet.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> VariableRadiusFilletEdgeSetInput:
+        return VariableRadiusFilletEdgeSetInput()
+    def setMidRadii(self, radii: list[core.ValueInput], positions: list[core.ValueInput]) -> bool:
+        """
+        Defines any additional points along the fillet where a radius is specified.
+        radii : An array of ValueInput objects that define the radii at positions along the edge(s).
+        This array must have the same number of values as the positions argument.
+        
+        If the ValueInput uses a real then it is interpreted as centimeters. If it is a string then the
+        the units can be defined as part of the string (i.e. "2 in"). If no units are specified it will
+        be interpreted using the current default units for length.
+        positions : An array of ValueInput objects that defines the positions of any additional radii
+        along the edge(s). The value must be between 0 and 1 and defines the percentage along the curve
+        where a radius is defined. This array must have the same number of values as the radii argument.
+        
+        If the ValueInput uses a real then it is interpreted as a unitless number. If it is a string then the
+        the string must evaluate to a unitless number.
+        Returns true if successful.
+        """
+        return bool()
+    @property
+    def startRadius(self) -> core.ValueInput:
+        """
+        Gets and sets a ValueInput object that defines the starting radius of the fillet.
+        If a single edge is being filleted, the start radius is at the start end of the edge.
+        If multiple tangent edges are being filleted the start radius is the start end of the
+        first edge in the collection.
+        
+        If the ValueInput uses a real then it is interpreted as centimeters. If it is a string then
+        the units can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current default units for length.
+        """
+        return core.ValueInput()
+    @startRadius.setter
+    def startRadius(self, value: core.ValueInput):
+        """
+        Gets and sets a ValueInput object that defines the starting radius of the fillet.
+        If a single edge is being filleted, the start radius is at the start end of the edge.
+        If multiple tangent edges are being filleted the start radius is the start end of the
+        first edge in the collection.
+        
+        If the ValueInput uses a real then it is interpreted as centimeters. If it is a string then
+        the units can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current default units for length.
+        """
+        pass
+    @property
+    def endRadius(self) -> core.ValueInput:
+        """
+        Gets and sets a ValueInput object that defines the ending radius of the fillet.
+        If a single edge is being filleted, the end radius is at the end of the edge.
+        If multiple tangent edges are being filleted the end radius is the open end of the
+        last edge in the collection.
+        
+        If the ValueInput uses a real then it is interpreted as centimeters. If it is a string then
+        the units can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current default units for length.
+        """
+        return core.ValueInput()
+    @endRadius.setter
+    def endRadius(self, value: core.ValueInput):
+        """
+        Gets and sets a ValueInput object that defines the ending radius of the fillet.
+        If a single edge is being filleted, the end radius is at the end of the edge.
+        If multiple tangent edges are being filleted the end radius is the open end of the
+        last edge in the collection.
+        
+        If the ValueInput uses a real then it is interpreted as centimeters. If it is a string then
+        the units can be defined as part of the string (i.e. "2 in") or if no units are specified
+        it is interpreted using the current default units for length.
+        """
+        pass
 
 class VerticalConstraint(GeometricConstraint):
     """
@@ -32095,8 +40002,22 @@ class WebFeature(Feature):
     def cast(arg) -> WebFeature:
         return WebFeature()
 
+class ZebraAnalysis(Analysis):
+    """
+    Represent any existing Zebra Analysis that exist in the design.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> ZebraAnalysis:
+        return ZebraAnalysis()
+
 class CustomFeatureParameter(ModelParameter):
     """
+    !!!!! Warning !!!!!
+    ! This is in preview state; please see the help for more info
+    !!!!! Warning !!!!!
+    
     A custom parameter is a parameter that was created as the result of a custom feature
     being created. It is associated with the custom feature and it's lifetime is the same
     as the custom feature that owns it.
@@ -32144,6 +40065,42 @@ class CustomFeatureParameter(ModelParameter):
         Returns the custom feature this parameter is associated with.
         """
         return CustomFeature()
+
+class FlatPatternComponent(Component):
+    """
+    This object represent the root component of a FlatPatternProduct. The flatPattern
+    property will return a FlatPattern object that provides access to the resulting
+    flat pattern geometry.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> FlatPatternComponent:
+        return FlatPatternComponent()
+
+class FlatPatternProduct(Design):
+    """
+    Product that contains all of the information associated with a flat pattern.
+    
+    A FlatPatternProduct object exists for each flat pattern created.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> FlatPatternProduct:
+        return FlatPatternProduct()
+    def deleteMe(self) -> bool:
+        """
+        Deletes this FlatPatternProduct and the flat pattern it contains.
+        Returns true if the delete was successful.
+        """
+        return bool()
+    @property
+    def flatPattern(self) -> FlatPattern:
+        """
+        Gets the flat pattern associated with this FlatPatternProduct.
+        """
+        return FlatPattern()
 
 class SketchArc(SketchCurve):
     """
@@ -32369,6 +40326,141 @@ class SketchConicCurve(SketchCurve):
         an assembly but is already the native object.
         """
         return SketchConicCurve()
+    @property
+    def rhoValue(self) -> float:
+        """
+        Get and sets the rho value for the curve. The value must be greater than
+        zero and less than one.
+        """
+        return float()
+    @rhoValue.setter
+    def rhoValue(self, value: float):
+        """
+        Get and sets the rho value for the curve. The value must be greater than
+        zero and less than one.
+        """
+        pass
+
+class SketchControlPointSpline(SketchCurve):
+    """
+    A control point spline in a sketch.
+    """
+    def __init__(self):
+        pass
+    @staticmethod
+    def cast(arg) -> SketchControlPointSpline:
+        return SketchControlPointSpline()
+    def addControlPoint(self, parameter: float) -> bool:
+        """
+        Adds an additional control point to the control point spline. Inserting a new control
+        point does not change the shape of the curve, but the control frame will be re-computed
+        and the control points will be adjusted to maintain the current shape.
+        
+        This method will fail in the case where the control frame is not displayed. You can
+        check for this by using the is isControlFrameDisplayed.
+        parameter : The parameter position that defines where to insert the new control point. The parameter
+        value must be within the parametric range of the curve. This can be determined by using the
+        getParameterExtents method of the CurveEvaluator3D returned by the evaluator property.
+        Returns true if adding the control point was successful.
+        """
+        return bool()
+    def createForAssemblyContext(self, occurrence: Occurrence) -> SketchControlPointSpline:
+        """
+        Creates or returns a proxy for the native object
+        - i.e. a new object that represents this object but adds the assembly context
+        defined by the input occurrence.
+        occurrence : The occurrence that defines the context to create the proxy in.
+        Returns the proxy object or null if this isn't the NativeObject.
+        """
+        return SketchControlPointSpline()
+    @property
+    def startSketchPoint(self) -> SketchPoint:
+        """
+        The sketch point at the start of the spline. If the curve is closed the start and end
+        sketch points will be the same.
+        """
+        return SketchPoint()
+    @property
+    def endSketchPoint(self) -> SketchPoint:
+        """
+        The sketch point at the end of the spline. If the curve is closed the start and end
+        sketch points will be the same.
+        """
+        return SketchPoint()
+    @property
+    def controlPoints(self) -> list[SketchPoint]:
+        """
+        Returns the set of sketch points that the control frame of the spline fits through.
+        The points include the start and end points and are returned in
+        the same order as the spline fits through them where the first point
+        in the list is the start point and the last point is the end point.
+        Editing the position of these sketch points will result in editing the spline.
+        
+        Deleting one of the sketch points will remove that point from the control frame and
+        the curve will be recomputed.
+        """
+        return [SketchPoint()]
+    @property
+    def geometry(self) -> core.NurbsCurve3D:
+        """
+        Returns the transient geometry of the curve which provides geometric
+        information about the curve. The returned geometry is always in sketch space.
+        Use the worldGeometry property to get it in the model's design space.
+        """
+        return core.NurbsCurve3D()
+    @property
+    def worldGeometry(self) -> core.NurbsCurve3D:
+        """
+        Returns a NurbsCurve3D object that is the equivalent of this sketch curve
+        but is in the space of the parent component rather than in sketch space.
+        """
+        return core.NurbsCurve3D()
+    @property
+    def evaluator(self) -> core.CurveEvaluator3D:
+        """
+        Returns an evaluator object that lets you perform evaluations
+        on the precise geometry of the curve.
+        """
+        return core.CurveEvaluator3D()
+    @property
+    def nativeObject(self) -> SketchControlPointSpline:
+        """
+        The NativeObject is the object outside the context of an assembly and
+        in the context of it's parent component.
+        Returns null in the case where this object is not in the context of
+        an assembly but is already the native object.
+        """
+        return SketchControlPointSpline()
+    @property
+    def degree(self) -> SplineDegrees:
+        """
+        Gets the degree of the spline.
+        """
+        return SplineDegrees()
+    @property
+    def isControlFrameDisplayed(self) -> bool:
+        """
+        Gets and sets if the control frame of the curve is currently displayed. Using this property
+        is useful to be able to determine if the controlPoints and controlFrameLines properties will return
+        useful information or not and if the addControlPoint method will succeed or not.
+        """
+        return bool()
+    @isControlFrameDisplayed.setter
+    def isControlFrameDisplayed(self, value: bool):
+        """
+        Gets and sets if the control frame of the curve is currently displayed. Using this property
+        is useful to be able to determine if the controlPoints and controlFrameLines properties will return
+        useful information or not and if the addControlPoint method will succeed or not.
+        """
+        pass
+    @property
+    def controlFrameLines(self) -> list[SketchLine]:
+        """
+        Returns the sketch lines that represent the control frame of the spline.
+        The lines are in sequential order starting with the line that connects to the
+        starting control point to the end.
+        """
+        return [SketchLine()]
 
 class SketchEllipse(SketchCurve):
     """
@@ -32676,6 +40768,16 @@ class SketchFittedSpline(SketchCurve):
         returns null in the case where the curvature handle has not been activated at the specified sketch point.
         """
         return SketchArc()
+    def addFitPoint(self, parameter: float) -> SketchPoint:
+        """
+        Creates a new fit point at the specified parameter value.
+        parameter : The parameter value at the position along the curve where you want to add the new fit point. The
+        CurveEvaluator3D object provides utilities that support going from a 3D coordinate to a parameter
+        value on the curve.
+        Returns the newly created SketchPoint that acts as the fit point. Fails in the case where an invalid
+        parameter is specified.
+        """
+        return SketchPoint()
     @property
     def startSketchPoint(self) -> SketchPoint:
         """
@@ -32762,7 +40864,7 @@ class SketchFittedSpline(SketchCurve):
 class SketchFixedSpline(SketchCurve):
     """
     The SketchFixedSpline class represents splines in a sketch that are
-    un-editable. These can result from including splines from other sketches
+    not editable. These can result from including splines from other sketches
     or the spline edges. They can also be created by intersections and
     projecting splines onto a sketch.
     """
